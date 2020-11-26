@@ -13,15 +13,15 @@ export default function TodoList(){
         return { newTab, indexTab };
     }
 
-    const onChangeValue = (event, item) => {
-        let { newTab, indexTab } = setIndexTab(item);
-        newTab[indexTab] = {text : event.target.value, variable : tab[indexTab].variable, modif : tab[indexTab].modif, index : tab[indexTab].index};
-        setTab(newTab);
-    }
-
-    const onChangeVariable = (event, item) => {
-        let { newTab, indexTab } = setIndexTab(item);
-        newTab[indexTab] = {text : tab[indexTab].text, variable : event.target.value, modif : tab[indexTab].modif, index : tab[indexTab].index};
+    const onChange = (item, textEvent, variableEvent) =>{
+        const newTab = [...tab];
+        let indexTab = tab.indexOf(item);
+        newTab[indexTab] = {
+            text : (typeof textEvent !== 'undefined') ? textEvent.target.value : tab[indexTab].text, 
+            variable : (typeof variableEvent !== 'undefined') ? variableEvent.target.value : tab[indexTab].variable, 
+            modif : tab[indexTab].modif, 
+            index : tab[indexTab].index
+        };
         setTab(newTab);
     }
 
@@ -56,9 +56,9 @@ export default function TodoList(){
         return tab.map((item) => (
             <div className="container" key={item.index}>
                 {item.modif ? <>
-                        <input className="variableInput" type="text" value={item.variable} onChange={e => onChangeVariable(e, item)} />
+                        <input className="variableInput" type="text" value={item.variable} onChange={e => onChange(item, undefined, e)} />
                         <p>=</p>
-                        <input className="variableInput" type="text" value={item.text} onChange={e => onChangeValue(e, item)} />
+                        <input className="variableInput" type="text" value={item.text} onChange={e => onChange(item, e, undefined)} />
                         <button className="boutonRouge" onClick={e => changeModif(item)}>Enregistrer</button>
                     </> : <>
                         <p>{item.variable}</p> <p>=</p> <p>{item.text}</p>
