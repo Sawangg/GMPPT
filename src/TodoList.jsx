@@ -1,4 +1,8 @@
 import React, {useState} from 'react';
+import {Button, TextField, Typography} from '@material-ui/core';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+
+import Accordeon from './Accordeon'
 
 import './TodoList.css'
 
@@ -6,6 +10,8 @@ export default function TodoList(){
 
     const [value, setValue] = useState({text : "", variable : "", modif : true, index : 0})
     const [tab, setTab] = useState([])
+
+    const styleCenter = {marginTop : 8};
 
     const setIndexTab = (item) => {
         const newTab = [...tab];
@@ -55,23 +61,25 @@ export default function TodoList(){
         return tab.map((item) => (
             <div className="container" key={item.index}>
                 {item.modif ? <>
-                        <input className="variableInput" type="text" value={item.variable} onChange={e => onChange(item, undefined, e)} />
-                        <p>=</p>
-                        <input className="variableInput" type="text" value={item.text} onChange={e => onChange(item, e, undefined)} />
-                        <button className="boutonRouge" onClick={e => changeModif(item)}>Enregistrer</button>
+                        <TextField label="Variable" variant="outlined" size="small" value={item.variable} onChange={e => onChange(item, undefined, e)}/>
+                        <ArrowForwardIcon style={styleCenter}/>
+                        <TextField label="Formule" variant="outlined" size="small" value={item.text} onChange={e => onChange(item, e, undefined)} />
+                        <Button className="buttonItem" variant="contained" color="primary" onClick={e => changeModif(item)}>Enregistrer</Button>
                     </> : <>
-                        <p>{item.variable}</p> <p>=</p> <p>{item.text}</p>
-                        <button className="boutonRouge" onClick={e => changeModif(item)}>Modifier</button>
+                        <Typography style={styleCenter}>{item.variable}</Typography>
+                        <ArrowForwardIcon style={styleCenter}/>
+                        <Typography style={styleCenter}>{item.text}</Typography>
+                        <Button className="buttonItem" variant="contained" onClick={e => changeModif(item)}>Modifier</Button>
                     </>}
-                <button className="boutonRouge" onClick={e => removeTodo(item)}>Supprimer</button>
+                <Button className="buttonItem" variant="contained" color="secondary" onClick={e => removeTodo(item)}>Supprimer</Button>
             </div>
         ))
     }
 
     return (
         <div id="todoList">
-            <button className="boutonBleu" onClick={e => addValue(e)}>Ajouter</button>
-            {displayTodo()}
+            <Button id="ajoutFormule" variant="outlined" color="primary"  onClick={e => addValue(e)}>Ajouter des formules</Button>
+            <Accordeon items={displayTodo()}/>
         </div>
     );
 
