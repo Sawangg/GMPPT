@@ -14,8 +14,7 @@ export default function TodoList(){
     }
 
     const onChange = (item, textEvent, variableEvent) =>{
-        const newTab = [...tab];
-        let indexTab = tab.indexOf(item);
+        let { newTab, indexTab } = setIndexTab(item);
         newTab[indexTab] = {
             text : (typeof textEvent !== 'undefined') ? textEvent.target.value : tab[indexTab].text, 
             variable : (typeof variableEvent !== 'undefined') ? variableEvent.target.value : tab[indexTab].variable, 
