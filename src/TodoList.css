@@ -1,0 +1,51 @@
+.variableInput, .valueInput{
+    background-color: rgba(207,207,207, 0.5);
+    border : solid black 1px;
+    border-radius: 3px;
+    font-family: "Amaranth", serif;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    letter-spacing: 1px;
+    text-align: center;
+    text-decoration: none;
+    vertical-align: middle;
+    height: 18px;
+    padding: 4px 8px;
+}
+
+p{
+    margin : 0 auto;
+    padding: 0;
+    text-align: left;
+}
+
+.boutonRouge, .boutonBleu{
+    border : none;
+    border-radius: 3px;
+    font-family: "Amaranth", serif;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    letter-spacing: 1px;
+    padding: 10px 20px;
+    margin : auto;
+}
+
+.boutonRouge{
+    background-color: #c00209;
+    color : white;
+}
+
+.boutonBleu{
+    background-color: #c0dff8;
+}
+
+.container{
+    display: grid;
+    grid-template-columns: 150px 30px 150px 150px 150px;
+    grid-gap: 20px;
+    width: 50%;
+    margin: 20px;
+    height: 20px;
+}
