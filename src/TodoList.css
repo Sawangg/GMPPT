@@ -5,19 +5,16 @@
     width: 50%;
     margin: 30px 10px;
     height: 20px;
+    min-width: 500px;
 }
 
-#todoList{
+.todoList{
     display: block;
     margin: 20px auto;
-    width: 80%;
+    width: 70%;
     border: 2px solid black ;
     padding: 2%;
-}
-
-#ajoutFormule{
-    display: block;
-    margin: auto;
+    min-width: 1000px;
 }
 
 .buttonItem{

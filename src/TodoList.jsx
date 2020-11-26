@@ -6,7 +6,7 @@ import Accordeon from './Accordeon'
 
 import './TodoList.css'
 
-export default function TodoList(){
+export default function TodoList(props){
 
     const [value, setValue] = useState({text : "", variable : "", modif : true, index : 0})
     const [tab, setTab] = useState([])
@@ -63,7 +63,7 @@ export default function TodoList(){
                 {item.modif ? <>
                         <TextField label="Variable" variant="outlined" size="small" value={item.variable} onChange={e => onChange(item, undefined, e)}/>
                         <ArrowForwardIcon style={styleCenter}/>
-                        <TextField label="Formule" variant="outlined" size="small" value={item.text} onChange={e => onChange(item, e, undefined)} />
+                        <TextField label="Nom formule" variant="outlined" size="small" value={item.text} onChange={e => onChange(item, e, undefined)} />
                         <Button className="buttonItem" variant="contained" color="primary" onClick={e => changeModif(item)}>Enregistrer</Button>
                     </> : <>
                         <Typography style={styleCenter}>{item.variable}</Typography>
@@ -77,9 +77,8 @@ export default function TodoList(){
     }
 
     return (
-        <div id="todoList">
-            <Button id="ajoutFormule" variant="outlined" color="primary"  onClick={e => addValue(e)}>Ajouter des formules</Button>
-            <Accordeon items={displayTodo()}/>
+        <div>
+            <Accordeon nomCategorie={props.nomCategorie} items={displayTodo()} ajoutFormule={(e => addValue(e))}/>
         </div>
     );
 

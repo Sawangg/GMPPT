@@ -1,10 +1,10 @@
-import TodoList from './TodoList'
+import TodoListAccordeon from './TodoListAccordeon'
 import './App.css';
 
 function App() {
   return (
     <>
-        <TodoList/>
+        <TodoListAccordeon/>
     </>
 );
 }
