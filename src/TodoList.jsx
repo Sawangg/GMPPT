@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
-import {Button, TextField, Typography} from '@material-ui/core';
+import {Button, TextField, Typography, Fab} from '@material-ui/core';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 import Accordeon from './Accordeon'
 
@@ -10,8 +11,6 @@ export default function TodoList(props){
 
     const [value, setValue] = useState({text : "", variable : "", modif : true, index : 0})
     const [tab, setTab] = useState([])
-
-    const styleCenter = {marginTop : 8};
 
     const setIndexTab = (item) => {
         const newTab = [...tab];
@@ -60,17 +59,19 @@ export default function TodoList(props){
         return tab.map((item) => (
             <div className="container" key={item.index}>
                 {item.modif ? <>
-                        <TextField label="Variable" variant="outlined" size="small" value={item.variable} onChange={e => onChange(item, undefined, e)}/>
-                        <ArrowForwardIcon style={styleCenter}/>
-                        <TextField label="Nom formule" variant="outlined" size="small" value={item.text} onChange={e => onChange(item, e, undefined)} />
-                        <Button className="buttonItem" variant="contained" color="primary" onClick={e => changeModif(item)}>Enregistrer</Button>
+                        <TextField className="center" multiline label="Variable" variant="outlined" size="small" value={item.variable} onChange={e => onChange(item, undefined, e)}/>
+                        <ArrowForwardIcon className="center" />
+                        <TextField className="center" multiline label="Nom formule" variant="outlined" size="small" value={item.text} onChange={e => onChange(item, e, undefined)} />
+                        <Button className="buttonItem center" variant="contained" color="primary" onClick={e => changeModif(item)}>Enregistrer</Button>
                     </> : <>
-                        <Typography style={styleCenter}>{item.variable}</Typography>
-                        <ArrowForwardIcon style={styleCenter}/>
-                        <Typography style={styleCenter}>{item.text}</Typography>
-                        <Button className="buttonItem" variant="contained" onClick={e => changeModif(item)}>Modifier</Button>
+                        <Typography style={{marginTop : 8, overflowWrap: "break-word"}}>{item.variable}</Typography>
+                        <ArrowForwardIcon className="center" />
+                        <Typography style={{marginTop : 8, overflowWrap: "break-word"}}>{item.text}</Typography>
+                        <Button className="buttonItem center" variant="contained" onClick={e => changeModif(item)}>Modifier</Button>
                     </>}
-                <Button className="buttonItem" variant="contained" color="secondary" onClick={e => removeTodo(item)}>Supprimer</Button>
+                    <Fab className="center" size="small" color="secondary" aria-label="add" onClick={e => removeTodo(item)}>
+                        <DeleteIcon className="center" />
+                    </Fab>
             </div>
         ))
     }
@@ -86,7 +87,7 @@ export default function TodoList(props){
     return (
         <div>
             <Accordeon nomCategorie={props.nomCategorie} items={displayTodo()} ajoutFormule={(e => addValue(e))}/>
-            <Button variant="outlined" color="primary" disabled={checkAll()}>Terminer</Button>
+            <Button style={{display : "block", margin : "20px auto"}} variant="outlined" color="primary" disabled={checkAll()}>Terminer</Button>
         </div>
     );
 

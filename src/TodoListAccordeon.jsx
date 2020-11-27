@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
-import {Button, TextField} from '@material-ui/core';
+import {Button, TextField, Fab} from '@material-ui/core';
+import AddIcon from '@material-ui/icons/Add';
 
 import TodoList from './TodoList'
 
@@ -33,7 +34,7 @@ export default function TodoListAccordeon(){
         return tab.map((item) => (
             <div className="todoList" key={item.index}>
                 {item.todo}
-                <Button style={{display : "flex", justifyContent : "space-around", marginTop : 40}} variant="contained" color="secondary" onClick={e => removeTodo(item)}>Supprimer</Button>
+                <Button style={{display : "flex", justifyContent : "space-around", marginTop : 40}} variant="contained" color="secondary" onClick={e => removeTodo(item)}>Supprimer la catégorie</Button>
             </div>
         ))
     }
@@ -41,8 +42,10 @@ export default function TodoListAccordeon(){
     return (
         <div style={{width : "100%"}}>
             <form noValidate autoComplete="off" style={{margin : 40}}>
-                <TextField label="Nom de la catégorie" variant="outlined" size="small" value={value.nom} onChange={e => onChange(e)}/>
-                <Button style={{marginLeft : 20}} variant="outlined" color="primary" onClick={(e => addValue(e))}>Ajouter catégorie de formule</Button>
+                <TextField multiline label="Nom de la catégorie" variant="outlined" size="small" value={value.nom} onChange={e => onChange(e)}/>
+                <Fab style={{marginLeft : 20}} size="small" color="primary" aria-label="add" onClick={(e => addValue(e))}>
+                    <AddIcon />
+                </Fab>
             </form>
             {displayTodo()}
         </div>
