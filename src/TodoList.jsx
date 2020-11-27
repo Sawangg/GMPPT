@@ -38,7 +38,6 @@ export default function TodoList(props){
             const newTab = [...tab];
             newTab[tab.length-1] = {text : newTab[tab.length-1].text, variable : newTab[tab.length-1].variable, modif : false, index : newTab[tab.length-1].index}
             setTab([...newTab, value]);
-            console.log(tab.length-1)
         } else {
             setTab([...tab, value])
         }
@@ -76,9 +75,18 @@ export default function TodoList(props){
         ))
     }
 
+    const checkAll = () =>{
+        let check = false;
+        tab.map((item) => (
+            check = item.modif ? true : check
+        ));
+        return check;
+    }
+
     return (
         <div>
             <Accordeon nomCategorie={props.nomCategorie} items={displayTodo()} ajoutFormule={(e => addValue(e))}/>
+            <Button variant="outlined" color="primary" disabled={checkAll()}>Terminer</Button>
         </div>
     );
 
