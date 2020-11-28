@@ -1,12 +1,11 @@
-import TodoListAccordeon from './TodoListAccordeon'
-import './App.css';
+import TodoListAccordeon from './pages/TodoListAccordeon'
 
 function App() {
   return (
     <>
-        <TodoListAccordeon/>
+      <TodoListAccordeon/>
     </>
-);
+  );
 }
 
 export default App;

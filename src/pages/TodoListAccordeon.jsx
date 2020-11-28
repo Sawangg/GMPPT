@@ -1,26 +1,33 @@
-import React, {useState} from 'react';
-import {Button, Fab, TextField, Typography} from '@material-ui/core';
+import React, { useState } from 'react';
+import { makeStyles, Button, Fab, TextField, Typography } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import SaveIcon from '@material-ui/icons/Save';
 import CreateIcon from '@material-ui/icons/Create';
 
-import Accordeon from './Accordeon'
+import Accordeon from '../components/Accordeon'
 
-import './TodoList.css'
+import '../styles/TodoList.css'
 
-export default function TodoListAccordeon(){
+const useStyles = makeStyles((theme) => ({
+    root: {
+        flexGrow: 1,
+    },
+}));
 
-    const [tab, setTab] = useState([{nom : "", modif : true, index : 0}])
+export default function TodoListAccordeon() {
+    const classes = useStyles();
+
+    const [tab, setTab] = useState([{nom : "", modif : true, index : 0}]);
 
     const addValue = (event) => {
-        event.preventDefault(); //eviter de reloader la page 
-        setTab([...tab, {nom : "",  modif : true, index : tab.length === 0 ? 0 : tab[tab.length-1].index+1}]);
+        event.preventDefault(); // eviter de reloader la page 
+        setTab([...tab, {nom : "",  modif : true, index : tab.length === 0 ? 0 : tab[tab.length - 1].index + 1}]);
     }
 
-    const onChange = (item, e) =>{
+    const onChange = (item, e) => {
         const newTab = [...tab];
         let indexTab = tab.indexOf(item);
-        newTab[indexTab] = {nom : e.target.value, modif: newTab[indexTab].modif, index : newTab[indexTab].index}
+        newTab[indexTab] = {nom : e.target.value, modif: newTab[indexTab].modif, index : newTab[indexTab].index};
         setTab(newTab);
     }
 
@@ -31,14 +38,14 @@ export default function TodoListAccordeon(){
         setTab(newTab);
       };
 
-      const changeModif = (item) => {
+    const changeModif = (item) => {
         const newTab = [...tab];
         let indexTab = tab.indexOf(item);
-        newTab[indexTab] = {nom :  newTab[indexTab].nom, modif : !newTab[indexTab].modif, index : newTab[indexTab].index}
+        newTab[indexTab] = {nom :  newTab[indexTab].nom, modif : !newTab[indexTab].modif, index : newTab[indexTab].index};
         setTab(newTab);
     } 
 
-    const displayTodo = () =>{
+    const displayTodo = () => {
         return tab.map((i) => (
             <div className="todoList" key={i.index}>
                 <div style={{display : "flex", width : "80%", justifyContent : "space-between"}}>
@@ -65,7 +72,7 @@ export default function TodoListAccordeon(){
     }
 
     return (
-        <div style={{width : "100%"}}>
+        <div className={classes.root}>
             <form noValidate autoComplete="off" style={{margin : 40}}>
                 <Fab style={{marginLeft : 20}} size="small" color="primary" aria-label="add" onClick={(e => addValue(e))}>
                     <AddIcon />
@@ -74,5 +81,4 @@ export default function TodoListAccordeon(){
             {displayTodo()}
         </div>
     );
-
-} 
+}

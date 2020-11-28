@@ -1,4 +1,4 @@
-.container{
+.container {
     display: grid;
     grid-template-columns: 150px 30px 150px 150px 150px;
     grid-gap: 20px;
@@ -7,7 +7,7 @@
     min-width: 500px;
 }
 
-.todoList{
+.todoList {
     display: block;
     margin: 20px auto;
     width: 70%;
@@ -16,11 +16,11 @@
     min-width: 1000px;
 }
 
-.buttonItem{
+.buttonItem {
     height: 40px;
 }
 
-.center{
+.center {
     display: block !important;
-    margin: auto  !important;
+    margin: auto !important;
 }
