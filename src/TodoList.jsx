@@ -8,11 +8,12 @@ import './TodoList.css'
 
 export default function TodoList(props){
 
-    const [tab, setTab] = useState([{text : "", variable : "", modif : true, index : 0}])
+    const [tab, setTab] = useState([{nomFormule : "", formule : "", modif : true, index : 0}])
 
     const ajoutFormule = (event) => {
         event.preventDefault(); //eviter de reloader la page 
-        setTab([...tab, {text : "", variable : "", modif : true, index : tab.length === 0 ? 0 : tab[tab.length-1].index+1}]);
+        if (tab.length !== 0) tab[tab.length-1] =  {nomFormule :  tab[tab.length-1].nomFormule, formule : tab[tab.length-1].formule, modif : false, index : tab[tab.length-1].index}
+        setTab([...tab, {nomFormule : "", formule : "", modif : true, index : tab.length === 0 ? 0 : tab[tab.length-1].index+1}]);
     }
 
     const removeTodo = (item) => {
@@ -22,12 +23,12 @@ export default function TodoList(props){
         setTab(newTab);
       };
 
-      const onChange = (item, textEvent, variableEvent) =>{
+      const onChange = (item, nomFormuleEvent, formuleEvent) =>{
         const newTab = [...tab];
         let indexTab = tab.indexOf(item);
         newTab[indexTab] = {
-            text : (typeof textEvent !== 'undefined') ? textEvent.target.value : newTab[indexTab].text, 
-            variable : (typeof variableEvent !== 'undefined') ? variableEvent.target.value : newTab[indexTab].variable, 
+            nomFormule : (typeof nomFormuleEvent !== 'undefined') ? nomFormuleEvent.target.value : newTab[indexTab].nomFormule, 
+            formule : (typeof formuleEvent !== 'undefined') ? formuleEvent.target.value : newTab[indexTab].formule, 
             modif : newTab[indexTab].modif,
             index : newTab[indexTab].index
         }
@@ -37,14 +38,14 @@ export default function TodoList(props){
     const changeModif = (item) => {
         const newTab = [...tab];
         let indexTab = tab.indexOf(item);
-        newTab[indexTab] = {text :  newTab[indexTab].text, variable :  newTab[indexTab].variable, modif : !newTab[indexTab].modif}
+        newTab[indexTab] = {nomFormule :  newTab[indexTab].nomFormule, formule :  newTab[indexTab].formule, modif : !newTab[indexTab].modif, index : tab[indexTab].index}
         setTab(newTab);
     }
 
     const displayItem = () =>{
         return tab.map((i) => (
                 <div className="container" key={i.index}>
-                    <Item nom={i.text} variable={i.variable} modif={i.modif} onChange={(t, v) => onChange(i, t, v)} changeModif={e => changeModif(i)}/>
+                    <Item nomFormule={i.nomFormule} formule={i.formule} modif={i.modif} onChange={(t, v) => onChange(i, t, v)} changeModif={e => changeModif(i)}/>
                     <Fab className="center" size="small" color="secondary" aria-label="add" onClick={e => removeTodo(i)}>
                         <DeleteIcon className="center" />
                     </Fab>
