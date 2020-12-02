@@ -17,10 +17,12 @@ export default function TodoList(props) {
     }
 
     const removeTodo = (item) => {
-        const newTab = [...tab];
-        let indexTab = tab.indexOf(item);
-        newTab.splice(indexTab, 1);
-        setTab(newTab);
+        if (tab.length > 1){
+            const newTab = [...tab];
+            let indexTab = tab.indexOf(item);
+            newTab.splice(indexTab, 1);
+            setTab(newTab);
+        }
     };
 
     const onChange = (item, nomFormuleEvent, formuleEvent) =>{

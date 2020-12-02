@@ -11,8 +11,9 @@
     display: block;
     margin: 20px auto;
     width: 70%;
-    border: 2px solid black ;
-    padding: 2%;
+    border: 2px solid gray ;
+    border-radius: 3px;
+    padding: 2% 3%;
     min-width: 1000px;
 }
 

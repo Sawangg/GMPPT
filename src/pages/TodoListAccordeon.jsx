@@ -32,10 +32,12 @@ export default function TodoListAccordeon() {
     }
 
     const removeTodo = (item) => {
-        const newTab = [...tab];
-        let indexTab = tab.indexOf(item);
-        newTab.splice(indexTab, 1);
-        setTab(newTab);
+        if (tab.length > 1){
+            const newTab = [...tab];
+            let indexTab = tab.indexOf(item);
+            newTab.splice(indexTab, 1);
+            setTab(newTab);
+        }
       };
 
     const changeModif = (item) => {
@@ -74,7 +76,7 @@ export default function TodoListAccordeon() {
     return (
         <div className={classes.root}>
             <form noValidate autoComplete="off" style={{margin : 40}}>
-                <Fab style={{marginLeft : 20}} size="small" color="primary" aria-label="add" onClick={(e => addValue(e))}>
+                <Fab style={{marginLeft : "5%"}} size="small" color="primary" aria-label="add" onClick={(e => addValue(e))}>
                     <AddIcon />
                 </Fab>
             </form>
