@@ -2,22 +2,18 @@ import React, { useState } from 'react'
 import { Accordion, AccordionSummary, AccordionDetails } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
-import TodoList from './TodoList'
+import TodoListFormule from './TodoListFormule'
 
-export default function Accordeon(props) {
+export default function Accordeon() {
     
-    const [expanded, setExpanded] = useState('panel');
-
-    const handleChange = (panel) => (_event, newExpanded) => {
-        setExpanded(newExpanded ? panel : false);
-    };
+    const [expanded, setExpanded] = useState(true);
 
     return (
-        <Accordion style={{marginTop : 15}} square expanded={expanded === 'panel'} onChange={handleChange('panel')}>
+        <Accordion style={{marginTop : 15}} square expanded={expanded} onChange={e =>setExpanded(!expanded)}>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             </AccordionSummary>
             <AccordionDetails style={{display : "flex", flexDirection : "column"}}>
-                <TodoList/>
+                <TodoListFormule/>
             </AccordionDetails>
         </Accordion>
     );

@@ -1,0 +1,24 @@
+.enteteItemAccordeon{
+    display : flex;
+    width : 80%;
+    justify-content : space-between;
+}
+
+.divItemAccordeon {
+    display: block;
+    margin: 20px auto;
+    width: 70%;
+    border: 2px solid gray ;
+    border-radius: 3px;
+    padding: 2% 3%;
+    min-width: 1000px;
+}
+
+.fieldNomCategorie{
+    width : 200px;
+}
+
+.textNomCategorie{
+    margin-top : 8px;
+    width : 200px;
+}

@@ -1,0 +1,13 @@
+.container {
+    display: grid;
+    grid-template-columns: 150px 30px 150px 150px 150px;
+    grid-gap: 20px;
+    width: 50%;
+    margin: 30px 10px;
+    min-width: 500px;
+}
+
+.buttonAjouterFormule{
+    margin : 0px 50px;
+    width : 250px;
+}

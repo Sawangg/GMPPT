@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import { Button, Fab } from '@material-ui/core';
-import DeleteIcon from '@material-ui/icons/Delete';
+import Button from '@material-ui/core/Button';
 
-import Item from './Item'
+import Item from './ItemTodoFormule'
 
-import '../styles/TodoList.css'
+import '../styles/TodoListFormule.css'
 
-export default function TodoList(props) {
+export default function TodoListFormule() {
 
     const [tab, setTab] = useState([{nomFormule : "", formule : "", modif : true, index : 0}])
 
@@ -46,18 +45,13 @@ export default function TodoList(props) {
 
     const displayItem = () =>{
         return tab.map((i) => (
-            <div className="container" key={i.index}>
-                <Item nomFormule={i.nomFormule} formule={i.formule} modif={i.modif} onChange={(t, v) => onChange(i, t, v)} changeModif={e => changeModif(i)}/>
-                <Fab className="center" size="small" color="secondary" aria-label="add" onClick={e => removeTodo(i)}>
-                    <DeleteIcon className="center" />
-                </Fab>
-            </div>
+                <Item item={i} removeTodo={e => removeTodo(i)} onChange={(t, v) => onChange(i, t, v)} changeModif={e => changeModif(i)}/>
         ));
     }
 
     return (
         <div>
-            <Button style={{margin : "0px 50px", width : "250px"}} variant="outlined" color="primary"  onClick={ajoutFormule}>Ajouter des formules</Button>
+            <Button className="buttonAjouterFormule" variant="outlined" color="primary" onClick={ajoutFormule}>Ajouter des formules</Button>
             {displayItem()}
         </div>
     );
