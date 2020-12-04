@@ -1,10 +1,10 @@
-import {BrowserRouter, Route } from "react-router-dom";
+import React, {useState} from 'react'
+import {BrowserRouter, Route, Redirect, useLocation } from "react-router-dom";
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
 import TodoListAccordeon from './pages/CreationSujet'
 import Navbar from './components/Navbar'
 import Login from './pages/Login'
-import Profil from './pages/Profil'
 import Accueil from './pages/Accueil'
 
 const theme = createMuiTheme({
@@ -14,25 +14,55 @@ const theme = createMuiTheme({
     },
     secondary: {
       main: '#c51150'
+    },
+    error :{
+      main : '#c51150'
     }
   }
 });
 
 function App() {
 
+  const [authentif, setAuthentif] = useState(false);
+
+  const changeAuthentif = () =>{
+     setAuthentif(!authentif)
+  }
+
+  const PrivateRoute = ({ component: Component, ...rest }) => (
+    <Route {...rest} render={(props) => (
+      authentif === true
+        ? <Component {...props} />
+        : <Redirect to='/login' />
+    )} />
+  )
+
+  const HeaderRedirection = () => {
+    const location = useLocation();
+    if (authentif){
+      return location.pathname === "/login" ? <Redirect to="/"/> : <></>;
+    }
+    return null;
+	}
+
+
   return (
     <MuiThemeProvider theme={theme}>
       <BrowserRouter>
 
-        <Route path='/' component={Navbar}/>
+        <HeaderRedirection/>
 
-        <Route exact path='/' component={Login}/>
+        <Route exact path='/login'>
+            <Login changeAuthentif={e => changeAuthentif()}/>
+        </Route>
 
-        <Route exact path='/profil' component={Profil}/>
+        <PrivateRoute path='/' component={Navbar}/>
 
-        <Route exact path='/home' component={Accueil}/>
+        <PrivateRoute exact path='/'>
+          <Accueil changeAuthentif={e => changeAuthentif()}/>
+        </PrivateRoute>
 
-        <Route exact path='/creation-sujets' component={TodoListAccordeon}/>
+        <PrivateRoute exact path='/creation-sujets' component={TodoListAccordeon}/>
 
       </BrowserRouter>
     </MuiThemeProvider>

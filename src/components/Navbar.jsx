@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import {ListItemIcon, ListItemText, Divider, ListItem, List, SwipeableDrawer, IconButton} from "@material-ui/core";
-import PersonOutlineOutlinedIcon from "@material-ui/icons/PersonOutlineOutlined";
 import HomeOutlinedIcon from "@material-ui/icons/HomeOutlined";
 import NoteAddOutlinedIcon from "@material-ui/icons/NoteAddOutlined";
 import AssignmentOutlinedIcon from "@material-ui/icons/AssignmentOutlined";
@@ -16,16 +15,8 @@ export default function SwipeableTemporaryDrawer() {
   const list = () => (
     <nav id="divNavBar">
       <List>
-        <Link className="lienNavBar" to="/profil">
-          <ListItem button>
-            <ListItemIcon>
-              <PersonOutlineOutlinedIcon />
-            </ListItemIcon>
-            <ListItemText>Profil</ListItemText>
-          </ListItem>
-        </Link>
 
-        <Link className="lienNavBar" to="/home">
+        <Link className="lienNavBar" to="/">
           <ListItem button>
             <ListItemIcon>
               <HomeOutlinedIcon />

@@ -51,8 +51,8 @@ export default function TodoListFormule() {
 
     return (
         <div>
-            <Button className="buttonAjouterFormule" variant="outlined" color="primary" onClick={ajoutFormule}>Ajouter des formules</Button>
             {displayItem()}
+            <Button className="buttonAjouterFormule" variant="outlined" color="primary" onClick={ajoutFormule}>Ajouter des formules</Button>
         </div>
     );
 } 

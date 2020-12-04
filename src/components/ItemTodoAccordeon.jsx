@@ -15,7 +15,7 @@ export default function Item(props) {
         <div className="enteteItemAccordeon">
                     {props.item.modif ? <>
                     
-                    <TextField className="fieldNomCategorie" multiline label="Nom de la catégorie" variant="outlined" size="small" value={props.item.nom} onChange={e => props.onChange(e)}/>
+                    <TextField className="fieldNomCategorie" multiline label="Nom catégorie" variant="outlined" size="small" value={props.item.nom} onChange={e => props.onChange(e)}/>
                     <Fab size="small" color="primary" aria-label="add" onClick={e => props.changeModif()}>
                         <SaveIcon/>
                     </Fab>
