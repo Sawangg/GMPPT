@@ -4,6 +4,7 @@ import VpnKeyOutlinedIcon from '@material-ui/icons/VpnKeyOutlined';
 import { TextField, Button, IconButton } from '@material-ui/core';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import { login } from '../utils/api.js';
 
 export default function Login(props){
 
@@ -19,7 +20,6 @@ export default function Login(props){
 
     const changeShowMdp = () =>{
         setIdentifiant({login : identifiant.login, mdp : identifiant.mdp, showMdp : !identifiant.showMdp})
-        console.log(identifiant.showMdp)
     }
 
     return (
@@ -37,8 +37,7 @@ export default function Login(props){
                     </div>
                 </div>
             </div>
-            <Button style={{margin : "50px auto"}} variant="outlined" color="primary" onClick={e => {if (identifiant.mdp !=="" && identifiant.login !=="") props.changeAuthentif()}}>Connexion</Button>
+            <Button style={{margin : "50px auto"}} variant="outlined" color="primary" onClick={e => {if (identifiant.mdp !=="" && identifiant.login !=="") login(identifiant.login, identifiant.mdp)}}>Connexion</Button>
         </div>
     )
-
 }

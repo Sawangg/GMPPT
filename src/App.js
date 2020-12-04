@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {BrowserRouter, Route, Redirect, useLocation } from "react-router-dom";
+import {BrowserRouter, Route, Redirect } from "react-router-dom";
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
 import TodoListAccordeon from './pages/CreationSujet'
@@ -23,7 +23,7 @@ const theme = createMuiTheme({
 
 function App() {
 
-  const [authentif, setAuthentif] = useState(false);
+  const [authentif, setAuthentif] = useState(true);
 
   const changeAuthentif = () =>{
      setAuthentif(!authentif)
@@ -37,20 +37,18 @@ function App() {
     )} />
   )
 
-  const HeaderRedirection = () => {
-    const location = useLocation();
-    if (authentif){
-      return location.pathname === "/login" ? <Redirect to="/"/> : <></>;
-    }
-    return null;
-	}
+  // const HeaderRedirection = () => {
+  //   const location = useLocation();
+  //   if (authentif){
+  //     return location.pathname === "/login" ? <Redirect to="/"/> : <></>;
+  //   }
+  //   return null;
+	// }
 
 
   return (
     <MuiThemeProvider theme={theme}>
       <BrowserRouter>
-
-        <HeaderRedirection/>
 
         <Route exact path='/login'>
             <Login changeAuthentif={e => changeAuthentif()}/>
