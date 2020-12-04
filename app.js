@@ -3,6 +3,7 @@ require("./strategies/local.js");
 const express = require("express");
 const session = require("express-session");
 const passport = require("passport");
+const cors = require("cors");
 
 const etudiantRouter = require("./routes/etudiant.js");
 const authRouter = require("./routes/auth.js");
@@ -15,6 +16,12 @@ app.use(session({
     cookie: { maxAge: 30000 },
     saveUninitialized: false,
     resave: false,
+    sameSite: true,
+}));
+
+app.use(cors({
+    origin: [ "http://localhost:3000"],
+    credentials: true,
 }));
 
 app.use(express.json());

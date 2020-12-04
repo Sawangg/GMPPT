@@ -6,7 +6,7 @@ router.get("/", (req, res) => {
     if(req.user) {
         res.send(req.user);
     } else {
-        res.status(401).send({ msg: "Unauthorized" });
+        res.status(404).send({ msg: "Not found" });
     }
 });
 
@@ -18,5 +18,9 @@ router.get('/logout', (req, res) => {
     res.cookie("connection.sid", "" , { expires: new Date() });
     res.redirect("/");
 });
+
+// router.post('/signin', (req, res) => {
+//     const { username, password } = req.params;
+// });
 
 module.exports = router;
