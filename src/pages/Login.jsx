@@ -20,7 +20,6 @@ export default function Login(props){
 
     const changeShowMdp = () =>{
         setIdentifiant({login : identifiant.login, mdp : identifiant.mdp, showMdp : !identifiant.showMdp})
-        console.log(identifiant.showMdp)
     }
 
     return (
@@ -41,5 +40,4 @@ export default function Login(props){
             <Button style={{margin : "50px auto"}} variant="outlined" color="primary" onClick={e => {if (identifiant.mdp !=="" && identifiant.login !=="") login(identifiant.login, identifiant.mdp)}}>Connexion</Button>
         </div>
     )
-
 }
