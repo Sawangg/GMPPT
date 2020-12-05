@@ -1,0 +1,28 @@
+{
+  "name": "gmp-backend",
+  "version": "1.0.0",
+  "description": "Back-end de l'application GMP",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sawangg/GMPPT.git"
+  },
+  "author": "Sawangg Duffcs",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Sawangg/GMPPT/issues"
+  },
+  "homepage": "https://github.com/Sawangg/GMPPT#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "mysql2": "^2.2.5",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0"
+  }
+}
