@@ -7,11 +7,10 @@ import TodoListAccordeon from './pages/CreationSujet'
 import Navbar from './components/Navbar'
 import Login from './pages/Login'
 import Accueil from './pages/Accueil'
-//import PrivateRoute from './components/PrivateRoute'
 
 const checkConnexion = () =>{
   getUserDetails().then(data => {
-    console.log("connexté")
+    console.log("connecté")
     return true;
   }).catch(err => {
     console.log("pas connecté")

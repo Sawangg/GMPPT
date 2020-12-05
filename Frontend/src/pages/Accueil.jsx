@@ -1,26 +1,28 @@
 import React, {useState} from 'react'
 import Button from '@material-ui/core/Button';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import { Redirect } from "react-router-dom";
+
 import { logout } from '../utils/api';
 
 export default function Accueil() {
 
-    const [connect, setConnect] = useState(false);
+    const [deco, setDeco] = useState(false);
 
-    const deco = () =>{
+    const deconnexion = () =>{
         logout().then(data => {
             console.log("deco réussi");
-            setConnect(true)
+            setDeco(true)
         }).catch(err => {
             console.log("deco echouée");
-            setConnect(false)
+            setDeco(false)
         });
     }
 
     return (
         <div style={{position : "absolute", right : 30, top : 30}}>
-            <Button variant="contained" color="secondary" startIcon={<ExitToAppIcon />} onClick={e => deco()}>Déconnexion</Button>
-            {connect ? <Redirect to='/login'/> : null}
+            <Button variant="contained" color="secondary" startIcon={<ExitToAppIcon />} onClick={e => deconnexion()}>Déconnexion</Button>
+            {deco ? <Redirect to='/login'/> : null}
         </div>
     );
 }

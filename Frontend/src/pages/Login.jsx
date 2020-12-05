@@ -24,8 +24,8 @@ export default function Login(){
     const connexion = () =>{
         if (identifiant.mdp !=="" && identifiant.login !==""){
             login(identifiant.login, identifiant.mdp).then(data => {
-                        console.log("indetification réussi");
-                        setConnect(true)
+                        console.log("identification réussie");
+                        setConnect(true);
                     }).catch(err => {
                         console.log("Mot de passe incorrecte");
                         setConnect(false)
@@ -49,7 +49,7 @@ export default function Login(){
                     </div>
                 </div>
                 <Button id="buttonConnexion" variant="outlined" color="primary" onClick={e => connexion()}>Connexion</Button>
-                {connect ? <Redirect to='/'/> : null}
+                {connect ? <Redirect push to='/'/> : null}
             </div>
     )
 }
