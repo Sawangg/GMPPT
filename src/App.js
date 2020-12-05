@@ -1,11 +1,54 @@
-import React, {useState} from 'react'
+import React from 'react'
 import {BrowserRouter, Route, Redirect } from "react-router-dom";
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { getUserDetails } from './utils/api.js';
 
 import TodoListAccordeon from './pages/CreationSujet'
 import Navbar from './components/Navbar'
 import Login from './pages/Login'
 import Accueil from './pages/Accueil'
+//import PrivateRoute from './components/PrivateRoute'
+
+const checkConnexion = () =>{
+  // getUserDetails().then(data => {
+  //   console.log("connexté")
+  //   return true;
+  // }).catch(err => {
+  //   console.log("pas connecté")
+  //   return false;
+  // })
+  return true;
+}
+
+const PrivateRoute = ({ component: Component, ...rest }) => (
+  <Route {...rest} render={(props) => (
+    checkConnexion() 
+    ? <Component {...props} />
+    : <Redirect to='/login' />
+  )} />
+)
+
+function App() {
+
+  return (
+    <MuiThemeProvider theme={theme}>
+      <BrowserRouter>
+
+        <Route exact path='/login' component={Login}/>
+
+        <PrivateRoute path='/' component={Navbar}/>
+
+        <PrivateRoute exact path='/' component={Accueil}/>
+
+        <PrivateRoute exact path='/creation-sujets' component={TodoListAccordeon}/>
+
+      </BrowserRouter>
+    </MuiThemeProvider>
+  );
+}
+
+
+export default App;
 
 const theme = createMuiTheme({
   palette: {
@@ -20,51 +63,3 @@ const theme = createMuiTheme({
     }
   }
 });
-
-function App() {
-
-  const [authentif, setAuthentif] = useState(true);
-
-  const changeAuthentif = () =>{
-     setAuthentif(!authentif)
-  }
-
-  const PrivateRoute = ({ component: Component, ...rest }) => (
-    <Route {...rest} render={(props) => (
-      authentif === true
-        ? <Component {...props} />
-        : <Redirect to='/login' />
-    )} />
-  )
-
-  // const HeaderRedirection = () => {
-  //   const location = useLocation();
-  //   if (authentif){
-  //     return location.pathname === "/login" ? <Redirect to="/"/> : <></>;
-  //   }
-  //   return null;
-	// }
-
-
-  return (
-    <MuiThemeProvider theme={theme}>
-      <BrowserRouter>
-
-        <Route exact path='/login'>
-            <Login changeAuthentif={e => changeAuthentif()}/>
-        </Route>
-
-        <PrivateRoute path='/' component={Navbar}/>
-
-        <PrivateRoute exact path='/'>
-          <Accueil changeAuthentif={e => changeAuthentif()}/>
-        </PrivateRoute>
-
-        <PrivateRoute exact path='/creation-sujets' component={TodoListAccordeon}/>
-
-      </BrowserRouter>
-    </MuiThemeProvider>
-  );
-}
-
-export default App;

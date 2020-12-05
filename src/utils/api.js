@@ -9,5 +9,5 @@ export function getUserDetails() {
 export function login(username, password) {
     return axios.post(`http://164.81.120.38:3001/auth/login`, { username, password }, {
         withCredentials: true,
-    }).then(res => console.log(res)).catch(err => console.log(err));
+    })
 }

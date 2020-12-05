@@ -6,6 +6,7 @@ import AssignmentOutlinedIcon from "@material-ui/icons/AssignmentOutlined";
 import SchoolOutlinedIcon from "@material-ui/icons/SchoolOutlined";
 import MenuRoundedIcon from "@material-ui/icons/MenuRounded";
 import { Link } from "react-router-dom";
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 import "../styles/Navbar.css";
 
@@ -56,6 +57,17 @@ export default function SwipeableTemporaryDrawer() {
           </ListItem>
         </Link>
       </List>
+      <Divider />
+      <List>
+        <Link className="lienNavBar" to="/login">
+          <ListItem button>
+            <ListItemIcon>
+              <ExitToAppIcon />
+            </ListItemIcon>
+            <ListItemText>Déconnexion</ListItemText>
+          </ListItem>
+        </Link>
+      </List>
     </nav>
   );
 
@@ -64,7 +76,7 @@ export default function SwipeableTemporaryDrawer() {
       <IconButton id="burger" onClick={(e) => setMenu(true)}>
         <MenuRoundedIcon fontSize="large" />
       </IconButton>
-      <SwipeableDrawer open={menu} onClose={(e) => setMenu(false)}>
+      <SwipeableDrawer onOpen={(e) => setMenu(true)} open={menu} onClose={(e) => setMenu(false)}>
         {list()}
       </SwipeableDrawer>
     </div>
