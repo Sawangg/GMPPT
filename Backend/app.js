@@ -13,10 +13,14 @@ const app = express();
 app.use(session({
     name: "connection.sid",
     secret: process.env.COOKIE_SECRET,
-    cookie: { maxAge: 30000 },
+    cookie: { 
+        maxAge: 86400000,
+        sameSite: 'strict',
+        domain: 'localhost',
+        path: '/',
+    },
     saveUninitialized: false,
     resave: false,
-    sameSite: true,
 }));
 
 app.use(cors({
@@ -29,6 +33,8 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.disable('x-powered-by');
 
 app.get('/', (req, res) => {
     res.sendStatus(200);
