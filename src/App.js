@@ -10,14 +10,13 @@ import Accueil from './pages/Accueil'
 //import PrivateRoute from './components/PrivateRoute'
 
 const checkConnexion = () =>{
-  // getUserDetails().then(data => {
-  //   console.log("connexté")
-  //   return true;
-  // }).catch(err => {
-  //   console.log("pas connecté")
-  //   return false;
-  // })
-  return true;
+  getUserDetails().then(data => {
+    console.log("connexté")
+    return true;
+  }).catch(err => {
+    console.log("pas connecté")
+    return false;
+  })
 }
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
