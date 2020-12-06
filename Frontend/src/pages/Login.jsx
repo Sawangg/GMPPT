@@ -21,17 +21,11 @@ export default function Login(){
 
     const changeShowMdp = () => setIdentifiant({login : identifiant.login, mdp : identifiant.mdp, showMdp : !identifiant.showMdp})
 
-    const connexion = () =>{
-        if (identifiant.mdp !=="" && identifiant.login !==""){
-            login(identifiant.login, identifiant.mdp).then(data => {
-                        console.log("identification réussie");
-                        setConnect(true);
-                    }).catch(err => {
-                        console.log("Mot de passe incorrecte");
-                        setConnect(false)
-                    });
-        } 
-    }
+    const connexion= () => {
+        login(identifiant.login, identifiant.mdp)
+        .then(() => {setConnect(true)})
+        .catch(() => {setConnect(false)})
+    } 
 
     return (
             <div id="divLogin">

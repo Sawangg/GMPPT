@@ -45,7 +45,7 @@ export default function TodoListFormule() {
 
     const displayItem = () =>{
         return tab.map((i) => (
-                <Item item={i} removeTodo={e => removeTodo(i)} onChange={(t, v) => onChange(i, t, v)} changeModif={e => changeModif(i)}/>
+                <Item key={i.index} item={i} removeTodo={e => removeTodo(i)} onChange={(t, v) => onChange(i, t, v)} changeModif={e => changeModif(i)}/>
         ));
     }
 

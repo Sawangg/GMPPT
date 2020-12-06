@@ -8,6 +8,8 @@ import MenuRoundedIcon from "@material-ui/icons/MenuRounded";
 import { Link } from "react-router-dom";
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
+import { logout } from '../utils/api';
+
 import "../styles/Navbar.css";
 
 export default function SwipeableTemporaryDrawer() {
@@ -60,7 +62,7 @@ export default function SwipeableTemporaryDrawer() {
       <Divider />
       <List>
         <Link className="lienNavBar" to="/login">
-          <ListItem button>
+          <ListItem button onClick={e => logout()}>
             <ListItemIcon>
               <ExitToAppIcon />
             </ListItemIcon>
