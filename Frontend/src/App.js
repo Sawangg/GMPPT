@@ -1,30 +1,11 @@
 import React from 'react'
-import {BrowserRouter, Route, Redirect } from "react-router-dom";
+import {BrowserRouter, Route, Switch } from "react-router-dom";
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import { getUserDetails } from './utils/api.js';
 
-import TodoListAccordeon from './pages/CreationSujet'
-import Navbar from './components/Navbar'
+import CreationSujet from './pages/CreationSujet'
 import Login from './pages/Login'
 import Accueil from './pages/Accueil'
-
-const checkConnexion = () =>{
-  getUserDetails().then(data => {
-    console.log("connecté")
-    return true;
-  }).catch(err => {
-    console.log("pas connecté")
-    return false;
-  })
-}
-
-const PrivateRoute = ({ component: Component, ...rest }) => (
-  <Route {...rest} render={(props) => (
-    checkConnexion() 
-    ? <Component {...props} />
-    : <Redirect to='/login' />
-  )} />
-)
+import PrivateRoute from './components/PrivateRoute'
 
 function App() {
 
@@ -32,13 +13,17 @@ function App() {
     <MuiThemeProvider theme={theme}>
       <BrowserRouter>
 
+      <Switch>
         <Route exact path='/login' component={Login}/>
 
-        <PrivateRoute path='/' component={Navbar}/>
-
         <PrivateRoute exact path='/' component={Accueil}/>
+        
+        <PrivateRoute path='/creation-sujets' component={CreationSujet}/>
 
-        <PrivateRoute exact path='/creation-sujets' component={TodoListAccordeon}/>
+        <PrivateRoute exact path='/gestion-sujets' component={Accueil}/>
+
+        <PrivateRoute exact path='/gestion-correction' component={Accueil}/>
+      </Switch>
 
       </BrowserRouter>
     </MuiThemeProvider>
