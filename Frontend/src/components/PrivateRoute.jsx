@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import { Route, Redirect } from "react-router-dom";
 
 import Navbar from './Navbar'
@@ -6,33 +6,33 @@ import Navbar from './Navbar'
 import { getUserDetails } from '../utils/api.js';
 
 export default function PrivateRoute ({component: Component, ...rest}) {
+  
+  const [connect, setConnect] = useState();
 
-  const [connect, setConnect] = useState(true);
+    const detectConnexion = async () => {
+      await getUserDetails().then(() => {
+        setConnect(true);
+      }).catch(() => {
+        setConnect(false);
+      });
+    }
 
-    useEffect(() => {
-    let justOne = true;
-    getUserDetails().then(() => {
-      console.log("connecté")
-      if(justOne){
-        setConnect(true)
+    detectConnexion();
+
+    const selection = (props) => {
+      if (connect !== undefined){
+        return connect
+            ? <>
+            <Navbar/> 
+            <Component {...props} /> 
+            </>
+            : <Redirect to="/login" />
       }
-    }).catch(() => {
-      console.log("pas connecté")
-      if(justOne){
-        setConnect(false)
-      }
-    })
-    return () => justOne = false;
-  }, [connect]);
+    }
 
       return (
           <Route {...rest} render={props => (
-              connect 
-              ? <>
-              <Navbar/> 
-              <Component {...props} /> 
-              </>
-              : <Redirect to="/login" />
+            selection(props)
           )} />
       );
 };
