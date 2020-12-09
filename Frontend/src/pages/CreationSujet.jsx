@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Fab from '@material-ui/core/Fab';
+import {Fab} from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 
 import Items from '../components/ItemTodoAccordeon'
@@ -35,6 +35,7 @@ export default function TodoListAccordeon() {
         newTab[indexTab] = {nom :  newTab[indexTab].nom, modif : !newTab[indexTab].modif, index : newTab[indexTab].index};
         setTab(newTab);
     } 
+
 
     const displayTodo = () => {
         return tab.map((i) => (

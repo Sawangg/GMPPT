@@ -43,9 +43,23 @@ export default function TodoListFormule() {
         setTab(newTab);
     };
 
+    const changePosition = (item, up) => {
+        const newTab = [...tab];
+        let indexTab = tab.indexOf(item);
+        let value = up ? -1 : 1;
+        if ((up && indexTab > 0) || (!up && indexTab < tab.length-1)){
+            let save = newTab[indexTab+value];
+            save = {nomFormule :  save.nomFormule, formule :  save.formule, modif : save.modif, index : save.index-value}
+            newTab[indexTab] =  {nomFormule :  newTab[indexTab].nomFormule, formule :  newTab[indexTab].formule, modif : newTab[indexTab].modif, index : tab[indexTab].index+value}
+            newTab[indexTab+value] = newTab[indexTab]
+            newTab[indexTab] = save;
+            setTab(newTab);
+        }
+    }
+
     const displayItem = () =>{
         return tab.map((i) => (
-                <Item key={i.index} item={i} removeTodo={e => removeTodo(i)} onChange={(t, v) => onChange(i, t, v)} changeModif={e => changeModif(i)}/>
+                <Item key={i.index} changePosition={e => changePosition(i, e)} item={i} removeTodo={e => removeTodo(i)} onChange={(t, v) => onChange(i, t, v)} changeModif={e => changeModif(i)}/>
         ));
     }
 
