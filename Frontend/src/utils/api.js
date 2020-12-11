@@ -17,3 +17,15 @@ export function login(username, password) {
         withCredentials: true,
     })
 }
+
+export function formules(tabFormules){
+    return axios.post(`http://localhost:3001/sujet/formules`, tabFormules, {
+        withCredentials: true,
+    })
+}
+
+export function getFormules(){
+    return axios.get('http://localhost:3001/sujet/getFormules', {
+        withCredentials: true,
+    });
+}

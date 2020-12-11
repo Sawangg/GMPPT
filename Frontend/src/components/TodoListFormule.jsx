@@ -6,7 +6,11 @@ import PopUp from './PopUp'
 
 import '../styles/TodoListFormule.css'
 
+import { getFormules } from '../utils/api.js';
+
 export default function TodoListFormule() {
+
+    //console.log(getFormules());
 
     const [tab, setTab] = useState([{nomFormule : "", formule : "", modif : true, index : 0}])
 
@@ -83,7 +87,7 @@ export default function TodoListFormule() {
         <div>
             {displayItem()}
             <Button className="buttonAjouterFormule" variant="outlined" color="primary" onClick={ajoutFormule}>Ajouter des formules</Button>
-            <PopUp undo={e => undo()} open={openPopUp} handleClose={e => closePopUp()}/>
+            <PopUp message="Formule supprimée" undo={e => undo()} open={openPopUp} handleClose={e => closePopUp()}/>
         </div>
     );
 } 

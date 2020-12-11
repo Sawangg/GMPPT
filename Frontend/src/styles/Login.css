@@ -11,10 +11,21 @@
 }
 
 #buttonConnexion{
-    margin : 50px auto;
+    display : block;
+    margin : 50px auto 10px auto;
 }
 
 .iconLogin{
     margin-right : 25px;
     margin-top : 6px;
+}
+
+#backgroundLogin{
+    display: block;
+    margin : 10% auto 0 auto;
+    border : solid #075b72 2px;
+    border-radius: 2%;
+    padding: 0.5% 4%;
+    background-color: rgba(255, 255, 255, 0.6);
+    z-index: 2;
 }
