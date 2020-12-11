@@ -22,10 +22,10 @@ export default function PrivateRoute ({component: Component, ...rest}) {
     const selection = (props) => {
       if (connect !== undefined){
         return connect
-            ? <>
+            ? <div>
                 <Navbar/> 
                 <Component {...props} /> 
-              </>
+              </div>
             : <Redirect to="/login" />
       }
     }

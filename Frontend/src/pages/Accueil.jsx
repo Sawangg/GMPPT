@@ -3,6 +3,8 @@ import Button from '@material-ui/core/Button';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { Redirect } from "react-router-dom";
 
+import Etapes from '../components/Etapes'
+
 import { logout } from '../utils/api';
 
 export default function Accueil() {
@@ -20,9 +22,12 @@ export default function Accueil() {
     }
 
     return (
-        <div style={{position : "absolute", right : 30, top : 30}}>
-            <Button variant="contained" color="secondary" startIcon={<ExitToAppIcon />} onClick={e => deconnexion()}>Déconnexion</Button>
+        <div>
+            <Button  style={{position : "absolute", right : 30, top : 30}} variant="contained" color="secondary" startIcon={<ExitToAppIcon />} onClick={e => deconnexion()}>Déconnexion</Button>
             {deco ? <Redirect to='/login'/> : null}
+            <div>
+                <Etapes/>
+            </div>
         </div>
     );
 }

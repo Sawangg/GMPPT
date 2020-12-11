@@ -8,6 +8,8 @@ export default function TodoListAccordeon() {
 
     const [tab, setTab] = useState([{nom : "", modif : true, index : 0}]);
 
+    /////////////////
+
     const addValue = (event) => {
         event.preventDefault(); // eviter de reloader la page 
         setTab([...tab, {nom : "",  modif : true, index : tab.length === 0 ? 0 : tab[tab.length - 1].index + 1}]);
