@@ -7,7 +7,7 @@ const cors = require("cors");
 
 const etudiantRouter = require("./routes/etudiant.js");
 const authRouter = require("./routes/auth.js");
-const sujetRouter = require("./routes/auth.js");
+const sujetRouter = require("./routes/sujet.js");
 
 const app = express();
 
