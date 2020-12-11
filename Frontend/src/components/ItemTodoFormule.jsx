@@ -32,10 +32,8 @@ export default function Item(props) {
                     <Button className="buttonItem center" variant="contained" onClick={e => props.changeModif()}>Modifier</Button>
                
             </>}
-                <div className="center" style={{width : "15%"}}>
-                    <Fab color="primary" variant='extended' size='small' onClick={e => props.changePosition(true)}><ArrowUpwardIcon/></Fab>
-                    <Fab style={{marginLeft : "10%"}} color="primary" variant='extended' size='small' onClick={e => props.changePosition(false)}><ArrowDownwardIcon/></Fab>
-                </div>
+                <Fab color="primary" variant='extended' size='small' onClick={e => props.changePosition(true)}><ArrowUpwardIcon/></Fab>
+                <Fab style={{marginLeft : "10%"}} color="primary" variant='extended' size='small' onClick={e => props.changePosition(false)}><ArrowDownwardIcon/></Fab>
         </div>
     )
     

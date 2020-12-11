@@ -2,12 +2,26 @@ import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 
 import Item from './ItemTodoFormule'
+import PopUp from './PopUp'
 
 import '../styles/TodoListFormule.css'
 
 export default function TodoListFormule() {
 
     const [tab, setTab] = useState([{nomFormule : "", formule : "", modif : true, index : 0}])
+
+    const [copyTab, setCopyTab] = useState([...tab]);
+
+    const [openPopUp, setOpenPopUp] = useState(false);
+  
+    const closePopUp = () => {
+        setOpenPopUp(false);
+    };
+
+    const undo = () =>{
+        setTab([...copyTab]);
+        setOpenPopUp(false);
+    }
 
     const ajoutFormule = (event) => {
         event.preventDefault(); // eviter de reloader la page 
@@ -17,6 +31,8 @@ export default function TodoListFormule() {
 
     const removeTodo = (item) => {
         if (tab.length > 1){
+            setOpenPopUp(true);
+            setCopyTab(tab);
             const newTab = [...tab];
             let indexTab = tab.indexOf(item);
             newTab.splice(indexTab, 1);
@@ -67,6 +83,7 @@ export default function TodoListFormule() {
         <div>
             {displayItem()}
             <Button className="buttonAjouterFormule" variant="outlined" color="primary" onClick={ajoutFormule}>Ajouter des formules</Button>
+            <PopUp undo={e => undo()} open={openPopUp} handleClose={e => closePopUp()}/>
         </div>
     );
 } 
