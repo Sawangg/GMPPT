@@ -7,6 +7,7 @@ const cors = require("cors");
 
 const etudiantRouter = require("./routes/etudiant.js");
 const authRouter = require("./routes/auth.js");
+const sujetRouter = require("./routes/sujet.js");
 
 const app = express();
 
@@ -42,6 +43,7 @@ app.get('/', (req, res) => {
 
 app.use('/etudiant', etudiantRouter);
 app.use('/auth', authRouter);
+app.use('/sujet', sujetRouter);
 
 app.listen(3001, () => {
     console.log("Le serveur fonctionne sur le port 3001");

@@ -8,7 +8,7 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser(async (username, done) => {
     try {
-        const result = await db.promise().query(`SELECT * FROM AUTHENTIFICATION WHERE USERNAME = '${username}'`);
+        const result = await db.promise().query(`SELECT * FROM authentification WHERE USERNAME = '${username}'`);
         return result[0][0] ? done(null, result[0][0]) : done(null, null);
     } catch(err) {
         return done(err, false);
@@ -18,7 +18,7 @@ passport.deserializeUser(async (username, done) => {
 passport.use(new localStrat(
     async (username, password, done) => {
         try {
-            const result = await db.promise().query(`SELECT * FROM AUTHENTIFICATION WHERE USERNAME = '${username}'`);
+            const result = await db.promise().query(`SELECT * FROM authentification WHERE USERNAME = '${username}'`);
             if(result[0].length === 0) {
                 return done(null, false);
             } else {

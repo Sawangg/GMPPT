@@ -49,8 +49,8 @@ export default function Login(){
             <div id="divLogin">
                 
                 <Particles
-                  style={{ position: "absolute", opacity : "0.6"}}
-                  height="90%"
+                  style={{ position: "absolute", opacity : "0.6", top : 0}}
+                  height="100vh"
                   width="100%"
                   params={{
                     particles: {
