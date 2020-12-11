@@ -5,6 +5,9 @@ import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined'
 import VpnKeyOutlinedIcon from '@material-ui/icons/VpnKeyOutlined';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import Particles from 'react-particles-js';
+
+import PopUp from '../components/PopUp'
 
 import { login } from '../utils/api.js';
 
@@ -14,6 +17,12 @@ export default function Login(){
 
     const [identifiant, setIdentifiant] = useState({login : "", mdp : "", showMdp : false})
     const [connect, setConnect] = useState(false);
+
+    const [openPopUp, setOpenPopUp] = useState(false);
+  
+    const closePopUp = () => {
+        setOpenPopUp(false);
+    };
 
     const changeIdentifiant = (login, mdp) => setIdentifiant({
         login : login !== undefined ? login.target.value : identifiant.login, 
@@ -30,12 +39,49 @@ export default function Login(){
     const connexion= () => {
         login(identifiant.login, identifiant.mdp)
         .then(() => {setConnect(true)})
-        .catch(() => {setConnect(false)})
+        .catch(() => {
+          setConnect(false);
+          setOpenPopUp(true);
+        })
     } 
 
     return (
             <div id="divLogin">
-                <div className="center">
+                
+                <Particles
+                  style={{ position: "absolute", opacity : "0.6"}}
+                  height="90%"
+                  width="100%"
+                  params={{
+                    particles: {
+                      color: {
+                        value: "#000000"
+                      },
+                      line_linked: {
+                        color: {
+                          value: "#000000"
+                        }
+                      },
+                      number: {
+                        value: 50
+                      },
+                      size: {
+                        value: 3
+                      }
+                    },
+                    "interactivity": {
+                        "events": {
+                            "onhover": {
+                                "enable": true,
+                                "mode": "repulse"
+                            }
+                        }
+                    }
+                  }}
+                />
+
+                <div id="backgroundLogin">
+                <div>
                     <div className="fieldLogin">
                         <AccountCircleOutlinedIcon className="iconLogin"/>
                         <TextField size="small" label="Login" variant="outlined" required multiline value={identifiant.login} 
@@ -56,6 +102,8 @@ export default function Login(){
                 </div>
                 <Button id="buttonConnexion" variant="outlined" color="primary" onClick={e => connexion()}>Connexion</Button>
                 {connect && <Redirect push to='/'/>}
+                <PopUp severity="error" message="Identification invalide" open={openPopUp} handleClose={e => closePopUp()}/>
             </div>
+        </div>
     )
 }

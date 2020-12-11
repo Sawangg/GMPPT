@@ -62,9 +62,9 @@ export default function SwipeableTemporaryDrawer() {
       <Divider />
       <List>
         <Link className="lienNavBar" to="/login">
-          <ListItem button onClick={e => logout()}>
+          <ListItem style={{backgroundColor : "rgb(197, 17, 80, 0.9)", borderRadius : 3, color : "white"}} button onClick={e => logout()}>
             <ListItemIcon>
-              <ExitToAppIcon />
+              <ExitToAppIcon style={{color : "white"}} />
             </ListItemIcon>
             <ListItemText>Déconnexion</ListItemText>
           </ListItem>

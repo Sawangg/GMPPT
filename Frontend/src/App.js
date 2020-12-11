@@ -14,15 +14,17 @@ function App() {
       <BrowserRouter>
 
       <Switch>
+
         <Route exact path='/login' component={Login}/>
 
         <PrivateRoute exact path='/' component={Accueil}/>
         
-        <PrivateRoute path='/creation-sujets' component={CreationSujet}/>
+        <PrivateRoute exact path='/creation-sujets' component={CreationSujet}/>
 
         <PrivateRoute exact path='/gestion-sujets' component={Accueil}/>
 
         <PrivateRoute exact path='/gestion-correction' component={Accueil}/>
+
       </Switch>
 
       </BrowserRouter>
@@ -41,8 +43,5 @@ const theme = createMuiTheme({
     secondary: {
       main: '#c51150'
     },
-    error :{
-      main : '#c51150'
-    }
   }
 });
