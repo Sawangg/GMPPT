@@ -12,7 +12,7 @@ export default function Item(props) {
     return (
         <div className="container">
             
-            <Fab className="center" size="small" color="secondary" aria-label="add" onClick={e => props.removeTodo()}><DeleteIcon className="center" /></Fab>
+            <Fab disabled={props.nb === 1} className="center" size="small" color="secondary" aria-label="add" onClick={e => props.removeTodo()}><DeleteIcon className="center" /></Fab>
             
             {props.item.modif ? <>
                 <div className="affichageFormule">

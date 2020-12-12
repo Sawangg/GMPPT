@@ -17,7 +17,7 @@ function App() {
 
         <Route exact path='/login' component={Login}/>
 
-        <PrivateRoute exact path='/' component={Accueil}/>
+        <PrivateRoute forProf={true} exact path='/' component={Accueil}/>
         
         <PrivateRoute exact path='/creation-sujets' component={CreationSujet}/>
 

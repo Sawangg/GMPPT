@@ -5,7 +5,7 @@ import Navbar from './Navbar'
 
 import { getUserDetails } from '../utils/api.js';
 
-export default function PrivateRoute ({component: Component, ...rest}) {
+export default function PrivateRoute ({forProf, component: Component, ...rest}) {
   
   const [connect, setConnect] = useState();
 
@@ -13,7 +13,11 @@ export default function PrivateRoute ({component: Component, ...rest}) {
       let justOne = true;
       if(justOne){
         getUserDetails()
-        .then(() => setConnect(true))
+        .then((data) => {
+          setConnect(true);
+          // console.log(data.data);
+          // console.log(forProf)
+        })
         .catch(() => setConnect(false));
       }
       return () => justOne = false;

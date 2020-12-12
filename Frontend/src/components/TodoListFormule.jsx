@@ -6,11 +6,7 @@ import PopUp from './PopUp'
 
 import '../styles/TodoListFormule.css'
 
-import { getFormules, formules } from '../utils/api.js';
-
-export default function TodoListFormule() {
-
-    //console.log(getFormules());
+export default function TodoListFormule(props) {
 
     const [tab, setTab] = useState([{nomFormule : "", formule : "", modif : true, index : 0}])
 
@@ -25,12 +21,15 @@ export default function TodoListFormule() {
     const undo = () =>{
         setTab([...copyTab]);
         setOpenPopUp(false);
+        props.changeTabFormule(copyTab);
     }
 
-    const ajoutFormule = (event) => {
-        event.preventDefault(); // eviter de reloader la page 
-        if (tab.length !== 0) tab[tab.length-1] =  {nomFormule :  tab[tab.length-1].nomFormule, formule : tab[tab.length-1].formule, modif : false, index : tab[tab.length-1].index}
+    const ajoutFormule = () => {
+        if (tab.length !== 0){
+            tab[tab.length-1].modif = false;
+        }
         setTab([...tab, {nomFormule : "", formule : "", modif : true, index : tab.length === 0 ? 0 : tab[tab.length-1].index+1}]);
+        props.changeTabFormule(tab);
     }
 
     const removeTodo = (item) => {
@@ -41,26 +40,25 @@ export default function TodoListFormule() {
             let indexTab = tab.indexOf(item);
             newTab.splice(indexTab, 1);
             setTab(newTab);
+            props.changeTabFormule(newTab); //newTab car tab n'est pas actualisé assez rapidement
         }
     };
 
     const onChange = (item, nomFormuleEvent, formuleEvent) =>{
         const newTab = [...tab];
         let indexTab = tab.indexOf(item);
-        newTab[indexTab] = {
-            nomFormule : (typeof nomFormuleEvent !== 'undefined') ? nomFormuleEvent.target.value : newTab[indexTab].nomFormule, 
-            formule : (typeof formuleEvent !== 'undefined') ? formuleEvent.target.value : newTab[indexTab].formule, 
-            modif : newTab[indexTab].modif,
-            index : newTab[indexTab].index
-        }
+        typeof nomFormuleEvent === 'undefined'
+            ? newTab[indexTab].formule = formuleEvent.target.value
+            : newTab[indexTab].nomFormule = nomFormuleEvent.target.value;
         setTab(newTab);
     };
 
     const changeModif = (item) => {
         const newTab = [...tab];
         let indexTab = tab.indexOf(item);
-        newTab[indexTab] = {nomFormule :  newTab[indexTab].nomFormule, formule :  newTab[indexTab].formule, modif : !newTab[indexTab].modif, index : tab[indexTab].index}
+        newTab[indexTab].modif = !newTab[indexTab].modif;
         setTab(newTab);
+        props.changeTabFormule(tab);
     };
 
     const changePosition = (item, up) => {
@@ -69,8 +67,8 @@ export default function TodoListFormule() {
         let value = up ? -1 : 1;
         if ((up && indexTab > 0) || (!up && indexTab < tab.length-1)){
             let save = newTab[indexTab+value];
-            save = {nomFormule :  save.nomFormule, formule :  save.formule, modif : save.modif, index : save.index-value}
-            newTab[indexTab] =  {nomFormule :  newTab[indexTab].nomFormule, formule :  newTab[indexTab].formule, modif : newTab[indexTab].modif, index : tab[indexTab].index+value}
+            save.index = save.index-value;
+            newTab[indexTab].index = tab[indexTab].index+value;
             newTab[indexTab+value] = newTab[indexTab]
             newTab[indexTab] = save;
             setTab(newTab);
@@ -79,16 +77,15 @@ export default function TodoListFormule() {
 
     const displayItem = () =>{
         return tab.map((i) => (
-                <Item key={i.index} changePosition={e => changePosition(i, e)} item={i} removeTodo={e => removeTodo(i)} onChange={(t, v) => onChange(i, t, v)} changeModif={e => changeModif(i)}/>
+                <Item nb={tab.length} key={i.index} changePosition={e => changePosition(i, e)} item={i} removeTodo={e => removeTodo(i)} onChange={(t, v) => onChange(i, t, v)} changeModif={e => changeModif(i)}/>
         ));
     }
 
     return (
         <div>
             {displayItem()}
-            <Button className="buttonAjouterFormule" variant="outlined" color="primary" onClick={ajoutFormule}>Ajouter des formules</Button>
+            <Button className="buttonAjouterFormule" variant="outlined" color="primary" onClick={e => ajoutFormule()}>Ajouter des formules</Button>
             <PopUp message="Formule supprimée" undo={e => undo()} open={openPopUp} handleClose={e => closePopUp()}/>
-            <Button onClick={e => formules(tab)}>Envoyer</Button>
         </div>
     );
 } 
