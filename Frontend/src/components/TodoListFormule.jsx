@@ -8,8 +8,6 @@ import '../styles/TodoListFormule.css'
 
 export default function TodoListFormule(props) {
 
-    //console.log(getFormules());
-
     const [tab, setTab] = useState([{nomFormule : "", formule : "", modif : true, index : 0}])
 
     const [copyTab, setCopyTab] = useState([...tab]);
@@ -79,7 +77,7 @@ export default function TodoListFormule(props) {
 
     const displayItem = () =>{
         return tab.map((i) => (
-                <Item key={i.index} changePosition={e => changePosition(i, e)} item={i} removeTodo={e => removeTodo(i)} onChange={(t, v) => onChange(i, t, v)} changeModif={e => changeModif(i)}/>
+                <Item nb={tab.length} key={i.index} changePosition={e => changePosition(i, e)} item={i} removeTodo={e => removeTodo(i)} onChange={(t, v) => onChange(i, t, v)} changeModif={e => changeModif(i)}/>
         ));
     }
 

@@ -15,8 +15,8 @@ export default function PrivateRoute ({forProf, component: Component, ...rest}) 
         getUserDetails()
         .then((data) => {
           setConnect(true);
-          console.log(data.data);
-          console.log(forProf)
+          // console.log(data.data);
+          // console.log(forProf)
         })
         .catch(() => setConnect(false));
       }

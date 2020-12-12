@@ -20,7 +20,6 @@ export default function TodoListAccordeon() {
         let indexTab = tab.indexOf(item);
         newTab[indexTab].tabFormule = tabFormule;
         setTab(newTab);
-        console.log(tab)
     }
 
     const onChange = (item, e) => {
@@ -44,13 +43,11 @@ export default function TodoListAccordeon() {
         let indexTab = tab.indexOf(item);
         newTab[indexTab].modif = !newTab[indexTab].modif;
         setTab(newTab);
-        console.log(tab)
     } 
-
 
     const displayTodo = () => {
         return tab.map((i) => (
-            <Items key={i.index} item={i} removeTodo={e => removeTodo(i)} changeTabFormule={e => changeTabFormule(i, e)} onChange={e => onChange(i, e)} changeModif={e => changeModif(i)}/>
+            <Items nb={tab.length} key={i.index} item={i} removeTodo={e => removeTodo(i)} changeTabFormule={e => changeTabFormule(i, e)} onChange={e => onChange(i, e)} changeModif={e => changeModif(i)}/>
         ))
     }
 
@@ -59,7 +56,7 @@ export default function TodoListAccordeon() {
             <Fab style={{marginLeft : "5%"}} size="small" color="primary" aria-label="add" onClick={(e => addValue())}>
                 <AddIcon />
             </Fab>
-            <Button onClick={e => formules(tab)}>Envoyer</Button>
+            <Button disabled={tab.some(e => e.modif === true)} onClick={e => formules(tab)}>Envoyer</Button>
             {displayTodo()}
         </div>
     );
