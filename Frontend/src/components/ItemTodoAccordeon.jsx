@@ -1,13 +1,16 @@
-import React from 'react';
+import React, {useState} from 'react';
+import { Button, Fab, TextField, Typography, Accordion, AccordionSummary, AccordionDetails  } from '@material-ui/core';
 import SaveIcon from '@material-ui/icons/Save';
 import CreateIcon from '@material-ui/icons/Create';
-import { Button, Fab, TextField, Typography } from '@material-ui/core';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
-import Accordeon from './Accordeon'
+import TodoListFormule from './TodoListFormule'
 
 import '../styles/ItemTodoAccordeon.css'
 
 export default function Item(props) {
+
+    const [expanded, setExpanded] = useState(true);
 
     return (
         <div className="divItemAccordeon" key={props.item.index}>
@@ -32,7 +35,12 @@ export default function Item(props) {
                     <Button variant="contained" color="secondary" onClick={e => props.removeTodo()}>Supprimer la catégorie</Button>
                 </div>
 
-            <Accordeon nom={props.item.nom} onChange={e => props.onChange(e)}/>
+                <Accordion style={{marginTop : 15}} square expanded={expanded} onChange={e =>setExpanded(!expanded)}>
+                    <AccordionSummary expandIcon={<ExpandMoreIcon />}/>
+                        <AccordionDetails style={{display : "flex", flexDirection : "column"}}>
+                            <TodoListFormule changeTabFormule={e => props.changeTabFormule(e)} tab={props.item.tabFormule}/>
+                        </AccordionDetails>
+                </Accordion>
         </div>
     )
 
