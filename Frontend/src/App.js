@@ -3,7 +3,6 @@ import {BrowserRouter, Route, Switch } from "react-router-dom";
 import { MuiThemeProvider, unstable_createMuiStrictModeTheme as createMuiTheme } from '@material-ui/core/styles';
 //unstable_createMuiStrictModeTheme pour éviter les warnings strict mod de theme material ui
 
-
 import CreationSujet from './pages/CreationSujet'
 import Login from './pages/Login'
 import Accueil from './pages/Accueil'
@@ -17,9 +16,9 @@ function App() {
 
       <Switch>
 
-        <Route exact path='/login' component={Login}/>
+        <Route exact path='/' component={Login}/>
 
-        <PrivateRoute forProf={true} exact path='/' component={Accueil}/>
+        <PrivateRoute forProf={true} exact path='/home' component={Accueil}/>
         
         <PrivateRoute exact path='/creation-sujets' component={CreationSujet}/>
 

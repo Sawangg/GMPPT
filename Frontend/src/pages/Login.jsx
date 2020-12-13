@@ -101,7 +101,7 @@ export default function Login(){
                     </div>
                 </div>
                 <Button id="buttonConnexion" variant="outlined" color="primary" onClick={e => connexion()}>Connexion</Button>
-                {connect && <Redirect push to='/'/>}
+                {connect && <Redirect push to='/home'/>}
                 <PopUp severity="error" message="Identification invalide" open={openPopUp} handleClose={e => closePopUp()}/>
             </div>
         </div>

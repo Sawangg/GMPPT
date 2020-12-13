@@ -19,7 +19,7 @@ export default function SwipeableTemporaryDrawer() {
     <nav id="divNavBar">
       <List>
 
-        <Link className="lienNavBar" to="/">
+        <Link className="lienNavBar" to="/home">
           <ListItem button>
             <ListItemIcon>
               <HomeOutlinedIcon />
@@ -61,7 +61,7 @@ export default function SwipeableTemporaryDrawer() {
       </List>
       <Divider />
       <List>
-        <Link className="lienNavBar" to="/login">
+        <Link className="lienNavBar" to="/">
           <ListItem style={{backgroundColor : "rgb(197, 17, 80, 0.9)", borderRadius : 3, color : "white"}} button onClick={e => logout()}>
             <ListItemIcon>
               <ExitToAppIcon style={{color : "white"}} />

@@ -24,7 +24,7 @@ export default function Accueil() {
     return (
         <div>
             <Button  style={{position : "absolute", right : 30, top : 30}} variant="contained" color="secondary" startIcon={<ExitToAppIcon />} onClick={e => deconnexion()}>Déconnexion</Button>
-            {deco ? <Redirect to='/login'/> : null}
+            {deco ? <Redirect to='/'/> : null}
             <div>
                 <Etapes/>
             </div>

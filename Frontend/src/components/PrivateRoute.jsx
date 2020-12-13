@@ -14,9 +14,11 @@ export default function PrivateRoute ({forProf, component: Component, ...rest}) 
       if(justOne){
         getUserDetails()
         .then((data) => {
-          setConnect(true);
-          // console.log(data.data);
-          // console.log(forProf)
+          if (Boolean(Number(data.data.isProf)) === forProf){
+            setConnect(true);
+          } else {
+            setConnect(false)
+          }
         })
         .catch(() => setConnect(false));
       }
@@ -30,7 +32,7 @@ export default function PrivateRoute ({forProf, component: Component, ...rest}) 
                 <Navbar/> 
                 <Component {...props} /> 
               </div>
-            : <Redirect to="/login" />
+            : <Redirect to="/" />
       }
     }
 
