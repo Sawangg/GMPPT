@@ -1,12 +1,12 @@
 import React from 'react'
-import {BrowserRouter, Route, Switch } from "react-router-dom";
+import {BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import { MuiThemeProvider, unstable_createMuiStrictModeTheme as createMuiTheme } from '@material-ui/core/styles';
 //unstable_createMuiStrictModeTheme pour éviter les warnings strict mod de theme material ui
 
-
 import CreationSujet from './pages/CreationSujet'
 import Login from './pages/Login'
-import Accueil from './pages/Accueil'
+import AccueilProf from './pages/AccueilProf'
+import AccueilEtu from './pages/AccueilEtu'
 import PrivateRoute from './components/PrivateRoute'
 
 function App() {
@@ -17,15 +17,16 @@ function App() {
 
       <Switch>
 
-        <Route exact path='/login' component={Login}/>
+        <Route exact path='/' component={Login}/>
 
-        <PrivateRoute forProf={true} exact path='/' component={Accueil}/>
-        
-        <PrivateRoute exact path='/creation-sujets' component={CreationSujet}/>
+        <PrivateRoute forProf={true} exact path='/prof/home' component={AccueilProf}/>
+        <PrivateRoute forProf={true} exact path='/prof/creation-sujets' component={CreationSujet}/>
+        <PrivateRoute forProf={true}  exact path='/prof/gestion-sujets' component={AccueilProf}/>
+        <PrivateRoute forProf={true} exact path='/prof/gestion-correction' component={AccueilProf}/>
 
-        <PrivateRoute exact path='/gestion-sujets' component={Accueil}/>
+        <PrivateRoute forProf={false} exact path='/etu/home' component={AccueilEtu}/>
 
-        <PrivateRoute exact path='/gestion-correction' component={Accueil}/>
+        <Route render={() => <Redirect to="/" />} />
 
       </Switch>
 

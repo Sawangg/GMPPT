@@ -19,7 +19,7 @@ export default function SwipeableTemporaryDrawer() {
     <nav id="divNavBar">
       <List>
 
-        <Link className="lienNavBar" to="/">
+        <Link className="lienNavBar" to="/prof/home">
           <ListItem button>
             <ListItemIcon>
               <HomeOutlinedIcon />
@@ -30,7 +30,7 @@ export default function SwipeableTemporaryDrawer() {
       </List>
       <Divider />
       <List>
-        <Link className="lienNavBar" to="/creation-sujets">
+        <Link className="lienNavBar" to="/prof/creation-sujets">
           <ListItem button>
             <ListItemIcon>
               <NoteAddOutlinedIcon />
@@ -39,7 +39,7 @@ export default function SwipeableTemporaryDrawer() {
           </ListItem>
         </Link>
 
-        <Link className="lienNavBar" to="/gestion-sujets">
+        <Link className="lienNavBar" to="/prof/gestion-sujets">
           <ListItem button>
             <ListItemIcon>
               <AssignmentOutlinedIcon />
@@ -50,7 +50,7 @@ export default function SwipeableTemporaryDrawer() {
       </List>
       <Divider />
       <List>
-        <Link className="lienNavBar" to="/gestion-correction">
+        <Link className="lienNavBar" to="/prof/gestion-correction">
           <ListItem button>
             <ListItemIcon>
               <SchoolOutlinedIcon />
@@ -61,7 +61,7 @@ export default function SwipeableTemporaryDrawer() {
       </List>
       <Divider />
       <List>
-        <Link className="lienNavBar" to="/login">
+        <Link className="lienNavBar" to="/">
           <ListItem style={{backgroundColor : "rgb(197, 17, 80, 0.9)", borderRadius : 3, color : "white"}} button onClick={e => logout()}>
             <ListItemIcon>
               <ExitToAppIcon style={{color : "white"}} />
