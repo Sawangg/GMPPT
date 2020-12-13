@@ -6,6 +6,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import TodoListFormule from './TodoListFormule'
 import Dialogue from './Dialogue'
+import SlideBar from './SlideBar'
 
 import '../styles/ItemTodoAccordeon.css'
 
@@ -13,16 +14,7 @@ export default function Item(props) {
 
     const [expanded, setExpanded] = useState(true);
 
-    const [open, setOpen] = React.useState(false);
-
-    
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
-
-    const handleClose = () => {
-        setOpen(false);
-    };
+    const [open, setOpen] = useState(false);
 
     return (
         <div className="divItemAccordeon" key={props.item.index}>
@@ -44,15 +36,16 @@ export default function Item(props) {
 
                     </>}    
 
-                    <Button disabled={props.nb === 1} variant="contained" color="secondary" onClick={e => handleClickOpen()} /*onClick={e => props.removeTodo()}*/>Supprimer la catégorie</Button>
-                    <Dialogue ok={e => props.removeTodo()} titre="Suppression" message="Voulez-vous vraiment supprimer la catégorie ?" open={open} handleClose={e => handleClose()}/>
+                    <Button disabled={props.nb === 1} variant="contained" color="secondary" onClick={e => setOpen(true)}>Supprimer la catégorie</Button>
+                    <Dialogue ok={e => props.removeTodo()} titre="Suppression" message="Voulez-vous vraiment supprimer la catégorie ?" open={open} handleClose={e => setOpen(false)}/>
                 </div>
 
                 <Accordion style={{marginTop : 15}} square expanded={expanded} onChange={e =>setExpanded(!expanded)}>
                     <AccordionSummary expandIcon={<ExpandMoreIcon />}/>
-                        <AccordionDetails style={{display : "flex", flexDirection : "column"}}>
-                            <TodoListFormule changeTabFormule={e => props.changeTabFormule(e)} tab={props.item.tabFormule}/>
-                        </AccordionDetails>
+                    <AccordionDetails style={{display : "flex", flexDirection : "column"}}>
+                        <TodoListFormule changeTabFormule={e => props.changeTabFormule(e)} tab={props.item.tabFormule}/>
+                        <SlideBar getValueSlideBar={e => props.getValueSlideBar(e)}/>
+                    </AccordionDetails>
                 </Accordion>
         </div>
     )

@@ -4,12 +4,7 @@ import { Dialog, DialogActions, DialogContent, DialogContentText,DialogTitle, Bu
 export default function Dialogue(props){
 
     return (
-    <Dialog
-        open={props.open}
-        onClose={props.handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
+    <Dialog open={props.open} onClose={props.handleClose}>
         <DialogTitle>{props.titre}</DialogTitle>
         <DialogContent>
           <DialogContentText>{props.message}</DialogContentText>
@@ -18,7 +13,7 @@ export default function Dialogue(props){
           <Button onClick={props.handleClose} color="primary">Annuler</Button>
           <Button onClick={e => {props.ok(); props.handleClose()}} color="primary" autoFocus>OK</Button>
         </DialogActions>
-      </Dialog>
+    </Dialog>
     )
 
 }

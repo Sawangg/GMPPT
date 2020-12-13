@@ -9,17 +9,15 @@ import { formules } from '../utils/api.js';
 
 export default function TodoListAccordeon() {
 
-    const [tab, setTab] = useState([{nom : "", modif : true, index : 0, tabFormule : []}]);
+    const [tab, setTab] = useState([{nom : "", modif : true, index : 0, margeErreur : "5", tabFormule : []}]);
 
     const addValue = () => {
-        setTab([...tab, {nom : "",  modif : true, index : tab.length === 0 ? 0 : tab[tab.length - 1].index + 1}]);
+        setTab([...tab, {nom : "",  modif : true, index : tab.length === 0 ? 0 : tab[tab.length - 1].index + 1, margeErreur : "5", tabFormule : []}]);
     }
 
     const changeTabFormule = (item, tabFormule) => {
-        const newTab = [...tab];
         let indexTab = tab.indexOf(item);
-        newTab[indexTab].tabFormule = tabFormule;
-        setTab(newTab);
+        tab[indexTab].tabFormule = tabFormule;
     }
 
     const onChange = (item, e) => {
@@ -27,6 +25,7 @@ export default function TodoListAccordeon() {
         let indexTab = tab.indexOf(item);
         newTab[indexTab].nom = e.target.value;
         setTab(newTab);
+        console.log(tab)
     }
 
     const removeTodo = (item) => {
@@ -45,9 +44,14 @@ export default function TodoListAccordeon() {
         setTab(newTab);
     } 
 
+    const getValueSlideBar = (item, value) => {
+        let indexTab = tab.indexOf(item);
+        tab[indexTab].margeErreur = value;
+    }
+
     const displayTodo = () => {
         return tab.map((i) => (
-            <Items nb={tab.length} key={i.index} item={i} removeTodo={e => removeTodo(i)} changeTabFormule={e => changeTabFormule(i, e)} onChange={e => onChange(i, e)} changeModif={e => changeModif(i)}/>
+            <Items getValueSlideBar={e => getValueSlideBar(i, e)} nb={tab.length} key={i.index} item={i} removeTodo={e => removeTodo(i)} changeTabFormule={e => changeTabFormule(i, e)} onChange={e => onChange(i, e)} changeModif={e => changeModif(i)}/>
         ))
     }
 

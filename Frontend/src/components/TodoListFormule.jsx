@@ -28,7 +28,7 @@ export default function TodoListFormule(props) {
         if (tab.length !== 0){
             tab[tab.length-1].modif = false;
         }
-        setTab([...tab, {nomFormule : "", formule : "", modif : true, index : tab.length === 0 ? 0 : tab[tab.length-1].index+1}]);
+        setTab([...tab, {nomFormule : "", formule : "", modif : true, index : tab.length === 0 ? 0 : tab[tab.length-1].index+1, margeErreur : "5"}]);
         props.changeTabFormule(tab);
     }
 
