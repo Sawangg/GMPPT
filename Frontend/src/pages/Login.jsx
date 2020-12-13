@@ -9,14 +9,14 @@ import Particles from 'react-particles-js';
 
 import PopUp from '../components/PopUp'
 
-import { login } from '../utils/api.js';
+import { login, getUserDetails } from '../utils/api.js';
 
 import '../styles/Login.css'
 
 export default function Login(){
 
     const [identifiant, setIdentifiant] = useState({login : "", mdp : "", showMdp : false})
-    const [connect, setConnect] = useState(false);
+    const [connect, setConnect] = useState({connect : false, isProf : false});
 
     const [openPopUp, setOpenPopUp] = useState(false);
   
@@ -38,9 +38,13 @@ export default function Login(){
 
     const connexion= () => {
         login(identifiant.login, identifiant.mdp)
-        .then(() => {setConnect(true)})
+        .then(() => {
+            getUserDetails()
+            .then((data) => setConnect({connect : true, isProf : data.data.isProf}))
+            .catch(() => setConnect({connect : false, isProf : false}));
+        })
         .catch(() => {
-          setConnect(false);
+          setConnect({connect : false, isProf : false});
           setOpenPopUp(true);
         })
     } 
@@ -101,7 +105,7 @@ export default function Login(){
                     </div>
                 </div>
                 <Button id="buttonConnexion" variant="outlined" color="primary" onClick={e => connexion()}>Connexion</Button>
-                {connect && <Redirect push to='/home'/>}
+                {connect.connect && (connect.isProf ? <Redirect push to='/prof/home'/> : <Redirect push to='/etu/home'/>)}
                 <PopUp severity="error" message="Identification invalide" open={openPopUp} handleClose={e => closePopUp()}/>
             </div>
         </div>

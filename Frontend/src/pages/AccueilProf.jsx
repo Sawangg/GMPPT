@@ -12,13 +12,9 @@ export default function Accueil() {
     const [deco, setDeco] = useState(false);
 
     const deconnexion = () =>{
-        logout().then(() => {
-            console.log("deco réussi");
-            setDeco(true)
-        }).catch(() => {
-            console.log("deco echouée");
-            setDeco(false)
-        });
+        logout()
+        .then(() => setDeco(true))
+        .catch(() => setDeco(false));
     }
 
     return (

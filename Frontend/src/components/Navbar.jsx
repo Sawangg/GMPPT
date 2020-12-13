@@ -19,7 +19,7 @@ export default function SwipeableTemporaryDrawer() {
     <nav id="divNavBar">
       <List>
 
-        <Link className="lienNavBar" to="/home">
+        <Link className="lienNavBar" to="/prof/home">
           <ListItem button>
             <ListItemIcon>
               <HomeOutlinedIcon />
@@ -30,7 +30,7 @@ export default function SwipeableTemporaryDrawer() {
       </List>
       <Divider />
       <List>
-        <Link className="lienNavBar" to="/creation-sujets">
+        <Link className="lienNavBar" to="/prof/creation-sujets">
           <ListItem button>
             <ListItemIcon>
               <NoteAddOutlinedIcon />
@@ -39,7 +39,7 @@ export default function SwipeableTemporaryDrawer() {
           </ListItem>
         </Link>
 
-        <Link className="lienNavBar" to="/gestion-sujets">
+        <Link className="lienNavBar" to="/prof/gestion-sujets">
           <ListItem button>
             <ListItemIcon>
               <AssignmentOutlinedIcon />
@@ -50,7 +50,7 @@ export default function SwipeableTemporaryDrawer() {
       </List>
       <Divider />
       <List>
-        <Link className="lienNavBar" to="/gestion-correction">
+        <Link className="lienNavBar" to="/prof/gestion-correction">
           <ListItem button>
             <ListItemIcon>
               <SchoolOutlinedIcon />

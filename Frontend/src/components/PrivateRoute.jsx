@@ -13,13 +13,7 @@ export default function PrivateRoute ({forProf, component: Component, ...rest}) 
       let justOne = true;
       if(justOne){
         getUserDetails()
-        .then((data) => {
-          if (Boolean(Number(data.data.isProf)) === forProf){
-            setConnect(true);
-          } else {
-            setConnect(false)
-          }
-        })
+        .then((data) => Boolean(Number(data.data.isProf)) === forProf ? setConnect(true) : setConnect(false))
         .catch(() => setConnect(false));
       }
       return () => justOne = false;
