@@ -16,7 +16,7 @@ export default function Item(props) {
             
             {props.item.modif ? <>
                 <div className="affichageFormule">
-                    <TextField className="nomFormule center" multiline label="Nom formule" variant="outlined" size="small" value={props.item.nomFormule} onChange={e => props.onChange(e, undefined)} />
+                    <TextField autoFocus className="nomFormule center" multiline label="Nom formule" variant="outlined" size="small" value={props.item.nomFormule} onChange={e => props.onChange(e, undefined)} />
                     <ArrowForwardIcon className="center" />
                     <TextField className="formule center" multiline label="formule" variant="outlined" size="small" value={props.item.formule} onChange={e => props.onChange(undefined, e)}/>
                 </div>

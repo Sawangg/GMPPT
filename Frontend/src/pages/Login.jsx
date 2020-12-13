@@ -84,7 +84,7 @@ export default function Login(){
                 <div>
                     <div className="fieldLogin">
                         <AccountCircleOutlinedIcon className="iconLogin"/>
-                        <TextField size="small" label="Login" variant="outlined" required multiline value={identifiant.login} 
+                        <TextField autoFocus size="small" label="Login" variant="outlined" required multiline value={identifiant.login} 
                         onChange={
                             e => changeIdentifiant(e, undefined)
                         }/>

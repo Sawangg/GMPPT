@@ -1,6 +1,8 @@
 import React from 'react'
 import {BrowserRouter, Route, Switch } from "react-router-dom";
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { MuiThemeProvider, unstable_createMuiStrictModeTheme as createMuiTheme } from '@material-ui/core/styles';
+//unstable_createMuiStrictModeTheme pour éviter les warnings strict mod de theme material ui
+
 
 import CreationSujet from './pages/CreationSujet'
 import Login from './pages/Login'

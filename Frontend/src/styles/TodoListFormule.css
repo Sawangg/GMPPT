@@ -1,4 +1,6 @@
 .buttonAjouterFormule{
-    margin : 0px 50px;
-    width : 250px;
+    max-width: 220px;
+    max-height: 36px;
+    display : block !important;
+    margin: 6% auto 0 auto !important;
 }
