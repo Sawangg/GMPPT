@@ -13,14 +13,7 @@ export default function SliderBar(props) {
       <Slider
         defaultValue={5}
         getAriaValueText={valuetext}
-        marks={[{
-            value: 0,
-            label: '0%'
-          },
-        {
-            value : 100,
-            label : "100%"
-        }]}
+        marks={[{value: 0, label: '0%'}, {value : 100, label : "100%"}]}
         step={5}
         valueLabelDisplay="auto"
       />

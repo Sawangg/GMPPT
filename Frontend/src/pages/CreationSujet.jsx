@@ -51,7 +51,7 @@ export default function TodoListAccordeon() {
 
     const displayTodo = () => {
         return tab.map((i) => (
-            <Items getValueSlideBar={e => getValueSlideBar(i, e)} nb={tab.length} key={i.index} item={i} removeTodo={e => removeTodo(i)} changeTabFormule={e => changeTabFormule(i, e)} onChange={e => onChange(i, e)} changeModif={e => changeModif(i)}/>
+            <Items key={i.index} getValueSlideBar={e => getValueSlideBar(i, e)} nb={tab.length} item={i} removeTodo={e => removeTodo(i)} changeTabFormule={e => changeTabFormule(i, e)} onChange={e => onChange(i, e)} changeModif={e => changeModif(i)}/>
         ))
     }
 

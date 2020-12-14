@@ -1,0 +1,6 @@
+.divDrop{
+    border : dashed 2px #075b72;
+    text-align: center;
+    cursor: pointer;
+    padding: 2%;
+}
