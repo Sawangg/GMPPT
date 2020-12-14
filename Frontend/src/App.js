@@ -8,6 +8,7 @@ import Login from './pages/Login'
 import AccueilProf from './pages/AccueilProf'
 import AccueilEtu from './pages/AccueilEtu'
 import PrivateRoute from './components/PrivateRoute'
+import ProfilProf from './pages/ProfilProf'
 
 function App() {
 
@@ -23,6 +24,7 @@ function App() {
         <PrivateRoute forProf={true} exact path='/prof/creation-sujets' component={CreationSujet}/>
         <PrivateRoute forProf={true}  exact path='/prof/gestion-sujets' component={AccueilProf}/>
         <PrivateRoute forProf={true} exact path='/prof/gestion-correction' component={AccueilProf}/>
+        <PrivateRoute forProf={true} exact path='/prof/profil' component={ProfilProf}/>
 
         <PrivateRoute forProf={false} exact path='/etu/home' component={AccueilEtu}/>
 

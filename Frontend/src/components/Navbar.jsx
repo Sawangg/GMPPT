@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import {ListItemIcon, ListItemText, Divider, ListItem, List, SwipeableDrawer, IconButton} from "@material-ui/core";
+import { Link } from "react-router-dom";
 import HomeOutlinedIcon from "@material-ui/icons/HomeOutlined";
 import NoteAddOutlinedIcon from "@material-ui/icons/NoteAddOutlined";
 import AssignmentOutlinedIcon from "@material-ui/icons/AssignmentOutlined";
 import SchoolOutlinedIcon from "@material-ui/icons/SchoolOutlined";
 import MenuRoundedIcon from "@material-ui/icons/MenuRounded";
-import { Link } from "react-router-dom";
+import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 import { logout } from '../utils/api';
@@ -18,8 +19,7 @@ export default function SwipeableTemporaryDrawer() {
   const list = () => (
     <nav id="divNavBar">
       <List>
-
-        <Link className="lienNavBar" to="/prof/home">
+        <Link className="linkNone" to="/prof/home">
           <ListItem button>
             <ListItemIcon>
               <HomeOutlinedIcon />
@@ -27,10 +27,18 @@ export default function SwipeableTemporaryDrawer() {
             <ListItemText>Accueil</ListItemText>
           </ListItem>
         </Link>
+        <Link className="linkNone" to="/prof/profil">
+          <ListItem button>
+            <ListItemIcon>
+              <AccountCircleOutlinedIcon />
+            </ListItemIcon>
+            <ListItemText>Profil</ListItemText>
+          </ListItem>
+        </Link>
       </List>
       <Divider />
       <List>
-        <Link className="lienNavBar" to="/prof/creation-sujets">
+        <Link className="linkNone" to="/prof/creation-sujets">
           <ListItem button>
             <ListItemIcon>
               <NoteAddOutlinedIcon />
@@ -39,7 +47,7 @@ export default function SwipeableTemporaryDrawer() {
           </ListItem>
         </Link>
 
-        <Link className="lienNavBar" to="/prof/gestion-sujets">
+        <Link className="linkNone" to="/prof/gestion-sujets">
           <ListItem button>
             <ListItemIcon>
               <AssignmentOutlinedIcon />
@@ -50,7 +58,7 @@ export default function SwipeableTemporaryDrawer() {
       </List>
       <Divider />
       <List>
-        <Link className="lienNavBar" to="/prof/gestion-correction">
+        <Link className="linkNone" to="/prof/gestion-correction">
           <ListItem button>
             <ListItemIcon>
               <SchoolOutlinedIcon />
@@ -61,7 +69,7 @@ export default function SwipeableTemporaryDrawer() {
       </List>
       <Divider />
       <List>
-        <Link className="lienNavBar" to="/">
+        <Link className="linkNone" to="/">
           <ListItem style={{backgroundColor : "rgb(197, 17, 80, 0.9)", borderRadius : 3, color : "white"}} button onClick={e => logout()}>
             <ListItemIcon>
               <ExitToAppIcon style={{color : "white"}} />
