@@ -1,7 +1,8 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 import { Route, Redirect } from "react-router-dom";
 
 import Navbar from './Navbar'
+import useConstructor from './useContructor'
 
 import { getUserDetails } from '../utils/api.js';
 
@@ -10,21 +11,17 @@ export default function PrivateRoute ({forProf, component: Component, ...rest}) 
   const [connect, setConnect] = useState();
   const [info, setInfo] = useState({pseudo : "oucouc", password : "cocou", prof : ""})
 
-    useEffect(() => {
-      let justOne = true;
-      if(justOne){
-        getUserDetails()
-        .then((data) => {
-          if (Boolean(Number(data.data.isProf)) === forProf){
-              setConnect(true);
-              setInfo({pseudo : data.data.username, password : data.data.password, prof : data.data.isProf});
-          } else {
-            setConnect(false);
-          }
-        })
-        .catch(() => setConnect(false));
+  useConstructor(() => {
+    getUserDetails()
+    .then((data) => {
+      if (Boolean(Number(data.data.isProf)) === forProf){
+        setConnect(true);
+        setInfo({pseudo : data.data.username, password : data.data.password, prof : data.data.isProf});
+      } else {
+        setConnect(false);
       }
-      return () => justOne = false;
+    })
+      .catch(() => setConnect(false));
     });
 
     const selection = (props) => {
