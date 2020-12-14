@@ -13,6 +13,9 @@
 #buttonConnexion{
     display : block;
     margin : 50px auto 10px auto;
+    background-color: #075b72;
+    border : none;
+    color : white;
 }
 
 .iconLogin{

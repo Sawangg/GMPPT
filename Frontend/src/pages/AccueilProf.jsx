@@ -4,6 +4,7 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { Redirect } from "react-router-dom";
 
 import Etapes from '../components/Etapes'
+import DropFile from '../components/DropFile'
 
 import { logout } from '../utils/api';
 
@@ -23,6 +24,7 @@ export default function Accueil() {
             {deco ? <Redirect to='/'/> : null}
             <div>
                 <Etapes/>
+                <DropFile message="Mettre les photos en ligne"/>
             </div>
         </div>
     );

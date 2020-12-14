@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Stepper, Step, StepLabel, StepContent, Button, Paper, Typography}  from '@material-ui/core';
 
 function getSteps() {
@@ -6,7 +6,7 @@ function getSteps() {
 }
 
 export default function VerticalLinearStepper() {
-  const [activeStep, setActiveStep] = React.useState(0);
+  const [activeStep, setActiveStep] = useState(0);
   const steps = getSteps();
 
   const handleNext = () => {
