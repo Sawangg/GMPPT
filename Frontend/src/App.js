@@ -10,10 +10,13 @@ import AccueilEtu from './pages/AccueilEtu'
 import PrivateRoute from './components/PrivateRoute'
 import ProfilProf from './pages/ProfilProf'
 
+import CssBaseline from '@material-ui/core/CssBaseline'
+
 function App() {
 
   return (
     <MuiThemeProvider theme={theme}>
+      <CssBaseline/>
       <BrowserRouter>
 
       <Switch>

@@ -19,64 +19,55 @@ export default function SwipeableTemporaryDrawer() {
   const list = () => (
     <nav id="divNavBar">
       <List>
-        <Link className="linkNone" to="/prof/home">
-          <ListItem button>
+          <ListItem button component={Link} to="/prof/home">
             <ListItemIcon>
               <HomeOutlinedIcon />
             </ListItemIcon>
             <ListItemText>Accueil</ListItemText>
           </ListItem>
-        </Link>
-        <Link className="linkNone" to="/prof/profil">
-          <ListItem button>
+          <ListItem button component={Link} to="/prof/profil">
             <ListItemIcon>
               <AccountCircleOutlinedIcon />
             </ListItemIcon>
             <ListItemText>Profil</ListItemText>
           </ListItem>
-        </Link>
       </List>
       <Divider />
       <List>
-        <Link className="linkNone" to="/prof/creation-sujets">
-          <ListItem button>
+          <ListItem button component={Link} to="/prof/creation-sujets">
             <ListItemIcon>
               <NoteAddOutlinedIcon />
             </ListItemIcon>
             <ListItemText>Création des sujets</ListItemText>
           </ListItem>
-        </Link>
 
-        <Link className="linkNone" to="/prof/gestion-sujets">
-          <ListItem button>
+          <ListItem button component={Link} to="/prof/gestion-sujets">
             <ListItemIcon>
               <AssignmentOutlinedIcon />
             </ListItemIcon>
             <ListItemText>Gestion des sujets</ListItemText>
           </ListItem>
-        </Link>
       </List>
       <Divider />
       <List>
-        <Link className="linkNone" to="/prof/gestion-correction">
-          <ListItem button>
+          <ListItem button component={Link} to="/prof/gestion-correction">
             <ListItemIcon>
               <SchoolOutlinedIcon />
             </ListItemIcon>
             <ListItemText>Gestion de la correction</ListItemText>
           </ListItem>
-        </Link>
       </List>
       <Divider />
       <List>
-        <Link className="linkNone" to="/">
-          <ListItem style={{backgroundColor : "rgb(197, 17, 80, 0.9)", borderRadius : 3, color : "white"}} button onClick={e => logout()}>
+          <ListItem style={{backgroundColor : "rgb(197, 17, 80, 0.9)", borderRadius : 3, color : "white"}} button 
+          component={Link} to='/'
+          onClick={e => logout()}
+            >
             <ListItemIcon>
               <ExitToAppIcon style={{color : "white"}} />
             </ListItemIcon>
             <ListItemText>Déconnexion</ListItemText>
           </ListItem>
-        </Link>
       </List>
     </nav>
   );

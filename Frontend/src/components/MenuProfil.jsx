@@ -27,7 +27,7 @@ export default function MenuProfil(props) {
             open={Boolean(openLocation)}
             onClose={e => setOpenLocation(null)}
         >
-            <Link className="linkNone" to='/prof/profil'><MenuItem onClick={e => setOpenLocation(null)}>Profil</MenuItem></Link>
+            <MenuItem component={Link} to='/prof/profil' onClick={e => setOpenLocation(null)}>Profil</MenuItem>
             <MenuItem onClick={e => deconnexion()}>Déconnexion</MenuItem>
         </Menu>
         {deco ? <Redirect to='/'/> : null}
