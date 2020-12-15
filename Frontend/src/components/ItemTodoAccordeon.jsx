@@ -50,7 +50,7 @@ export default function Item(props) {
             <Accordion style={{marginTop : 15}} square expanded={expanded} onChange={e =>setExpanded(!expanded)}>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}/>
                 <AccordionDetails style={{display : "flex", flexDirection : "column"}}>
-                    <TodoListFormule changeTabFormule={e => props.changeTabFormule(e)} tab={props.item.tabFormule}/>
+                    <TodoListFormule index={props.item.index} changeTabFormule={e => props.changeTabFormule(e)} tab={props.item.tabFormule}/>
                     <SlideBar getValueSlideBar={e => props.getValueSlideBar(e)}/>
                 </AccordionDetails>
             </Accordion>

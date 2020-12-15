@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { Stepper, Step, StepLabel, StepContent, Button, Paper, Typography}  from '@material-ui/core';
+import { Stepper, Step, StepLabel, StepContent, Button, Typography}  from '@material-ui/core';
 
 function getSteps() {
   return ['Créer les énoncés', 'Créer les formules', 'Intégrer les modèles 3D'];

@@ -60,7 +60,6 @@ export default function Login(){
     }
 
     const displayLogin = () =>{
-        console.log(connect)
         return (
             <div id="divLogin">
                 <Particules/>

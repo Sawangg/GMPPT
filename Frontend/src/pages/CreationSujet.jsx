@@ -1,15 +1,32 @@
 import React, { useState } from 'react';
-import {Fab, Button} from '@material-ui/core';
+import {Fab, Button, CircularProgress} from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 
 import Items from '../components/ItemTodoAccordeon'
+import useConstructor from '../components/useContructor'
 
-import { formules } from '../utils/api.js';
+import { formules, getCategories } from '../utils/api.js';
 
 
 export default function TodoListAccordeon() {
 
-    const [tab, setTab] = useState([{nom : "", modif : true, index : 0, margeErreur : "5", tabFormule : []}]);
+    const [tab, setTab] = useState(undefined);
+
+    useConstructor(() => {
+        getCategories()
+        .then((data) => {
+            let newArray = [];
+            if (data.data.length === 0){
+                newArray.push({nom : "", modif : true, index : 0, margeErreur : "5", tabFormule : []})
+            } else {
+            data.data.forEach(element => 
+                newArray.push({nom : element.nom, modif : false, index : element.idx, margeErreur : element.margeErreur, tabFormule : []})
+                );
+            }
+            setTab(newArray)
+        })
+        .catch(() => setTab([{nom : "", modif : true, index : 0, margeErreur : "5", tabFormule : []}]));
+    });
 
     const addValue = () => {
         setTab([...tab, {nom : "",  modif : true, index : tab.length === 0 ? 0 : tab[tab.length - 1].index + 1, margeErreur : "5", tabFormule : []}]);
@@ -57,11 +74,14 @@ export default function TodoListAccordeon() {
 
     return (
         <div>
-            <Fab style={{marginLeft : "5%"}} size="small" color="primary" aria-label="add" onClick={(e => addValue())}>
-                <AddIcon />
-            </Fab>
-            <Button disabled={tab.some(e => e.modif === true)} onClick={e => formules(tab)}>Envoyer</Button>
-            {displayTodo()}
+            {tab === undefined ? <CircularProgress className="center"/> : 
+            <>
+                <Fab style={{marginLeft : "5%"}} size="small" color="primary" aria-label="add" onClick={(e => addValue())}>
+                    <AddIcon />
+                </Fab>
+                <Button disabled={tab.some(e => e.modif === true)} onClick={e => formules(tab)}>Envoyer</Button>
+                {displayTodo()}
+            </>}
         </div>
     );
 }

@@ -1,18 +1,38 @@
 import React, { useState } from 'react';
-import Button from '@material-ui/core/Button';
+import {Button, CircularProgress} from '@material-ui/core';
 
 import Item from './ItemTodoFormule'
 import PopUp from './PopUp'
+import useConstructor from './useContructor'
+
+import { getFormules } from '../utils/api'
 
 import '../styles/TodoListFormule.css'
 
 export default function TodoListFormule(props) {
 
-    const [tab, setTab] = useState([{nomFormule : "", formule : "", modif : true, index : 0}])
+    const [tab, setTab] = useState(undefined)
 
-    const [copyTab, setCopyTab] = useState([...tab]);
+    const [copyTab, setCopyTab] = useState();
 
     const [openPopUp, setOpenPopUp] = useState(false);
+
+    useConstructor(() => {
+        getFormules(props.index)
+        .then((data) => {
+            let newArray = [];
+            if (data.data.length === 0){
+                newArray.push({nomFormule : "", formule : "", modif : true, index : 0})
+            } else {
+            data.data.forEach(element => 
+                newArray.push({nomFormule : element.nom, formule : element.contenu, modif : false, index : element.idx})
+                );
+            }
+            setTab(newArray)
+            setCopyTab([...newArray])
+        })
+        .catch(() => setTab([{nomFormule : "", formule : "", modif : true, index : 0}]));
+    });
   
     const closePopUp = () => {
         setOpenPopUp(false);
@@ -83,7 +103,7 @@ export default function TodoListFormule(props) {
 
     return (
         <div>
-            {displayItem()}
+            {tab === undefined ? <CircularProgress className="center"/> : displayItem()}
             <Button className="buttonAjouterFormule" variant="outlined" color="primary" onClick={e => ajoutFormule()}>Ajouter des formules</Button>
             <PopUp message="Formule supprimée" undo={e => undo()} open={openPopUp} handleClose={e => closePopUp()}/>
         </div>
