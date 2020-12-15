@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const passport = require("passport");
 const router = Router();
+const db = require("../databases.js");
 const { isAuthenticated } = require("../middleware.js");
 
 router.get("/", isAuthenticated, (req, res) => {
@@ -13,6 +14,7 @@ router.post('/login', passport.authenticate('local'), (req, res) => {
 
 router.get('/logout', isAuthenticated, (req, res) => {
     res.cookie("connection.sid", "" , { expires: new Date() });
+    db.promise().execute(`DELETE FROM sessions WHERE session_id = '${req.sessionID}'`);
     res.redirect("/");
 });
 

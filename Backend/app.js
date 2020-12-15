@@ -4,6 +4,7 @@ const express = require("express");
 const session = require("express-session");
 const passport = require("passport");
 const cors = require("cors");
+const MySQLStore = require('express-mysql-session')(session);
 
 const etudiantRouter = require("./routes/etudiant.js");
 const authRouter = require("./routes/auth.js");
@@ -20,6 +21,7 @@ app.use(session({
         domain: 'localhost',
         path: '/',
     },
+    store: new MySQLStore({ host: process.env.DB_HOST, database: process.env.DB_DATABASE, user: process.env.DB_USER, password: process.env.DB_PWD }),
     saveUninitialized: false,
     resave: false,
 }));
