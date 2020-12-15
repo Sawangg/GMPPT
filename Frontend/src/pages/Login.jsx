@@ -8,6 +8,7 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
 import PopUp from '../components/PopUp'
 import Particules from '../components/ParticulesBackLogin'
+import useConstructor from '../components/useContructor'
 
 import { login, getUserDetails } from '../utils/api.js';
 
@@ -15,14 +16,15 @@ import '../styles/Login.css'
 
 export default function Login(){
 
+    useConstructor(() => {
+        getUserDetails()
+        .then((data) => setConnect({connect : true, isProf : data.data.isProf}))
+        .catch(() => setConnect({connect : false, isProf : false}));
+      });
+
     const [identifiant, setIdentifiant] = useState({login : "", mdp : "", showMdp : false, error : false})
     const [connect, setConnect] = useState({connect : false, isProf : false});
-
     const [openPopUp, setOpenPopUp] = useState(false);
-  
-    const closePopUp = () => {
-        setOpenPopUp(false);
-    };
 
     const changeIdentifiant = (login, mdp) => setIdentifiant({
         login : login !== undefined ? login.target.value : identifiant.login, 
@@ -39,13 +41,12 @@ export default function Login(){
 
     const connexion= () => {
         login(identifiant.login, identifiant.mdp)
-        .then(() => {
+        .then(() => 
             getUserDetails()
             .then((data) => setConnect({connect : true, isProf : data.data.isProf}))
-            .catch(() => setConnect({connect : false, isProf : false}));
-        })
+            .catch(() => setConnect({connect : false, isProf : false}))
+        )
         .catch(() => {
-          setConnect({connect : false, isProf : false});
           setIdentifiant({
             login : identifiant.login, 
             mdp : identifiant.mdp, 
@@ -85,7 +86,7 @@ export default function Login(){
                         </div>
                     </div>
                 <Button id="buttonConnexion" variant="outlined" onClick={e => connexion()}>Connexion</Button>
-                <PopUp severity="error" message="Identification invalide" open={openPopUp} handleClose={e => closePopUp()}/>
+                <PopUp severity="error" message="Identification invalide" open={openPopUp} handleClose={e => setOpenPopUp(false)}/>
                 {connexionRedirection()}
             </div>
         </div>

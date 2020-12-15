@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import {ListItemIcon, ListItemText, Divider, ListItem, List, SwipeableDrawer, IconButton} from "@material-ui/core";
+import { Link } from "react-router-dom";
 import HomeOutlinedIcon from "@material-ui/icons/HomeOutlined";
 import NoteAddOutlinedIcon from "@material-ui/icons/NoteAddOutlined";
 import AssignmentOutlinedIcon from "@material-ui/icons/AssignmentOutlined";
 import SchoolOutlinedIcon from "@material-ui/icons/SchoolOutlined";
 import MenuRoundedIcon from "@material-ui/icons/MenuRounded";
-import { Link } from "react-router-dom";
+import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 import { logout } from '../utils/api';
@@ -18,57 +19,55 @@ export default function SwipeableTemporaryDrawer() {
   const list = () => (
     <nav id="divNavBar">
       <List>
-
-        <Link className="lienNavBar" to="/prof/home">
-          <ListItem button>
+          <ListItem button component={Link} to="/prof/home">
             <ListItemIcon>
               <HomeOutlinedIcon />
             </ListItemIcon>
             <ListItemText>Accueil</ListItemText>
           </ListItem>
-        </Link>
+          <ListItem button component={Link} to="/prof/profil">
+            <ListItemIcon>
+              <AccountCircleOutlinedIcon />
+            </ListItemIcon>
+            <ListItemText>Profil</ListItemText>
+          </ListItem>
       </List>
       <Divider />
       <List>
-        <Link className="lienNavBar" to="/prof/creation-sujets">
-          <ListItem button>
+          <ListItem button component={Link} to="/prof/creation-sujets">
             <ListItemIcon>
               <NoteAddOutlinedIcon />
             </ListItemIcon>
             <ListItemText>Création des sujets</ListItemText>
           </ListItem>
-        </Link>
 
-        <Link className="lienNavBar" to="/prof/gestion-sujets">
-          <ListItem button>
+          <ListItem button component={Link} to="/prof/gestion-sujets">
             <ListItemIcon>
               <AssignmentOutlinedIcon />
             </ListItemIcon>
             <ListItemText>Gestion des sujets</ListItemText>
           </ListItem>
-        </Link>
       </List>
       <Divider />
       <List>
-        <Link className="lienNavBar" to="/prof/gestion-correction">
-          <ListItem button>
+          <ListItem button component={Link} to="/prof/gestion-correction">
             <ListItemIcon>
               <SchoolOutlinedIcon />
             </ListItemIcon>
             <ListItemText>Gestion de la correction</ListItemText>
           </ListItem>
-        </Link>
       </List>
       <Divider />
       <List>
-        <Link className="lienNavBar" to="/">
-          <ListItem style={{backgroundColor : "rgb(197, 17, 80, 0.9)", borderRadius : 3, color : "white"}} button onClick={e => logout()}>
+          <ListItem style={{backgroundColor : "rgb(197, 17, 80, 0.9)", borderRadius : 3, color : "white"}} button 
+          component={Link} to='/'
+          onClick={e => logout()}
+            >
             <ListItemIcon>
               <ExitToAppIcon style={{color : "white"}} />
             </ListItemIcon>
             <ListItemText>Déconnexion</ListItemText>
           </ListItem>
-        </Link>
       </List>
     </nav>
   );
