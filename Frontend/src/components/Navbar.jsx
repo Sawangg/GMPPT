@@ -19,55 +19,55 @@ export default function SwipeableTemporaryDrawer() {
   const list = () => (
     <nav id="divNavBar">
       <List>
-          <ListItem button component={Link} to="/prof/home">
-            <ListItemIcon>
-              <HomeOutlinedIcon />
-            </ListItemIcon>
-            <ListItemText>Accueil</ListItemText>
-          </ListItem>
-          <ListItem button component={Link} to="/prof/profil">
-            <ListItemIcon>
-              <AccountCircleOutlinedIcon />
-            </ListItemIcon>
-            <ListItemText>Profil</ListItemText>
-          </ListItem>
+        <ListItem button component={Link} to="/prof/home">
+          <ListItemIcon>
+            <HomeOutlinedIcon />
+          </ListItemIcon>
+          <ListItemText>Accueil</ListItemText>
+        </ListItem>
+        <ListItem button component={Link} to="/prof/profil">
+          <ListItemIcon>
+            <AccountCircleOutlinedIcon />
+          </ListItemIcon>
+          <ListItemText>Profil</ListItemText>
+        </ListItem>
       </List>
       <Divider />
       <List>
-          <ListItem button component={Link} to="/prof/creation-sujets">
-            <ListItemIcon>
-              <NoteAddOutlinedIcon />
-            </ListItemIcon>
-            <ListItemText>Création des sujets</ListItemText>
-          </ListItem>
+        <ListItem button component={Link} to="/prof/creation-sujets">
+          <ListItemIcon>
+            <NoteAddOutlinedIcon />
+          </ListItemIcon>
+          <ListItemText>Création des sujets</ListItemText>
+        </ListItem>
 
-          <ListItem button component={Link} to="/prof/gestion-sujets">
-            <ListItemIcon>
-              <AssignmentOutlinedIcon />
-            </ListItemIcon>
-            <ListItemText>Gestion des sujets</ListItemText>
-          </ListItem>
+        <ListItem button component={Link} to="/prof/gestion-sujets">
+          <ListItemIcon>
+            <AssignmentOutlinedIcon />
+          </ListItemIcon>
+          <ListItemText>Gestion des sujets</ListItemText>
+        </ListItem>
       </List>
       <Divider />
       <List>
-          <ListItem button component={Link} to="/prof/gestion-correction">
-            <ListItemIcon>
-              <SchoolOutlinedIcon />
-            </ListItemIcon>
-            <ListItemText>Gestion de la correction</ListItemText>
-          </ListItem>
+        <ListItem button component={Link} to="/prof/gestion-correction">
+          <ListItemIcon>
+            <SchoolOutlinedIcon />
+          </ListItemIcon>
+          <ListItemText>Gestion de la correction</ListItemText>
+        </ListItem>
       </List>
       <Divider />
       <List>
-          <ListItem style={{backgroundColor : "rgb(197, 17, 80, 0.9)", borderRadius : 3, color : "white"}} button 
+        <ListItem style={{backgroundColor : "rgb(197, 17, 80, 0.9)", borderRadius : 3, color : "white"}} button 
           component={Link} to='/'
           onClick={e => logout()}
-            >
-            <ListItemIcon>
-              <ExitToAppIcon style={{color : "white"}} />
-            </ListItemIcon>
-            <ListItemText>Déconnexion</ListItemText>
-          </ListItem>
+        >
+          <ListItemIcon>
+            <ExitToAppIcon style={{color : "white"}} />
+          </ListItemIcon>
+          <ListItemText>Déconnexion</ListItemText>
+        </ListItem>
       </List>
     </nav>
   );

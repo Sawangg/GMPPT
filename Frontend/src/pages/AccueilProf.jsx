@@ -12,7 +12,7 @@ export default function Accueil(props) {
             <MenuProfil info={props.info} />
             <div>
                 <Etapes/>
-                <DropFile message="Mettre les photos en ligne"/>
+                <DropFile message="Mettre les photos en ligne (moins de 1Mo)"/>
             </div>
         </div>
     );
