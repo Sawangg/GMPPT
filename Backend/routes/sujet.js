@@ -20,19 +20,18 @@ router.post('/formules', isAuthenticated, isProf, (req, res) => {
     res.sendStatus(200);
 });
 
-router.get('/categories', isAuthenticated, isProf, (req, res) => {
-    db.promise().execute(`SELECT * FROM categoriesTest`).then(([rows]) => {
+router.get('/categories', isAuthenticated, isProf, async (req, res) => {
+    let arr = [];
+    await db.promise().execute(`SELECT * FROM categoriesTest`).then(async ([rows]) => {
         if(!rows[0]) return res.sendStatus(404);
-        return res.send(rows).status(200);
+        arr = rows;
     });
-});
-
-router.get('/categories/:id/formules', isAuthenticated, isProf, (req, res) => {
-    const { id } = req.params;
-    db.promise().execute(`SELECT * FROM formulesTest WHERE categoIdx = '${id}'`).then(([rows]) => {
-        if(!rows[0]) return res.sendStatus(404);
-        return res.send(rows).status(200);
-    });
+    for(let i = 0; i < arr.length; ++i) {
+        await db.promise().execute(`SELECT * FROM formulesTest WHERE categoIdx = '${arr[i].idx}'`).then(([formules]) => {
+            arr[i].fomules = formules;
+        });
+    }
+    return res.send(arr).status(200);
 });
 
 module.exports = router;
