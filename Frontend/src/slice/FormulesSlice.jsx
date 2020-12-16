@@ -31,14 +31,16 @@ export const formuleSlice = createSlice({
     setTab: (state, action) =>{
       let array = action.payload;
       array.forEach((element) => {
-          state[element.idx] = {nom : element.nom, modif : false, index : element.idx, margeErreur : element.margeErreur, tabFormule : [
-            {
-              nomFormule: "",
-              formule : "",
-              modif : true,
-              index : 0
+        let tabFormule = []
+        element.formules.forEach((elemForm) =>{
+          tabFormule[elemForm.idx] = {
+            nomFormule : elemForm.nom,
+            formule : elemForm.contenu,
+            modif : false,
+            index : elemForm.idx
           }
-          ], saveTabFormule : []}
+        })
+        state[element.idx] = {nom : element.nom, modif : false, index : element.idx, margeErreur : element.margeErreur, tabFormule : tabFormule, saveTabFormule : []}
       })
     },
     addCategorie: (state) => {

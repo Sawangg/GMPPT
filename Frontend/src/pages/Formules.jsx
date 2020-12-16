@@ -5,7 +5,7 @@ import AddIcon from '@material-ui/icons/Add';
 import Items from '../components/ItemTodoAccordeon'
 import useConstructor from '../components/useContructor'
 
-import { formules, getCategories } from '../utils/api.js';
+import { formules, getFormules } from '../utils/api.js';
 
 import { useDispatch } from "react-redux";
 import { addCategorie, setTab } from "../slice/FormulesSlice";
@@ -20,7 +20,7 @@ export default function TodoListAccordeon() {
     const [chargement, setChargement] =  useState(true)
 
     useConstructor(() => {
-        getCategories()
+        getFormules()
         .then((data) => {
             dispatch(setTab(data.data));
             setChargement(false);
