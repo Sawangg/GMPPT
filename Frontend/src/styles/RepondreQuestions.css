@@ -1,0 +1,19 @@
+.contenant{
+    margin : 10%;
+}
+
+.reponse{
+    margin : 5px;;
+}
+
+.reponse *{
+    margin : 5px;
+    display : flex;
+    align-items : center;
+}
+
+.liste_reponse{
+    display : flex;
+    flex-direction: row;
+    flex-wrap : wrap;
+}

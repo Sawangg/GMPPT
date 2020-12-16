@@ -61,6 +61,17 @@ export default function SwipeableTemporaryDrawer() {
       </List>
       <Divider />
       <List>
+        <Link className="lienNavBar" to="/prof/repondre-questions">
+          <ListItem button>
+            <ListItemIcon>
+              <SchoolOutlinedIcon />
+            </ListItemIcon>
+            <ListItemText>Répondre aux Questions</ListItemText>
+          </ListItem>
+        </Link>
+      </List>
+      <Divider />
+      <List>
         <Link className="lienNavBar" to="/">
           <ListItem style={{backgroundColor : "rgb(197, 17, 80, 0.9)", borderRadius : 3, color : "white"}} button onClick={e => logout()}>
             <ListItemIcon>

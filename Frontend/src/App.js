@@ -7,6 +7,7 @@ import CreationSujet from './pages/CreationSujet'
 import Login from './pages/Login'
 import AccueilProf from './pages/AccueilProf'
 import AccueilEtu from './pages/AccueilEtu'
+import RepondreQuestions from './pages/RepondreQuestions'
 import PrivateRoute from './components/PrivateRoute'
 
 function App() {
@@ -21,10 +22,12 @@ function App() {
 
         <PrivateRoute forProf={true} exact path='/prof/home' component={AccueilProf}/>
         <PrivateRoute forProf={true} exact path='/prof/creation-sujets' component={CreationSujet}/>
-        <PrivateRoute forProf={true}  exact path='/prof/gestion-sujets' component={AccueilProf}/>
+        <PrivateRoute forProf={true} exact path='/prof/gestion-sujets' component={AccueilProf}/>
         <PrivateRoute forProf={true} exact path='/prof/gestion-correction' component={AccueilProf}/>
 
         <PrivateRoute forProf={false} exact path='/etu/home' component={AccueilEtu}/>
+        {/*Penser à changer en /etu et changer forProf après correction navbar*/}
+        <PrivateRoute forProf={true} exact path='/prof/repondre-questions' component={RepondreQuestions}/>
 
         <Route render={() => <Redirect to="/" />} />
 
