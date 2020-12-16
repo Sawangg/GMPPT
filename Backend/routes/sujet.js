@@ -28,7 +28,7 @@ router.get('/categories', isAuthenticated, isProf, async (req, res) => {
     });
     for(let i = 0; i < arr.length; ++i) {
         await db.promise().execute(`SELECT * FROM formulesTest WHERE categoIdx = '${arr[i].idx}'`).then(([formules]) => {
-            arr[i].fomules = formules;
+            arr[i].formules = formules;
         });
     }
     return res.send(arr).status(200);
