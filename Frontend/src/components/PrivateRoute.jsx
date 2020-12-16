@@ -7,7 +7,7 @@ import useConstructor from './useContructor'
 import { getUserDetails } from '../utils/api.js';
 
 import { useDispatch } from "react-redux";
-import { loginUser, logoutUser } from "../slice/UserSlice";
+import { loginUser, logoutUser, changeUserName, changePassword } from "../slice/UserSlice";
 
 export default function PrivateRoute ({forProf, component: Component, ...rest}) {
   
@@ -19,6 +19,8 @@ export default function PrivateRoute ({forProf, component: Component, ...rest}) 
     .then((data) => {
       if (Boolean(Number(data.data.isProf)) === forProf){
         setConnect(true);
+        dispatch(changeUserName(data.data.username))
+        dispatch(changePassword(data.data.password))
         dispatch(loginUser(data.data.isProf));
       } else {
         setConnect(false);
