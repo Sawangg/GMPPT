@@ -9,6 +9,8 @@ import AccueilProf from './pages/AccueilProf'
 import AccueilEtu from './pages/AccueilEtu'
 import PrivateRoute from './components/PrivateRoute'
 import ProfilProf from './pages/ProfilProf'
+import { Provider } from 'react-redux';
+import store from './utils/store';
 
 import CssBaseline from '@material-ui/core/CssBaseline'
 
@@ -16,6 +18,7 @@ function App() {
 
   return (
     <MuiThemeProvider theme={theme}>
+      <Provider store={store}>
       <CssBaseline/>
       <BrowserRouter>
 
@@ -36,6 +39,7 @@ function App() {
       </Switch>
 
       </BrowserRouter>
+      </Provider>
     </MuiThemeProvider>
   );
 }

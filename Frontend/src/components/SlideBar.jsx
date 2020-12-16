@@ -1,10 +1,15 @@
 import React from 'react';
 import { Typography, Slider} from '@material-ui/core';
 
+import { useDispatch } from "react-redux";
+import { changeMargeErreurCategorie } from "../slice/FormulesSlice";
+
 export default function SliderBar(props) {
 
+    const dispatch = useDispatch();
+
     const valuetext = (value) => {
-        props.getValueSlideBar(value);
+        dispatch(changeMargeErreurCategorie({index : props.index, marge : value}))
       return value;
     }
 

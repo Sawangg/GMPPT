@@ -4,7 +4,6 @@ import Etapes from '../components/Etapes'
 import DropFile from '../components/DropFile'
 import MenuProfil from '../components/MenuProfil'
 
-
 export default function Accueil(props) {
 
     return (
