@@ -14,31 +14,41 @@ export default function Item(props) {
 
     const dispatch = useDispatch();
 
-    const onChangeNomFormule = (e) => {
-        dispatch(changeNomFormule({indexCategorie :props.indexCategorie, indexFormule : props.index, event : e.target.value}))
-    };
-
-    const onChangeFormule = (e) => {
-        dispatch(changeFormule({indexCategorie :props.indexCategorie, indexFormule : props.index, event : e.target.value}))
-    };
-
     const changeModif = () =>{
         dispatch(changeModifFormule({indexCategorie :props.indexCategorie, indexFormule : props.index}))
-    }
-
-    const changePos = (up) =>{
-        dispatch(changePositionFormule({indexCategorie :props.indexCategorie, indexFormule : props.index, up : up}))
     }
 
     const field = () =>{
         return(
             <>
                 <div className="affichageFormule">
-                    <TextField className="nomFormule center" multiline label="Nom formule" variant="outlined" size="small" value={props.item.nomFormule} onChange={e => onChangeNomFormule(e)} />
+                    <TextField 
+                        className="nomFormule center" 
+                        multiline 
+                        label="Nom formule" 
+                        variant="outlined" 
+                        size="small" 
+                        value={props.item.nomFormule} 
+                        onChange={e => dispatch(changeNomFormule({indexCategorie :props.indexCategorie, indexFormule : props.index, event : e.target.value}))} 
+                    />
                     <ArrowForwardIcon className="center" />
-                    <TextField className="formule center" multiline label="formule" variant="outlined" size="small" value={props.item.formule} onChange={e => onChangeFormule(e)}/>
+                    <TextField 
+                        className="formule center" 
+                        multiline 
+                        label="formule" 
+                        variant="outlined" 
+                        size="small" 
+                        value={props.item.formule} 
+                        onChange={e => dispatch(changeFormule({indexCategorie :props.indexCategorie, indexFormule : props.index, event : e.target.value}))}
+                    />
                 </div>
-                <Button className="buttonItem center ButtonEnregistrer" variant="contained" onClick={e => changeModif()}>Enregistrer</Button>
+                <Button 
+                    className="buttonItem center ButtonEnregistrer" 
+                    variant="contained" 
+                    onClick={e => changeModif()}
+                >
+                    Enregistrer
+                </Button>
             </> 
         )
     }
@@ -51,7 +61,13 @@ export default function Item(props) {
                     <ArrowForwardIcon className="center" />
                     <Typography className="typoFormule formule center">{props.item.formule}</Typography>
                 </div>
-                <Button className="buttonItem center" variant="contained" onClick={e => changeModif()}>Modifier</Button>
+                <Button 
+                    className="buttonItem center" 
+                    variant="contained" 
+                    onClick={e => changeModif()}
+                >
+                    Modifier
+                </Button>
             </>
         )
     }
@@ -59,11 +75,35 @@ export default function Item(props) {
     return (
         <div className="container">
             
-            <Fab disabled={props.nb === 1} className="center" size="small" color="secondary" aria-label="add" onClick={e => props.remove()}><DeleteIcon className="center" /></Fab>
+            <Fab 
+                disabled={props.nb === 1} 
+                className="center" 
+                size="small" 
+                color="secondary" 
+                aria-label="add" 
+                onClick={e => props.remove()}
+            >
+                <DeleteIcon className="center" />
+            </Fab>
 
             {props.item.modif ? field() : txt()}
-                <Fab color="primary" variant='extended' size='small' onClick={e => changePos(true)}><ArrowUpwardIcon/></Fab>
-                <Fab style={{marginLeft : "10%"}} color="primary" variant='extended' size='small' onClick={e => changePos(false)}><ArrowDownwardIcon/></Fab>
+                <Fab 
+                    color="primary" 
+                    variant='extended' 
+                    size='small' 
+                    onClick={e => dispatch(changePositionFormule({indexCategorie :props.indexCategorie, indexFormule : props.index, up : true}))}
+                >
+                    <ArrowUpwardIcon/>
+                </Fab>
+                <Fab 
+                    style={{marginLeft : "10%"}} 
+                    color="primary" 
+                    variant='extended' 
+                    size='small' 
+                    onClick={e => dispatch(changePositionFormule({indexCategorie :props.indexCategorie, indexFormule : props.index, up : false}))}
+                >
+                    <ArrowDownwardIcon/>
+                </Fab>
         </div>
     )
     
