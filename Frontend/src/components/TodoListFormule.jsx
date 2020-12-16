@@ -25,20 +25,23 @@ export default function TodoListFormule(props) {
     }
 
     const undo = () =>{
-        dispatch(undoFormule({indexCategorie :props.index, indexFormule : props.index}))
+        dispatch(undoFormule(props.index))
         setOpenPopUp(false);
      }
-
-    const ajoutFormule = () =>{
-        dispatch(addFormule(props.index))
-    }
 
     return (
         <div>
             {tab.map((i, id) => (
                 <Item remove={e => remove(id)} index={id} item={i} nb={tab.length} key={i.index} indexCategorie={props.index}/>
             ))}
-             <Button className="buttonAjouterFormule" variant="outlined" color="primary" onClick={e => ajoutFormule()}>Ajouter des formules</Button>
+             <Button 
+                className="buttonAjouterFormule" 
+                variant="outlined" 
+                color="primary" 
+                onClick={e => dispatch(addFormule(props.index))}
+            >
+                    Ajouter des formules
+            </Button>
              <SlideBar index={props.index}/>
              <PopUp message="Formule supprimée" undo={e => undo()} open={openPopUp} handleClose={e => setOpenPopUp(false)}/>
         </div>

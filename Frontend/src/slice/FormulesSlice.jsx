@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 export const formuleSlice = createSlice({
   name: 'formule',
-  initialState: [{
+  initialState: {tab : [{
     nom: "",
     modif : true,
     index : 0,
@@ -19,30 +19,28 @@ export const formuleSlice = createSlice({
       modif : true,
       index : 0
   }]
-  }],
+  }], actualise : false },
   reducers: {
-    setCategorie: (state, action) => {
-        const {nom, modif, index, margeErreur} = action.payload
-        state.nom = nom;
-        state.modif = modif;
-        state.index = index;
-        state.margeErreur = margeErreur;
+    setActualise : (state) =>{
+        state.actualise = true;
     },
     setTab: (state, action) =>{
       let array = action.payload;
       array.forEach((element) => {
-          state[element.idx] = {nom : element.nom, modif : false, index : element.idx, margeErreur : element.margeErreur, tabFormule : [
-            {
-              nomFormule: "",
-              formule : "",
-              modif : true,
-              index : 0
+        let tabFormule = []
+        element.formules.forEach((elemForm) =>{
+          tabFormule[elemForm.idx] = {
+            nomFormule : elemForm.nom,
+            formule : elemForm.contenu,
+            modif : false,
+            index : elemForm.idx
           }
-          ], saveTabFormule : []}
+        })
+        state.tab[element.idx] = {nom : element.nom, modif : false, index : element.idx, margeErreur : element.margeErreur, tabFormule : tabFormule, saveTabFormule : tabFormule}
       })
     },
     addCategorie: (state) => {
-      state.push({
+      state.tab.push({
         nom: "",
         modif : true,
         index : state[state.length-1].index+1,
@@ -56,59 +54,66 @@ export const formuleSlice = createSlice({
       })
     },
     changeNom: (state, action) =>{
-        state[action.payload.index].nom = action.payload.event;
+        state.tab[action.payload.index].nom = action.payload.event;
     },
     removeCategorie: (state, action) =>{
-       state.splice(action.payload, 1);
+       state.tab.splice(action.payload, 1);
     },
     changeModifCategorie : (state, action) =>{
-      state[action.payload].modif = !state[action.payload].modif;
+      state.tab[action.payload].modif = !state.tab[action.payload].modif;
     },
     changeMargeErreurCategorie : (state, action) =>{
-      state[action.payload.index].margeErreur = action.payload.marge;
+      state.tab[action.payload.index].margeErreur = action.payload.marge;
     },
     addFormule: (state, action) => {
-      state[action.payload].tabFormule[state[action.payload].tabFormule.length-1].modif = false;
-      state[action.payload].tabFormule.push({
+      state.tab[action.payload].tabFormule[state.tab[action.payload].tabFormule.length-1].modif = false;
+      state.tab[action.payload].tabFormule.push({
             nomFormule: "",
             formule : "",
             modif : true,
-            index : state[action.payload].tabFormule[state[action.payload].tabFormule.length-1].index+1
+            index : state.tab[action.payload].tabFormule[state.tab[action.payload].tabFormule.length-1].index+1
       })
     },
     changeNomFormule: (state, action) => {
-      state[action.payload.indexCategorie].tabFormule[action.payload.indexFormule].nomFormule = action.payload.event;
+      const {indexCategorie, indexFormule, event} = action.payload;
+      state.tab[indexCategorie].tabFormule[indexFormule].nomFormule = event;
     },
     changeFormule: (state, action) => {
-      state[action.payload.indexCategorie].tabFormule[action.payload.indexFormule].formule = action.payload.event;
+      const {indexCategorie, indexFormule, event} = action.payload;
+      state.tab[indexCategorie].tabFormule[indexFormule].formule = event;
     },
     changeModifFormule: (state, action) => {
-      state[action.payload.indexCategorie].tabFormule[action.payload.indexFormule].modif = !state[action.payload.indexCategorie].tabFormule[action.payload.indexFormule].modif;
+      const {indexCategorie, indexFormule} = action.payload;
+      state.tab[indexCategorie].tabFormule[indexFormule].modif = !state.tab[indexCategorie].tabFormule[indexFormule].modif;
     },
     removeFormule: (state, action) => {
-      state[action.payload.indexCategorie].saveTabFormule = [...state[action.payload.indexCategorie].tabFormule];
-      state[action.payload.indexCategorie].tabFormule.splice(action.payload.indexFormule, 1);
+      const {indexCategorie, indexFormule} = action.payload;
+      state.tab[indexCategorie].saveTabFormule = [...state.tab[indexCategorie].tabFormule];
+      state.tab[indexCategorie].tabFormule.splice(indexFormule, 1);
     },
     undoFormule: (state, action) => {
-      state[action.payload.indexCategorie].tabFormule = state[action.payload.indexCategorie].saveTabFormule;
+      state.tab[action.payload].tabFormule = state.tab[action.payload].saveTabFormule;
     },
     changePositionFormule: (state, action) => {
-         if ((action.payload.up && action.payload.indexFormule > 0) || (!action.payload.up && action.payload.indexFormule < state[action.payload.indexCategorie].tabFormule.length-1)){
-            let value = action.payload.up ? -1 : 1;
-            let save = state[action.payload.indexCategorie].tabFormule[action.payload.indexFormule+value];
+      const {indexCategorie, indexFormule, up} = action.payload;
+         if ((up && indexFormule > 0) || (!up && indexFormule < state.tab.[indexCategorie].tabFormule.length-1)){
+            let value = up ? -1 : 1;
+            let save = state.tab[indexCategorie].tabFormule[indexFormule+value];
             save.index = save.index-value;
-            state[action.payload.indexCategorie].tabFormule[action.payload.indexFormule].index = state[action.payload.indexCategorie].tabFormule[action.payload.indexFormule].index+value;
-            state[action.payload.indexCategorie].tabFormule[action.payload.indexFormule+value] = state[action.payload.indexCategorie].tabFormule[action.payload.indexFormule]
-            state[action.payload.indexCategorie].tabFormule[action.payload.indexFormule] = save;
+            state.tab[indexCategorie].tabFormule[indexFormule].index = state.tab[indexCategorie].tabFormule[indexFormule].index+value;
+            state.tab[indexCategorie].tabFormule[indexFormule+value] = state.tab[indexCategorie].tabFormule[indexFormule]
+            state.tab[indexCategorie].tabFormule[indexFormule] = save;
          }
     },
     },
 });
 
-export const { setCategorie, setTab, changeNom, addCategorie, removeCategorie, changeModifCategorie, addFormule, changeMargeErreurCategorie, undoFormule, changeNomFormule, changeFormule, changeModifFormule, removeFormule, changePositionFormule } = formuleSlice.actions;
+export const { setActualise, setTab, changeNom, addCategorie, removeCategorie, changeModifCategorie, addFormule, changeMargeErreurCategorie, undoFormule, changeNomFormule, changeFormule, changeModifFormule, removeFormule, changePositionFormule } = formuleSlice.actions;
 
-export const selectFormule = state => state.formule;
+export const selectFormule = state => state.formule.tab;
 
-export const selectTabFormule = index => state => state.formule[index].tabFormule;
+export const selectTabFormule = index => state => state.formule.tab[index].tabFormule;
+
+export const selectActualise = state => state.formule.actualise;
 
 export default formuleSlice.reducer;

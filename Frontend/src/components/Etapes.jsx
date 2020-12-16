@@ -1,13 +1,9 @@
 import React, {useState} from 'react';
 import { Stepper, Step, StepLabel, StepContent, Button, Typography}  from '@material-ui/core';
 
-function getSteps() {
-  return ['Créer les énoncés', 'Créer les formules', 'Intégrer les modèles 3D'];
-}
-
 export default function VerticalLinearStepper() {
   const [activeStep, setActiveStep] = useState(0);
-  const steps = getSteps();
+  const steps = ['Créer les énoncés', 'Créer les formules', 'Intégrer les modèles 3D'];
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
