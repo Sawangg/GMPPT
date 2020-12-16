@@ -1,22 +1,34 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 import { Route, Redirect } from "react-router-dom";
 
 import Navbar from './Navbar'
+import useConstructor from './useContructor'
 
 import { getUserDetails } from '../utils/api.js';
 
+import { useDispatch } from "react-redux";
+import { loginUser, logoutUser } from "../slice/UserSlice";
+
 export default function PrivateRoute ({forProf, component: Component, ...rest}) {
   
-  const [connect, setConnect] = useState();
+  const dispatch = useDispatch();
+  const [connect, setConnect] = useState(undefined);
 
-    useEffect(() => {
-      let justOne = true;
-      if(justOne){
-        getUserDetails()
-        .then((data) => Boolean(Number(data.data.isProf)) === forProf ? setConnect(true) : setConnect(false))
-        .catch(() => setConnect(false));
+  useConstructor(() => {
+    getUserDetails()
+    .then((data) => {
+      if (Boolean(Number(data.data.isProf)) === forProf){
+        setConnect(true);
+        dispatch(loginUser(data.data.isProf));
+      } else {
+        setConnect(false);
+        dispatch(logoutUser());
       }
-      return () => justOne = false;
+    })
+      .catch(() => {
+        setConnect(false);
+        dispatch(logoutUser());
+      });
     });
 
     const selection = (props) => {

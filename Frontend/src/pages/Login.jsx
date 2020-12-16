@@ -1,93 +1,103 @@
 import React, {useState} from 'react'
-import { TextField, Button, IconButton } from '@material-ui/core';
+import { TextField, Button } from '@material-ui/core';
 import { Redirect } from "react-router-dom";
 import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
 import VpnKeyOutlinedIcon from '@material-ui/icons/VpnKeyOutlined';
-import Visibility from '@material-ui/icons/Visibility';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
 import PopUp from '../components/PopUp'
 import Particules from '../components/ParticulesBackLogin'
+import useConstructor from '../components/useContructor'
+import InputPassword from '../components/InputPassword'
 
 import { login, getUserDetails } from '../utils/api.js';
+
+import { useDispatch } from "react-redux";
+import { logoutUser, loginUser, changeUserName, changePassword } from "../slice/UserSlice";
+import { useSelector } from "react-redux";
+import { selectUserName } from "../slice/UserSlice"
 
 import '../styles/Login.css'
 
 export default function Login(){
 
-    const [identifiant, setIdentifiant] = useState({login : "", mdp : "", showMdp : false, error : false})
-    const [connect, setConnect] = useState({connect : false, isProf : false});
+    const dispatch = useDispatch();
+    const user = useSelector(selectUserName);
 
+    const [error, setError] = useState(false);
     const [openPopUp, setOpenPopUp] = useState(false);
-  
-    const closePopUp = () => {
-        setOpenPopUp(false);
-    };
 
-    const changeIdentifiant = (login, mdp) => setIdentifiant({
-        login : login !== undefined ? login.target.value : identifiant.login, 
-        mdp : mdp !== undefined ? mdp.target.value : identifiant.mdp, 
-        showMdp : identifiant.showMdp,
-        error : false
-    })
+    useConstructor(() => {
+        getUserDetails()
+        .then((data) => dispatch(loginUser(data.data.isProf)))
+        .catch(() => dispatch(logoutUser()));
+      });
 
-    const changeShowMdp = () => setIdentifiant({
-        login : identifiant.login, 
-        mdp : identifiant.mdp, 
-        showMdp : !identifiant.showMdp
-    })
-
-    const connexion= () => {
-        login(identifiant.login, identifiant.mdp)
-        .then(() => {
+    const connexion = () => {
+        login(user.name, user.password)
+        .then(() => 
             getUserDetails()
-            .then((data) => setConnect({connect : true, isProf : data.data.isProf}))
-            .catch(() => setConnect({connect : false, isProf : false}));
-        })
-        .catch(() => {
-          setConnect({connect : false, isProf : false});
-          setIdentifiant({
-            login : identifiant.login, 
-            mdp : identifiant.mdp, 
-            showMdp : identifiant.showMdp,
-            error : true
+            .then((data) => dispatch(loginUser(data.data.isProf))
+            .catch(() => {
+                dispatch(logoutUser());
+                setOpenPopUp(true);
+                setError(true);
             })
-          setOpenPopUp(true);
+            )
+        )
+        .catch(() => {
+            dispatch(logoutUser());
+            setError(true);
+            setOpenPopUp(true);
         })
     } 
 
     const connexionRedirection = () =>{
-      return connect.connect && (connect.isProf ? <Redirect push to='/prof/home'/> : <Redirect push to='/etu/home'/>)
+        if (user.isLogin){
+            return user.isProf ? <Redirect push to='/prof/home'/> : <Redirect push to='/etu/home'/>
+        }
+        else {
+            return null;
+        }
+    }
+
+    const onChangeUserName = (e) =>{
+        setError(false)
+        dispatch(changeUserName(e.target.value))
+    }
+
+    const onChangePassword = (e) =>{
+        setError(false)
+        dispatch(changePassword(e.target.value))
+    }
+
+    const displayLogin = () =>{
+        return (
+            <div id="divLogin">
+                <Particules/>
+                <div id="backgroundLogin">
+                        <div className="fieldLogin">
+                            <AccountCircleOutlinedIcon className="iconLogin"/>
+                            <TextField error={error} autoFocus size="small" label="Login" variant="outlined" required 
+                                value={user.name} 
+                                onChange={e => onChangeUserName(e)}
+                            />
+                        </div>
+                        <div className="fieldLogin">
+                            <VpnKeyOutlinedIcon className="iconLogin"/>
+                            <InputPassword error={error} value={user.password} onChange={e => onChangePassword(e)}/>
+                        </div>
+                    <Button id="buttonConnexion" variant="outlined" onClick={e => connexion()}>Connexion</Button>
+                    <PopUp severity="error" message="Identification invalide" open={openPopUp} handleClose={e => setOpenPopUp(false)}/>
+                </div>
+            </div>
+        )
     }
 
     return (
-            <div id="divLogin">
-                
-                <Particules/>
-
-                <div id="backgroundLogin">
-                    <div className="fieldLogin">
-                        <AccountCircleOutlinedIcon className="iconLogin"/>
-                        <TextField error={identifiant.error} autoFocus size="small" label="Login" variant="outlined" required 
-                            value={identifiant.login} 
-                            onChange={e => changeIdentifiant(e, undefined)}
-                          />
-                    </div>
-                    <div className="fieldLogin">
-                        <VpnKeyOutlinedIcon className="iconLogin"/>
-                        <div>
-                            <TextField error={identifiant.error} label="Mot de passe" size="small" required variant="outlined"
-                            type={identifiant.showMdp ? "text" : "password"}   
-                            value={identifiant.mdp} 
-                            onChange={e => changeIdentifiant(undefined, e)}
-                            />
-                            <IconButton onClick={e => changeShowMdp()}>{identifiant.showMdp ? <Visibility /> : <VisibilityOff />}</IconButton>
-                        </div>
-                    </div>
-                <Button id="buttonConnexion" variant="outlined" onClick={e => connexion()}>Connexion</Button>
-                <PopUp severity="error" message="Identification invalide" open={openPopUp} handleClose={e => closePopUp()}/>
+        (user.isLogin === undefined) ? null : 
+            <>
+                {displayLogin()}
                 {connexionRedirection()}
-            </div>
-        </div>
+            </>
     )
 }

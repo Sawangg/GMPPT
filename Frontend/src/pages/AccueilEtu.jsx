@@ -1,27 +1,14 @@
-import React, {useState} from 'react'
-import Button from '@material-ui/core/Button';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import { Redirect } from "react-router-dom";
+import React from 'react'
 
-import { logout } from '../utils/api';
+import MenuProfil from '../components/MenuProfil'
 
-export default function Accueil() {
 
-    const [deco, setDeco] = useState(false);
-
-    const deconnexion = () =>{
-        logout()
-        .then(() => setDeco(true))
-        .catch(() => setDeco(false));
-    }
+export default function Accueil(props) {
 
     return (
         <div>
-            <Button  style={{position : "absolute", right : 30, top : 30}} variant="contained" color="secondary" startIcon={<ExitToAppIcon />} onClick={e => deconnexion()}>Déconnexion</Button>
-            {deco ? <Redirect to='/'/> : null}
-            <div>
-                <p>T un etudiant ^^</p>
-            </div>
+            <MenuProfil info={props.info} />
+            <p>t'es etudiant t'as droit a rien...</p>
         </div>
     );
 }

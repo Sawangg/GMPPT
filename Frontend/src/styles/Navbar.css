@@ -2,11 +2,6 @@
     padding : 5px 10px;
 }
 
-.lienNavBar{
-    text-decoration: none;
-    color : black;
-}
-
 #burger{
     position : fixed;
     left : 20px;

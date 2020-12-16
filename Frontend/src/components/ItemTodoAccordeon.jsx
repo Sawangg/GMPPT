@@ -6,21 +6,36 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import TodoListFormule from './TodoListFormule'
 import Dialogue from './Dialogue'
-import SlideBar from './SlideBar'
+
+import { useDispatch } from "react-redux";
+import { changeModifCategorie, changeNom, removeCategorie } from "../slice/FormulesSlice";
 
 import '../styles/ItemTodoAccordeon.css'
 
 export default function Item(props) {
 
     const [expanded, setExpanded] = useState(true);
-
     const [open, setOpen] = useState(false);
+
+    const dispatch = useDispatch();
+
+    const modifCategorie = (index) => {
+        dispatch(changeModifCategorie(index));
+    }
+
+    const removeTodo = () => {
+        dispatch(removeCategorie(props.index));
+    };
+
+    const onChange = (index, e) => {
+        dispatch(changeNom({index : index, event : e.target.value}));
+    }
 
     const field = () => {
         return (
             <>
-                <TextField className="fieldNomCategorie" multiline label="Nom catégorie" variant="outlined" size="small" value={props.item.nom} onChange={e => props.onChange(e)}/>
-                <Fab disabled={props.item.nom === "" ? true : false} size="small" color="primary" aria-label="add" onClick={e => props.changeModif()}>
+                <TextField className="fieldNomCategorie" multiline label="Nom catégorie" variant="outlined" size="small" value={props.item.nom} onChange={e => onChange(props.index, e)}/>
+                <Fab disabled={props.item.nom === "" ? true : false} size="small" color="primary" aria-label="add" onClick={e => modifCategorie(props.index)}>
                     <SaveIcon/>
                 </Fab>
             </>
@@ -31,7 +46,7 @@ export default function Item(props) {
         return (
             <>
                 <Typography className="textNomCategorie">{props.item.nom}</Typography>
-                <Fab size="small" color="secondary" aria-label="add" onClick={e => props.changeModif()}>
+                <Fab size="small" color="secondary" aria-label="add" onClick={e => modifCategorie(props.index)}>
                     <CreateIcon/>
                 </Fab>
             </>
@@ -43,15 +58,14 @@ export default function Item(props) {
 
             <div className="enteteItemAccordeon">
                 {props.item.modif ? field() : txt()}    
-                <Button disabled={props.nb === 1} variant="contained" color="secondary" onClick={e => setOpen(true)}>Supprimer la catégorie</Button>
-                <Dialogue ok={e => props.removeTodo()} titre="Suppression" message="Voulez-vous vraiment supprimer la catégorie ?" open={open} handleClose={e => setOpen(false)}/>
+                <Button disabled={props.length === 1} variant="contained" color="secondary" onClick={e => setOpen(true)}>Supprimer la catégorie</Button>
+                <Dialogue ok={e => removeTodo()} titre="Suppression" message="Voulez-vous vraiment supprimer la catégorie ?" open={open} handleClose={e => setOpen(false)}/>
             </div>
 
             <Accordion style={{marginTop : 15}} square expanded={expanded} onChange={e =>setExpanded(!expanded)}>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}/>
                 <AccordionDetails style={{display : "flex", flexDirection : "column"}}>
-                    <TodoListFormule changeTabFormule={e => props.changeTabFormule(e)} tab={props.item.tabFormule}/>
-                    <SlideBar getValueSlideBar={e => props.getValueSlideBar(e)}/>
+                    <TodoListFormule index={props.index}/>
                 </AccordionDetails>
             </Accordion>
         </div>
