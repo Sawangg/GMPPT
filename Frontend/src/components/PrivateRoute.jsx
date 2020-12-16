@@ -6,22 +6,29 @@ import useConstructor from './useContructor'
 
 import { getUserDetails } from '../utils/api.js';
 
+import { useDispatch } from "react-redux";
+import { loginUser, logoutUser } from "../slice/UserSlice";
+
 export default function PrivateRoute ({forProf, component: Component, ...rest}) {
   
-  const [connect, setConnect] = useState();
-  const [info, setInfo] = useState({pseudo : "oucouc", password : "cocou", prof : ""})
+  const dispatch = useDispatch();
+  const [connect, setConnect] = useState(undefined);
 
   useConstructor(() => {
     getUserDetails()
     .then((data) => {
       if (Boolean(Number(data.data.isProf)) === forProf){
         setConnect(true);
-        setInfo({pseudo : data.data.username, password : data.data.password, prof : data.data.isProf});
+        dispatch(loginUser(data.data.isProf));
       } else {
         setConnect(false);
+        dispatch(logoutUser());
       }
     })
-      .catch(() => setConnect(false));
+      .catch(() => {
+        setConnect(false);
+        dispatch(logoutUser());
+      });
     });
 
     const selection = (props) => {
@@ -29,7 +36,7 @@ export default function PrivateRoute ({forProf, component: Component, ...rest}) 
         return connect
             ? <div>
                 <Navbar/> 
-                <Component info={info} {...props} /> 
+                <Component {...props} /> 
               </div>
             : <Redirect to="/" />
       }

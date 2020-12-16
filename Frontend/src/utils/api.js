@@ -25,8 +25,14 @@ export function formules(tabFormules){
     })
 }
 
-export function getFormules(){
-    return axios.get(`http://${process.env.REACT_APP_SERVER}:3001/sujet/getFormules`, {
+export function getFormules(categorie){
+    return axios.get(`http://${process.env.REACT_APP_SERVER}:3001/sujet/categories/${categorie}/formules`, {
+        withCredentials: true,
+    });
+}
+
+export function getCategories(){
+    return axios.get(`http://${process.env.REACT_APP_SERVER}:3001/sujet/categories`, {
         withCredentials: true,
     });
 }
