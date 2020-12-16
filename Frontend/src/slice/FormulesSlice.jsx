@@ -28,6 +28,19 @@ export const formuleSlice = createSlice({
         state.index = index;
         state.margeErreur = margeErreur;
     },
+    setTab: (state, action) =>{
+      let array = action.payload;
+      array.forEach((element) => {
+          state[element.idx] = {nom : element.nom, modif : false, index : element.idx, margeErreur : element.margeErreur, tabFormule : [
+            {
+              nomFormule: "",
+              formule : "",
+              modif : true,
+              index : 0
+          }
+          ], saveTabFormule : []}
+      })
+    },
     addCategorie: (state) => {
       state.push({
         nom: "",
@@ -92,7 +105,7 @@ export const formuleSlice = createSlice({
     },
 });
 
-export const { setCategorie, changeNom, addCategorie, removeCategorie, changeModifCategorie, addFormule, changeMargeErreurCategorie, undoFormule, changeNomFormule, changeFormule, changeModifFormule, removeFormule, changePositionFormule } = formuleSlice.actions;
+export const { setCategorie, setTab, changeNom, addCategorie, removeCategorie, changeModifCategorie, addFormule, changeMargeErreurCategorie, undoFormule, changeNomFormule, changeFormule, changeModifFormule, removeFormule, changePositionFormule } = formuleSlice.actions;
 
 export const selectFormule = state => state.formule;
 
