@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import {ListItemIcon, ListItemText, Divider, ListItem, List, SwipeableDrawer, IconButton} from "@material-ui/core";
 import { Link } from "react-router-dom";
 import HomeOutlinedIcon from "@material-ui/icons/HomeOutlined";
-import NoteAddOutlinedIcon from "@material-ui/icons/NoteAddOutlined";
-import AssignmentOutlinedIcon from "@material-ui/icons/AssignmentOutlined";
+import FunctionsIcon from '@material-ui/icons/Functions';import AssignmentOutlinedIcon from "@material-ui/icons/AssignmentOutlined";
 import SchoolOutlinedIcon from "@material-ui/icons/SchoolOutlined";
 import MenuRoundedIcon from "@material-ui/icons/MenuRounded";
 import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import PostAddIcon from '@material-ui/icons/PostAdd';
+import SystemUpdateAltIcon from '@material-ui/icons/SystemUpdateAlt';
 
 import { logout } from '../utils/api';
 
@@ -34,19 +35,30 @@ export default function SwipeableTemporaryDrawer() {
       </List>
       <Divider />
       <List>
-        <ListItem button component={Link} to="/prof/creation-sujets">
+          <ListItem button component={Link} to="/prof/gestion-sujets">
+              <ListItemIcon>
+                  <AssignmentOutlinedIcon />
+              </ListItemIcon>
+              <ListItemText>Gestion des sujets</ListItemText>
+          </ListItem>
+          <ListItem button component={Link} to="/prof/enonces">
+              <ListItemIcon>
+                  <PostAddIcon />
+              </ListItemIcon>
+              <ListItemText>Création des énoncés</ListItemText>
+          </ListItem>
+          <ListItem button component={Link} to="/prof/formules">
           <ListItemIcon>
-            <NoteAddOutlinedIcon />
+              <FunctionsIcon />
           </ListItemIcon>
-          <ListItemText>Création des sujets</ListItemText>
-        </ListItem>
-
-        <ListItem button component={Link} to="/prof/gestion-sujets">
-          <ListItemIcon>
-            <AssignmentOutlinedIcon />
-          </ListItemIcon>
-          <ListItemText>Gestion des sujets</ListItemText>
-        </ListItem>
+          <ListItemText>Enregistrement des formules</ListItemText>
+          </ListItem>
+          <ListItem button component={Link} to="/prof/modeles3D">
+              <ListItemIcon>
+                  <SystemUpdateAltIcon />
+              </ListItemIcon>
+              <ListItemText>Import des modèles 3D</ListItemText>
+          </ListItem>
       </List>
       <Divider />
       <List>
@@ -59,7 +71,7 @@ export default function SwipeableTemporaryDrawer() {
       </List>
       <Divider />
       <List>
-        <ListItem style={{backgroundColor : "rgb(197, 17, 80, 0.9)", borderRadius : 3, color : "white"}} button 
+        <ListItem style={{backgroundColor : "rgb(197, 17, 80, 0.9)", borderRadius : 3, color : "white"}} button
           component={Link} to='/'
           onClick={e => logout()}
         >
