@@ -34,7 +34,7 @@ export default function Item(props) {
         return(
             <>
                 <div className="affichageFormule">
-                    <TextField autoFocus className="nomFormule center" multiline label="Nom formule" variant="outlined" size="small" value={props.item.nomFormule} onChange={e => onChangeNomFormule(e)} />
+                    <TextField className="nomFormule center" multiline label="Nom formule" variant="outlined" size="small" value={props.item.nomFormule} onChange={e => onChangeNomFormule(e)} />
                     <ArrowForwardIcon className="center" />
                     <TextField className="formule center" multiline label="formule" variant="outlined" size="small" value={props.item.formule} onChange={e => onChangeFormule(e)}/>
                 </div>
