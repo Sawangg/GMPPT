@@ -12,9 +12,14 @@ import SystemUpdateAltIcon from '@material-ui/icons/SystemUpdateAlt';
 
 import { logout } from '../utils/api';
 
+import { useDispatch } from "react-redux";
+import { logoutUser } from "../slice/UserSlice";
+
 import "../styles/Navbar.css";
 
 export default function SwipeableTemporaryDrawer() {
+
+  const dispatch = useDispatch();
   const [menu, setMenu] = useState(false);
 
   const list = () => (
@@ -71,9 +76,21 @@ export default function SwipeableTemporaryDrawer() {
       </List>
       <Divider />
       <List>
+        <ListItem button component={Link} className="lienNavBar" to="/prof/repondre-questions">
+            <ListItemIcon>
+              <SchoolOutlinedIcon />
+            </ListItemIcon>
+            <ListItemText>Répondre aux Questions</ListItemText>
+        </ListItem>
+      </List>
+      <Divider />
+      <List>
         <ListItem style={{backgroundColor : "rgb(197, 17, 80, 0.9)", borderRadius : 3, color : "white"}} button
           component={Link} to='/'
-          onClick={e => logout()}
+          onClick={e => {
+            dispatch(logoutUser());
+            logout();
+          }}
         >
           <ListItemIcon>
             <ExitToAppIcon style={{color : "white"}} />

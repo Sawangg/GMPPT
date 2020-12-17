@@ -18,7 +18,7 @@ app.use(session({
     cookie: { 
         maxAge: 86400000,
         sameSite: 'strict',
-        domain: 'localhost',
+        domain: process.env.DOMAIN,
         path: '/',
     },
     store: new MySQLStore({ host: process.env.DB_HOST, database: process.env.DB_DATABASE, user: process.env.DB_USER, password: process.env.DB_PWD }),
@@ -27,7 +27,7 @@ app.use(session({
 }));
 
 app.use(cors({
-    origin: [ "http://localhost:3000"],
+    origin: [process.env.ORIGIN],
     credentials: true,
 }));
 
@@ -38,10 +38,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.disable('x-powered-by');
-
-app.get('/', (req, res) => {
-    res.sendStatus(200);
-});
 
 app.use('/etudiant', etudiantRouter);
 app.use('/auth', authRouter);

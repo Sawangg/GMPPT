@@ -1,18 +1,35 @@
 import React from 'react'
 
 import Etapes from '../components/Etapes'
-import DropFile from '../components/DropFile'
-import MenuProfil from '../components/MenuProfil'
+import useConstructor from '../components/useContructor'
 
-export default function Accueil(props) {
+import { useDispatch } from "react-redux";
+import { setTab, setActualise } from "../slice/FormulesSlice";
+import { useSelector } from "react-redux";
+import { selectActualise } from "../slice/FormulesSlice"
+
+import { getFormules } from '../utils/api.js';
+
+export default function Accueil() {
+
+    const dispatch = useDispatch();
+    const actualise = useSelector(selectActualise);
+
+    useConstructor(() => {
+        if (!actualise){
+            getFormules()
+            .then((data) => {
+                dispatch(setTab(data.data));
+                dispatch(setActualise());
+            })
+            .catch(() => null);
+        }
+    });
+
 
     return (
         <div>
-            <MenuProfil info={props.info} />
-            <div>
-                <Etapes/>
-                <DropFile message="Mettre les photos en ligne (moins de 1Mo)"/>
-            </div>
+            <Etapes/>
         </div>
     );
 }

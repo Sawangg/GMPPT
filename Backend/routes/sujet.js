@@ -20,19 +20,29 @@ router.post('/formules', isAuthenticated, isProf, (req, res) => {
     res.sendStatus(200);
 });
 
-router.get('/categories', isAuthenticated, isProf, (req, res) => {
-    db.promise().execute(`SELECT * FROM categoriesTest`).then(([rows]) => {
+router.get('/categories', isAuthenticated, isProf, async (req, res) => {
+    let arr = [];
+    await db.promise().execute(`SELECT * FROM categoriesTest C JOIN formulesTest F ON C.categoIdx = F.categoIdx ORDER BY C.categoIdx`).then(async ([rows]) => {
         if(!rows[0]) return res.sendStatus(404);
-        return res.send(rows).status(200);
+        let compt = -1;
+        rows.forEach(r => {
+            if(r.categoIdx != compt) {
+                compt = r.categoIdx;
+                arr.push({
+                    "idx" : r.categoIdx,
+                    "nom" : r.nomCatego,
+                    "margeErreur" : r.margeErreur,
+                    "formules" : [],
+                });
+            }
+            arr[compt].formules.push({
+                "idx" : r.idx,
+                "nom" : r.nomFormule,
+                "contenu" : r.contenu,
+            });
+        });
     });
-});
-
-router.get('/categories/:id/formules', isAuthenticated, isProf, (req, res) => {
-    const { id } = req.params;
-    db.promise().execute(`SELECT * FROM formulesTest WHERE categoIdx = '${id}'`).then(([rows]) => {
-        if(!rows[0]) return res.sendStatus(404);
-        return res.send(rows).status(200);
-    });
+    return res.send(arr).status(200);
 });
 
 module.exports = router;
