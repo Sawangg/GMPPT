@@ -22,15 +22,26 @@ router.post('/formules', isAuthenticated, isProf, (req, res) => {
 
 router.get('/categories', isAuthenticated, isProf, async (req, res) => {
     let arr = [];
-    await db.promise().execute(`SELECT * FROM categoriesTest`).then(async ([rows]) => {
+    await db.promise().execute(`SELECT * FROM categoriesTest C JOIN formulesTest F ON C.categoIdx = F.categoIdx ORDER BY C.categoIdx`).then(async ([rows]) => {
         if(!rows[0]) return res.sendStatus(404);
-        arr = rows;
-    });
-    for(let i = 0; i < arr.length; ++i) {
-        await db.promise().execute(`SELECT * FROM formulesTest WHERE categoIdx = '${arr[i].idx}'`).then(([formules]) => {
-            arr[i].formules = formules;
+        let compt = -1;
+        rows.forEach(r => {
+            if(r.categoIdx != compt) {
+                compt = r.categoIdx;
+                arr.push({
+                    "idx" : r.categoIdx,
+                    "nom" : r.nomCatego,
+                    "margeErreur" : r.margeErreur,
+                    "formules" : [],
+                });
+            }
+            arr[compt].formules.push({
+                "idx" : r.idx,
+                "nom" : r.nomFormule,
+                "contenu" : r.contenu,
+            });
         });
-    }
+    });
     return res.send(arr).status(200);
 });
 

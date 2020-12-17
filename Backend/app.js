@@ -39,10 +39,6 @@ app.use(passport.session());
 
 app.disable('x-powered-by');
 
-app.get('/', (req, res) => {
-    res.sendStatus(200);
-});
-
 app.use('/etudiant', etudiantRouter);
 app.use('/auth', authRouter);
 app.use('/sujet', sujetRouter);
