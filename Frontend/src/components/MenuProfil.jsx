@@ -28,6 +28,8 @@ export default function MenuProfil() {
             <Avatar style={{backgroundColor : "#c51150"}}>{user.name.substring(0, 1).toUpperCase()}</Avatar>
         </IconButton>
         <Menu
+            transformOrigin={{ vertical: "bottom", horizontal: "center" }}
+            disableScrollLock={true}
             id="simple-menu"
             anchorEl={openLocation}
             keepMounted

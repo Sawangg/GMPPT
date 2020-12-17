@@ -64,6 +64,7 @@ export const formuleSlice = createSlice({
     },
     changeMargeErreurCategorie : (state, action) =>{
       state.tab[action.payload.index].margeErreur = action.payload.marge;
+      console.log(action.payload.marge)
     },
     addFormule: (state, action) => {
       state.tab[action.payload].tabFormule[state.tab[action.payload].tabFormule.length-1].modif = false;
@@ -96,7 +97,7 @@ export const formuleSlice = createSlice({
     },
     changePositionFormule: (state, action) => {
       const {indexCategorie, indexFormule, up} = action.payload;
-         if ((up && indexFormule > 0) || (!up && indexFormule < state.tab.[indexCategorie].tabFormule.length-1)){
+         if ((up && indexFormule > 0) || (!up && indexFormule < state.tab[indexCategorie].tabFormule.length-1)){
             let value = up ? -1 : 1;
             let save = state.tab[indexCategorie].tabFormule[indexFormule+value];
             save.index = save.index-value;
@@ -115,5 +116,7 @@ export const selectFormule = state => state.formule.tab;
 export const selectTabFormule = index => state => state.formule.tab[index].tabFormule;
 
 export const selectActualise = state => state.formule.actualise;
+
+export const selectMargeErreur = index => state => state.formule.tab[index].margeErreur;
 
 export default formuleSlice.reducer;

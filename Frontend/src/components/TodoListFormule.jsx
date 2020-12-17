@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {Button} from '@material-ui/core';
 
 import Item from './ItemTodoFormule'
-import SlideBar from './SlideBar'
 import PopUp from './PopUp'
 
 import { useDispatch } from "react-redux";
@@ -42,7 +41,6 @@ export default function TodoListFormule(props) {
             >
                     Ajouter des formules
             </Button>
-             <SlideBar index={props.index}/>
              <PopUp message="Formule supprimée" undo={e => undo()} open={openPopUp} handleClose={e => setOpenPopUp(false)}/>
         </div>
     );
