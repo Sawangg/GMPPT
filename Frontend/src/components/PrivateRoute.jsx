@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import { Route, Redirect } from "react-router-dom";
 
 import Navbar from './Navbar'
+import MenuProfil from './MenuProfil'
 import useConstructor from './useContructor'
 
 import { getUserDetails } from '../utils/api.js';
@@ -38,6 +39,7 @@ export default function PrivateRoute ({forProf, component: Component, ...rest}) 
         return connect
             ? <div>
                 <Navbar/> 
+                <MenuProfil/>
                 <Component {...props} /> 
               </div>
             : <Redirect to="/" />

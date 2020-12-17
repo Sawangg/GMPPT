@@ -19,7 +19,7 @@ export default function VerticalLinearStepper() {
 
   return (
     <div style={{width : "25%"}} className="center">
-      <Stepper activeStep={activeStep} orientation="vertical">
+      <Stepper style={{backgroundColor : "rgba(0, 0, 0, 0)"}} activeStep={activeStep} orientation="vertical">
         {steps.map((label) => (
           <Step key={label}>
             <StepLabel>{label}</StepLabel>
