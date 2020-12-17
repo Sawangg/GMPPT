@@ -13,6 +13,7 @@ import { Provider } from 'react-redux';
 import store from './utils/store';
 
 import CssBaseline from '@material-ui/core/CssBaseline'
+import Enonces from "./pages/Enonces";
 
 function App() {
 
@@ -26,6 +27,7 @@ function App() {
 
         <Route exact path='/' component={Login}/>
 
+        <PrivateRoute forProf={true} exact path='/prof/enonces' component={Enonces} />
         <PrivateRoute forProf={true} exact path='/prof/home' component={AccueilProf}/>
         <PrivateRoute forProf={true} exact path='/prof/formules' component={Formules}/>
         <PrivateRoute forProf={true}  exact path='/prof/gestion-sujets' component={AccueilProf}/>
