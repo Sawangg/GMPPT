@@ -1,39 +1,71 @@
 import React, { useState } from 'react';
-import { Button, TextField, Fab } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
+import { TextField, Button, MenuItem} from '@material-ui/core';
 
 import Reponse from './ItemReponse';
 
 export default function Item(props) {
-   const [reponsesTab, setTab] = useState([{index : 0, buttonAdd : true}]);
+    const [reponsesTab, setTab] = useState([{value : ""}]);
 
-   const [copyTab, setCopyTab] = useState([...reponsesTab]);
+    const [uniteReponses, setUnite] = useState({nom : "Sans-unite", abrv : " ", index : 0})
 
-   const addReponse = () =>{
-        reponsesTab[reponsesTab.length-1].buttonAdd = false;
-        setTab([...reponsesTab, {index : reponsesTab.length, buttonAdd : true}]);
-   }
+    const addReponse = () =>{
+            setTab([...reponsesTab, {value : ""}]);
+    }
 
-   const deleteReponse = (num) =>{
-       if(reponsesTab.length > 1){
-            setCopyTab(reponsesTab);
-            const newTab = [...reponsesTab];
-            newTab.splice(num, 1);
+    const deleteReponse = (item) =>{
+        if(reponsesTab.length > 1){
+            let newTab = [...reponsesTab];
+            let index = reponsesTab.indexOf(item);
+            console.log(index);
+            newTab.splice(index, 1);
             setTab(newTab);
-       }
-   }
+        }
+    }
 
-   const peutSupprimer = () =>{
-       return reponsesTab.length > 1;
-   }
-   
-   return(
+    const handleChangeReponse = (event, index) =>{
+        if(!isNaN(event.target.value)){
+            let newTab = [...reponsesTab];
+            newTab[index].value = event.target.value;
+            setTab(newTab);
+        }
+    }
+
+    const handleChangeUnite = (event) =>{
+        let index = event.target.value;
+        setUnite(props.unites[index]);
+    }
+
+    const peutSupprimer = () =>{
+        return reponsesTab.length > 1;
+    }
+
+    const choisirUnite = () =>{
+        return(<div className="alignement_horizontal">
+            <p>Choisissez l'unité : </p>
+                <TextField select value={uniteReponses.index} onChange={handleChangeUnite}>
+                    {props.unites.map((i, index) => 
+                    <MenuItem key={index} value={index} selected={index===0} >
+                        {i.nom}
+                    </MenuItem>)}
+                </TextField>
+        </div>)
+    }
+
+    return(
        <div>
-        <Button onClick={addReponse} disabled={reponsesTab.length >= props.nbMaxReponses}>Ajouter Réponse</Button>
+            {choisirUnite()}
+            {props.nbMaxReponses > 1 ?
+                <Button variant="outline-primary" 
+                        className="ButtonAjouterReponse" 
+                        onClick={addReponse} disabled={reponsesTab.length >= props.nbMaxReponses}>
+                    Ajouter Réponse
+                </Button>
+            : null
+            }
             <div className="liste_reponse">
-                {reponsesTab.map((i) => (
-                    <Reponse num={i.index} buttonAdd={i.buttonAdd} addReponse={e => addReponse()}  
-                    deleteReponse={e=>deleteReponse(e)} unites={props.unites} peutSupprimer={e => peutSupprimer()}/>
+                {reponsesTab.map((i, index) => (
+                    <Reponse num={index} reponse={i} unite={uniteReponses} addReponse={e => addReponse()} handleChangeReponse={handleChangeReponse}
+                    deleteReponse={e=>deleteReponse(e)} peutSupprimer={e => peutSupprimer()}/>
                 ))}
             </div>
         </div>
