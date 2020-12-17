@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
-import {Avatar, IconButton, Menu, MenuItem } from '@material-ui/core';
+import {Avatar, IconButton, Menu, MenuItem, ListItemIcon,Typography } from '@material-ui/core';
 import { Redirect, Link } from "react-router-dom";
+import AccountBoxOutlinedIcon from '@material-ui/icons/AccountBoxOutlined';
+import ExitToAppOutlinedIcon from '@material-ui/icons/ExitToAppOutlined';
 
 import { logout } from '../utils/api';
 
@@ -36,8 +38,18 @@ export default function MenuProfil() {
             open={Boolean(openLocation)}
             onClose={e => setOpenLocation(null)}
         >
-            <MenuItem component={Link} to='/prof/profil' onClick={e => setOpenLocation(null)}>Profil</MenuItem>
-            <MenuItem onClick={e => deconnexion()}>Déconnexion</MenuItem>
+            <MenuItem component={Link} to='/prof/profil' onClick={e => setOpenLocation(null)}>
+            <ListItemIcon>
+                <AccountBoxOutlinedIcon />
+            </ListItemIcon>
+            <Typography variant="inherit">Profil</Typography>
+            </MenuItem>
+            <MenuItem onClick={e => deconnexion()}>
+            <ListItemIcon>
+                <ExitToAppOutlinedIcon />
+            </ListItemIcon>
+            <Typography variant="inherit">Déconnexion</Typography>
+            </MenuItem>
         </Menu>
         {user.isLogin ? null : <Redirect to='/'/>}
     </div>
