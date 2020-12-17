@@ -9,8 +9,8 @@ export default function Enonces() {
     );
 
     return (
-        <div style={{width:"70%", margin:'auto', textAlign:'center'}}>
-            <h1>Création de l'énoncé</h1>
+        <div style={{width:"70%", margin:'auto'}}>
+            <h1 style={{textAlign:'center'}}>Création de l'énoncé</h1>
             <MyEditor/>
             <Button onClick={() => sendContent()}>Enregistrer</Button>
         </div>
