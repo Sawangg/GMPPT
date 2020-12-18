@@ -10,7 +10,7 @@ import AccueilProf from './pages/AccueilProf'
 import AccueilEtu from './pages/AccueilEtu'
 import RepondreQuestions from './pages/RepondreQuestions'
 import PrivateRoute from './components/PrivateRoute'
-import ProfilProf from './pages/ProfilProf'
+import ProfilProf from './pages/Profil'
 import ImportModele from './pages/ImportModele'
 import Correction from './pages/Correction'
 import Enonces from "./pages/Enonces";
@@ -36,7 +36,6 @@ function App() {
         {/* PROF */}
 
         <PrivateRoute forProf={true} exact path='/prof/home' component={AccueilProf}/>
-        <PrivateRoute forProf={true} exact path='/prof/profil' component={ProfilProf}/>
         <PrivateRoute forProf={true} exact path='/prof/gestion-sujets' component={AccueilProf}/>
         <PrivateRoute forProf={true} exact path='/prof/enonces' component={Enonces}/>
         <PrivateRoute forProf={true} exact path='/prof/formules' component={Formules}/>
@@ -45,8 +44,10 @@ function App() {
 
         {/* ETU */}
         <PrivateRoute forProf={false} exact path='/etu/home' component={AccueilEtu}/>
-        {/*Penser à changer en /etu et changer forProf après correction navbar*/}
-        <PrivateRoute forProf={true} exact path='/prof/repondre-questions' component={RepondreQuestions}/>
+        <PrivateRoute forProf={true} exact path='/etu/repondre-questions' component={RepondreQuestions}/>
+
+        {/* POUR LES DEUX */}
+        <PrivateRoute forProf={true} exact path='/profil' component={ProfilProf}/>
 
         {/* REDIRECTION */}
         <Route render={() => <Redirect to="/" />} />

@@ -21,9 +21,6 @@ export const formuleSlice = createSlice({
   }]
   }], actualise : false },
   reducers: {
-    setActualise : (state) =>{
-        state.actualise = true;
-    },
     setTab: (state, action) =>{
       let array = action.payload;
       array.forEach((element) => {
@@ -37,6 +34,7 @@ export const formuleSlice = createSlice({
           }
         })
         state.tab[element.idx] = {nom : element.nom, modif : false, index : element.idx, margeErreur : element.margeErreur, tabFormule : tabFormule, saveTabFormule : tabFormule}
+        state.actualise = true;
       })
     },
     addCategorie: (state) => {
