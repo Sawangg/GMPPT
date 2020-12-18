@@ -1,19 +1,38 @@
 .contenant{
     margin : 10%;
+    text-align:center;
+    
 }
 
 .reponse{
-    margin : 5px;;
-}
-
-.reponse *{
-    margin : 5px;
+    margin : 5px 0px;
     display : flex;
     align-items : center;
+    column-gap: 10px;
+}
+
+.enonce{
+    margin : 20px 0px;
+    font-size : 18px;
 }
 
 .liste_reponse{
     display : flex;
-    flex-direction: row;
+    flex-direction: column;
     flex-wrap : wrap;
+    row-gap : 20px;
+    align-items: center;
+}
+
+.alignement_horizontal{
+    display : flex;
+    flex-direction: row;
+    justify-content: center;
+    column-gap:10px;
+    align-items: center;
+}
+
+.ButtonAjouterReponse{
+    background-color : #c0dff8 !important;
+    margin : 20px 0px !important;
 }
