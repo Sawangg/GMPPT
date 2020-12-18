@@ -23,7 +23,7 @@ export default function Profile(){
                     />
                     <CardContent>
                     <Typography align="center" gutterBottom variant="h5" component="h2">{user.name}</Typography>
-                    <Typography variant="body2" color="textSecondary" component="p">Mot de passe : {user.password}</Typography>
+                    <Typography variant="body2" color="textSecondary" component="p">Mot de passe : ****</Typography>
                     <Typography variant="body2" color="textSecondary" component="p">Status : {user.isProf ? "professeur" : "étudiant"}</Typography>
                     </CardContent>
                 </CardActionArea>

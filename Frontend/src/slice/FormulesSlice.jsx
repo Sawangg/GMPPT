@@ -43,7 +43,7 @@ export const formuleSlice = createSlice({
       state.tab.push({
         nom: "",
         modif : true,
-        index : state[state.length-1].index+1,
+        index : state.tab[state.tab.length-1].index+1,
         margeErreur : "5",
         tabFormule : [{
             nomFormule: "",
