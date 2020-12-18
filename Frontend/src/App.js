@@ -13,6 +13,8 @@ import PrivateRoute from './components/PrivateRoute'
 import ProfilProf from './pages/ProfilProf'
 import ImportModele from './pages/ImportModele'
 import Correction from './pages/Correction'
+import Enonces from "./pages/Enonces";
+
 import { Provider } from 'react-redux';
 import store from './utils/store';
 
@@ -32,6 +34,7 @@ function App() {
         <Route exact path='/' component={Login}/>
 
         {/* PROF */}
+
         <PrivateRoute forProf={true} exact path='/prof/home' component={AccueilProf}/>
         <PrivateRoute forProf={true} exact path='/prof/profil' component={ProfilProf}/>
         <PrivateRoute forProf={true} exact path='/prof/gestion-sujets' component={AccueilProf}/>
@@ -39,6 +42,7 @@ function App() {
         <PrivateRoute forProf={true} exact path='/prof/formules' component={Formules}/>
         <PrivateRoute forProf={true} exact path='/prof/modeles3D' component={ImportModele}/>
         <PrivateRoute forProf={true} exact path='/prof/gestion-correction' component={Correction}/>
+        <PrivateRoute forProf={true} exact path='/prof/enonces' component={Enonces} />
 
         {/* ETU */}
         <PrivateRoute forProf={false} exact path='/etu/home' component={AccueilEtu}/>
