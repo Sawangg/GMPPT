@@ -45,4 +45,12 @@ router.get('/categories', isAuthenticated, isProf, async (req, res) => {
     return res.send(arr).status(200);
 });
 
+router.post('/modeles/new', isAuthenticated, isProf, async (req, res) => {
+
+});
+
+router.get('/modeles/:id', isAuthenticated, isProf, async (req, res) => {
+
+});
+
 module.exports = router;

@@ -25,8 +25,14 @@ export function formules(tabFormules){
     })
 }
 
-export function getFormules(categorie){
+export function getFormules(){
     return axios.get(`http://${process.env.REACT_APP_SERVER}:3001/sujet/categories`, {
+        withCredentials: true,
+    });
+}
+
+export function changePwd(username, password){
+    return axios.post(`http://${process.env.REACT_APP_SERVER}:3001/auth/changepwd/${username}`, password, {
         withCredentials: true,
     });
 }
