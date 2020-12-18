@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow} from '@material-ui/core';
+import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Button} from '@material-ui/core';
 
 const rowsPerPage = 10;
 
@@ -9,21 +9,25 @@ const columns = [
   {id: 'promo', label: 'Promo', minWidth: 170},
   {id: 'avancement', label: 'Avancement', minWidth: 170, align: 'right'},
   {id: 'note', label: 'Note actuelle', minWidth: 170, align: 'right'},
+  {id: 'sujet', label: "Sujet de l'éleve", minWidth: 170, align: 'right'},
 ];
 
-const createData = (nom, prenom, promo, avancement, note) => {
+//avec le même nom que les id du dessus !
+const createData = (nom, prenom, promo, avancement, note, sujet) => {
     avancement = avancement.toString()+"%";
     note = note.toString()+"/20";
-    return { nom, prenom, promo, avancement, note };
+    return { nom, prenom, promo, avancement, note, sujet };
 }
 
+const boutton = () => {return <Button variant="outlined" color="primary">Consulter</Button>}
+
 const rows = [
-  createData('Florian', 'TORIBIO', 'Année 2', 10, 3),
-  createData('Raphael', 'GAUTHIER', 'Année 2', 80, 17),
-  createData('Léana', 'RENON', 'Année 2', 50, 16),
-  createData('Léo', 'MERCIER', 'Année 2', 40, 11),
-  createData('Sylvain', 'FREDIANI', 'Année 2', 90, 16),
-  createData('Test', 'TEST', 'Année 1', 100, 20)
+  createData('Florian', 'TORIBIO', 'Année 2', 10, 4, boutton()),
+  createData('Raphael', 'GAUTHIER', 'Année 2', 80, 17, boutton()),
+  createData('Léana', 'RENON', 'Année 2', 50, 16, boutton()),
+  createData('Léo', 'MERCIER', 'Année 2', 40, 11, boutton()),
+  createData('Sylvain', 'FREDIANI', 'Année 2', 90, 16, boutton()),
+  createData('Test', 'TEST', 'Année 1', 100, 20, boutton())
 ];
 
 export default function StickyHeadTable() {
@@ -49,7 +53,7 @@ export default function StickyHeadTable() {
           <TableBody>
             {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
               return (
-                <TableRow hover tabIndex={-1} key={row.code}>
+                <TableRow hover tabIndex={-1} key={row.nom}>
                   {columns.map((column) => { 
                     return (
                       <TableCell key={column.id} align={column.align}>

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import {ListItemIcon, ListItemText, Divider, ListItem, List, SwipeableDrawer, IconButton} from "@material-ui/core";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import HomeOutlinedIcon from "@material-ui/icons/HomeOutlined";
 import FunctionsIcon from '@material-ui/icons/Functions';import AssignmentOutlinedIcon from "@material-ui/icons/AssignmentOutlined";
 import SchoolOutlinedIcon from "@material-ui/icons/SchoolOutlined";
@@ -14,88 +14,111 @@ import { logout } from '../utils/api';
 
 import { useDispatch } from "react-redux";
 import { logoutUser } from "../slice/UserSlice";
+import { useSelector } from "react-redux";
+import { selectUserName } from "../slice/UserSlice"
 
 import "../styles/Navbar.css";
 
 export default function SwipeableTemporaryDrawer() {
 
+  const user = useSelector(selectUserName);
+
   const dispatch = useDispatch();
   const [menu, setMenu] = useState(false);
+
+  const deconnexion = () =>{
+    logout()
+    .then(() => dispatch(logoutUser()))
+    .catch(() => dispatch(logoutUser()));
+  }
+
+  const listeProf = [
+    {
+      icon : <HomeOutlinedIcon/>,
+      nom : "Accueil",
+      route : "/prof/home",
+      divider : false
+    },
+    {
+      icon : <AccountCircleOutlinedIcon/>,
+      nom : "Profil",
+      route : "/profil",
+      divider : true
+    },
+    {
+      icon : <AssignmentOutlinedIcon/>,
+      nom : "Gestion des sujets",
+      route : "/prof/gestion-sujets",
+      divider : false
+    },
+    {
+      icon : <PostAddIcon/>,
+      nom : "Création des énoncés",
+      route : "/prof/enonces",
+      divider : false
+    },
+    {
+      icon : <FunctionsIcon/>,
+      nom : "Enregistrement des formules",
+      route : "/prof/formules",
+      divider : false
+    },
+    {
+      icon : <SystemUpdateAltIcon/>,
+      nom : "Import des modèles 3D",
+      route : "/prof/modeles3D",
+      divider : true
+    },
+    {
+      icon : <SchoolOutlinedIcon/>,
+      nom : "Gestion de la correction",
+      route : "/prof/gestion-correction",
+      divider : true
+    },
+  ]
+
+  const listeEtudiant = [
+    {
+      icon : <HomeOutlinedIcon/>,
+      nom : "Accueil",
+      route : "/etu/home",
+      divider : false
+    },
+    {
+      icon : <AccountCircleOutlinedIcon/>,
+      nom : "Profil",
+      route : "/profil",
+      divider : true
+    },
+    {
+      icon : <SchoolOutlinedIcon/>,
+      nom : "Répondre aux Questions",
+      route : "/etu/repondre-questions",
+      divider : true
+    }
+  ]
+
+  const liste = user.isProf ? listeProf : listeEtudiant;
 
   const list = () => (
     <nav id="divNavBar">
       <List>
-        <ListItem button component={Link} to="/prof/home">
-          <ListItemIcon>
-            <HomeOutlinedIcon />
-          </ListItemIcon>
-          <ListItemText>Accueil</ListItemText>
-        </ListItem>
-        <ListItem button component={Link} to="/prof/profil">
-          <ListItemIcon>
-            <AccountCircleOutlinedIcon />
-          </ListItemIcon>
-          <ListItemText>Profil</ListItemText>
-        </ListItem>
-      </List>
-      <Divider />
-      <List>
-          <ListItem button component={Link} to="/prof/gestion-sujets">
-              <ListItemIcon>
-                  <AssignmentOutlinedIcon />
-              </ListItemIcon>
-              <ListItemText>Gestion des sujets</ListItemText>
-          </ListItem>
-          <ListItem button component={Link} to="/prof/enonces">
-              <ListItemIcon>
-                  <PostAddIcon />
-              </ListItemIcon>
-              <ListItemText>Création des énoncés</ListItemText>
-          </ListItem>
-          <ListItem button component={Link} to="/prof/formules">
-          <ListItemIcon>
-              <FunctionsIcon />
-          </ListItemIcon>
-          <ListItemText>Enregistrement des formules</ListItemText>
-          </ListItem>
-          <ListItem button component={Link} to="/prof/modeles3D">
-              <ListItemIcon>
-                  <SystemUpdateAltIcon />
-              </ListItemIcon>
-              <ListItemText>Import des modèles 3D</ListItemText>
-          </ListItem>
-      </List>
-      <Divider />
-      <List>
-        <ListItem button component={Link} to="/prof/gestion-correction">
-          <ListItemIcon>
-            <SchoolOutlinedIcon />
-          </ListItemIcon>
-          <ListItemText>Gestion de la correction</ListItemText>
-        </ListItem>
-      </List>
-      <Divider />
-      <List>
-        <ListItem button component={Link} className="lienNavBar" to="/prof/repondre-questions">
+      {liste.map((item) => (
+        <>
+          <ListItem button component={Link} to={item.route}>
             <ListItemIcon>
-              <SchoolOutlinedIcon />
+                {item.icon}
             </ListItemIcon>
-            <ListItemText>Répondre aux Questions</ListItemText>
-        </ListItem>
-      </List>
-      <Divider />
-      <List>
-        <ListItem style={{backgroundColor : "rgb(197, 17, 80, 0.9)", borderRadius : 3, color : "white"}} button
-          component={Link} to='/'
-          onClick={e => {
-            dispatch(logoutUser());
-            logout();
-          }}
-        >
+            <ListItemText>{item.nom}</ListItemText>
+          </ListItem>
+          {item.divider ? <Divider className="divider"/> : null}
+        </>
+      ))}
+        <ListItem id="deconnexionNav" button onClick={e => deconnexion()}>
           <ListItemIcon>
             <ExitToAppIcon style={{color : "white"}} />
           </ListItemIcon>
-          <ListItemText>Déconnexion</ListItemText>
+          <ListItemText style={{color : "white"}}>Déconnexion</ListItemText>
         </ListItem>
       </List>
     </nav>
@@ -106,9 +129,10 @@ export default function SwipeableTemporaryDrawer() {
       <IconButton id="burger" onClick={(e) => setMenu(true)}>
         <MenuRoundedIcon fontSize="large" />
       </IconButton>
-      <SwipeableDrawer onOpen={(e) => setMenu(true)} open={menu} onClose={(e) => setMenu(false)}>
+      <SwipeableDrawer onOpen={(e) => setMenu(true)} open={menu} onClose={e => setMenu(false)}>
         {list()}
       </SwipeableDrawer>
+      {user.isLogin ? null : <Redirect to='/'/>}
     </div>
   );
 }

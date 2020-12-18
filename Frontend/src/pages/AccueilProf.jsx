@@ -4,7 +4,7 @@ import Etapes from '../components/Etapes'
 import useConstructor from '../components/useContructor'
 
 import { useDispatch } from "react-redux";
-import { setTab, setActualise } from "../slice/FormulesSlice";
+import { setTab } from "../slice/FormulesSlice";
 import { useSelector } from "react-redux";
 import { selectActualise } from "../slice/FormulesSlice"
 
@@ -18,10 +18,7 @@ export default function Accueil() {
     useConstructor(() => {
         if (!actualise){
             getFormules()
-            .then((data) => {
-                dispatch(setTab(data.data));
-                dispatch(setActualise());
-            })
+            .then((data) => dispatch(setTab(data.data)))
             .catch(() => null);
         }
     });
