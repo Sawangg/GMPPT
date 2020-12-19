@@ -10,8 +10,6 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import PostAddIcon from '@material-ui/icons/PostAdd';
 import SystemUpdateAltIcon from '@material-ui/icons/SystemUpdateAlt';
 
-import { logout } from '../utils/api';
-
 import { useDispatch } from "react-redux";
 import { logoutUser } from "../slice/UserSlice";
 import { useSelector } from "react-redux";
@@ -25,12 +23,6 @@ export default function SwipeableTemporaryDrawer() {
 
   const dispatch = useDispatch();
   const [menu, setMenu] = useState(false);
-
-  const deconnexion = () =>{
-    logout()
-    .then(() => dispatch(logoutUser()))
-    .catch(() => dispatch(logoutUser()));
-  }
 
   const listeProf = [
     {
@@ -100,28 +92,30 @@ export default function SwipeableTemporaryDrawer() {
 
   const liste = user.isProf ? listeProf : listeEtudiant;
 
-  const list = () => (
-    <nav id="divNavBar">
-      <List>
-      {liste.map((item) => (
-        <>
-          <ListItem button component={Link} to={item.route}>
+  const navigation = () => (
+    <SwipeableDrawer onOpen={(e) => setMenu(true)} open={menu} onClose={e => setMenu(false)}>
+      <nav id="divNavBar">
+        <List>
+        {liste.map((item) => (
+          <>
+            <ListItem button component={Link} to={item.route}>
+              <ListItemIcon>
+                  {item.icon}
+              </ListItemIcon>
+              <ListItemText>{item.nom}</ListItemText>
+            </ListItem>
+            {item.divider ? <Divider className="divider"/> : null}
+          </>
+        ))}
+          <ListItem id="deconnexionNav" button onClick={e => dispatch(logoutUser())}>
             <ListItemIcon>
-                {item.icon}
+              <ExitToAppIcon style={{color : "white"}} />
             </ListItemIcon>
-            <ListItemText>{item.nom}</ListItemText>
+            <ListItemText style={{color : "white"}}>Déconnexion</ListItemText>
           </ListItem>
-          {item.divider ? <Divider className="divider"/> : null}
-        </>
-      ))}
-        <ListItem id="deconnexionNav" button onClick={e => deconnexion()}>
-          <ListItemIcon>
-            <ExitToAppIcon style={{color : "white"}} />
-          </ListItemIcon>
-          <ListItemText style={{color : "white"}}>Déconnexion</ListItemText>
-        </ListItem>
-      </List>
-    </nav>
+        </List>
+      </nav>
+    </SwipeableDrawer>
   );
 
   return (
@@ -129,9 +123,7 @@ export default function SwipeableTemporaryDrawer() {
       <IconButton id="burger" onClick={(e) => setMenu(true)}>
         <MenuRoundedIcon fontSize="large" />
       </IconButton>
-      <SwipeableDrawer onOpen={(e) => setMenu(true)} open={menu} onClose={e => setMenu(false)}>
-        {list()}
-      </SwipeableDrawer>
+      {navigation()}
       {user.isLogin ? null : <Redirect to='/'/>}
     </div>
   );

@@ -9,10 +9,10 @@ import Particules from '../components/ParticulesBackLogin';
 import useConstructor from '../components/useContructor';
 import InputPassword from '../components/InputPassword';
 
-import { login, getUserDetails } from '../utils/api.js';
+import { setLogin } from '../utils/api.js';
 
 import { useDispatch } from "react-redux";
-import { logoutUser, loginUser, changeUserName, changePassword } from "../slice/UserSlice";
+import { userDetails, changeUserName, changePassword } from "../slice/UserSlice";
 import { useSelector } from "react-redux";
 import { selectUserName } from "../slice/UserSlice";
 
@@ -27,25 +27,13 @@ export default function Login(){
     const [openPopUp, setOpenPopUp] = useState(false);
 
     useConstructor(() => {
-        getUserDetails()
-        .then((data) => dispatch(loginUser(data.data.isProf)))
-        .catch(() => dispatch(logoutUser()));
+        dispatch(userDetails())
       });
 
     const connexion = () => {
-        login(user.name, user.password)
-        .then(() => 
-            getUserDetails()
-            .then((data) => dispatch(loginUser(data.data.isProf))
-            .catch(() => {
-                dispatch(logoutUser());
-                setOpenPopUp(true);
-                setError(true);
-            })
-            )
-        )
+        setLogin(user.name, user.password)
+        .then(() => dispatch(userDetails()))
         .catch(() => {
-            dispatch(logoutUser());
             setError(true);
             setOpenPopUp(true);
         })
@@ -69,34 +57,26 @@ export default function Login(){
         dispatch(changePassword(e.target.value));
     }
 
-    const displayLogin = () => {
-        return (
+    return (
+        (user.isLogin === undefined) ? null : 
             <div id="divLogin">
                 <Particules/>
                 <div id="backgroundLogin">
                         <div className="fieldLogin">
                             <AccountCircleOutlinedIcon className="iconLogin"/>
-                            <TextField error={error} autoFocus size="small" label="Login" variant="outlined" required 
+                            <TextField onKeyPress={(e)=>{if (e.code === "Enter") connexion()}} error={error} autoFocus size="small" label="Login" variant="outlined" required 
                                 value={user.name} 
                                 onChange={e => onChangeUserName(e)}
                             />
                         </div>
                         <div className="fieldLogin">
                             <VpnKeyOutlinedIcon className="iconLogin"/>
-                            <InputPassword label={"Mot de passe"} error={error} value={user.password} onChange={e => onChangePassword(e)}/>
+                            <InputPassword onKeyPress={e => {if (e.code === "Enter") connexion()}} label={"Mot de passe"} error={error} value={user.password} onChange={e => onChangePassword(e)}/>
                         </div>
-                    <Button id="buttonConnexion" variant="outlined" onClick={e => connexion()}>Connexion</Button>
+                    <Button type="submit" id="buttonConnexion" variant="outlined" onClick={e => connexion()}>Connexion</Button>
                     <PopUp severity="error" message="Identification invalide" open={openPopUp} handleClose={e => setOpenPopUp(false)}/>
                 </div>
-            </div>
-        )
-    }
-
-    return (
-        (user.isLogin === undefined) ? null : 
-            <>
-                {displayLogin()}
                 {connexionRedirection()}
-            </>
+            </div>
     );
 }

@@ -1,54 +1,34 @@
-import React, {useState} from 'react'
+import React from "react";
 import { Route, Redirect } from "react-router-dom";
 
-import Navbar from './Navbar'
-import MenuProfil from './MenuProfil'
-import useConstructor from './useContructor'
-
-import { getUserDetails } from '../utils/api.js';
+import Navbar from "./Navbar";
+import MenuProfil from "./MenuProfil";
+import useConstructor from "./useContructor";
 
 import { useDispatch } from "react-redux";
-import { loginUser, logoutUser, changeUserName, changePassword } from "../slice/UserSlice";
+import { userDetails } from "../slice/UserSlice";
+import { useSelector } from "react-redux";
+import { selectUserName } from "../slice/UserSlice";
 
-export default function PrivateRoute ({forProf, component: Component, ...rest}) {
-  
+export default function PrivateRoute({forProf, component: Component, ...rest}) {
   const dispatch = useDispatch();
-  const [connect, setConnect] = useState(undefined);
+  const user = useSelector(selectUserName);
 
-  useConstructor(() => {
-    getUserDetails()
-    .then((data) => {
-      if (Boolean(Number(data.data.isProf)) === forProf){
-        setConnect(true);
-        dispatch(changeUserName(data.data.username))
-        dispatch(changePassword(data.data.password))
-        dispatch(loginUser(data.data.isProf));
-      } else {
-        setConnect(false);
-        dispatch(logoutUser());
-      }
-    })
-      .catch(() => {
-        setConnect(false);
-        dispatch(logoutUser());
-      });
-    });
+  useConstructor(() => dispatch(userDetails()));
 
-    const selection = (props) => {
-      if (connect !== undefined){
-        return connect
-            ? <div>
-                <Navbar/> 
-                <MenuProfil/>
-                <Component {...props} /> 
-              </div>
-            : <Redirect to="/" />
-      }
-    }
-
-      return (
-          <Route {...rest} render={props => (
-            selection(props)
-          )} />
+  const selection = (props) => {
+    if (user.isLogin !== undefined) {
+      return user.isProf === forProf ? (
+        <div>
+          <Navbar />
+          <MenuProfil />
+          <Component {...props} />
+        </div>
+      ) : (
+        <Redirect to="/" />
       );
-};
+    }
+  };
+
+  return <Route {...rest} render={(props) => selection(props)} />;
+}

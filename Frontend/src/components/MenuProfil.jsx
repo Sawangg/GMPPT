@@ -4,8 +4,6 @@ import { Redirect, Link } from "react-router-dom";
 import AccountBoxOutlinedIcon from '@material-ui/icons/AccountBoxOutlined';
 import ExitToAppOutlinedIcon from '@material-ui/icons/ExitToAppOutlined';
 
-import { logout } from '../utils/api';
-
 import { useDispatch } from "react-redux";
 import { logoutUser } from "../slice/UserSlice";
 import { useSelector } from "react-redux";
@@ -17,12 +15,6 @@ export default function MenuProfil() {
 
   const dispatch = useDispatch();
   const user = useSelector(selectUserName);
-
-  const deconnexion = () =>{
-      logout()
-      .then(() => dispatch(logoutUser()))
-      .catch(() => dispatch(logoutUser()));
-  }
 
   return (
     <div style={{position : "absolute", right : 30, top : 17.5, display : "flex"}}>
@@ -44,7 +36,7 @@ export default function MenuProfil() {
             </ListItemIcon>
             <Typography variant="inherit">Profil</Typography>
             </MenuItem>
-            <MenuItem onClick={e => deconnexion()}>
+            <MenuItem onClick={e => dispatch(logoutUser())}>
             <ListItemIcon>
                 <ExitToAppOutlinedIcon />
             </ListItemIcon>

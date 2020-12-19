@@ -20,6 +20,7 @@ export default function InputPwd(props){
                 type={showMdp ? "text" : "password"}
                 value={props.value}
                 onChange={e => props.onChange(e)}
+                onKeyPress={e => props.onKeyPress(e)}
             />
             <IconButton onClick={e => changeShowMdp()}>{showMdp ? <Visibility /> : <VisibilityOff />}</IconButton>
         </div>

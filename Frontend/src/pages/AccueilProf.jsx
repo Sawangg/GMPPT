@@ -5,6 +5,7 @@ import useConstructor from '../components/useContructor'
 
 import { useDispatch } from "react-redux";
 import { setTab } from "../slice/FormulesSlice";
+import { userDetails } from "../slice/UserSlice";
 import { useSelector } from "react-redux";
 import { selectActualise } from "../slice/FormulesSlice"
 
@@ -16,6 +17,7 @@ export default function Accueil() {
     const actualise = useSelector(selectActualise);
 
     useConstructor(() => {
+        dispatch(userDetails())
         if (!actualise){
             getFormules()
             .then((data) => dispatch(setTab(data.data)))
