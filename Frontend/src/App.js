@@ -4,15 +4,16 @@ import { MuiThemeProvider, unstable_createMuiStrictModeTheme as createMuiTheme }
 //unstable_createMuiStrictModeTheme pour éviter les warnings strict mod de theme material ui
 import frFR from '@material-ui/core/locale';
 
-import Formules from './pages/Formules'
-import Login from './pages/Login'
-import AccueilProf from './pages/AccueilProf'
-import AccueilEtu from './pages/AccueilEtu'
-import RepondreQuestions from './pages/RepondreQuestions'
-import PrivateRoute from './components/PrivateRoute'
-import ProfilProf from './pages/Profil'
-import ImportModele from './pages/ImportModele'
-import Correction from './pages/Correction'
+import Formules from './pages/Formules';
+import Login from './pages/Login';
+import AccueilProf from './pages/AccueilProf';
+import AccueilEtu from './pages/AccueilEtu';
+import RepondreQuestions from './pages/RepondreQuestions';
+import PrivateRoute from './components/PrivateRoute';
+import Profil from './pages/Profil';
+import ImportModele from './pages/ImportModele';
+import Correction from './pages/Correction';
+
 import Enonces from "./pages/Enonces";
 
 import { Provider } from 'react-redux';
@@ -47,7 +48,7 @@ function App() {
         <PrivateRoute forProf={true} exact path='/etu/repondre-questions' component={RepondreQuestions}/>
 
         {/* POUR LES DEUX */}
-        <PrivateRoute forProf={true} exact path='/profil' component={ProfilProf}/>
+        <PrivateRoute forProf={true} exact path='/prof/profil' component={Profil}/>
 
         {/* REDIRECTION */}
         <Route render={() => <Redirect to="/" />} />
