@@ -20,8 +20,7 @@ router.get('/logout', isAuthenticated, (req, res) => {
 
 router.post('/changepwd/:username', isAuthenticated, async (req, res) => {
     const { username } = req.params;
-    console.log(req);
-    await db.promise().execute(`UPDATE authentification SET password = ${req.body.password} WHERE username = ${username}`)
+    await db.promise().execute(`UPDATE authentification SET password = '${req.body.newPassword}' WHERE username = '${username}'`);
     return res.sendStatus(200);
 });
 

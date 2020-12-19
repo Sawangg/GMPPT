@@ -13,7 +13,7 @@ export default function InputPwd(props){
         <div>
             <TextField 
                 error={props.error} 
-                label="Mot de passe" 
+                label={props.label}
                 size="small" 
                 required 
                 variant="outlined" 

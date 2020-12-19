@@ -31,8 +31,8 @@ export function getFormules(){
     });
 }
 
-export function changePwd(username, password){
-    return axios.post(`http://${process.env.REACT_APP_SERVER}:3001/auth/changepwd/${username}`, password, {
+export function changePwd(username, password) {
+    return axios.post(`http://${process.env.REACT_APP_SERVER}:3001/auth/changepwd/${username}`, { 'newPassword' : password }, {
         withCredentials: true,
     });
 }
