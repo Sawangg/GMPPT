@@ -38,7 +38,7 @@ export default function MenuProfil() {
             open={Boolean(openLocation)}
             onClose={e => setOpenLocation(null)}
         >
-            <MenuItem component={Link} to='/prof/profil' onClick={e => setOpenLocation(null)}>
+            <MenuItem component={Link} to='/profil' onClick={e => setOpenLocation(null)}>
             <ListItemIcon>
                 <AccountBoxOutlinedIcon />
             </ListItemIcon>

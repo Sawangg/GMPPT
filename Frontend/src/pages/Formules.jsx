@@ -8,7 +8,7 @@ import useConstructor from '../components/useContructor'
 import { formules, getFormules } from '../utils/api.js';
 
 import { useDispatch } from "react-redux";
-import { addCategorie, setTab, setActualise } from "../slice/FormulesSlice";
+import { addCategorie, setTab } from "../slice/FormulesSlice";
 import { useSelector } from "react-redux";
 import { selectFormule, selectActualise } from "../slice/FormulesSlice"
 
@@ -21,10 +21,7 @@ export default function TodoListAccordeon() {
     useConstructor(() => {
         if (!actualise){
             getFormules()
-            .then((data) => {
-                dispatch(setTab(data.data));
-                dispatch(setActualise());
-            })
+            .then((data) => dispatch(setTab(data.data)))
             .catch(() => null);
         }
     });
