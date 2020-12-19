@@ -48,7 +48,7 @@ function App() {
         <PrivateRoute forProf={true} exact path='/etu/repondre-questions' component={RepondreQuestions}/>
 
         {/* POUR LES DEUX */}
-        <PrivateRoute forProf={true} exact path='/prof/profil' component={Profil}/>
+        <PrivateRoute exact path='/profil' component={Profil}/>
 
         {/* REDIRECTION */}
         <Route render={() => <Redirect to="/" />} />
