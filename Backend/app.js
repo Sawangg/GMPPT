@@ -8,7 +8,7 @@ const MySQLStore = require('express-mysql-session')(session);
 
 const authRouter = require("./routes/auth.js");
 const sujetRouter = require("./routes/sujet.js");
-const architectureRouter = require("./routes/sujet.js");
+const architectureRouter = require("./routes/architecture.js");
 
 const app = express();
 
