@@ -18,7 +18,7 @@ export default function PrivateRoute({forProf, component: Component, ...rest}) {
 
   const selection = (props) => {
     if (user.isLogin !== undefined) {
-      return user.isProf === forProf ? (
+      return user.isProf === forProf || forProf === undefined ? (
         <div>
           <Navbar />
           <MenuProfil />
