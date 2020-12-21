@@ -1,12 +1,21 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {useDropzone} from 'react-dropzone';
 import CloudUploadOutlinedIcon from '@material-ui/icons/CloudUploadOutlined';
 import { compress, decompress } from 'lz-string'
+import { TextField, Button } from '@material-ui/core';
 
 import '../styles/DropFile.css'
 
+import {addModeles} from '../utils/api'
+
 export default function DropFile(props) {
   const {acceptedFiles, getRootProps, getInputProps} = useDropzone({accept: 'image/jpeg, image/png', maxSize : 1000000});
+
+  const [numSujet, setNum] = useState(0);
+
+  const onChange = (e) => {
+    setNum(e.target.value);
+}
 
   const envoie = () =>{
     acceptedFiles.forEach((file) => {
@@ -20,14 +29,14 @@ export default function DropFile(props) {
     }
 
   const convertUrlToImage = (rawLog) =>{
-    let test = compress(rawLog);
-    let ok = decompress(test);
-    console.log(test.length)
-    console.log(ok.length)
-    let newImage = document.createElement('img');
-    newImage.style.width = '200px';
-    newImage.src = rawLog;
-    document.getElementById("imgTest").innerHTML = newImage.outerHTML;
+    let imageCompress = compress(rawLog);
+    addModeles(imageCompress, numSujet) //ENVOIE DE L'IMAGE
+    console.log("Envoyé !")
+    let ok = decompress(imageCompress);
+    // let newImage = document.createElement('img');
+    // newImage.style.width = '200px';
+    // newImage.src = ok;
+    // document.getElementById("imgTest").innerHTML = newImage.outerHTML;
   }
 
   function bytesToSize(bytes) { 
@@ -54,6 +63,7 @@ export default function DropFile(props) {
         <h4>Fichiers</h4>
         <ul>{files}</ul>
         <div id="imgTest"></div>
+        <TextField autoFocus size="small" label="Num du sujet" variant="outlined" required value={numSujet} onChange={e => onChange(e)}/>
         <button onClick={e => envoie()}>Envoyer</button>
       </aside>
     </div>

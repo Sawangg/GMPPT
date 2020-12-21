@@ -36,3 +36,9 @@ export function changePwd(username, password) {
         withCredentials: true,
     });
 }
+
+export function addModeles(modele, numSujet) {
+    return axios.post(`http://${process.env.REACT_APP_SERVER}:3001/sujet/modeles/new`, {"modele" : modele, "numSujet" : numSujet} , {
+        withCredentials: true,
+    })
+}
