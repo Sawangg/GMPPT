@@ -15,7 +15,7 @@ router.post('/login', passport.authenticate('local'), (req, res) => {
 router.get('/logout', isAuthenticated, (req, res) => {
     res.cookie("connection.sid", "" , { expires: new Date() });
     db.promise().execute(`DELETE FROM sessions WHERE session_id = '${req.sessionID}'`);
-    return res.redirect("/");
+    return res.redirect(200, "/"); //retorner status 200 et redirection obligatoirement comme ca
 });
 
 router.post('/changepwd/:username', isAuthenticated, async (req, res) => {

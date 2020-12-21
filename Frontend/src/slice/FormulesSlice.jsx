@@ -1,4 +1,14 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+
+import { getFormules } from '../utils/api.js';
+
+export const setTab = createAsyncThunk(
+  'formule/setTab',
+  async () => {
+    const response = await getFormules();
+    return response.data
+  }
+)
 
 export const formuleSlice = createSlice({
   name: 'formule',
@@ -21,22 +31,6 @@ export const formuleSlice = createSlice({
   }]
   }], actualise : false },
   reducers: {
-    setTab: (state, action) =>{
-      let array = action.payload;
-      array.forEach((element) => {
-        let tabFormule = []
-        element.formules.forEach((elemForm) =>{
-          tabFormule[elemForm.idx] = {
-            nomFormule : elemForm.nom,
-            formule : elemForm.contenu,
-            modif : false,
-            index : elemForm.idx
-          }
-        })
-        state.tab[element.idx] = {nom : element.nom, modif : false, index : element.idx, margeErreur : element.margeErreur, tabFormule : tabFormule, saveTabFormule : tabFormule}
-        state.actualise = true;
-      })
-    },
     addCategorie: (state) => {
       state.tab.push({
         nom: "",
@@ -105,9 +99,30 @@ export const formuleSlice = createSlice({
          }
     },
     },
+    extraReducers: {
+      [setTab.rejected]: (state, action) => {
+        console.log("erreur de chargement")
+      },
+      [setTab.fulfilled]: (state, action) => {
+        let array = action.payload;
+        array.forEach((element) => {
+        let tabFormule = []
+        element.formules.forEach((elemForm) =>{
+          tabFormule[elemForm.idx] = {
+            nomFormule : elemForm.nom,
+            formule : elemForm.contenu,
+            modif : false,
+            index : elemForm.idx
+          }
+        })
+        state.tab[element.idx] = {nom : element.nom, modif : false, index : element.idx, margeErreur : element.margeErreur, tabFormule : tabFormule, saveTabFormule : tabFormule}
+        state.actualise = true;
+      })
+      },
+    }
 });
 
-export const { setActualise, setTab, changeNom, addCategorie, removeCategorie, changeModifCategorie, addFormule, changeMargeErreurCategorie, undoFormule, changeNomFormule, changeFormule, changeModifFormule, removeFormule, changePositionFormule } = formuleSlice.actions;
+export const { setActualise, changeNom, addCategorie, removeCategorie, changeModifCategorie, addFormule, changeMargeErreurCategorie, undoFormule, changeNomFormule, changeFormule, changeModifFormule, removeFormule, changePositionFormule } = formuleSlice.actions;
 
 export const selectFormule = state => state.formule.tab;
 

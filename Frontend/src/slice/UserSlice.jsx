@@ -1,4 +1,22 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+
+import { getUserDetails, logout } from '../utils/api.js';
+
+export const userDetails = createAsyncThunk(
+  'users/getUserDetails',
+  async () => {
+    const response = await getUserDetails();
+    return response.data
+  }
+)
+
+export const logoutUser = createAsyncThunk(
+  'users/logout',
+  async () => {
+    const response = await logout();
+    return response.data
+  }
+)
 
 export const userSlice = createSlice({
   name: 'user',
@@ -7,6 +25,7 @@ export const userSlice = createSlice({
     password : "",
     isProf : false,
     isLogin : undefined,
+    erreur : false
   },
   reducers: {
     setUser: (state, action) => {
@@ -15,23 +34,43 @@ export const userSlice = createSlice({
         state.password = password;
         state.isProf = isProf;
     },
-    logoutUser : (state) =>{
-      state.isLogin = false;
-    },
     changeUserName : (state, action) => {
       state.name = action.payload;
+    },
+    changePassword : (state, action) => {
+      state.password = action.payload;
+    }
   },
-  changePassword : (state, action) => {
-    state.password = action.payload;
-  },
-  loginUser : (state, action) =>{
-    state.isLogin = true;
-    state.isProf = action.payload;
+  extraReducers: {
+    // [userDetails.pending]: state => {
+    //   console.log("chargement")
+    // },
+    [userDetails.rejected]: (state, action) => {
+      state.isLogin = false;
+      state.isProf = undefined;
+    },
+    [userDetails.fulfilled]: (state, action) => {
+      state.name = action.payload.username;
+      state.password = action.payload.password;
+      state.isProf = action.payload.isProf === 1 ? true : false;
+      state.isLogin = true;
+    },
+    [logoutUser.rejected]: (state, action) => {
+      state.name = "";
+      state.password = "";
+      state.isLogin = false;
+      state.isProf = undefined;
+    },
+    [logoutUser.fulfilled || logoutUser.rejected]: (state, action) => {
+      state.name = "";
+      state.password = "";
+      state.isLogin = false;
+      state.isProf = undefined;
+    }
   }
-  },
 });
 
-export const { setUser, changePassword, changeUserName, loginUser, logoutUser } = userSlice.actions;
+export const { setUser, changePassword, changeUserName } = userSlice.actions;
 
 export const selectUserName = state => state.user;
 export const selectIsLogin = state => state.user.selectIsLogin;

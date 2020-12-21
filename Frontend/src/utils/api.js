@@ -13,7 +13,7 @@ export function logout() {
     });
 }
 
-export function login(username, password) {
+export function setLogin(username, password) {
     return axios.post(`http://${process.env.REACT_APP_SERVER}:3001/auth/login`, { username, password }, {
         withCredentials: true,
     })
