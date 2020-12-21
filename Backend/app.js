@@ -6,9 +6,9 @@ const passport = require("passport");
 const cors = require("cors");
 const MySQLStore = require('express-mysql-session')(session);
 
-const etudiantRouter = require("./routes/etudiant.js");
 const authRouter = require("./routes/auth.js");
 const sujetRouter = require("./routes/sujet.js");
+const architectureRouter = require("./routes/sujet.js");
 
 const app = express();
 
@@ -39,9 +39,9 @@ app.use(passport.session());
 
 app.disable('x-powered-by');
 
-app.use('/etudiant', etudiantRouter);
 app.use('/auth', authRouter);
 app.use('/sujet', sujetRouter);
+app.use('/architecture', architectureRouter);
 
 app.listen(3001, () => {
     console.log("Le serveur fonctionne sur le port 3001");

@@ -20,13 +20,13 @@ export function setLogin(username, password) {
 }
 
 export function formules(tabFormules){
-    return axios.post(`http://${process.env.REACT_APP_SERVER}:3001/sujet/formules`, tabFormules, {
+    return axios.post(`http://${process.env.REACT_APP_SERVER}:3001/sujet/categories/new/0`, tabFormules, {
         withCredentials: true,
     })
 }
 
 export function getFormules(){
-    return axios.get(`http://${process.env.REACT_APP_SERVER}:3001/sujet/categories`, {
+    return axios.get(`http://${process.env.REACT_APP_SERVER}:3001/sujet/categories/0`, {
         withCredentials: true,
     });
 }
