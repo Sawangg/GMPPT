@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import { TextField, Button } from '@material-ui/core';
 
-import DropFile from '../components/DropFile'
+import DropFile from '../../components/DropFile'
 
 export default function Accueil(props) {
 

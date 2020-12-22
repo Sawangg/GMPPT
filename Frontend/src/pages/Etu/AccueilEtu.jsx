@@ -1,6 +1,6 @@
 import React from 'react'
 
-import MenuProfil from '../components/MenuProfil'
+import MenuProfil from '../../components/MenuProfil'
 
 
 export default function Accueil(props) {

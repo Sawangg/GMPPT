@@ -1,4 +1,4 @@
-import MyEditor from "../components/MyEditor";
+import MyEditor from "../../components/MyEditor";
 import React from "react";
 import {Button} from "@material-ui/core";
 

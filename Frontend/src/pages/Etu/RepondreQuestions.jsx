@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import Items from '../components/ItemQuestion'
+import Items from '../../components/ItemQuestion'
 
 import '../styles/RepondreQuestions.css'
 
