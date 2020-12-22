@@ -4,17 +4,19 @@ import { MuiThemeProvider, unstable_createMuiStrictModeTheme as createMuiTheme }
 //unstable_createMuiStrictModeTheme pour éviter les warnings strict mod de theme material ui
 import frFR from '@material-ui/core/locale';
 
-import Formules from './pages/Formules';
-import Login from './pages/Login';
-import AccueilProf from './pages/AccueilProf';
-import AccueilEtu from './pages/AccueilEtu';
-import RepondreQuestions from './pages/RepondreQuestions';
-import PrivateRoute from './components/PrivateRoute';
-import Profil from './pages/Profil';
-import ImportModele from './pages/ImportModele';
-import Correction from './pages/Correction';
+import Formules from './pages/Prof/Formules';
+import AccueilProf from './pages/Prof/AccueilProf';
+import ImportModele from './pages/Prof/ImportModele';
+import Correction from './pages/Prof/Correction';
+import Enonces from "./pages/Prof/Enonces";
 
-import Enonces from "./pages/Enonces";
+import RepondreQuestions from './pages/Etu/RepondreQuestions';
+import AccueilEtu from './pages/Etu/AccueilEtu';
+
+import Profil from './pages/Profil';
+import Login from './pages/Login';
+import PrivateRoute from './components/PrivateRoute';
+
 
 import { Provider } from 'react-redux';
 import store from './utils/store';
