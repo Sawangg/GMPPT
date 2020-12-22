@@ -4,13 +4,13 @@ import AddIcon from '@material-ui/icons/Add';
 import HighlightOffOutlinedIcon from '@material-ui/icons/HighlightOffOutlined';
 import CheckCircleOutlineOutlinedIcon from '@material-ui/icons/CheckCircleOutlineOutlined';
 
-import Items from '../components/ItemTodoAccordeon'
-import useConstructor from '../components/useContructor'
+import Items from '../../components/ItemTodoAccordeon'
+import useConstructor from '../../components/useContructor'
 
 import { useDispatch } from "react-redux";
-import { addCategorie, setTab, enregistrerFormules } from "../slice/FormulesSlice";
+import { addCategorie, setTab, enregistrerFormules } from "../../slice/FormulesSlice";
 import { useSelector } from "react-redux";
-import { selectFormule, selectActualise, selectEnregistre } from "../slice/FormulesSlice"
+import { selectFormule, selectActualise, selectEnregistre } from "../../slice/FormulesSlice"
 
 export default function TodoListAccordeon() {
 

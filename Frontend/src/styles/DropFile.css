@@ -2,7 +2,7 @@
     border : dashed 2px #075b72;
     text-align: center;
     cursor: pointer;
-    padding: 2%;
+    padding: 0 2%;
 }
 
 .divDrop:hover{

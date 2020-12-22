@@ -1,38 +1,67 @@
 import axios from 'axios';
 require("dotenv").config();
 
-export function getUserDetails() {
-    return axios.get(`http://${process.env.REACT_APP_SERVER}:3001/auth`, {
-        withCredentials: true,
-    });
+const credentials = {withCredentials: true}
+
+//User 
+export function getInfoUser() {
+    return axios.get(`http://${process.env.REACT_APP_SERVER}:3001/auth`, credentials);
 }
 
 export function logout() {
-    return axios.get(`http://${process.env.REACT_APP_SERVER}:3001/auth/logout`, {
-        withCredentials: true,
-    });
+    return axios.get(`http://${process.env.REACT_APP_SERVER}:3001/auth/logout`, credentials);
 }
 
-export function setLogin(username, password) {
-    return axios.post(`http://${process.env.REACT_APP_SERVER}:3001/auth/login`, { username, password }, {
-        withCredentials: true,
-    })
+export function getImageUser(username) {
+    return axios.get(`http://${process.env.REACT_APP_SERVER}:3001/auth/${username}/profilepic`, credentials)
 }
 
-export function formules(tabFormules){
-    return axios.post(`http://${process.env.REACT_APP_SERVER}:3001/sujet/categories/new/0`, tabFormules, {
-        withCredentials: true,
-    })
+export function login(username, password) {
+    return axios.post(`http://${process.env.REACT_APP_SERVER}:3001/auth/login`, { username, password }, credentials)
 }
 
-export function getFormules(){
-    return axios.get(`http://${process.env.REACT_APP_SERVER}:3001/sujet/categories/0`, {
-        withCredentials: true,
-    });
+export function setImageUser(username, image) {
+    return axios.post(`http://${process.env.REACT_APP_SERVER}:3001/auth/${username}/profilepic/new`, image, credentials)
 }
 
-export function changePwd(username, password) {
-    return axios.post(`http://${process.env.REACT_APP_SERVER}:3001/auth/changepwd/${username}`, { 'newPassword' : password }, {
-        withCredentials: true,
-    });
+export function setPwdUser(username, newPassword) {
+    return axios.post(`http://${process.env.REACT_APP_SERVER}:3001/auth/${username}/changepwd`, { 'newPassword' : newPassword }, credentials)
+}
+
+//Formules
+export function getCategoriesFormules(idModele){
+    return axios.get(`http://${process.env.REACT_APP_SERVER}:3001/modele/${idModele}/categories`, credentials)
+}
+
+export function addCategorieFormule(idModele, tabFormules){
+    return axios.post(`http://${process.env.REACT_APP_SERVER}:3001/modele/${idModele}/categories/new`, tabFormules, credentials)
+}
+
+//Modele
+export function getInfoModele(idModele){
+    return axios.get(`http://${process.env.REACT_APP_SERVER}:3001/modele/${idModele}`, credentials)
+}
+
+export function deleteModele(idModele){
+    return axios.get(`http://${process.env.REACT_APP_SERVER}:3001/modele/${idModele}/delete`, credentials)
+}
+
+export function getAllModel(){
+    return axios.get(`http://${process.env.REACT_APP_SERVER}:3001/modele`, credentials)
+}
+
+//renvoie ausi le numéro modele
+export function addModele(idModele){
+    return axios.post(`http://${process.env.REACT_APP_SERVER}:3001/modele/new`, idModele, credentials)
+}
+
+//Architectures
+export function getInfoArchi(/*archi*/){
+    const archi = 0;
+    return axios.get(`http://${process.env.REACT_APP_SERVER}:3001/architecture/${archi}/modeles`, credentials)
+}
+
+export function addArchi(/*archi*/){
+    const archi = 0;
+    return axios.post(`http://${process.env.REACT_APP_SERVER}:3001/architecture/${archi}/modeles/new`, credentials)
 }
