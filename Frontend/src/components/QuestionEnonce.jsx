@@ -15,7 +15,7 @@ export default function QuestionEnonce(props) {
                     ]}}
                 lang="fr"
                 placeholder="Tapez votre question ici..."
-                height="200"
+                height="50"
                 setDefaultStyle="background-color: lightgrey"
             />
         </div>

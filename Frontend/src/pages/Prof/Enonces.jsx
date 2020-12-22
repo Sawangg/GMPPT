@@ -31,17 +31,24 @@ export default function Enonces() {
         setQuestion(tempArray);
     };
 
+    const deleteQuestion = () => {
+        let tempArray = [...question];
+        tempArray.pop();
+        setQuestion(tempArray)
+    }
+
     return (
         <div>
             <div style={{width: "70%", margin: 'auto'}}>
                 <h1 style={{textAlign: 'center'}}>Création de l'énoncé</h1>
                 <MyEditor handleChange={e => handleChangeEnonce(e)}/>
-                <Button onClick={() => sendContent()}>Enregistrer</Button>
+                <Button variant="contained" color="primary" onClick={() => sendContent()}>Enregistrer</Button>
             </div>
             {question.map((item) => {
                 return <QuestionEnonce key={item.index} handleChange={e => handleChangeQuestion(e, item.index)}/>
             })}
-            <Button className="center" onClick={() => addQuestion()}>Ajouter une question</Button>
+            <Button variant="contained" color="primary" className="center" onClick={() => addQuestion()}>Ajouter une question</Button>
+            <Button variant="contained" color="secondary" className="center" onClick={() => deleteQuestion()}>Supprimer une question</Button>
         </div>
     );
 }
