@@ -46,13 +46,13 @@ export function deleteModele(idModele){
     return axios.get(`http://${process.env.REACT_APP_SERVER}:3001/modele/${idModele}/delete`, credentials)
 }
 
-export function getAllModel(){
+export function getAllModele(){
     return axios.get(`http://${process.env.REACT_APP_SERVER}:3001/modele`, credentials)
 }
 
 //renvoie ausi le numéro modele
-export function addModele(idModele){
-    return axios.post(`http://${process.env.REACT_APP_SERVER}:3001/modele/new`, idModele, credentials)
+export function addModele(nomModele){
+    return axios.post(`http://${process.env.REACT_APP_SERVER}:3001/modele/new`, {"nommodele" : nomModele}, credentials)
 }
 
 //Architectures

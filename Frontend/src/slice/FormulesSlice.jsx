@@ -4,16 +4,16 @@ import { getCategoriesFormules, addCategorieFormule } from '../utils/api.js';
 
 export const setTab = createAsyncThunk(
   'formule/setTab',
-  async () => {
-    const response = await getCategoriesFormules();
+  async (idModele) => {
+    const response = await getCategoriesFormules(idModele);
     return response.data
   }
 )
 
 export const enregistrerFormules = createAsyncThunk(
   'formule/enregistrerFormules',
-  async (tab) => {
-    const response = await addCategorieFormule(0, tab); ///0 a change en idModele
+  async (props) => {
+    const response = await addCategorieFormule(props.idModele, props.tab); 
     return response.data
   }
 )
@@ -122,7 +122,28 @@ export const formuleSlice = createSlice({
     },
     extraReducers: {
       [setTab.rejected]: (state, action) => {
-        console.log("erreur de chargement")
+        if (action.error.message === "Request failed with status code 404"){
+          state.tab = [{
+            nom: "",
+            modif : true,
+            index : 0,
+            margeErreur : "5",
+            tabFormule : [{
+                nomFormule: "",
+                formule : "",
+                modif : true,
+                index : 0
+            }],
+            saveTabFormule : [{
+              nomFormule: "",
+              formule : "",
+              modif : true,
+              index : 0
+          }]
+          }];
+          state.actualise = true;
+          state.enregistre = false;
+        }
       },
       [setTab.fulfilled]: (state, action) => {
         let array = action.payload;
@@ -146,7 +167,6 @@ export const formuleSlice = createSlice({
       },
       [enregistrerFormules.fulfilled]: (state, action) => {
         state.enregistre = true;
-        console.log("oki")
       },
     }
 });
