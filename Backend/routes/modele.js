@@ -18,7 +18,7 @@ router.post('/:idmodele/categories/new', isAuthenticated, isProf, async (req, re
 router.get('/:idmodele/categories/', isAuthenticated, isProf, async (req, res) => {
     const { idmodele } = req.params;
     let arr = [];
-    await db.promise().execute(`SELECT * FROM categoriesTest C JOIN formulesTest F ON C.categoIdx = F.categoIdx WHERE id_modele = ${idmodele} ORDER BY C.categoIdx`).then(async ([rows]) => {
+    await db.promise().execute(`SELECT * FROM categoriesTest C JOIN formulesTest F ON C.categoIdx = F.categoIdx WHERE C.id_modele = ${idmodele} ORDER BY C.categoIdx`).then(async ([rows]) => {
         if (!rows[0]) return res.sendStatus(404);
         let compt = -1;
         rows.forEach(r => {
