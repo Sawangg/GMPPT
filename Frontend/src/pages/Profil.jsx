@@ -6,7 +6,7 @@ import PopUp from '../components/PopUp';
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { selectUserName, changePassword } from "../slice/UserSlice";
-import { changePwd } from '../utils/api.js';
+import { setPwdUser } from '../utils/api.js';
 
 export default function Profile() {
 
@@ -21,7 +21,7 @@ export default function Profile() {
 
     const changePasswordAPI = () => {
         if(oldPassword === user.password) {
-            changePwd(user.name, newPassword)
+            setPwdUser(user.name, newPassword)
             .then(() => {
                 setError(false);
                 dispatch(changePassword(newPassword));

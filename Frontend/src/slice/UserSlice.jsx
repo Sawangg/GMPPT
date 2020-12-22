@@ -1,11 +1,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-import { getUserDetails, logout } from '../utils/api.js';
+import { getInfoUser, logout } from '../utils/api.js';
 
 export const userDetails = createAsyncThunk(
-  'users/getUserDetails',
+  'users/getInfoUser',
   async () => {
-    const response = await getUserDetails();
+    const response = await getInfoUser();
     return response.data
   }
 )

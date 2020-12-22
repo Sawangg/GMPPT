@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import Items from '../../components/ItemQuestion'
 
-import '../styles/RepondreQuestions.css'
+import '../../styles/RepondreQuestions.css'
 
 export default function RepondreQuestions(){
     const [questionsTab, setQuestionTab] = useState([
