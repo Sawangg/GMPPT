@@ -7,7 +7,7 @@ const cors = require("cors");
 const MySQLStore = require('express-mysql-session')(session);
 
 const authRouter = require("./routes/auth.js");
-const sujetRouter = require("./routes/sujet.js");
+const modeleRouter = require("./routes/modele.js");
 const architectureRouter = require("./routes/architecture.js");
 
 const app = express();
@@ -40,7 +40,7 @@ app.use(passport.session());
 app.disable('x-powered-by');
 
 app.use('/auth', authRouter);
-app.use('/sujet', sujetRouter);
+app.use('/modele', modeleRouter);
 app.use('/architecture', architectureRouter);
 
 app.listen(3001, () => {
