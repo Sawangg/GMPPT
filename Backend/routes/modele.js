@@ -9,7 +9,7 @@ router.post('/:idmodele/categories/new', isAuthenticated, isProf, async (req, re
     req.body.forEach(async categorie => {
         await db.promise().execute(`INSERT INTO categoriesTest VALUES (${categorie.index}, '${categorie.nom}', ${categorie.margeErreur}, ${idmodele})`);
         categorie.tabFormule.forEach(async formule => {
-            await db.promise().execute(`INSERT INTO formulesTest VALUES (${formule.index}, '${formule.nomFormule}', '${formule.formule}', ${categorie.index})`);
+            await db.promise().execute(`INSERT INTO formulesTest VALUES (${formule.index}, '${formule.nomFormule}', '${formule.formule}', ${categorie.index}, ${idmodele})`);
         });
     });
     return res.sendStatus(200);
