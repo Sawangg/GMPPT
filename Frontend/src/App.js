@@ -9,6 +9,7 @@ import AccueilProf from './pages/Prof/AccueilProf';
 import ImportModele from './pages/Prof/ImportModele';
 import Correction from './pages/Prof/Correction';
 import Enonces from "./pages/Prof/Enonces";
+import VariableAleatoires from './pages/Prof/VariablesAleatoires'
 
 import RepondreQuestions from './pages/Etu/RepondreQuestions';
 import AccueilEtu from './pages/Etu/AccueilEtu';
@@ -44,6 +45,7 @@ function App() {
         <PrivateRoute forProf={true} exact path='/prof/formules' component={Formules}/>
         <PrivateRoute forProf={true} exact path='/prof/modeles3D' component={ImportModele}/>
         <PrivateRoute forProf={true} exact path='/prof/gestion-correction' component={Correction}/>
+        <PrivateRoute forProf={true} exact path='/prof/variable-aleatoires' component={VariableAleatoires}/>
 
         {/* ETU */}
         <PrivateRoute forProf={false} exact path='/etu/home' component={AccueilEtu}/>

@@ -1,7 +1,7 @@
 import React, {useCallback} from 'react';
 import {useDropzone} from 'react-dropzone';
 import CloudUploadOutlinedIcon from '@material-ui/icons/CloudUploadOutlined';
-import { compress, decompress } from 'lz-string';
+import { compress } from 'lz-string';
 
 import '../styles/DropFile.css'
 
@@ -13,15 +13,18 @@ export default function DropFile(props) {
       reader.readAsDataURL(file);
       reader.onload = () =>{
         let rawLog = reader.result;
-        props.changeModele(compress(rawLog))
+        let compressRaw = compress(rawLog)
+        const data = new FormData() ;
+        data.append('file', compressRaw);
+        props.changeModele(data)
       };
     })
-  })
+  }, [props])
 
   const {acceptedFiles, getRootProps, getInputProps} = useDropzone({onDrop, accept: 'image/jpeg, image/png', maxSize : 1000000, maxFiles : 1})
 
   const files = acceptedFiles.map(file => (
-      <p>{file.path}</p>
+      <p key={file.path}>{file.path}</p>
     ));
 
   return (
