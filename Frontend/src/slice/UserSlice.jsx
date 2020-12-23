@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-import { getInfoUser, logout } from '../utils/api.js';
+import { getInfoUser, logout, setImageUser, getImageUser } from '../utils/api.js';
 
 export const userDetails = createAsyncThunk(
   'users/getInfoUser',
@@ -18,11 +18,30 @@ export const logoutUser = createAsyncThunk(
   }
 )
 
+export const setUserImage = createAsyncThunk(
+  'users/setUserImage',
+  async (props) => {
+    const data = new FormData() ;
+    data.append('profilePic', props.image);
+    const response = await  setImageUser(props.name, data);
+    return response.data
+  }
+)
+
+export const getUserImage = createAsyncThunk(
+  'users/getUserImage',
+  async (name) => {
+    const response = await  getImageUser(name);
+    return response.data
+  }
+)
+
 export const userSlice = createSlice({
   name: 'user',
   initialState: {
     name: "",
     password : "",
+    image : undefined,
     isProf : false,
     isLogin : undefined,
     erreur : false
@@ -42,9 +61,6 @@ export const userSlice = createSlice({
     }
   },
   extraReducers: {
-    // [userDetails.pending]: state => {
-    //   console.log("chargement")
-    // },
     [userDetails.rejected]: (state, action) => {
       state.isLogin = false;
       state.isProf = undefined;
@@ -55,17 +71,25 @@ export const userSlice = createSlice({
       state.isProf = action.payload.isProf === 1 ? true : false;
       state.isLogin = true;
     },
-    [logoutUser.rejected]: (state, action) => {
-      state.name = "";
-      state.password = "";
-      state.isLogin = false;
-      state.isProf = undefined;
-    },
     [logoutUser.fulfilled || logoutUser.rejected]: (state, action) => {
       state.name = "";
       state.password = "";
       state.isLogin = false;
       state.isProf = undefined;
+    },
+    [setUserImage.rejected]: (state, action) => {
+      console.log("non")
+    },
+    [setUserImage.fulfilled]: (state, action) => {
+      console.log("parfait")
+    },
+    [getUserImage.rejected]: (state, action) => {
+      console.log("nop")
+    },
+    [getUserImage.fulfilled]: (state, action) => {
+      console.log("oki")
+      let imageBase64 = 'data:image/jpeg;base64,'+btoa(action.payload.profilepic.data.reduce((data, byte) => data + String.fromCharCode(byte),''));
+      state.image = imageBase64;
     }
   }
 });

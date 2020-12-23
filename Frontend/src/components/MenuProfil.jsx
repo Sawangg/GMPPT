@@ -4,10 +4,12 @@ import { Redirect, Link } from "react-router-dom";
 import AccountBoxOutlinedIcon from '@material-ui/icons/AccountBoxOutlined';
 import ExitToAppOutlinedIcon from '@material-ui/icons/ExitToAppOutlined';
 
+import useConstructor from './use/useContructor';
+
 import { useDispatch } from "react-redux";
 import { logoutUser } from "../slice/UserSlice";
 import { useSelector } from "react-redux";
-import { selectUserName } from "../slice/UserSlice"
+import { selectUserName, getUserImage } from "../slice/UserSlice"
 
 export default function MenuProfil() {
 
@@ -15,11 +17,18 @@ export default function MenuProfil() {
 
   const dispatch = useDispatch();
   const user = useSelector(selectUserName);
+  
+  useConstructor(() => {
+      if (user.name !== "") dispatch(getUserImage(user.name))
+    });
 
   return (
     <div style={{position : "absolute", right : 30, top : 17.5, display : "flex"}}>
         <IconButton aria-controls="simple-menu" aria-haspopup="true" onClick={e => setOpenLocation(e.currentTarget)}>
-            <Avatar style={{backgroundColor : "#c51150"}}>{user.name.substring(0, 1).toUpperCase()}</Avatar>
+            {user.image === undefined
+                ?<Avatar style={{backgroundColor : "#c51150"}}>{user.name.substring(0, 1).toUpperCase()}</Avatar>
+                :<Avatar src={user.image}/>
+            }
         </IconButton>
         <Menu
             transformOrigin={{ vertical: "bottom", horizontal: "center" }}

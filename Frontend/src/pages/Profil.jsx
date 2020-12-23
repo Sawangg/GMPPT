@@ -7,9 +7,9 @@ import DropFile from '../components/DropFile'
 
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { selectUserName, changePassword } from "../slice/UserSlice";
+import { selectUserName, changePassword, setUserImage, getUserImage } from "../slice/UserSlice";
 
-import { setPwdUser, setImageUser } from '../utils/api.js';
+import { setPwdUser } from '../utils/api.js';
 
 export default function Profile() {
 
@@ -33,17 +33,6 @@ export default function Profile() {
             setPassword({oldPassword : password.oldPassword, newPassword : password.newPassword, error : true})
         }
     }
-
-    const enregistrerImage = () =>{
-        console.log(image)
-        setImageUser(user.name, image)
-        .then((data)=>{
-            console.log("yes")
-        })
-        .catch(() =>{
-            console.log("nop")
-        });
-    }
     
     return (
         <>
@@ -60,7 +49,10 @@ export default function Profile() {
                 </CardActions>
                 <CardActions style={{display : "flex", flexDirection :"column"}}>
                     <DropFile changeModele={e => setImage(e)}  message="Importer une image de profil (moins de 1Mo)"/>
-                    <Button onClick={() => enregistrerImage()}>Enregistrer l'image</Button>
+                    <Button onClick={() => {
+                        dispatch(setUserImage({name : user.name, image : image}));
+                        dispatch(getUserImage(user.name));
+                    }}>Enregistrer l'image</Button>
                 </CardActions>
                 <CardActions>
                     <InputPassword label={"Mot de passe actuel"} error={password.error} 

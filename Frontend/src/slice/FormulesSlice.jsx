@@ -52,6 +52,7 @@ export const formuleSlice = createSlice({
             index : 0
         }]
       })
+      state.enregistre = false;
     },
     changeNom: (state, action) =>{
         state.tab[action.payload.index].nom = action.payload.event;
