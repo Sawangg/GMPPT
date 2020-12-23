@@ -1,12 +1,13 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Fab, Button, CircularProgress} from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import HighlightOffOutlinedIcon from '@material-ui/icons/HighlightOffOutlined';
 import CheckCircleOutlineOutlinedIcon from '@material-ui/icons/CheckCircleOutlineOutlined';
 
-import Items from '../../components/ItemTodoAccordeon'
-import useConstructor from '../../components/useContructor'
+import Items from '../../components/formules/ItemTodoAccordeon'
+import useConstructor from '../../components/use/useContructor'
 import SelectionModele from '../../components/SelectionModele'
+import useUnload from '../../components/use/useUnload';
 
 import { useDispatch } from "react-redux";
 import { addCategorie, setTab, enregistrerFormules } from "../../slice/FormulesSlice";
@@ -32,19 +33,12 @@ export default function TodoListAccordeon() {
             setOpen(true);
         } 
     });
+    
+    useUnload(!isEnregistre);
 
     const addValue = () => {
         dispatch(addCategorie());
     }
-
-    const handleBeforeUnload = event => {
-        if (!isEnregistre) event.preventDefault(); 
-    }
-
-    useEffect(() => {
-        window.addEventListener("beforeunload", handleBeforeUnload);
-        return () =>  window.removeEventListener("beforeunload", handleBeforeUnload);
-      }, [isEnregistre]);
 
     const displayFormule = () =>{
         return(
@@ -52,15 +46,19 @@ export default function TodoListAccordeon() {
                 <h1 style={{textAlign : "center"}}>Creation des formules</h1>
                 {!actualise ? <CircularProgress className="center"/> :
                 <>
-                <Fab style={{marginLeft : "5%"}} size="small" color="primary" aria-label="add" onClick={(e => addValue())}>
-                    <AddIcon />
-                </Fab>
-                <div style={{display : "flex", marginTop : 30}}>
-                    <Button onClick={e => dispatch(enregistrerFormules({tab : tab, idModele : modele.idModeleSelectionne}))}>Enregistrer</Button>
-                    {isEnregistre 
-                        ? <CheckCircleOutlineOutlinedIcon fontSize="large" style={{color : "green"}}/> 
-                        : <HighlightOffOutlinedIcon fontSize="large"  style={{color : "red"}}/>
-                    }
+                <div style={{display : "flex"}}>
+                    <Button variant="outlined" color={isEnregistre ? "primary" : "secondary"}
+                        onClick={e => dispatch(enregistrerFormules({tab : tab, idModele : modele.idModeleSelectionne}))}
+                        endIcon={isEnregistre 
+                             ? <CheckCircleOutlineOutlinedIcon fontSize="large" style={{color : "green"}}/> 
+                            : <HighlightOffOutlinedIcon fontSize="large"  style={{color : "red"}}/>
+                        }
+                    >
+                        Enregistrer
+                    </Button>
+                    <Fab style={{marginLeft : "5%"}} size="small" color="primary" aria-label="add" onClick={(e => addValue())}>
+                        <AddIcon />
+                    </Fab>
                 </div>
                 {tab.map((i, id) => (
                 <Items index={id} key={i.index} item={i} length={tab.length}/>

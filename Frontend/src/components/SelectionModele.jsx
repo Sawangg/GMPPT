@@ -3,7 +3,7 @@ import {Button, Dialog, DialogActions, DialogContent, DialogTitle, InputLabel, I
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 
-import useConstructor from './useContructor'
+import useConstructor from './use/useContructor'
 
 import { useDispatch } from "react-redux";
 import { setTab } from "../slice/FormulesSlice";
