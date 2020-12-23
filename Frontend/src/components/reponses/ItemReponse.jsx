@@ -12,17 +12,32 @@ export default function Item(props) {
           )
      }
 
-   return(<div className="reponse">
-               <TextField label={"Reponse " + (props.num + 1)} variant="outlined" size="small" 
-               value={props.reponse.value} onChange={e => props.handleChangeReponse(e, props.num)}
-               InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="start">
-                        {props.unite.abrv}
-                      </InputAdornment>
-                    ),
-                  }} />
-               {props.peutSupprimer() ? buttonDelete() : null}
-          </div>)
+     const afficherUnite = () =>{
+          return(
+               props.unite.map((i) => (
+                    <var>
+                         {props.unites[i.id].abrv}
+                         {i.puissance != 1 && i.id != 0 ?
+                         <sup> {i.puissance} </sup>
+                         : null}
+                    </var>
+                    )
+               )
+               
+          )
+     }
+
+     return(<div className="reponse">
+                    <TextField label={"Reponse " + (props.num + 1)} variant="outlined" size="small" 
+                    value={props.reponse.value} onChange={e => props.handleChangeReponse(e, props.num)}
+                    InputProps={{
+                         endAdornment: (
+                              <InputAdornment position="start">
+                              {afficherUnite()}                               
+                              </InputAdornment>
+                         ),
+                    }} />
+                    {props.peutSupprimer() ? buttonDelete() : null}
+               </div>)
 
 }
