@@ -20,8 +20,7 @@ router.post('/:idarchi/modeles/new', isAuthenticated, isProf, async (req, res) =
     db.promise().query(`INSERT INTO modeles3D SET ?;`, insert)
         .then(() => {
             return res.sendStatus(200);
-        }).catch(err => {
-            console.log(err);
+        }).catch(() => {
             return res.sendStatus(500);
         });
 });
