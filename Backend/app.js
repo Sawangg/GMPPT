@@ -2,6 +2,7 @@ require("dotenv").config();
 require("./strategies/local.js");
 const express = require("express");
 const session = require("express-session");
+const fileUpload = require('express-fileupload');
 const passport = require("passport");
 const cors = require("cors");
 const MySQLStore = require('express-mysql-session')(session);
@@ -9,6 +10,7 @@ const MySQLStore = require('express-mysql-session')(session);
 const authRouter = require("./routes/auth.js");
 const modeleRouter = require("./routes/modele.js");
 const architectureRouter = require("./routes/architecture.js");
+const etudiantRouter = require("./routes/etudiant.js");
 
 const app = express();
 
@@ -33,6 +35,7 @@ app.use(cors({
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(fileUpload());
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -42,6 +45,7 @@ app.disable('x-powered-by');
 app.use('/auth', authRouter);
 app.use('/modele', modeleRouter);
 app.use('/architecture', architectureRouter);
+app.use('/etudiant', etudiantRouter);
 
 app.listen(3001, () => {
     console.log("Le serveur fonctionne sur le port 3001");

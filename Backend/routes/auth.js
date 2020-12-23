@@ -32,10 +32,16 @@ router.get('/:username/profilepic', isAuthenticated, async (req, res) => {
     });
 });
 
-router.post('/:username/profilpic/new', isAuthenticated, async (req, res) => {
+router.post('/:username/profilepic/new', isAuthenticated, async (req, res) => {
     const { username } = req.params;
-    const { image } = req.body;
-    await db.promise().execute(`UPDATE authentification SET 'profilepic' = ${image} WHERE username = '${username}'`);
+     const { profilePic } = req.body;
+    const insert = {
+        profilePic
+    };
+    await db.promise().query(`UPDATE authentification SET ? WHERE username = '${username}'`, insert)
+        .catch(err => {
+            return res.sendStatus(500);
+        });
     return res.sendStatus(200);
 });
 
