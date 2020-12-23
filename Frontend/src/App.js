@@ -47,7 +47,7 @@ function App() {
 
         {/* ETU */}
         <PrivateRoute forProf={false} exact path='/etu/home' component={AccueilEtu}/>
-        <PrivateRoute forProf={true} exact path='/etu/repondre-questions' component={RepondreQuestions}/>
+        <PrivateRoute forProf={false} exact path='/etu/repondre-questions' component={RepondreQuestions}/>
 
         {/* POUR LES DEUX */}
         <PrivateRoute exact path='/profil' component={Profil}/>
