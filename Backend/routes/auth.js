@@ -34,8 +34,8 @@ router.get('/:username/profilepic', isAuthenticated, async (req, res) => {
 
 router.post('/:username/profilepic/new', isAuthenticated, async (req, res) => {
     const { username } = req.params;
-    const { profilePic } = req.body;
-    await db.promise().query(`UPDATE authentification SET ? WHERE username = '${username}'`, { profilePic })
+    const { profilePic } = req.files;
+    await db.promise().query(`UPDATE authentification SET ? WHERE username = '${username}'`, { profilePic : profilePic.data })
         .catch(err => {
             return res.sendStatus(500);
         });
