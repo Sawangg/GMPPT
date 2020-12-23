@@ -5,9 +5,9 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 
-import '../styles/ItemTodoFormule.css'
+import '../../styles/ItemTodoFormule.css'
 
-import { changeNomFormule, changeFormule, changeModifFormule, changePositionFormule } from "../slice/FormulesSlice"
+import { changeNomFormule, changeFormule, changeModifFormule, changePositionFormule } from "../../slice/FormulesSlice"
 import { useDispatch } from "react-redux";
 
 export default function Item(props) {

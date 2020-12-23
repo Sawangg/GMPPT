@@ -1,47 +1,48 @@
 import React, { useState } from 'react';
 import { Card, CardActions, CardContent, CardMedia, Button, Typography} from '@material-ui/core';
+
 import InputPassword from '../components/InputPassword';
 import PopUp from '../components/PopUp';
+import DropFile from '../components/DropFile'
 
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { selectUserName, changePassword } from "../slice/UserSlice";
-import { setPwdUser } from '../utils/api.js';
+
+import { setPwdUser, setImageUser } from '../utils/api.js';
 
 export default function Profile() {
 
     const user = useSelector(selectUserName);
-
     const dispatch = useDispatch();
 
-    const [error, setError] = useState(false);
     const [openPopUp, setOpenPopUp] = useState(false);
-    const [oldPassword, setOldPassword] = useState();
-    const [newPassword, setNewPassword] = useState();
+    const [password, setPassword] = useState({oldPassword : "", newPassword  :"", error : false});
+    const [image, setImage] = useState("")
 
     const changePasswordAPI = () => {
-        if(oldPassword === user.password) {
-            setPwdUser(user.name, newPassword)
+        if(password.oldPassword === user.password) {
+            setPwdUser(user.name, password.newPassword)
             .then(() => {
-                setError(false);
-                dispatch(changePassword(newPassword));
+                dispatch(changePassword(password.newPassword));
                 setOpenPopUp(true);
             }).catch(() => {
-                setError(true);
+                setPassword({oldPassword : password.oldPassword, newPassword : password.newPassword, error : true})
             });
         } else {
-            setError(true);
+            setPassword({oldPassword : password.oldPassword, newPassword : password.newPassword, error : true})
         }
     }
 
-    const updateOldPwd = (e) => {
-        setError(false);
-        setOldPassword(e.target.value)
-    }
-    
-    const updateNewPwd = (e) => {
-        setError(false);
-        setNewPassword(e.target.value)
+    const enregistrerImage = () =>{
+        console.log(image)
+        setImageUser(user.name, image)
+        .then((data)=>{
+            console.log("yes")
+        })
+        .catch(() =>{
+            console.log("nop")
+        });
     }
     
     return (
@@ -57,11 +58,17 @@ export default function Profile() {
                     <Typography variant="body2" color="textSecondary" component="p">Status : {user.isProf ? "professeur" : "étudiant"}</Typography>
                 </CardContent>
                 </CardActions>
-                <CardActions>
-                    <InputPassword label={"Mot de passe actuel"} error={error} onChange={e => updateOldPwd(e)}/>
+                <CardActions style={{display : "flex", flexDirection :"column"}}>
+                    <DropFile changeModele={e => setImage(e)}  message="Importer une image de profil (moins de 1Mo)"/>
+                    <Button onClick={() => enregistrerImage()}>Enregistrer l'image</Button>
                 </CardActions>
                 <CardActions>
-                    <InputPassword label={"Nouveau mot de passe"} error={error} onChange={e => updateNewPwd(e)}/>
+                    <InputPassword label={"Mot de passe actuel"} error={password.error} 
+                        onChange={e =>  setPassword({oldPassword : e.target.value, newPassword : password.newPassword, error : false})}
+                    />
+                    <InputPassword label={"Nouveau mot de passe"} error={password.error} 
+                        onChange={e => setPassword({oldPassword : password.oldPassword, newPassword : e.target.value, error : false})}
+                    />
                 </CardActions>
                 <CardActions>
                     <Button size="small" color="primary" onClick={e => changePasswordAPI()}>Changer de mot de passe</Button>

@@ -1,35 +1,30 @@
-import React from 'react'
+import React, {useState} from 'react'
+import {Button} from '@material-ui/core';
+
 
 import Etapes from '../../components/Etapes'
-import useConstructor from '../../components/useContructor'
 import SelectionModele from '../../components/SelectionModele'
+import useConstructor from '../../components/use/useContructor'
 
 import { useDispatch } from "react-redux";
-import { setTab } from "../../slice/FormulesSlice";
-import { userDetails } from "../../slice/UserSlice";
+import { getModele} from "../../slice/ModeleSlice";
 import { useSelector } from "react-redux";
-import { selectActualise } from "../../slice/FormulesSlice"
-
-import { getFormules } from '../../utils/api.js';
+import { selectModele } from "../../slice/ModeleSlice"
 
 export default function Accueil() {
 
+    const [open, setOpen] = useState(false);
     const dispatch = useDispatch();
-    const actualise = useSelector(selectActualise);
+    const modele = useSelector(selectModele);
 
-    // useConstructor(() => {
-    //     dispatch(userDetails())
-    //     if (!actualise){
-    //         getFormules()
-    //         .then((data) => dispatch(setTab(data.data)))
-    //         .catch(() => null);
-    //     }
-    // });
-
+    useConstructor(() => {
+        if (!modele.actualise) dispatch(getModele())
+    });
 
     return (
         <div>
-            <SelectionModele/>
+            <Button style={{display : "block", margin : "100px auto"}} variant="contained" color="primary" onClick={e => setOpen(true)}>Choisir modele sujet</Button>
+            <SelectionModele tard={true} setOpen={e => setOpen(e)} open={open}/>
             <Etapes/>
         </div>
     );
