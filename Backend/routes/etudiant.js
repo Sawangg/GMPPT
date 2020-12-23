@@ -3,10 +3,8 @@ const db = require("../databases.js");
 const router = Router();
 const { isAuthenticated, isProf } = require("../middleware.js");
 const ExcelJS = require('exceljs');
-require("dotenv").config();
-const fs = require("fs");
 
-router.post('/new', async (req, res) => {
+router.post('/new', isAuthenticated, isProf, async (req, res) => {
     const { idpromo } = req.body;
     const workbook = new ExcelJS.Workbook();
     const feuille = (await workbook.xlsx.load(req.files.fileUploaded.data)).worksheets[0];
@@ -33,8 +31,8 @@ router.post('/new', async (req, res) => {
     insertEtu = insertEtu.slice(0, -1);
     console.log(insertEtu);
     await db.promise().execute(insertAuth);
-    db.promise().execute(insertEtu);
-    res.sendStatus(200);
+    await db.promise().execute(insertEtu);
+    return res.sendStatus(200);
 });
 
 module.exports = router;

@@ -14,36 +14,41 @@ router.post('/login', passport.authenticate('local'), (req, res) => {
 
 router.get('/logout', isAuthenticated, (req, res) => {
     res.cookie("connection.sid", "", { expires: new Date() });
-    db.promise().execute(`DELETE FROM sessions WHERE session_id = '${req.sessionID}'`);
-    return res.sendStatus(200);
-});
-
-router.post('/:username/changepwd', isAuthenticated, async (req, res) => {
-    const { username } = req.params;
-    await db.promise().execute(`UPDATE authentification SET password = '${req.body.newPassword}' WHERE username = '${username}'`);
-    return res.sendStatus(200);
-});
-
-router.get('/:username/profilepic', isAuthenticated, async (req, res) => {
-    const { username } = req.params;
-    await db.promise().execute(`SELECT profilepic FROM authentification WHERE username = '${username}'`).then(async ([rows]) => {
-        if (!rows[0]) return res.sendStatus(404);
-        return res.send(rows[0]).status(200);
+    db.promise().execute(`DELETE FROM sessions WHERE session_id = '${req.sessionID}'`).then(() => {
+        return res.sendStatus(200);
+    }).catch(() => {
+        return res.sendStatus(500);
     });
 });
 
-router.post('/:username/profilepic/new', isAuthenticated, async (req, res) => {
+router.post('/:username/changepwd', isAuthenticated, (req, res) => {
     const { username } = req.params;
-    const { profilePic } = req.files;
-    await db.promise().query(`UPDATE authentification SET ? WHERE username = '${username}'`, { profilePic : profilePic.data })
-        .catch(err => {
-            return res.sendStatus(500);
-        });
-    return res.sendStatus(200);
+    db.promise().execute(`UPDATE authentification SET password = '${req.body.newPassword}' WHERE username = '${username}'`).then(() => {
+        if (!rows[0]) return res.sendStatus(404);
+        return res.sendStatus(200);
+    }).catch(() => {
+        return res.sendStatus(500);
+    });
 });
 
-// router.post('/signin', (req, res) => {
-//     const { username, password } = req.params;
-// });
+router.get('/:username/profilepic', isAuthenticated, (req, res) => {
+    const { username } = req.params;
+    db.promise().execute(`SELECT profilepic FROM authentification WHERE username = '${username}'`).then(([rows]) => {
+        if (rows[0].profilepic == null) return res.sendStatus(404);
+        return res.send(rows[0]).status(200);
+    }).catch(() => {
+        return res.sendStatus(500);
+    });
+});
+
+router.post('/:username/profilepic/new', isAuthenticated, (req, res) => {
+    const { username } = req.params;
+    const profilePic = req.files.profilePic.data;
+    db.promise().query(`UPDATE authentification SET ? WHERE username = '${username}'`, { profilePic }).then(() => {
+        return res.sendStatus(200);
+    }).catch(() => {
+        return res.sendStatus(500);
+    });
+});
 
 module.exports = router;

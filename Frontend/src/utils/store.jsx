@@ -1,4 +1,4 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 import userReducer from '../slice/UserSlice';
 import formuleReducer from '../slice/FormulesSlice';
 import modeleReducer from '../slice/ModeleSlice';
@@ -9,4 +9,7 @@ export default configureStore({
     formule: formuleReducer,
     modele: modeleReducer,
   },
+  middleware : getDefaultMiddleware({
+    serializableCheck: false
+ }),
 });

@@ -87,7 +87,6 @@ export const userSlice = createSlice({
       console.log("nop")
     },
     [getUserImage.fulfilled]: (state, action) => {
-      console.log("oki")
       let imageBase64 = 'data:image/jpeg;base64,'+btoa(action.payload.profilepic.data.reduce((data, byte) => data + String.fromCharCode(byte),''));
       state.image = imageBase64;
     }
