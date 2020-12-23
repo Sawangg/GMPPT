@@ -21,9 +21,7 @@ export default function DropFile(props) {
   const {acceptedFiles, getRootProps, getInputProps} = useDropzone({onDrop, accept: 'image/jpeg, image/png', maxSize : 1000000, maxFiles : 1})
 
   const files = acceptedFiles.map(file => (
-      <li key={file.path}>
-        {file.path}
-      </li>
+      <p>{file.path}</p>
     ));
 
   return (
@@ -31,7 +29,7 @@ export default function DropFile(props) {
         <input {...getInputProps()} />
         <p>{props.message}</p>
         <CloudUploadOutlinedIcon style={{fontSize : "400%"}}/>
-        <ul>{files}</ul>
+        {files}
       </div>
   );
 }

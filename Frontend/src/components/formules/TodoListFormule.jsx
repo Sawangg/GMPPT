@@ -2,14 +2,14 @@ import React, {useState} from 'react';
 import {Button} from '@material-ui/core';
 
 import Item from './ItemTodoFormule'
-import PopUp from './PopUp'
+import PopUp from '../PopUp'
 
 import { useDispatch } from "react-redux";
-import { addFormule, removeFormule, undoFormule } from "../slice/FormulesSlice";
+import { addFormule, removeFormule, undoFormule } from "../../slice/FormulesSlice";
 import { useSelector } from "react-redux";
-import { selectTabFormule } from "../slice/FormulesSlice"
+import { selectTabFormule } from "../../slice/FormulesSlice"
 
-import '../styles/TodoListFormule.css'
+import '../../styles/TodoListFormule.css'
 
 export default function TodoListFormule(props) {
 

@@ -5,13 +5,13 @@ import CreateIcon from '@material-ui/icons/Create';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import TodoListFormule from './TodoListFormule'
-import Dialogue from './Dialogue'
-import SlideBar from './SlideBar'
+import Dialogue from '../Dialogue'
+import SlideBar from '../SlideBar'
 
 import { useDispatch } from "react-redux";
-import { changeModifCategorie, changeNom, removeCategorie } from "../slice/FormulesSlice";
+import { changeModifCategorie, changeNom, removeCategorie } from "../../slice/FormulesSlice";
 
-import '../styles/ItemTodoAccordeon.css'
+import '../../styles/ItemTodoAccordeon.css'
 
 export default function Item(props) {
 

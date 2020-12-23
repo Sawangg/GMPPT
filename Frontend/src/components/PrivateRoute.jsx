@@ -3,7 +3,7 @@ import { Route, Redirect } from "react-router-dom";
 
 import Navbar from "./Navbar";
 import MenuProfil from "./MenuProfil";
-import useConstructor from "./useContructor";
+import useConstructor from "./use/useContructor";
 
 import { useDispatch } from "react-redux";
 import { userDetails } from "../slice/UserSlice";
