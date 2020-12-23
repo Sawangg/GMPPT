@@ -9,6 +9,7 @@ import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import PostAddIcon from '@material-ui/icons/PostAdd';
 import SystemUpdateAltIcon from '@material-ui/icons/SystemUpdateAlt';
+import AllInclusiveIcon from '@material-ui/icons/AllInclusive';
 
 import { useDispatch } from "react-redux";
 import { logoutUser } from "../slice/UserSlice";
@@ -41,6 +42,12 @@ export default function SwipeableTemporaryDrawer() {
       icon : <AssignmentOutlinedIcon/>,
       nom : "Gestion des sujets",
       route : "/prof/gestion-sujets",
+      divider : false
+    },
+    {
+      icon : <AllInclusiveIcon/>,
+      nom : "Création variables aléatoires",
+      route : "/prof/variable-aleatoires",
       divider : false
     },
     {
@@ -97,7 +104,7 @@ export default function SwipeableTemporaryDrawer() {
       <nav id="divNavBar">
         <List>
         {liste.map((item) => (
-          <>
+          <div key={item.nom}>
             <ListItem button component={Link} to={item.route}>
               <ListItemIcon>
                   {item.icon}
@@ -105,7 +112,7 @@ export default function SwipeableTemporaryDrawer() {
               <ListItemText>{item.nom}</ListItemText>
             </ListItem>
             {item.divider ? <Divider className="divider"/> : null}
-          </>
+          </div>
         ))}
           <ListItem id="deconnexionNav" button onClick={e => dispatch(logoutUser())}>
             <ListItemIcon>
