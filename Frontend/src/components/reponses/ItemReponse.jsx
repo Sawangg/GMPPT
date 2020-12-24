@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextField, Input, Fab,InputAdornment} from '@material-ui/core';
+import { TextField, Fab,InputAdornment} from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 
 export default function Item(props) {
@@ -16,10 +16,8 @@ export default function Item(props) {
           return(
                props.unite.map((i) => (
                     <var>
-                         {props.unites[i.id].abrv}
-                         {i.puissance != 1 && i.id != 0 ?
-                         <sup> {i.puissance} </sup>
-                         : null}
+                         {props.unites[i.id].abrv} 
+                         <sup> {i.puissance !== 1 && i.id !== 0 ? i.puissance : null } </sup>
                     </var>
                     )
                )

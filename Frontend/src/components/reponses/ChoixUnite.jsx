@@ -1,5 +1,5 @@
 import React from 'react';
-import {IconButton, TextField, Button, MenuItem, InputAdornment} from '@material-ui/core';
+import {IconButton, TextField, MenuItem, InputAdornment} from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 
@@ -41,7 +41,7 @@ export default function ChoixUnite(props){
                 {i.nom}
             </MenuItem>)}
         </TextField>
-        {props.unite.id != 0 ? 
+        {props.unite.id !== 0 ? 
         <>
         <TextField value={props.unite.puissance} className="puissance" onChange={e=>props.handlePuissance(e, props.index)}
             InputProps={{ startAdornment: (

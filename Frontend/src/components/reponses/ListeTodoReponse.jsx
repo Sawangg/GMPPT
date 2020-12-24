@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TextField, Button, MenuItem} from '@material-ui/core';
+import {Button} from '@material-ui/core';
 
 import Reponse from './ItemReponse';
 import ChoixUnite from './ChoixUnite';
@@ -51,7 +51,7 @@ export default function Item(props) {
     const handlePuissance = (e, index) =>{
         let puis = e.target.value;
         if(!isNaN(puis)){
-            if(puis == 0){
+            if(puis === 0){
                 puis = 1;
             }else{
                 puis = parseInt(puis,10) ;
