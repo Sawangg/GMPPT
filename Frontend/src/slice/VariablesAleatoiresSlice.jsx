@@ -1,13 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-export const VariablesAleatoiresSlice = createSlice({
+const reg = '^[0-9]+$|^$|^\s$';
+
+export const variablesAleatoiresReducer = createSlice({
     name: 'variableAleatoire',
     initialState: {tab : [{
         nom: "",
-        valeurMin : 0,
-        valeurMax : 0,
+        valeurMin : "",
+        valeurMax : "",
         precision : 0,
-        modif : true
+        modif : true,
+        index : 0
         }], actualise : false, enregistre : true },
     reducers: {
         addVariable: (state) => {
@@ -23,6 +26,18 @@ export const VariablesAleatoiresSlice = createSlice({
         changeNom: (state, action) =>{
             state.tab[action.payload.index].nom = action.payload.event;
             state.enregistre = false;
+        },
+        changeValeurMin: (state, action) =>{
+            if (action.payload.event.match(reg)){
+                state.tab[action.payload.index].valeurMin = action.payload.event;
+                state.enregistre = false;
+            }
+        },
+        changeValeurMax: (state, action) =>{
+            if (action.payload.event.match(reg)){
+                state.tab[action.payload.index].valeurMax = action.payload.event;
+                state.enregistre = false;
+            }
         },
         removeVariable: (state, action) =>{
         state.tab.splice(action.payload, 1);
@@ -42,7 +57,7 @@ export const VariablesAleatoiresSlice = createSlice({
     }
 });
 
-export const { addVariable, changeNom, removeVariable, changeModif, changePrecision, enregistre } = VariablesAleatoiresSlice.actions;
+export const { addVariable, changeNom, removeVariable, changeModif, changePrecision, enregistre, changeValeurMin, changeValeurMax } = variablesAleatoiresReducer.actions;
 
 export const selectVariablesAleatoires = state => state.variableAleatoire.tab;
 
@@ -52,4 +67,4 @@ export const selectPrecision = index => state => state.variableAleatoire.tab[ind
 
 export const selectEnregistre = state => state.variableAleatoire.enregistre;
 
-export default VariablesAleatoiresSlice.reducer;
+export default variablesAleatoiresReducer.reducer;
