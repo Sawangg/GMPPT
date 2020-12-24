@@ -1,26 +1,37 @@
 import React from 'react';
-import { TextField, Typography, Slider } from '@material-ui/core';
+import { TextField, Typography, Slider, Fab } from '@material-ui/core';
+import DeleteIcon from '@material-ui/icons/Delete';
+import SaveIcon from '@material-ui/icons/Save';
+import CreateIcon from '@material-ui/icons/Create';
+
+import SlideBar from '../../components/SlideBarVariable'
+
+import { useDispatch } from "react-redux";
+import { addVariable, changeNom, removeVariable, changeModif, enregistre } from "../../slice/VariablesAleatoiresSlice";
+import { useSelector } from "react-redux";
+import { selectVariablesAleatoires } from "../../slice/VariablesAleatoiresSlice"
+import { selectModele } from "../../slice/ModeleSlice"
+
+import '../../styles/itemVariablesAleatoire.css'
 
 export default function VariablesAleatoires() {
 
-    const [value, setValue] = React.useState(0);
-
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-      };
-
-      function valueLabelFormat(value) {
-          if (value !== 0){
-            return `10^-${value}`;
-          } else {
-              return 0
-          }
-      }
+    const dispatch = useDispatch();
+    const tab = useSelector(selectVariablesAleatoires);
+    const modele = useSelector(selectModele);
 
     return (
-        <div style={{display : "flex"}}>
+        <div className="containerVariables">
+            <Fab 
+                //disabled={props.item.nom === "" ? true : false} 
+                size="small" 
+                color="primary" 
+                aria-label="add" 
+                onClick={e => console.log("coucou")}
+            >
+                <SaveIcon/>
+            </Fab>
              <TextField 
-                    className="fieldNomCategorie" 
                     multiline 
                     label="Nom de la variable" 
                     variant="outlined" 
@@ -28,37 +39,28 @@ export default function VariablesAleatoires() {
                     // value={props.item.nom} 
                     // onChange={e => dispatch(changeNom({index : props.index, event : e.target.value}))}
                 />
-                <div>
                 <TextField 
-                    className="fieldNomCategorie" 
                     multiline 
                     label="Valeur min" 
                     variant="outlined" 
                     size="small" 
                 />
                 <TextField 
-                    className="fieldNomCategorie" 
                     multiline 
                     label="Valeur max" 
                     variant="outlined" 
                     size="small" 
                 />
-                </div>
-                <div>
-                <Slider
-                    value={value}
-                    min={0}
-                    step={1}
-                    max={6}
-                    getAriaValueText={valueLabelFormat}
-                    valueLabelFormat={valueLabelFormat}
-                    onChange={handleChange}
-                    valueLabelDisplay="auto"
-                    aria-labelledby="non-linear-slider"
-                />
-                <Typography gutterBottom>Précision</Typography>
-                </div>
-        </div>
+                <SlideBar/>
+                <Fab 
+                size="small" 
+                color="secondary" 
+                aria-label="add" 
+                onClick={e => console.log("supp")}
+                >
+                    <DeleteIcon className="center" />
+                </Fab>
+            </div>
     )
 
 }

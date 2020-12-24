@@ -1,0 +1,8 @@
+.containerVariables {
+    display: grid;
+    grid-template-columns: 0.25fr 1fr 0.5fr 0.5fr 0.5fr 0.25fr;
+    grid-template-rows: 1fr;
+    gap: 0px 30px;
+    margin: auto;
+    width: 60%;
+  }

@@ -2,9 +2,9 @@ import React from 'react';
 import { Typography, Slider} from '@material-ui/core';
 
 import { useDispatch } from "react-redux";
-import { changeMargeErreurCategorie } from "../slice/FormulesSlice";
+import { changeMargeErreurCategorie } from "../../slice/FormulesSlice";
 import { useSelector } from "react-redux";
-import { selectMargeErreur } from "../slice/FormulesSlice"
+import { selectMargeErreur } from "../../slice/FormulesSlice"
 
 export default function SliderBar(props) {
 
