@@ -48,11 +48,15 @@ export default function Profile() {
                 </CardContent>
                 </CardActions>
                 <CardActions style={{display : "flex", flexDirection :"column"}}>
-                    <DropFile changeModele={e => setImage(e)}  message="Importer une image de profil (moins de 1Mo)"/>
-                    <Button onClick={() => {
-                        dispatch(setUserImage({name : user.name, image : image}));
-                        dispatch(getUserImage(user.name));
-                    }}>Enregistrer l'image</Button>
+                    <DropFile typeFile='image/*' compressImage={true} changeFile={e => setImage(e)}  message="Importer une image de profil"/>
+                    <Button  
+                        disabled={image === ""}
+                        onClick={() => {
+                            dispatch(setUserImage({name : user.name, image : image}));
+                            dispatch(getUserImage(user.name));
+                    }}>
+                        Enregistrer l'image
+                    </Button>
                 </CardActions>
                 <CardActions>
                     <InputPassword label={"Mot de passe actuel"} error={password.error} 

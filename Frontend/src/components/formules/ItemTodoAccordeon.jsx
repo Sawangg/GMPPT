@@ -6,7 +6,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import TodoListFormule from './TodoListFormule'
 import Dialogue from '../Dialogue'
-import SlideBar from '../SlideBar'
+import SlideBar from './SlideBarFormule'
 
 import { useDispatch } from "react-redux";
 import { changeModifCategorie, changeNom, removeCategorie } from "../../slice/FormulesSlice";

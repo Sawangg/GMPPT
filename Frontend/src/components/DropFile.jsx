@@ -9,12 +9,16 @@ export default function DropFile(props) {
 
   const onDrop = useCallback(acceptedFiles => {
     acceptedFiles.forEach(async (file) => {
+      if (props.compressImage){
         const compressedFile = await imageCompression(file, {maxSizeMB: 0.5, maxWidthOrHeight: 500, useWebWorker: true});
-        await props.changeModele(compressedFile)
+        await props.changeFile(compressedFile)
+      } else {
+        props.changeFile(file)
+      }
     })
   }, [props])
 
-  const {acceptedFiles, getRootProps, getInputProps} = useDropzone({onDrop, accept: 'image/jpeg, image/png', maxFiles : 1})
+  const {acceptedFiles, getRootProps, getInputProps} = useDropzone({onDrop, accept: props.typeFile, maxFiles : 1})
 
   const files = acceptedFiles.map(file => (
       <p key={file.path}>{file.path}</p>
