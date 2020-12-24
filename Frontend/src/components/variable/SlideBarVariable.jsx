@@ -1,9 +1,15 @@
-import React, {useState} from 'react';
+import React from 'react';
 import { Typography, Slider } from '@material-ui/core';
 
-export default function SlideBar(){
+import { useDispatch } from "react-redux";
+import { changePrecision } from "../../slice/VariablesAleatoiresSlice";
+import { useSelector } from "react-redux";
+import { selectPrecision } from "../../slice/VariablesAleatoiresSlice"
 
-    const [value, setValue] = useState(0);
+export default function SlideBar(props){
+
+    const precision = useSelector(selectPrecision(props.index));
+    const dispatch = useDispatch();
 
     const valueLabelFormat = (value) => {
         if (value !== 0){
@@ -14,13 +20,13 @@ export default function SlideBar(){
     }
 
     const handleChange = (event, newValue) => {
-        setValue(newValue);
+        dispatch(changePrecision({ index : props.index, precision : newValue}));
       };
 
     return(
         <div style={{width : 120}}>
         <Slider
-            value={value}
+            value={precision}
             min={0}
             step={1}
             max={6}

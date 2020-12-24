@@ -3,9 +3,10 @@ import { TextField, Fab, Typography } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import SaveIcon from '@material-ui/icons/Save';
 import CreateIcon from '@material-ui/icons/Create';
+import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 
 import { useDispatch } from "react-redux";
-import { changeNom, changeValeurMax, changeValeurMin } from "../../slice/VariablesAleatoiresSlice";
+import { changeNom, changeValeurMax, changeValeurMin, changeModif, removeVariable } from "../../slice/VariablesAleatoiresSlice";
 
 import SlideBar from './SlideBarVariable'
 
@@ -21,7 +22,7 @@ export default function ItemVariable(props){
                     size="small" 
                     color="primary" 
                     aria-label="add" 
-                    onClick={e => console.log("coucou")}
+                    onClick={() => dispatch(changeModif(props.index))}
                 >
                     <SaveIcon/>
                 </Fab>
@@ -31,15 +32,16 @@ export default function ItemVariable(props){
                         variant="outlined" 
                         size="small" 
                         value={props.item.nom}
-                        onChange={e => dispatch(changeNom({index : props.item.index, event : e.target.value}))}
+                        onChange={e => dispatch(changeNom({index : props.index, event : e.target.value}))}
                     />
+                <ArrowRightIcon fontSize="large"/>
                 <TextField 
                         multiline 
                         label="Valeur min" 
                         variant="outlined" 
                         size="small" 
                         value={props.item.valeurMin}
-                        onChange={e => dispatch(changeValeurMin({index : props.item.index, event : e.target.value}))}
+                        onChange={e => dispatch(changeValeurMin({index : props.index, event : e.target.value}))}
                     />
                 <TextField 
                         multiline 
@@ -47,8 +49,9 @@ export default function ItemVariable(props){
                         variant="outlined" 
                         size="small" 
                         value={props.item.valeurMax}
-                        onChange={e => dispatch(changeValeurMax({index : props.item.index, event : e.target.value}))}
+                        onChange={e => dispatch(changeValeurMax({index : props.index, event : e.target.value}))}
                     />
+                <SlideBar index={props.index}/>
             </>
         )
     }
@@ -57,30 +60,29 @@ export default function ItemVariable(props){
         return (
             <>
                 <Fab 
-                    //disabled={props.item.nom === "" ? true : false} 
                     size="small" 
-                    color="primary" 
                     aria-label="add" 
-                    onClick={e => console.log("coucou")}
+                    onClick={e => dispatch(changeModif(props.index))}
                 >
                     <CreateIcon/>
                 </Fab>
                 <Typography>{props.item.nom} </Typography>
-                <Typography>{props.item.valeurMin} </Typography>
-                <Typography>{props.item.valeurMax} </Typography>
+                <ArrowRightIcon fontSize="large"/>
+                <Typography>Max :{props.item.valeurMin} </Typography>
+                <Typography>Min :{props.item.valeurMax} </Typography>
+                <Typography>Précision : 10^-{props.item.precision}</Typography>
             </>
         )
     }
 
     return (
         <div className="containerVariables">
-                    {displayModif()}
-                    <SlideBar/>
+                    {props.item.modif ? displayModif() : displayTxt()}
                     <Fab 
                     size="small" 
                     color="secondary" 
                     aria-label="add" 
-                    onClick={e => console.log("supp")}
+                    onClick={() => dispatch(removeVariable(props.index))}
                     >
                         <DeleteIcon className="center" />
                     </Fab>

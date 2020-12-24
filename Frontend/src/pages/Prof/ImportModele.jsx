@@ -10,7 +10,7 @@ export default function Accueil(props) {
     const [image2, setImage2] = useState("")
 
     const onChange = (e) =>{
-        const reg = '^[0-9]+$|^$|^\s$';
+        const reg = '^[0-9]+$|^$';
         if (e.target.value.match(reg)) setSujet(e.target.value);
     }
 

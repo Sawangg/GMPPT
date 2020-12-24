@@ -1,13 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const reg = '^[0-9]+$|^$|^\s$';
+const reg = '^[0-9]+$|^$';
 
 export const variablesAleatoiresReducer = createSlice({
     name: 'variableAleatoire',
     initialState: {tab : [{
         nom: "",
-        valeurMin : "",
-        valeurMax : "",
+        valeurMin : 0,
+        valeurMax : 0,
         precision : 0,
         modif : true,
         index : 0
@@ -20,6 +20,7 @@ export const variablesAleatoiresReducer = createSlice({
             valeurMax : 0,
             precision : 0,
             modif : true,
+            index : state.tab.length
             })
         state.enregistre = false;
         },
@@ -40,8 +41,10 @@ export const variablesAleatoiresReducer = createSlice({
             }
         },
         removeVariable: (state, action) =>{
-        state.tab.splice(action.payload, 1);
-        state.enregistre = false;
+            if (state.tab.length > 1){
+                state.tab.splice(action.payload, 1);
+                state.enregistre = false;
+            }
         },
         changeModif : (state, action) =>{
         state.tab[action.payload].modif = !state.tab[action.payload].modif;
