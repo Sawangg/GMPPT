@@ -5,7 +5,7 @@
 
 #carteProfil{
     display : flex;
-    width : 50%;
+    width : 60%;
     margin : auto;
     box-shadow : -2px 5px 12px 4px rgba(0,0,0,0.62);
 }

@@ -1,11 +1,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-import { getInfoUser, logout, setImageUser, getImageUser } from '../utils/api.js';
+import { getInfoUserAPI, logoutAPI, setImageUserAPI, getImageUserAPI } from '../utils/api.js';
 
 export const userDetails = createAsyncThunk(
   'users/getInfoUser',
   async () => {
-    const response = await getInfoUser();
+    const response = await getInfoUserAPI();
     return response.data
   }
 )
@@ -13,7 +13,7 @@ export const userDetails = createAsyncThunk(
 export const logoutUser = createAsyncThunk(
   'users/logout',
   async () => {
-    const response = await logout();
+    const response = await logoutAPI();
     return response.data
   }
 )
@@ -23,7 +23,7 @@ export const setUserImage = createAsyncThunk(
   async (props) => {
     const data = new FormData() ;
     data.append('profilePic', props.image);
-    const response = await  setImageUser(props.name, data);
+    const response = await  setImageUserAPI(props.name, data);
     return response.data
   }
 )
@@ -31,7 +31,7 @@ export const setUserImage = createAsyncThunk(
 export const getUserImage = createAsyncThunk(
   'users/getUserImage',
   async (name) => {
-    const response = await  getImageUser(name);
+    const response = await  getImageUserAPI(name);
     return response.data
   }
 )

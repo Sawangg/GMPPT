@@ -3,7 +3,7 @@ import { TextField, Button } from '@material-ui/core';
 
 import DropFile from '../../components/DropFile'
 
-import {addArchi} from '../../utils/api'
+import {addArchiAPI} from '../../utils/api'
 
 import '../../styles/ImportModele3D.css'
 
@@ -23,7 +23,7 @@ export default function Accueil(props) {
         data.append('image1', image1);
         data.append('image2', image2);
 
-        addArchi({sujet : sujet, images : data})
+        addArchiAPI({sujet : sujet, images : data})
         .then(() => console.log("ok"))
         .catch(() => console.log("nop"));
     }

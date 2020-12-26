@@ -9,7 +9,7 @@ import Particules from '../components/ParticulesBackLogin';
 import useConstructor from '../components/use/useContructor';
 import InputPassword from '../components/InputPassword';
 
-import { login } from '../utils/api.js';
+import { loginAPI } from '../utils/api.js';
 
 import { useDispatch } from "react-redux";
 import { userDetails, changeUserName, changePassword } from "../slice/UserSlice";
@@ -31,7 +31,7 @@ export default function Login(){
       });
 
     const connexion = () => {
-        login(user.name, user.password)
+        loginAPI(user.name, user.password)
         .then(() => dispatch(userDetails()))
         .catch(() => {
             setError(true);
