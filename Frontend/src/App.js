@@ -6,7 +6,7 @@ import frFR from '@material-ui/core/locale';
 
 import Formules from './pages/Prof/Formules';
 import AccueilProf from './pages/Prof/AccueilProf';
-import ImportModele from './pages/Prof/ImportModele';
+import ImportModele from './pages/Prof/ImportModele3D';
 import Correction from './pages/Prof/Correction';
 import Enonces from "./pages/Prof/Enonces";
 import VariableAleatoires from './pages/Prof/VariablesAleatoires'

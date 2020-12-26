@@ -23,7 +23,7 @@ export default function MenuProfil() {
     });
 
   return (
-    <div style={{position : "absolute", right : 30, top : 17.5, display : "flex"}}>
+    <div style={{position : "absolute", right : 30, top : 17.5, display : "flex", zIndex : 10}}>
         <IconButton aria-controls="simple-menu" aria-haspopup="true" onClick={e => setOpenLocation(e.currentTarget)}>
             {user.image === undefined
                 ?<Avatar style={{backgroundColor : "#c51150"}}>{user.name.substring(0, 1).toUpperCase()}</Avatar>

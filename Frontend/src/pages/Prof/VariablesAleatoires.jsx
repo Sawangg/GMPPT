@@ -12,8 +12,6 @@ import { useSelector } from "react-redux";
 import { selectVariablesAleatoires, selectActualise } from "../../slice/VariablesAleatoiresSlice"
 import { selectModele } from "../../slice/ModeleSlice"
 
-import '../../styles/itemVariablesAleatoire.css'
-
 export default function VariablesAleatoires() {
 
     const [open, setOpen] = useState(false);
@@ -34,20 +32,19 @@ export default function VariablesAleatoires() {
 
     const displayVariable = () =>{
         return (
-            <>
-                <Fab style={{marginLeft : "5%"}} size="small" color="primary" aria-label="add" onClick={(e => dispatch(addVariable()))}>
+            <div>
+                <Fab style={{marginLeft : "5%", marginBottom : "5%"}} size="small" color="primary" aria-label="add" onClick={(e => dispatch(addVariable()))}>
                     <AddIcon />
                 </Fab>
                 {tab.map((item, id) => (
                         <ItemVariablesAleatoire key={id} index={id} item={item}/>
                 ))}
-            </>
+            </div>
         )
     }
 
     return (
         modele.idModeleSelectionne === undefined ? <SelectionModele tard={false} setOpen={e => setOpen(e)} open={open}/> : displayVariable()
-        
     )
 
 }

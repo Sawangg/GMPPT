@@ -80,6 +80,11 @@ export const userSlice = createSlice({
     [setUserImage.rejected]: (state, action) => {
       console.log("non")
     },
+    [setUserImage.pending]: (state, action) => {
+      console.log("coucou")
+      console.log(action.meta.arg)
+      state.image = URL.createObjectURL(action.meta.arg.image);
+    },
     [setUserImage.fulfilled]: (state, action) => {
       console.log("parfait")
     },
@@ -87,7 +92,7 @@ export const userSlice = createSlice({
       console.log("nop")
     },
     [getUserImage.fulfilled]: (state, action) => {
-      let imageBase64 = 'data:image/jpeg;base64,'+btoa(action.payload.profilepic.data.reduce((data, byte) => data + String.fromCharCode(byte),''));
+      let imageBase64 = 'data:image/jpeg;base64,'+Buffer.from(action.payload.profilepic).toString("base64");
       state.image = imageBase64;
     }
   }

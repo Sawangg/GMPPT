@@ -1,0 +1,16 @@
+#divDropModele {
+    display : flex;
+}
+
+#divImportModele{
+    width : 70%;
+    margin : auto;
+}
+
+@media screen and (max-width: 960px) {
+
+    #divDropModele {
+        flex-wrap : wrap;
+    }
+
+}
