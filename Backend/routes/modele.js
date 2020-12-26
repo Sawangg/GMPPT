@@ -62,9 +62,9 @@ router.get('/', isAuthenticated, isProf, (req, res) => {
     });
 });
 
-router.post('/new', isAuthenticated, isProf, async (req, res) => {
+router.post('/new', isAuthenticated, isProf, (req, res) => {
     const { nommodele } = req.body;
-    db.promise().execute(`insert into modeleSujetTest(nom_modele) values('${nommodele}');`).then(([rows]) => {
+    db.promise().execute(`INSERT INTO modeleSujetTest(nom_modele) VALUES ('${nommodele}')`).then(([rows]) => {
         return res.send(rows).status(200);
     }).catch(() => {
         return res.sendStatus(500);
@@ -76,6 +76,26 @@ router.get('/:idmodele/delete', isAuthenticated, isProf, async (req, res) => {
     await db.promise().execute(`DELETE FROM categoriesTest WHERE id_modele=${idmodele}`);
     await db.promise().execute(`DELETE FROM modeleSujetTest WHERE id_modele=${idmodele}`);
     return res.sendStatus(200);
+});
+
+router.get('/:idmodele/variables/', isAuthenticated, isProf, async (req, res) => {
+    const { idmodele } = req.params;
+    db.promise().execute(`SELECT * FROM variable_aleatoire WHERE id_modele=${idmodele}`).then(([rows]) => {
+        if (!rows[0]) return res.sendStatus(404);
+        return res.send(rows).status(200);
+    }).catch(() => {
+        return res.sendStatus(500);
+    });
+});
+
+router.post('/:idmodele/variables/new', isAuthenticated, isProf, (req, res) => {
+    const { idmodele } = req.params;
+    const { nom, min, max, precision } = req.body;
+    db.promise().execute(`INSERT INTO variable_aleatoire(id_modele, nom, min, max, precision) VALUES ('${idmodele}', '${nom}', ${min}, ${max}, ${precision})`).then(() => {
+        return res.sendStatus(200);
+    }).catch(() => {
+        return res.sendStatus(500);
+    });
 });
 
 module.exports = router;
