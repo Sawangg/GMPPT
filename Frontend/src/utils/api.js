@@ -61,7 +61,6 @@ export function getInfoArchi(/*archi*/){
     return axios.get(`http://${process.env.REACT_APP_SERVER}:3001/architecture/${archi}/modeles`, credentials)
 }
 
-export function addArchi(/*archi*/){
-    const archi = 0;
-    return axios.post(`http://${process.env.REACT_APP_SERVER}:3001/architecture/${archi}/modeles/new`, credentials)
+export function addArchi(archi){
+    return axios.post(`http://${process.env.REACT_APP_SERVER}:3001/architecture/${archi.sujet}/modeles/new`, archi.images, credentials)
 }
