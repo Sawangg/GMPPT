@@ -100,7 +100,7 @@ export default function SwipeableTemporaryDrawer() {
   const liste = user.isProf ? listeProf : listeEtudiant;
 
   const navigation = () => (
-    <SwipeableDrawer onOpen={(e) => setMenu(true)} open={menu} onClose={e => setMenu(false)}>
+    <SwipeableDrawer onOpen={() => setMenu(true)} open={menu} onClose={() => setMenu(false)}>
       <nav id="divNavBar">
         <List>
         {liste.map((item) => (

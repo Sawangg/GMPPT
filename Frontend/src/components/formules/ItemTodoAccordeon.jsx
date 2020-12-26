@@ -37,7 +37,7 @@ export default function Item(props) {
                     size="small" 
                     color="primary" 
                     aria-label="add" 
-                    onClick={e => dispatch(changeModifCategorie(props.index))}
+                    onClick={() => dispatch(changeModifCategorie(props.index))}
                 >
                     <SaveIcon/>
                 </Fab>
@@ -75,7 +75,7 @@ export default function Item(props) {
                     Supprimer la catégorie
                 </Button>
                 <Dialogue 
-                    ok={e =>  dispatch(removeCategorie(props.index))} 
+                    ok={() =>  dispatch(removeCategorie(props.index))} 
                     titre="Suppression" 
                     message="Voulez-vous vraiment supprimer la catégorie ?" 
                     open={open} 
@@ -83,7 +83,7 @@ export default function Item(props) {
                 />
             </div>
 
-            <Accordion style={{marginTop : 15}} square expanded={expanded} onChange={e =>setExpanded(!expanded)}>
+            <Accordion style={{marginTop : 15}} square expanded={expanded} onChange={() =>setExpanded(!expanded)}>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}/>
                 <AccordionDetails style={{display : "flex", flexDirection : "column"}}>
                     <TodoListFormule index={props.index}/>

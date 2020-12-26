@@ -47,7 +47,7 @@ export default function Item(props) {
                 <Button 
                     className="buttonItem center ButtonEnregistrer" 
                     variant="contained" 
-                    onClick={e => changeModif()}
+                    onClick={() => changeModif()}
                 >
                     Enregistrer
                 </Button>
@@ -66,7 +66,7 @@ export default function Item(props) {
                 <Button 
                     className="buttonItem center" 
                     variant="contained" 
-                    onClick={e => changeModif()}
+                    onClick={() => changeModif()}
                 >
                     Modifier
                 </Button>
@@ -83,7 +83,7 @@ export default function Item(props) {
                 size="small" 
                 color="secondary" 
                 aria-label="add" 
-                onClick={e => props.remove()}
+                onClick={() => props.remove()}
             >
                 <DeleteIcon className="center" />
             </Fab>
@@ -105,7 +105,7 @@ export default function Item(props) {
                         color="primary" 
                         variant='extended' 
                         size='small' 
-                        onClick={e => dispatch(changePositionFormule({indexCategorie :props.indexCategorie, indexFormule : props.index, up : false}))}
+                        onClick={() => dispatch(changePositionFormule({indexCategorie :props.indexCategorie, indexFormule : props.index, up : false}))}
                     >
                         <ArrowDownwardIcon/>
                     </Fab>

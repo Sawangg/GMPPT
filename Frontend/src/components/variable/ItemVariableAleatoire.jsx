@@ -64,7 +64,7 @@ export default function ItemVariable(props){
                 <Fab 
                     size="small" 
                     aria-label="add" 
-                    onClick={e => dispatch(changeModif(props.index))}
+                    onClick={() => dispatch(changeModif(props.index))}
                 >
                     <CreateIcon/>
                 </Fab>

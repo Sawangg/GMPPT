@@ -39,7 +39,7 @@ export default function VariablesAleatoires() {
                     <AddIcon />
                 </Fab>
                 <Button variant="outlined" color={isEnregistre ? "primary" : "secondary"}
-                        onClick={e => dispatch(setVariables({tab : tab, idModele : modele.idModeleSelectionne}))}
+                        onClick={() => dispatch(setVariables({tab : tab, idModele : modele.idModeleSelectionne}))}
                         endIcon={isEnregistre 
                              ? <CheckCircleOutlineOutlinedIcon fontSize="large" style={{color : "green"}}/> 
                             : <HighlightOffOutlinedIcon fontSize="large"  style={{color : "red"}}/>
