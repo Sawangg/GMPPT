@@ -1,58 +1,66 @@
 import React from 'react';
-import {IconButton, TextField, MenuItem, InputAdornment} from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
-import DeleteIcon from '@material-ui/icons/Delete';
+import {Button, Dialog, DialogActions, DialogContent, DialogTitle} from '@material-ui/core';
+
+import Item from './ItemChoixUnite';
 
 export default function ChoixUnite(props){
 
-    const buttonAdd = (index) =>{
-      return(
-        <IconButton size="small" color="primary" onClick={e=> props.addPartieUnite(index)} >
-          <AddIcon/>
-        </IconButton>
-      )
+    const handleChangeUnite = (event, indTab) =>{
+        let index = event.target.value;
+        let newTab = [...props.unite];
+        newTab[indTab].id = index;
+        props.setUnite(newTab);
     }
 
-    const buttonDelete = () =>{
-      return(
-        <IconButton size="small" color="secondary" onClick={e=> props.deletePartieUnite(props.index)} >
-          <DeleteIcon/>
-        </IconButton>
-      )
+    const addPartieUnite = (index) =>{
+        let newTab = [...props.unite];
+        newTab.splice(index, 0, { id:0 , puissance : 1});
+        props.setUnite(newTab);
     }
 
-    const buttons = () =>{
-      return(
-        <div className="button_gap">
-          {buttonAdd(props.index)}
-          {props.tabLength > 1 ? buttonDelete() : null }
-          {buttonAdd(props.index + 1)}
-        </div>
-      )
+    const deletePartieUnite = (index) =>{
+        let newTab=[...props.unite];
+        newTab.splice(index, 1);
+        props.setUnite(newTab);
     }
 
+    const handlePuissance = (e, index) =>{
+        let puis = e.target.value;
+        if(!isNaN(puis)){
+            if(puis === 0){
+                puis = 1;
+            }else{
+                puis = parseInt(puis,10) ;
+            }
+            let newTab = [...props.unite];
+            newTab[index].puissance = puis;
+            props.setUnite(newTab);
+        }
+        
+    }
 
     return(
-    <div className="choix_input">
-        {buttons()}
-        <TextField select value={props.unite.id} onChange={e=> props.handleChangeUnite(e, props.index)}>
-            {props.unites.map((i, index) => 
-            <MenuItem key={index} value={index} >
-                {i.nom}
-            </MenuItem>)}
-        </TextField>
-        {props.unite.id !== 0 ? 
-        <>
-        <TextField value={props.unite.puissance} className="puissance" onChange={e=>props.handlePuissance(e, props.index)}
-            InputProps={{ startAdornment: (
-                    <InputAdornment position="start">
-                      ^
-                    </InputAdornment>
-                    ),
-                }} />
-        </>
-        : null }
-    </div>
+        <Dialog open={props.open}>
+            <DialogTitle>
+                Choix de l'unité
+            </DialogTitle>
+            <DialogContent className="alignement_horizontal">
+                {props.unite.map((i, index) => 
+                    <>
+                    <Item index={index} unite={i} unites={props.unites} 
+                        handleChangeUnite={handleChangeUnite} addPartieUnite={addPartieUnite}
+                        deletePartieUnite={deletePartieUnite} handlePuissance={handlePuissance} 
+                        tabLength={props.unite.length} />
+                    {index < props.unite.length-1 ? <b>.</b> : null}
+                    </>
+                )}
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={e=>props.handleClose()}>
+                    Appliquer
+                </Button>
+            </DialogActions>
+        </Dialog>
+    )
 
-      );
 }

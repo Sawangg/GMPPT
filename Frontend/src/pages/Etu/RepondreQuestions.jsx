@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import ReactHtmlParser from 'react-html-parser';
-import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import {Button} from '@material-ui/core';
+import GetAppIcon from '@material-ui/icons/GetApp';
 
 import Items from '../../components/reponses/ItemQuestion'
 
@@ -10,8 +10,8 @@ import '../../styles/RepondreQuestions.css'
 
 export default function RepondreQuestions(){
     const [questionsTab, setQuestionTab] = useState([
-        {index : 0, enonce : "Énoncé de question avec plusieus réponses", nbMaxReponses : 5, peutAjouter : true}, 
-        {index : 1, enonce : "Autre énoncé de question avec plusieus réponses", nbMaxReponses : 3, peutAjouter : false},
+        {index : 0, enonce : "Énoncé de question avec plusieurs réponses", nbMaxReponses : 5, peutAjouter : true}, 
+        {index : 1, enonce : "Autre énoncé de question avec plusieurs réponses", nbMaxReponses : 3, peutAjouter : false},
         {index : 2, enonce : "Énoncé de question avec 1 réponse", nbMaxReponses : 1, peutAjouter : true}]);
 
     const [unitesTab, setUnitesTab] = useState([{index : 0, nom : "Sans unité", abrv : " "}, 
@@ -39,7 +39,7 @@ export default function RepondreQuestions(){
         const HAUTEUR_A4 = 297;
         const LARGEUR_A4 = 210;
 
-        var doc = new jsPDF();
+        var doc = new jsPDF('p', 'mm', 'a4');
 
         var options = {
             pagesplit : true,
@@ -49,28 +49,40 @@ export default function RepondreQuestions(){
 
         doc.setFontSize(12);
 
-        doc.text(MARGE_COTE, MARGE_HAUT, "N° étudiant : 1 - N° sujet : 14582");
-
-        doc.text(LARGEUR_A4 - MARGE_COTE, MARGE_HAUT, "Sujet de Pierre Dupont" , 'right');
-
         doc.fromHTML(sujet,MARGE_COTE,MARGE_HAUT + 10,options);
+        doc.addPage();
 
-        doc.setLineWidth(0.5);
+        var number_of_pages = doc.internal.getNumberOfPages();
+        var myFooter = "Footer info";
+        for (var i = 1; i <= number_of_pages; i++) {
 
-        doc.line(MARGE_COTE, HAUTEUR_A4 - MARGE_BAS - 5, LARGEUR_A4-MARGE_COTE, HAUTEUR_A4 - MARGE_BAS - 5);
+            doc.setPage(i);
 
-        doc.text(MARGE_COTE, HAUTEUR_A4 - MARGE_BAS, "Pierre Carillo");
+            //header
+            doc.text(MARGE_COTE, MARGE_HAUT, "N° étudiant : 1 - N° sujet : 14582");
+            doc.text(LARGEUR_A4 - MARGE_COTE, MARGE_HAUT, "Sujet de Pierre Dupont" , 'right');
 
-        doc.text(LARGEUR_A4/2, HAUTEUR_A4 - MARGE_BAS, "IUT du Limousin - GMP", "center");
-
-        doc.text(LARGEUR_A4 - MARGE_COTE, HAUTEUR_A4 - MARGE_BAS, "Page 2/2", "right");
+            //footer
+            doc.setLineWidth(0.5);
+            doc.line(MARGE_COTE, HAUTEUR_A4 - MARGE_BAS - 5, LARGEUR_A4-MARGE_COTE, HAUTEUR_A4 - MARGE_BAS - 5);
+            doc.text(MARGE_COTE, HAUTEUR_A4 - MARGE_BAS, "Pierre Carillo");
+            doc.text(LARGEUR_A4/2, HAUTEUR_A4 - MARGE_BAS, "IUT du Limousin - GMP", "center");
+            doc.text(LARGEUR_A4 - MARGE_COTE, HAUTEUR_A4 - MARGE_BAS, "Page " + i + "/" + number_of_pages, "right");
+        }
 
         doc.save("sujet.pdf");
     }
 
     return(<div className="contenant">
-        <Button onClick={downloadPdf}>Télécharger</Button>
+        
+        <div className="buttonFixed" >
+            <Button variant="contained" color="secondary" onClick={downloadPdf}>
+                <GetAppIcon/>
+                Télécharger
+            </Button>
+        </div>
         <h1>Répondre aux questions</h1>
+        
         <h2>Sujet</h2>
         <div id="sujet">{ReactHtmlParser(sujet)}</div>
         {displayQuestions()}

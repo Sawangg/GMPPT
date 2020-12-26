@@ -2,15 +2,12 @@ import React, { useState } from 'react';
 import {Button} from '@material-ui/core';
 
 import Reponse from './ItemReponse';
-import ChoixUnite from './ChoixUnite';
 
 export default function Item(props) {
-    const [reponsesTab, setTab] = useState([{value : ""}]);
-
-    const [uniteReponses, setUnite] = useState([{ id : 0, puissance : 1 }]);
+    const [reponsesTab, setTab] = useState([{value : "", unite : [{ id : 0, puissance : 1 }] }]);
 
     const addReponse = () =>{
-            setTab([...reponsesTab, {value : ""}]);
+            setTab([...reponsesTab, {value : "", unite : [{ id : 0, puissance : 1 }] }]);
     }
 
     const deleteReponse = (item) =>{
@@ -31,66 +28,19 @@ export default function Item(props) {
         }
     }
 
-    const handleChangeUnite = (event, indTab) =>{
-        let index = event.target.value;
-        let newTab = [...uniteReponses];
-        newTab[indTab].id = index;
-        setUnite(newTab);
+    const handleChangeUniteReponse = (index, unite) =>{
+        let newTab = [...reponsesTab];
+        newTab = [...reponsesTab];
+        newTab[index].unite = unite;
+        setTab(newTab);
     }
 
     const peutSupprimer = () =>{
         return reponsesTab.length > 1;
     }
 
-    const addPartieUnite = (index) =>{
-        let newTab = [...uniteReponses];
-        newTab.splice(index, 0, { id:0 , puissance : 1});
-        setUnite(newTab);
-    }
-
-    const handlePuissance = (e, index) =>{
-        let puis = e.target.value;
-        if(!isNaN(puis)){
-            if(puis === 0){
-                puis = 1;
-            }else{
-                puis = parseInt(puis,10) ;
-            }
-            let newTab = [...uniteReponses];
-            newTab[index].puissance = puis;
-            setUnite(newTab);
-        }
-        
-    }
-
-    const deletePartieUnite = (index) =>{
-        let newTab=[...uniteReponses];
-        newTab.splice(index, 1);
-        setUnite(newTab);
-    }
-
-    const choisirUnite = () =>{
-        return(
-            <>
-                <p>Choisissez l'unité : </p>
-                <div className="alignement_horizontal">
-                    {uniteReponses.map((i, index) => 
-                        <>
-                        <ChoixUnite index={index} unite={i} unites={props.unites} 
-                            handleChangeUnite={handleChangeUnite} addPartieUnite={addPartieUnite}
-                            deletePartieUnite={deletePartieUnite} handlePuissance={handlePuissance} 
-                            tabLength={uniteReponses.length} />
-                        {index < uniteReponses.length-1 ? <b>.</b> : null}
-                        </>
-                    )}
-                </div>
-            </>
-        )
-    }
-
     return(
        <div>
-            {choisirUnite()}
             {props.nbMaxReponses > 1 ?
                 <Button variant="contained" 
                         className="ButtonAjouterReponse" 
@@ -102,9 +52,10 @@ export default function Item(props) {
             }
             <div className="liste_reponse">
                 {reponsesTab.map((i, index) => (
-                    <Reponse num={index} reponse={i} unite={uniteReponses} unites={props.unites}
+                    <Reponse num={index} reponse={i} unites={props.unites}
                     addReponse={e => addReponse()} handleChangeReponse={handleChangeReponse} 
-                    deleteReponse={e=>deleteReponse(e)} peutSupprimer={e => peutSupprimer()}/>
+                    deleteReponse={e=>deleteReponse(e)} peutSupprimer={e => peutSupprimer()}
+                    handleChangeUnite={handleChangeUniteReponse}/>
                 ))}
             </div>
         </div>
