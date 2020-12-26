@@ -1,0 +1,35 @@
+#image {
+    background-size: cover;
+    background-position: center;
+}
+
+#carteProfil{
+    display : flex;
+    width : 50%;
+    margin : auto;
+    box-shadow : -2px 5px 12px 4px rgba(0,0,0,0.62);
+}
+
+#dropPhotoProfil{
+    width : 70%;
+    margin : auto;
+}
+
+#buttonEnvoyerImageProfil{
+    display : block;
+    margin : 2% auto;
+    width : 180px;
+}
+
+#divPasswordChange{
+    display : flex;
+    flex-direction : column;
+    margin-top : 5%;
+    margin-left : 48px;
+}
+
+#buttonChangePwd{
+    width : 200px;
+    margin : auto;
+    margin-top : 1%;
+}

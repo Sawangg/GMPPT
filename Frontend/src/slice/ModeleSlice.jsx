@@ -42,6 +42,7 @@ export const userSlice = createSlice({
   extraReducers: {
     [getModele.rejected]: (state, action) => {
       console.log("erreur de chargement")
+      state.actualise = true; //pour ne pas bloquer
     },
     [getModele.fulfilled]: (state, action) => {
       if (!state.actualise){
@@ -70,5 +71,7 @@ export const userSlice = createSlice({
 export const { selectionnerModele } = userSlice.actions;
 
 export const selectModele = state => state.modele;
+
+export const selectActualise = state => state.modele.actualise;
 
 export default userSlice.reducer;
