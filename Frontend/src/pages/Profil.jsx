@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Typography} from '@material-ui/core';
+import { Button, Typography } from '@material-ui/core';
 
 import InputPassword from '../components/InputPassword';
 import PopUp from '../components/PopUp';
@@ -20,20 +20,15 @@ export default function Profile() {
 
     const [openPopUp, setOpenPopUp] = useState(false);
     const [password, setPassword] = useState({oldPassword : "", newPassword  :"", error : false});
-    const [image, setImage] = useState("")
+    const [image, setImage] = useState("");
 
     const changePasswordAPI = () => {
-        if(password.oldPassword === user.password) {
-            setPwdUser(user.name, password.newPassword)
-            .then(() => {
-                dispatch(changePassword(password.newPassword));
-                setOpenPopUp(true);
-            }).catch(() => {
-                setPassword({oldPassword : password.oldPassword, newPassword : password.newPassword, error : true})
-            });
-        } else {
-            setPassword({oldPassword : password.oldPassword, newPassword : password.newPassword, error : true})
-        }
+        setPwdUser(user.name, { oldPassword : password.oldPassword, newPassword : password.newPassword }).then(() => {
+            dispatch(changePassword(password.newPassword));
+            setOpenPopUp(true);
+        }).catch(() => {
+            setPassword({ error : true });
+        });
     }
     
     return (
@@ -65,6 +60,5 @@ export default function Profile() {
                 <PopUp severity="success" message="Changement de mot de passe réussi" open={openPopUp} handleClose={e => setOpenPopUp(false)}/>
             </div>
         </div>
-        
     );
 }
