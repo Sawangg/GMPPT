@@ -1,7 +1,6 @@
 .contenant{
     margin : 10%;
     text-align:center;
-    
 }
 
 .liste_questions{
@@ -53,8 +52,17 @@ sup{
     font-size:10px;
  }
 
- .button_gap{
-     display: flex;
-     justify-content:center;
-     column-gap: 10px;
- }
+.button_gap{
+    display: flex;
+    justify-content:center;
+    column-gap: 10px;
+}
+
+
+.buttonFixed{
+    position: fixed;
+    top : 30px;
+    right : 120px;
+}
+
+ 
