@@ -1,11 +1,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-import { getCategoriesFormules, addCategorieFormule } from '../utils/api.js';
+import { getCategoriesFormulesAPI, addCategorieFormuleAPI } from '../utils/api.js';
 
 export const setTab = createAsyncThunk(
   'formule/setTab',
   async (idModele) => {
-    const response = await getCategoriesFormules(idModele);
+    const response = await getCategoriesFormulesAPI(idModele);
     return response.data
   }
 )
@@ -13,7 +13,7 @@ export const setTab = createAsyncThunk(
 export const enregistrerFormules = createAsyncThunk(
   'formule/enregistrerFormules',
   async (props) => {
-    const response = await addCategorieFormule(props.idModele, props.tab); 
+    const response = await addCategorieFormuleAPI(props.idModele, props.tab); 
     return response.data
   }
 )

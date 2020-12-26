@@ -20,7 +20,7 @@ export default function ItemVariable(props){
         return (
             <>
                 <Fab 
-                    disabled={props.item.nom === "" ? true : false} 
+                    disabled={props.item.nom === "" || props.item.valeurMin > props.item.valeurMax} 
                     size="small" 
                     color="primary" 
                     aria-label="add" 
@@ -64,7 +64,7 @@ export default function ItemVariable(props){
                 <Fab 
                     size="small" 
                     aria-label="add" 
-                    onClick={e => dispatch(changeModif(props.index))}
+                    onClick={() => dispatch(changeModif(props.index))}
                 >
                     <CreateIcon/>
                 </Fab>

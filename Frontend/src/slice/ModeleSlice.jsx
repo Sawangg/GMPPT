@@ -1,11 +1,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-import { getAllModele, deleteModele, addModele } from '../utils/api.js';
+import { getAllModeleAPI, deleteModeleAPI, addModeleAPI } from '../utils/api.js';
 
 export const getModele = createAsyncThunk(
   'modele/getAllModele',
   async () => {
-    const response = await getAllModele();
+    const response = await getAllModeleAPI();
     return response.data
   }
 )
@@ -13,7 +13,7 @@ export const getModele = createAsyncThunk(
 export const removeModele = createAsyncThunk(
   'modele/removeModele',
   async (idModele) => {
-    const response = await deleteModele(idModele);
+    const response = await deleteModeleAPI(idModele);
     return response.data
   }
 )
@@ -21,7 +21,7 @@ export const removeModele = createAsyncThunk(
 export const addNewModele = createAsyncThunk(
   'modele/new',
   async (nom) => {
-    const response = await addModele(nom);
+    const response = await addModeleAPI(nom);
     return response.data
   }
 )

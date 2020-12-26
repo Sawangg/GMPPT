@@ -13,7 +13,7 @@ export default function PopUp(props) {
         onClose={props.handleClose}
       >
         <MuiAlert onClose={props.handleClose} severity={props.severity} action={
-          props.undo ? <Button color="primary" onClick={e => props.undo()}>RETOUR</Button> : null}>
+          props.undo ? <Button color="primary" onClick={() => props.undo()}>RETOUR</Button> : null}>
           {props.message}
         </MuiAlert>
       </Snackbar>

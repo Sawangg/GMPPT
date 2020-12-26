@@ -13,7 +13,7 @@ export default function SlideBar(props){
 
     const valueLabelFormat = (value) => {
         if (value !== 0){
-          return `10^-${value}`;
+          return `10^${value}`;
         } else {
             return 0
         }
@@ -27,7 +27,7 @@ export default function SlideBar(props){
         <div style={{width : 120}}>
         <Slider
             value={precision}
-            min={0}
+            min={-6}
             step={1}
             max={6}
             getAriaValueText={valueLabelFormat}

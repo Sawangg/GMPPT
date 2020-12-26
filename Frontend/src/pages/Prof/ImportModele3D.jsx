@@ -3,6 +3,8 @@ import { TextField, Button } from '@material-ui/core';
 
 import DropFile from '../../components/DropFile'
 
+import {addArchiAPI} from '../../utils/api'
+
 import '../../styles/ImportModele3D.css'
 
 export default function Accueil(props) {
@@ -17,10 +19,13 @@ export default function Accueil(props) {
     }
 
     const envoie = () =>{
-        console.log(image1, image2)
-        // setSujet("");
-        // setImage1("");
-        // setImage2("")
+        const data = new FormData();
+        data.append('image1', image1);
+        data.append('image2', image2);
+
+        addArchiAPI({sujet : sujet, images : data})
+        .then(() => console.log("ok"))
+        .catch(() => console.log("nop"));
     }
 
     return (
@@ -31,7 +36,7 @@ export default function Accueil(props) {
             </div>
             <div style={{display : "flex", justifyContent : "center", marginTop : "3%"}}>
                 <TextField autoFocus size="small" label="Numéro du sujet" variant="outlined" required value={sujet} onChange={e => onChange(e)}/>
-                <Button style={{marginLeft : 20}} color="primary" variant="outlined" onClick={e => envoie()}>Envoyer</Button>
+                <Button disabled={image1 === "" || image2 === "" || sujet === ""} style={{marginLeft : 20}} color="primary" variant="outlined" onClick={e => envoie()}>Envoyer</Button>
             </div>
         </div>
     );

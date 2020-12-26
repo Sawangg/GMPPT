@@ -1,6 +1,24 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+
+import { addVariableAPI, getVariablesAPI } from '../utils/api.js';
 
 const reg = '^[0-9]+$|^$';
+
+export const getAllVariables = createAsyncThunk(
+    'variable/getAllVariables',
+    async (idModele) => {
+      const response = await getVariablesAPI(idModele);
+      return response.data
+    }
+  )
+
+  export const setVariables = createAsyncThunk(
+    'variable/setVariables',
+    async (variable) => {
+      const response = await addVariableAPI(variable.idModele, variable.tab);
+      return response.data
+    }
+  )
 
 export const variablesAleatoiresReducer = createSlice({
     name: 'variableAleatoire',
@@ -57,6 +75,20 @@ export const variablesAleatoiresReducer = createSlice({
         enregistre: (state) => {
         state.enregistre = true;
         }
+    },
+    extraReducers: {
+        [getAllVariables.rejected]: (state, action) => {
+         console.log("erreur d'enregistrement")
+        },
+        [getAllVariables.fulfilled]: (state, action) => {
+           console.log("oki")
+        },
+        [setVariables.rejected]: (state, action) => {
+            console.log("erreur d'enregistrement")
+           },
+        [setVariables.fulfilled]: (state, action) => {
+            state.enregistre = true;
+        },
     }
 });
 

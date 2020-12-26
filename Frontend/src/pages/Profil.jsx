@@ -11,7 +11,7 @@ import { selectUserName, changePassword, setUserImage, getUserImage } from "../s
 
 import '../styles/Profil.css'
 
-import { setPwdUser } from '../utils/api.js';
+import { setPwdUserAPI } from '../utils/api.js';
 
 export default function Profile() {
 

@@ -37,11 +37,11 @@ export default function TodoListFormule(props) {
                 className="buttonAjouterFormule" 
                 variant="outlined" 
                 color="primary" 
-                onClick={e => dispatch(addFormule(props.index))}
+                onClick={() => dispatch(addFormule(props.index))}
             >
                     Ajouter des formules
             </Button>
-             <PopUp message="Formule supprimée" undo={e => undo()} open={openPopUp} handleClose={e => setOpenPopUp(false)}/>
+             <PopUp message="Formule supprimée" undo={() => undo()} open={openPopUp} handleClose={() => setOpenPopUp(false)}/>
         </div>
     );
 } 

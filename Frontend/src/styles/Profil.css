@@ -5,7 +5,7 @@
 
 #carteProfil{
     display : flex;
-    width : 50%;
+    width : 60%;
     margin : auto;
     box-shadow : -2px 5px 12px 4px rgba(0,0,0,0.62);
 }
@@ -18,7 +18,6 @@
 #buttonEnvoyerImageProfil{
     display : block;
     margin : 2% auto;
-    width : 180px;
 }
 
 #divPasswordChange{
@@ -29,9 +28,10 @@
 }
 
 #buttonChangePwd{
-    width : 200px;
     margin : auto;
     margin-top : 1%;
+    position: relative;
+    right : 24px;
 }
 
 @media screen and (max-width: 960px) {

@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
-import { Fab } from '@material-ui/core';
+import { Fab, Button } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
+import HighlightOffOutlinedIcon from '@material-ui/icons/HighlightOffOutlined';
+import CheckCircleOutlineOutlinedIcon from '@material-ui/icons/CheckCircleOutlineOutlined';
 
 import ItemVariablesAleatoire from '../../components/variable/ItemVariableAleatoire'
 import useConstructor from '../../components/use/useContructor'
@@ -9,7 +11,7 @@ import SelectionModele from '../../components/SelectionModele'
 import { useDispatch } from "react-redux";
 import { addVariable } from "../../slice/VariablesAleatoiresSlice";
 import { useSelector } from "react-redux";
-import { selectVariablesAleatoires, selectActualise } from "../../slice/VariablesAleatoiresSlice"
+import { selectVariablesAleatoires, selectActualise, setVariables } from "../../slice/VariablesAleatoiresSlice"
 import { selectModele } from "../../slice/ModeleSlice"
 
 export default function VariablesAleatoires() {
@@ -18,11 +20,11 @@ export default function VariablesAleatoires() {
 
     const dispatch = useDispatch();
     const tab = useSelector(selectVariablesAleatoires);
-    const actualise = useSelector(selectActualise);
+    const isEnregistre = useSelector(selectActualise);
     const modele = useSelector(selectModele);
 
     useConstructor(() => {
-        if (!actualise && modele.idModeleSelectionne !== undefined){
+        if (!isEnregistre && modele.idModeleSelectionne !== undefined){
             // dispatch(setTab(modele.idModeleSelectionne));
         } 
         if (modele.idModeleSelectionne === undefined){
@@ -36,6 +38,15 @@ export default function VariablesAleatoires() {
                 <Fab style={{marginLeft : "5%", marginBottom : "5%"}} size="small" color="primary" aria-label="add" onClick={(e => dispatch(addVariable()))}>
                     <AddIcon />
                 </Fab>
+                <Button variant="outlined" color={isEnregistre ? "primary" : "secondary"}
+                        onClick={() => dispatch(setVariables({tab : tab, idModele : modele.idModeleSelectionne}))}
+                        endIcon={isEnregistre 
+                             ? <CheckCircleOutlineOutlinedIcon fontSize="large" style={{color : "green"}}/> 
+                            : <HighlightOffOutlinedIcon fontSize="large"  style={{color : "red"}}/>
+                        }
+                    >
+                        Enregistrer
+                    </Button>
                 {tab.map((item, id) => (
                         <ItemVariablesAleatoire key={id} index={id} item={item}/>
                 ))}
