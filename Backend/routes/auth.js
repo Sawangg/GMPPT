@@ -1,5 +1,6 @@
 const { Router } = require("express");
 const passport = require("passport");
+const CryptoJS = require("crypto-js");
 const router = Router();
 const db = require("../databases.js");
 const { isAuthenticated } = require("../middleware.js");
@@ -21,12 +22,20 @@ router.get('/logout', isAuthenticated, (req, res) => {
     });
 });
 
-router.post('/:username/changepwd', isAuthenticated, (req, res) => {
+router.post('/:username/changepwd', isAuthenticated, async (req, res) => {
     const { username } = req.params;
-    db.promise().execute(`UPDATE authentification SET password = '${req.body.newPassword}' WHERE username = '${username}'`).then(() => {
-        if (!rows[0]) return res.sendStatus(404);
-        return res.sendStatus(200);
-    }).catch(() => {
+        await db.promise().execute(`SELECT password FROM authentification WHERE username = '${username}'`).then(async ([rows]) => {
+            if (rows[0].password == null) return res.sendStatus(404);
+            if(CryptoJS.AES.decrypt(rows[0].password, process.env.CRYPT_SECRET).toString(CryptoJS.enc.Utf8) === req.body.passwords.oldPassword) {
+                await db.promise().execute(`UPDATE authentification SET password = '${CryptoJS.AES.encrypt(req.body.passwords.newPassword, process.env.CRYPT_SECRET).toString()}' WHERE username = '${username}'`).then(() => {
+                    return res.sendStatus(200);
+                }).catch(() => {
+                    return res.sendStatus(500);
+                });
+            } else {
+                return res.sendStatus(401);
+            }
+        }).catch(() => {
         return res.sendStatus(500);
     });
 });

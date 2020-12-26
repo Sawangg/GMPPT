@@ -1,5 +1,6 @@
 const localStrat = require("passport-local");
 const passport = require("passport");
+const CryptoJS = require("crypto-js");
 const db = require("../databases.js");
 
 passport.serializeUser((user, done) => {
@@ -22,7 +23,7 @@ passport.use(new localStrat(
             if(result[0].length === 0) {
                 return done(null, false);
             } else {
-                if(result[0][0].password === password) {
+                if(CryptoJS.AES.decrypt(result[0][0].password, process.env.CRYPT_SECRET).toString(CryptoJS.enc.Utf8) === password) {
                     return done(null, result[0][0]);
                 } else {
                     return done(null, false);
