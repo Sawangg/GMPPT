@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Button, Dialog, DialogActions, DialogContent, DialogTitle, InputLabel, Input, MenuItem,FormControl, Select, TextField, Fab} from '@material-ui/core';
+import {Button, Dialog, DialogActions, DialogContent, DialogTitle, InputLabel, Input, MenuItem,FormControl, Select, TextField, Fab, CircularProgress} from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 
@@ -9,7 +9,7 @@ import { useDispatch } from "react-redux";
 import { setTab } from "../slice/FormulesSlice";
 import { selectionnerModele, addNewModele, removeModele, getModele} from "../slice/ModeleSlice";
 import { useSelector } from "react-redux";
-import { selectModele } from "../slice/ModeleSlice"
+import { selectModele, selectActualise } from "../slice/ModeleSlice"
 
 export default function DialogSelect(props) {
   const [select, setSelect] = useState("");
@@ -17,9 +17,10 @@ export default function DialogSelect(props) {
 
   const dispatch = useDispatch();
   const modele = useSelector(selectModele);
+  const actualise = useSelector(selectActualise)
 
   useConstructor(() => {
-        if (!modele.actualise) dispatch(getModele())
+        if (!actualise) dispatch(getModele())
     });
 
     const handleChange = (event) => {
@@ -76,7 +77,7 @@ export default function DialogSelect(props) {
                 <div style={{display : "grid", gridTemplateColumns : "80% 20%", gridGap : "7%", marginTop : 15}} >
                 <Select style={{width : 200}} value={select} onChange={handleChange} input={<Input/>}>
                 <MenuItem value="Créer nouveau modèle" style={{color : "#075b72"}}>Créer nouveau modèle</MenuItem>
-                    {modele.tabName.map(item => <MenuItem key={item.index} value={item.index}>{item.nom}</MenuItem>)}
+                {!actualise ? <CircularProgress fontSize="small" className="center"/> : modele.tabName.map(item => <MenuItem key={item.index} value={item.index}>{item.nom}</MenuItem>)}
                 </Select>
                 <Fab style={{marginLeft : "5%"}} size="small" color="secondary" aria-label="delete" 
                     disabled={select === "" || nouveauModele.etat}

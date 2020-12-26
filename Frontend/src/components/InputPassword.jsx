@@ -10,7 +10,7 @@ export default function InputPwd(props){
     const changeShowMdp = () => setShowMdp(!showMdp)
 
     return (
-        <div>
+        <div style={{margin : "auto"}}>
             <TextField 
                 error={props.error} 
                 label={props.label}
