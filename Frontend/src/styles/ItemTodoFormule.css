@@ -6,7 +6,7 @@
     background-color : #c0dff8 !important;
 }
 
-.container {
+.containerFormules {
     display: grid;
     grid-template-columns: 0.5fr 3.5fr 2fr 0.75fr 0.75fr;
     grid-template-rows: 1fr;
@@ -20,11 +20,11 @@
 }
 
 .nomFormule{
-    width : 160px;
+    width : 30%;
 }
 
 .formule{
-    width : 220px;
+    width : 40%;
     margin-left : 2% !important;
 }
 
@@ -34,7 +34,8 @@
 
 @media screen and (max-width: 960px) {
     
-    .container:first-child {
-        margin: 0px 1% 3%;
+    .containerFormules {
+        grid-template-columns: 0.5fr 3.5fr 2fr;
+        gap: 0px 10px;
     }
 }

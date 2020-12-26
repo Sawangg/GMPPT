@@ -10,7 +10,7 @@ export default function DropFile(props) {
   const onDrop = useCallback(acceptedFiles => {
     acceptedFiles.forEach(async (file) => {
       if (props.compressImage){
-        const compressedFile = await imageCompression(file, {maxSizeMB: 0.6, maxWidthOrHeight: 750, useWebWorker: true});
+        const compressedFile = await imageCompression(file, {maxSizeMB: 1, maxWidthOrHeight: 800, useWebWorker: true});
         await props.changeFile(compressedFile)
       } else {
         props.changeFile(file)
@@ -25,7 +25,7 @@ export default function DropFile(props) {
     ));
 
   return (
-      <div {...getRootProps()} className="divDrop" style={{width : "40%", margin : "auto"}}>
+      <div {...getRootProps()} className="divDrop">
         <input {...getInputProps()} />
         <p>{props.message}</p>
         <CloudUploadOutlinedIcon style={{fontSize : "400%"}}/>

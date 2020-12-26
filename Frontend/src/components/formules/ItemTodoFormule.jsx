@@ -4,6 +4,7 @@ import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 import '../../styles/ItemTodoFormule.css'
 
@@ -13,6 +14,7 @@ import { useDispatch } from "react-redux";
 export default function Item(props) {
 
     const dispatch = useDispatch();
+    const matches = useMediaQuery('(min-width:960px)');
 
     const changeModif = () =>{
         dispatch(changeModifFormule({indexCategorie :props.indexCategorie, indexFormule : props.index}))
@@ -73,7 +75,7 @@ export default function Item(props) {
     }
 
     return (
-        <div className="container">
+        <div className="containerFormules">
             
             <Fab 
                 disabled={props.nb === 1} 
@@ -87,23 +89,28 @@ export default function Item(props) {
             </Fab>
 
             {props.item.modif ? field() : txt()}
-                <Fab 
-                    color="primary" 
-                    variant='extended' 
-                    size='small' 
-                    onClick={e => dispatch(changePositionFormule({indexCategorie :props.indexCategorie, indexFormule : props.index, up : true}))}
-                >
-                    <ArrowUpwardIcon/>
-                </Fab>
-                <Fab 
-                    style={{marginLeft : "10%"}} 
-                    color="primary" 
-                    variant='extended' 
-                    size='small' 
-                    onClick={e => dispatch(changePositionFormule({indexCategorie :props.indexCategorie, indexFormule : props.index, up : false}))}
-                >
-                    <ArrowDownwardIcon/>
-                </Fab>
+
+            {matches 
+                ?<>
+                    <Fab 
+                        color="primary" 
+                        variant='extended' 
+                        size='small' 
+                        onClick={e => dispatch(changePositionFormule({indexCategorie :props.indexCategorie, indexFormule : props.index, up : true}))}
+                    >
+                        <ArrowUpwardIcon/>
+                    </Fab>
+                    <Fab 
+                        style={{marginLeft : "10%"}} 
+                        color="primary" 
+                        variant='extended' 
+                        size='small' 
+                        onClick={e => dispatch(changePositionFormule({indexCategorie :props.indexCategorie, indexFormule : props.index, up : false}))}
+                    >
+                        <ArrowDownwardIcon/>
+                    </Fab>
+                </>
+                : null}
         </div>
     )
     

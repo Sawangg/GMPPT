@@ -10,6 +10,8 @@ import { changeNom, changeValeurMax, changeValeurMin, changeModif, removeVariabl
 
 import SlideBar from './SlideBarVariable'
 
+import '../../styles/itemVariablesAleatoire.css'
+
 export default function ItemVariable(props){
 
     const dispatch = useDispatch();
@@ -28,7 +30,7 @@ export default function ItemVariable(props){
                 </Fab>
                 <TextField 
                         multiline 
-                        label="Nom de la variable" 
+                        label="Nom variable" 
                         variant="outlined" 
                         size="small" 
                         value={props.item.nom}
@@ -37,7 +39,7 @@ export default function ItemVariable(props){
                 <ArrowRightIcon fontSize="large"/>
                 <TextField 
                         multiline 
-                        label="Valeur min" 
+                        label="Min" 
                         variant="outlined" 
                         size="small" 
                         value={props.item.valeurMin}
@@ -45,7 +47,7 @@ export default function ItemVariable(props){
                     />
                 <TextField 
                         multiline 
-                        label="Valeur max" 
+                        label="Max" 
                         variant="outlined" 
                         size="small" 
                         value={props.item.valeurMax}

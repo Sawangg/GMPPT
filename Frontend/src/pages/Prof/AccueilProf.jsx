@@ -6,6 +6,7 @@ import Etapes from '../../components/Etapes'
 import SelectionModele from '../../components/SelectionModele'
 import useConstructor from '../../components/use/useContructor'
 import DropFile from '../../components/DropFile';
+import ParticulesFond from '../../components/ParticulesFond'
 
 import { useDispatch } from "react-redux";
 import { getModele} from "../../slice/ModeleSlice";
@@ -25,6 +26,7 @@ export default function Accueil() {
 
     return (
         <div>
+            <ParticulesFond/>
             <Button style={{display : "block", margin : "100px auto"}} variant="contained" color="primary" onClick={e => setOpen(true)}>Choisir modele sujet</Button>
             <SelectionModele tard={true} setOpen={e => setOpen(e)} open={open}/>
             <Etapes/>

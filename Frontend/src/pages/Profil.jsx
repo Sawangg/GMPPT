@@ -38,7 +38,7 @@ export default function Profile() {
     
     return (
         <div id="carteProfil">
-            <div id="image" style={{width : 220, height : 520, backgroundImage : "url('"+user.image+"')"}}/>
+            {(user.image === undefined || user.image === "") ? null : <div id="image" style={{width : 220, height : 520, backgroundImage : "url('"+user.image+"')"}}/>}
             <div style={{height : 520, width : "100%"}} className="center">
                 <Typography style={{marginTop : "2%"}} align="center" gutterBottom variant="h2" component="h2">{user.name.charAt(0).toUpperCase() + user.name.slice(1)}</Typography>
                 <div id="dropPhotoProfil">

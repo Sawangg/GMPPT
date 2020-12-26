@@ -33,3 +33,19 @@
     margin : auto;
     margin-top : 1%;
 }
+
+@media screen and (max-width: 960px) {
+
+    #image {
+        display: none;
+    }
+
+    #carteProfil{
+        width : 80%;
+    }
+
+    #divPasswordChange{
+        margin-left : 0;
+    }
+    
+}
