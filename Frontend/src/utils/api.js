@@ -24,8 +24,8 @@ export function setImageUser(username, image) {
     return axios.post(`http://${process.env.REACT_APP_SERVER}:3001/auth/${username}/profilepic/new`, image, credentials)
 }
 
-export function setPwdUser(username, newPassword) {
-    return axios.post(`http://${process.env.REACT_APP_SERVER}:3001/auth/${username}/changepwd`, { 'newPassword' : newPassword }, credentials)
+export function setPwdUser(username, passwords) {
+    return axios.post(`http://${process.env.REACT_APP_SERVER}:3001/auth/${username}/changepwd`, { passwords }, credentials)
 }
 
 //Formules
