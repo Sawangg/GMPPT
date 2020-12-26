@@ -20,7 +20,7 @@ export default function ItemVariable(props){
         return (
             <>
                 <Fab 
-                    disabled={props.item.nom === "" ? true : false} 
+                    disabled={props.item.nom === "" || props.item.valeurMin > props.item.valeurMax} 
                     size="small" 
                     color="primary" 
                     aria-label="add" 
