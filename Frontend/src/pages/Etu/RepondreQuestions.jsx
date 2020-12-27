@@ -1,35 +1,27 @@
-import React, { useState } from 'react';
+import React from 'react';
 import ReactHtmlParser from 'react-html-parser';
 import jsPDF from 'jspdf';
 import {Button} from '@material-ui/core';
 import GetAppIcon from '@material-ui/icons/GetApp';
 
+import { useSelector } from "react-redux";
+import {selectAll } from "../../slice/RepondreQuestionsSlice"
+
 import Items from '../../components/reponses/ItemQuestion'
 
 import '../../styles/RepondreQuestions.css'
 
+
 export default function RepondreQuestions(){
-    const [questionsTab, setQuestionTab] = useState([
-        {index : 0, enonce : "Énoncé de question avec plusieurs réponses", nbMaxReponses : 5, peutAjouter : true}, 
-        {index : 1, enonce : "Autre énoncé de question avec plusieurs réponses", nbMaxReponses : 3, peutAjouter : false},
-        {index : 2, enonce : "Énoncé de question avec 1 réponse", nbMaxReponses : 1, peutAjouter : true}]);
 
-    const [unitesTab, setUnitesTab] = useState([{index : 0, nom : "Sans unité", abrv : " "}, 
-    {index : 1, nom : "Newton", abrv : "N"}, {index : 2, nom : "Kilogamme", abrv: "Kg"}]);
+    const questionsTab = useSelector(selectAll)
+    
+    const unitesTab = [
+        {index : 0, nom : "Sans unité", abrv : " "}, 
+        {index : 1, nom : "Newton", abrv : "N"}, 
+        {index : 2, nom : "Kilogamme", abrv: "Kg"}]
 
-    const [sujet, setSujet] = useState("<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt leo est, in placerat ex cursus id. In malesuada scelerisque leo, ut pharetra ligula venenatis laoreet. Duis in elementum est. Ut aliquam diam ultrices, sagittis nibh sit amet, <b> tincidunt ipsum </b>. Aliquam ac mauris dignissim, porttitor urna in, lacinia urna. Donec rhoncus consectetur eros ac ullamcorper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nunc commodo a enim ac ultricies. Vestibulum egestas molestie urna, in posuere odio tempus sit amet. Morbi facilisis sit amet dolor non ultrices. Donec dapibus commodo justo ac tempus. In hac habitasse platea dictumst. Curabitur ultricies iaculis lorem nec interdum. Etiam vel odio ligula. Suspendisse vestibulum nisi et risus posuere varius. In hac habitasse platea dictumst.</p>");
-
-    const addQuestion = (enonce, nbMaxReponses, peutAjouter) =>{
-        setQuestionTab([...questionsTab, 
-            {index : questionsTab.length, enonce : enonce, nbMaxReponses:nbMaxReponses, peutAjouter : peutAjouter}]);
-    }
-
-    const displayQuestions = () => {
-        return questionsTab.length === 0 ? <div>Pas de questions pour l'instant</div> 
-        : questionsTab.map((i) => (
-            <Items num={i.index} enonce={i.enonce} nbMaxReponses={i.nbMaxReponses} unites={unitesTab}/>
-        ))
-    }
+    const sujet = "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt leo est, in placerat ex cursus id. In malesuada scelerisque leo, ut pharetra ligula venenatis laoreet. Duis in elementum est. Ut aliquam diam ultrices, sagittis nibh sit amet, <b> tincidunt ipsum </b>. Aliquam ac mauris dignissim, porttitor urna in, lacinia urna. Donec rhoncus consectetur eros ac ullamcorper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nunc commodo a enim ac ultricies. Vestibulum egestas molestie urna, in posuere odio tempus sit amet. Morbi facilisis sit amet dolor non ultrices. Donec dapibus commodo justo ac tempus. In hac habitasse platea dictumst. Curabitur ultricies iaculis lorem nec interdum. Etiam vel odio ligula. Suspendisse vestibulum nisi et risus posuere varius. In hac habitasse platea dictumst.</p>"
 
 
     const downloadPdf = () =>{
@@ -53,7 +45,6 @@ export default function RepondreQuestions(){
         doc.addPage();
 
         var number_of_pages = doc.internal.getNumberOfPages();
-        var myFooter = "Footer info";
         for (var i = 1; i <= number_of_pages; i++) {
 
             doc.setPage(i);
@@ -71,6 +62,13 @@ export default function RepondreQuestions(){
         }
 
         doc.save("sujet.pdf");
+    }
+
+    const displayQuestions = () => {
+        return questionsTab.length === 0 ? <div>Pas de questions pour l'instant</div> 
+        : questionsTab.map((i) => (
+            <Items question={i} unites={unitesTab}/>
+        ))
     }
 
     return(<div className="contenant">

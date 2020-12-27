@@ -1,5 +1,6 @@
 import React from 'react';
 import {Button, Dialog, DialogActions, DialogContent, DialogTitle} from '@material-ui/core';
+import _ from "lodash"
 
 import Item from './ItemChoixUnite';
 
@@ -7,7 +8,7 @@ export default function ChoixUnite(props){
 
     const handleChangeUnite = (event, indTab) =>{
         let index = event.target.value;
-        let newTab = [...props.unite];
+        const newTab = _.cloneDeep(props.unite);
         newTab[indTab].id = index;
         props.setUnite(newTab);
     }
