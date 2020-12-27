@@ -6,7 +6,7 @@ import CreateIcon from '@material-ui/icons/Create';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 
 import { useDispatch } from "react-redux";
-import { changeNom, changeValeurMax, changeValeurMin, changeModif, removeVariable } from "../../slice/VariablesAleatoiresSlice";
+import { changeNom, changeMax, changeMin, changeModif, removeVariable } from "../../slice/VariablesAleatoiresSlice";
 
 import SlideBar from './SlideBarVariable'
 
@@ -20,7 +20,7 @@ export default function ItemVariable(props){
         return (
             <>
                 <Fab 
-                    disabled={props.item.nom === "" || props.item.valeurMin > props.item.valeurMax} 
+                    disabled={props.item.nom === "" || props.item.min > props.item.max} 
                     size="small" 
                     color="primary" 
                     aria-label="add" 
@@ -42,20 +42,20 @@ export default function ItemVariable(props){
                         label="Min" 
                         variant="outlined" 
                         size="small" 
-                        value={props.item.valeurMin}
-                        onChange={e => dispatch(changeValeurMin({index : props.index, event : e.target.value}))}
+                        value={props.item.min}
+                        onChange={e => dispatch(changeMin({index : props.index, event : e.target.value}))}
                     />
                 <TextField 
                         multiline 
                         label="Max" 
                         variant="outlined" 
                         size="small" 
-                        value={props.item.valeurMax}
-                        onChange={e => dispatch(changeValeurMax({index : props.index, event : e.target.value}))}
+                        value={props.item.max}
+                        onChange={e => dispatch(changeMax({index : props.index, event : e.target.value}))}
                     />
                 <SlideBar index={props.index}/>
             </>
-        )
+        );
     }
 
     const displayTxt = () =>{
@@ -70,8 +70,8 @@ export default function ItemVariable(props){
                 </Fab>
                 <Typography>{props.item.nom} </Typography>
                 <ArrowRightIcon fontSize="large"/>
-                <Typography>Max :{props.item.valeurMin} </Typography>
-                <Typography>Min :{props.item.valeurMax} </Typography>
+                <Typography>Min :{props.item.min} </Typography>
+                <Typography>Max :{props.item.max} </Typography>
                 <Typography>Précision : 10^-{props.item.precision}</Typography>
             </>
         )
@@ -79,16 +79,15 @@ export default function ItemVariable(props){
 
     return (
         <div className="containerVariables">
-                    {props.item.modif ? displayModif() : displayTxt()}
-                    <Fab 
-                    size="small" 
-                    color="secondary" 
-                    aria-label="add" 
-                    onClick={() => dispatch(removeVariable(props.index))}
-                    >
-                        <DeleteIcon className="center" />
-                    </Fab>
-                </div>
-    )
-
+            {props.item.modif ? displayModif() : displayTxt()}
+            <Fab 
+                size="small" 
+                color="secondary" 
+                aria-label="add" 
+                onClick={() => dispatch(removeVariable(props.index))}
+            >
+            <DeleteIcon className="center" />
+            </Fab>
+        </div>
+    );
 }

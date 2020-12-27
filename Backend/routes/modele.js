@@ -88,14 +88,13 @@ router.get('/:idmodele/variables/', isAuthenticated, isProf, async (req, res) =>
     });
 });
 
-router.post('/:idmodele/variables/new', isAuthenticated, isProf, (req, res) => {
+router.post('/:idmodele/variables/new', isAuthenticated, isProf, async (req, res) => {
     const { idmodele } = req.params;
-    const { nom, min, max, precision } = req.body;
-    db.promise().execute(`INSERT INTO variable_aleatoire(id_modele, nom, min, max, precision) VALUES ('${idmodele}', '${nom}', ${min}, ${max}, ${precision})`).then(() => {
-        return res.sendStatus(200);
-    }).catch(() => {
-        return res.sendStatus(500);
+    await db.promise().execute(`DELETE FROM variable_aleatoire WHERE id_modele=${idmodele}`);
+    req.body.forEach(async variable => {
+        await db.promise().execute(`INSERT INTO variable_aleatoire VALUES (NULL, ${idmodele}, '${variable.nom}', ${variable.min}, ${variable.max}, ${variable.precision})`);
     });
+    return res.sendStatus(200);
 });
 
 module.exports = router;
