@@ -3,9 +3,11 @@ import SunEditor from 'suneditor-react';
 import 'suneditor/dist/css/suneditor.min.css'; // Import Sun Editor's CSS File
 
 const MyEditor = props => {
+
     return (
         <div>
             <SunEditor
+                onChange={props.handleChange}
                 setOptions={{buttonList: [
                     ['undo','redo'],
                     ['bold', 'underline', 'italic', 'strike', 'subscript', 'superscript'],
