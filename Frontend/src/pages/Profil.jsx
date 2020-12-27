@@ -23,7 +23,7 @@ export default function Profile() {
     const [image, setImage] = useState("");
 
     const changePasswordAPI = () => {
-        setPwdUser(user.name, { oldPassword : password.oldPassword, newPassword : password.newPassword }).then(() => {
+        setPwdUserAPI(user.name, { oldPassword : password.oldPassword, newPassword : password.newPassword }).then(() => {
             dispatch(changePassword(password.newPassword));
             setOpenPopUp(true);
         }).catch(() => {
