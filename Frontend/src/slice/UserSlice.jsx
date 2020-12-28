@@ -78,9 +78,6 @@ export const userSlice = createSlice({
       state.isLogin = false;
       state.isProf = undefined;
     },
-    [setUserImage.rejected]: (state, action) => {
-      console.log("non");
-    },
     [setUserImage.pending]: (state, action) => {
       state.image = URL.createObjectURL(action.meta.arg.image);
 
@@ -90,12 +87,6 @@ export const userSlice = createSlice({
           var base64data = reader.result;
           myStorage.setItem('image', base64data);          
       }
-    },
-    [setUserImage.fulfilled]: (state, action) => {
-      console.log("parfait");
-    },
-    [getUserImage.rejected]: (state, action) => {
-      console.log("nop");
     },
     [getUserImage.fulfilled]: (state, action) => {
       let imageBase64 ="data:image/jpeg;base64," + Buffer.from(action.payload.profilepic).toString("base64");

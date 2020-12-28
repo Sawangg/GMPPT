@@ -80,14 +80,26 @@ export const variablesAleatoiresReducer = createSlice({
     },
   },
   extraReducers: {
+    [getAllVariables.pending]: (state) => {
+      state.actualise = false;
+    },
     [getAllVariables.rejected]: (state, action) => {
       if (action.error.message === "Request failed with status code 404") {
+        state.tab = [
+          {
+            nom: "",
+            min: 0,
+            max: 0,
+            precision: 0,
+            modif: true,
+            index: 0,
+          },
+        ];
         state.actualise = true;
         state.enregistre = true;
       }
     },
     [getAllVariables.fulfilled]: (state, action) => {
-      if (!state.enregistre) {
         let array = [];
         let compt = 0;
         action.payload.forEach((element) => {
@@ -104,9 +116,8 @@ export const variablesAleatoiresReducer = createSlice({
         state.actualise = true;
         state.enregistre = true;
         state.tab = array;
-      }
     },
-    [setVariables.fulfilled]: (state, action) => {
+    [setVariables.fulfilled]: (state) => {
       state.enregistre = true;
     },
   },

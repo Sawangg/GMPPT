@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
-import { Fab, Button, CircularProgress } from '@material-ui/core';
+import { Fab, Button } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import HighlightOffOutlinedIcon from '@material-ui/icons/HighlightOffOutlined';
 import CheckCircleOutlineOutlinedIcon from '@material-ui/icons/CheckCircleOutlineOutlined';
+import PacmanLoader from "react-spinners/PacmanLoader";
 
 import ItemVariablesAleatoire from '../../components/variable/ItemVariableAleatoire'
 import useConstructor from '../../components/use/useContructor'
@@ -45,7 +46,7 @@ export default function VariablesAleatoires() {
                     Enregistrer
                 </Button>
                 {tab.map((item, id) => (
-                    <ItemVariablesAleatoire key={id} index={id} item={item}/>
+                    <ItemVariablesAleatoire length={tab.length} key={id} index={id} item={item}/>
                 ))}
             </div>
         )
@@ -53,7 +54,7 @@ export default function VariablesAleatoires() {
 
     return (
         modele.idModeleSelectionne === undefined 
-        ? <SelectionModele tard={false} setOpen={e => setOpen(e)} open={open}/> 
-        : (actualise ? displayVariable() : <CircularProgress className="center"/>)
+        ? <SelectionModele tard={false} setClose={() => setOpen(false)} open={open}/> 
+        : actualise ? displayVariable() : <PacmanLoader size={35} color={"rgb(7, 91, 114)"} css={{margin : "auto", display : "flex", justifyContent : "center"}}/>
     );
 }

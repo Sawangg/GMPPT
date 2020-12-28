@@ -38,7 +38,6 @@ export const userSlice = createSlice({
   },
   extraReducers: {
     [getModele.rejected]: (state, action) => {
-      console.log("erreur de chargement");
       state.actualise = true; //pour ne pas bloquer
     },
     [getModele.fulfilled]: (state, action) => {
