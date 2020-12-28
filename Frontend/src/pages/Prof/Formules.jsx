@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
-import {Fab, Button, CircularProgress} from '@material-ui/core';
+import {Fab, Button} from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import HighlightOffOutlinedIcon from '@material-ui/icons/HighlightOffOutlined';
 import CheckCircleOutlineOutlinedIcon from '@material-ui/icons/CheckCircleOutlineOutlined';
+import PacmanLoader from "react-spinners/PacmanLoader";
 
 import Items from '../../components/formules/ItemTodoAccordeon'
 import useConstructor from '../../components/use/useContructor'
@@ -37,7 +38,6 @@ export default function TodoListAccordeon() {
     }
 
     const displayFormule = () =>{
-        console.log(tab)
         return(
             <div>
                 <h1 style={{textAlign : "center"}}>Creation des formules</h1>
@@ -65,7 +65,7 @@ export default function TodoListAccordeon() {
 
     return (
         modele.idModeleSelectionne === undefined 
-        ? <SelectionModele tard={false} setOpen={e => setOpen(e)} open={open}/> 
-        : actualise ? displayFormule() : <CircularProgress className="center"/>
+        ? <SelectionModele tard={false} setClose={() => setOpen(false)} open={open}/> 
+        : actualise ? displayFormule() : <PacmanLoader size={35} color={"rgb(7, 91, 114)"} css={{margin : "auto", display : "flex", justifyContent : "center"}}/>
     );
 }

@@ -3,8 +3,10 @@ import {Avatar, IconButton, Menu, MenuItem, ListItemIcon,Typography } from '@mat
 import { Redirect, Link } from "react-router-dom";
 import AccountBoxOutlinedIcon from '@material-ui/icons/AccountBoxOutlined';
 import ExitToAppOutlinedIcon from '@material-ui/icons/ExitToAppOutlined';
+import AppsOutlinedIcon from '@material-ui/icons/AppsOutlined';
 
 import useConstructor from './use/useContructor';
+import SelectionModele from './SelectionModele'
 
 import { useDispatch } from "react-redux";
 import { logoutUser } from "../slice/UserSlice";
@@ -14,6 +16,7 @@ import { selectUserName, getUserImage } from "../slice/UserSlice"
 export default function MenuProfil() {
 
   const [openLocation, setOpenLocation] = useState(null);
+  const [open, setOpen] = useState(false);
 
   const dispatch = useDispatch();
   const user = useSelector(selectUserName);
@@ -46,6 +49,14 @@ export default function MenuProfil() {
             </ListItemIcon>
             <Typography variant="inherit">Profil</Typography>
             </MenuItem>
+            {user.isProf 
+            ?<MenuItem onClick={e => setOpen(true)}>
+            <ListItemIcon>
+                <AppsOutlinedIcon/>
+            </ListItemIcon>
+            <Typography variant="inherit">Modèle</Typography>
+            </MenuItem> 
+            : null}
             <MenuItem onClick={e => dispatch(logoutUser())}>
             <ListItemIcon>
                 <ExitToAppOutlinedIcon />
@@ -53,6 +64,7 @@ export default function MenuProfil() {
             <Typography variant="inherit">Déconnexion</Typography>
             </MenuItem>
         </Menu>
+        <SelectionModele tard={true} setClose={() => setOpen(false)} open={open}/>
         {user.isLogin ? null : <Redirect to='/'/>}
     </div>
   );

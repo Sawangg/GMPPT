@@ -81,6 +81,7 @@ export default function ItemVariable(props){
         <div className="containerVariables">
             {props.item.modif ? displayModif() : displayTxt()}
             <Fab 
+                disabled={props.length <= 1}
                 size="small" 
                 color="secondary" 
                 aria-label="add" 

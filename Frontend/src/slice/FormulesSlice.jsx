@@ -149,14 +149,40 @@ export const formuleSlice = createSlice({
     },
   },
   extraReducers: {
+    [setTab.pending]: (state) => {
+      state.actualise = false;
+    },
     [setTab.rejected]: (state, action) => {
       if (action.error.message === "Request failed with status code 404") {
+        state.tab = [
+          {
+            nom: "",
+            modif: true,
+            index: 0,
+            margeErreur: "5",
+            tabFormule: [
+              {
+                nomFormule: "",
+                formule: "",
+                modif: true,
+                index: 0,
+              },
+            ],
+            saveTabFormule: [
+              {
+                nomFormule: "",
+                formule: "",
+                modif: true,
+                index: 0,
+              },
+            ],
+          },
+        ];
         state.actualise = true;
         state.enregistre = true;
       }
     },
     [setTab.fulfilled]: (state, action) => {
-      if (!state.enregistre) {
         let array = [];
         let compt = 0;
         action.payload.forEach((element) => {
@@ -184,9 +210,8 @@ export const formuleSlice = createSlice({
         state.actualise = true;
         state.enregistre = true;
         state.tab = array;
-      }
     },
-    [enregistrerFormules.fulfilled]: (state, action) => {
+    [enregistrerFormules.fulfilled]: (state) => {
       state.enregistre = true;
     },
   },
