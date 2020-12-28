@@ -27,7 +27,7 @@ export default function Profile() {
             dispatch(changePassword(password.newPassword));
             setOpenPopUp(true);
         }).catch(() => {
-            setPassword({ error : true });
+            setPassword({oldPassword : password.oldPassword, newPassword  : password.newPassword, error : true });
         });
     }
     

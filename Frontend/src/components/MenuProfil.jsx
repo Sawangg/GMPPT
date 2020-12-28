@@ -19,7 +19,8 @@ export default function MenuProfil() {
   const user = useSelector(selectUserName);
   
   useConstructor(() => {
-      if (user.name !== "" && user.image === undefined) dispatch(getUserImage(user.name))
+        let myStorage = window.localStorage;
+        if (user.name !== "" && user.image === undefined && myStorage.getItem('image') === null) dispatch(getUserImage(user.name))
     });
 
   return (
