@@ -1,10 +1,9 @@
 const { Router } = require("express");
 const passport = require("passport");
-const CryptoJS = require("crypto-js");
 const router = Router();
 const db = require("../databases.js");
 const { isAuthenticated } = require("../middleware.js");
-const { comparePwd, encrypt } = require("../strategies/local.js");
+const { comparePwd, encrypt } = require("../utils.js");
 
 
 router.get("/", isAuthenticated, (req, res) => {
