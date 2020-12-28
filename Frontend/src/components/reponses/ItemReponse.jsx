@@ -3,7 +3,7 @@ import { Button, TextField, Fab,InputAdornment} from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 
 import { useDispatch, useSelector } from "react-redux";
-import { changeReponse, peutSupprimer, deleteReponse, changeUniteReponse } from '../../slice/RepondreQuestionsSlice'
+import { changeReponse, peutSupprimer, deleteReponse } from '../../slice/RepondreQuestionsSlice'
 
 import ChoixUnite from './ChoixUnite';
 
@@ -11,7 +11,7 @@ export default function Item(props) {
 
      const [choixUniteOpen, setOpen] = useState(false);
 
-     const [unite, setUnite] = useState([]);
+     const [uniteCopie, setUnite] = useState([]);
 
      const dispatch = useDispatch();
 
@@ -44,7 +44,6 @@ export default function Item(props) {
      }
 
      const handleClose = () =>{
-          dispatch(changeUniteReponse({indexQuestion : props.indexQuestion, indexReponse : props.num, newTab : unite}));
           setOpen(false);
      }
 
@@ -65,11 +64,11 @@ export default function Item(props) {
                }} />
                <Button size="small" onClick={e=>handleOpen()}>Unite</Button>
 
-               {<ChoixUnite open={choixUniteOpen} unites={props.unites}
-                    unite={unite} handleClose={handleClose} setUnite={setUnite}/>}
+               <ChoixUnite open={choixUniteOpen} unites={props.unites}
+                    unite={props.reponse.tabUnite} handleClose={handleClose} 
+                    indexQuestion={props.indexQuestion} indexReponse={props.num}/>
 
-               {canDelete ? buttonDelete() : null
-               }
+               {canDelete ? buttonDelete() : null}
           </div>)
 
 }

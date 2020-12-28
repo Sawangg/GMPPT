@@ -1,21 +1,43 @@
 import React from 'react';
 import {IconButton, TextField, MenuItem, InputAdornment} from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
+
+import { useDispatch } from 'react-redux';
+import { changePartieUnite, deletePartieUnite, changePuissancePartieUnite } from '../../slice/RepondreQuestionsSlice'
 
 export default function Item(props){
 
-    const buttonAdd = (index) =>{
-      return(
-        <IconButton size="small" color="primary" onClick={e=> props.addPartieUnite(index)} >
-          <AddIcon/>
-        </IconButton>
-      )
+    const dispatch = useDispatch();
+
+    const handleChangeUnite = (event) =>{
+      dispatch(changePartieUnite({
+          indexQuestion : props.indexQuestion, 
+          indexReponse : props.indexReponse,
+          indexUnite : props.index,
+          value : event.target.value 
+        }))
+    }
+
+    const handleDeleteUnite = () =>{
+      dispatch(deletePartieUnite({
+        indexQuestion : props.indexQuestion, 
+        indexReponse : props.indexReponse,
+        indexUnite : props.index
+      }))
+    }
+
+    const handleChangePuissance = (event) =>{
+      dispatch(changePuissancePartieUnite({
+        indexQuestion : props.indexQuestion, 
+        indexReponse : props.indexReponse,
+        indexUnite : props.index,
+        value : event.target.value
+      }))
     }
 
     const buttonDelete = () =>{
       return(
-        <IconButton size="small" color="secondary" onClick={e=> props.deletePartieUnite(props.index)} >
+        <IconButton size="small" color="secondary" onClick={handleDeleteUnite} >
           <DeleteIcon/>
         </IconButton>
       )
@@ -24,9 +46,7 @@ export default function Item(props){
     const buttons = () =>{
       return(
         <div className="button_gap">
-          {buttonAdd(props.index)}
           {props.tabLength > 1 ? buttonDelete() : null }
-          {buttonAdd(props.index + 1)}
         </div>
       )
     }
@@ -35,7 +55,7 @@ export default function Item(props){
     return(
     <div className="choix_input">
         {buttons()}
-        <TextField select value={props.unite.id} onChange={e=> props.handleChangeUnite(e, props.index)}>
+        <TextField select value={props.unite.id} onChange={handleChangeUnite}>
             {props.unites.map((i, index) => 
             <MenuItem key={index} value={index} >
                 {i.nom}
@@ -43,7 +63,7 @@ export default function Item(props){
         </TextField>
         {props.unite.id !== 0 ? 
         <>
-        <TextField value={props.unite.puissance} className="puissance" onChange={e=>props.handlePuissance(e, props.index)}
+        <TextField value={props.unite.puissance} className="puissance" onChange={e=>handleChangePuissance(e)}
             InputProps={{ startAdornment: (
                     <InputAdornment position="start">
                       ^

@@ -25,13 +25,13 @@ export default function RepondreQuestions(){
 
 
     const downloadPdf = () =>{
-        const MARGE_COTE = 15;
-        const MARGE_HAUT = 20;
-        const MARGE_BAS = 20;
-        const HAUTEUR_A4 = 297;
-        const LARGEUR_A4 = 210;
+        const MARGE_COTE = 15
+        const MARGE_HAUT = 20
+        const MARGE_BAS = 20
+        const HAUTEUR_A4 = 297
+        const LARGEUR_A4 = 210
 
-        var doc = new jsPDF('p', 'mm', 'a4');
+        var doc = new jsPDF('p', 'mm', 'a4')
 
         var options = {
             pagesplit : true,
@@ -39,29 +39,29 @@ export default function RepondreQuestions(){
             'height' : HAUTEUR_A4 - MARGE_HAUT - MARGE_BAS,
         }
 
-        doc.setFontSize(12);
+        doc.setFontSize(12)
 
-        doc.fromHTML(sujet,MARGE_COTE,MARGE_HAUT + 10,options);
-        doc.addPage();
+        doc.fromHTML(sujet,MARGE_COTE,MARGE_HAUT + 10,options)
+        doc.addPage()
 
-        var number_of_pages = doc.internal.getNumberOfPages();
+        var number_of_pages = doc.internal.getNumberOfPages()
         for (var i = 1; i <= number_of_pages; i++) {
 
-            doc.setPage(i);
+            doc.setPage(i)
 
             //header
-            doc.text(MARGE_COTE, MARGE_HAUT, "N° étudiant : 1 - N° sujet : 14582");
-            doc.text(LARGEUR_A4 - MARGE_COTE, MARGE_HAUT, "Sujet de Pierre Dupont" , 'right');
+            doc.text(MARGE_COTE, MARGE_HAUT, "N° étudiant : 1 - N° sujet : 14582")
+            doc.text(LARGEUR_A4 - MARGE_COTE, MARGE_HAUT, "Sujet de Pierre Dupont" , 'right')
 
             //footer
-            doc.setLineWidth(0.5);
-            doc.line(MARGE_COTE, HAUTEUR_A4 - MARGE_BAS - 5, LARGEUR_A4-MARGE_COTE, HAUTEUR_A4 - MARGE_BAS - 5);
-            doc.text(MARGE_COTE, HAUTEUR_A4 - MARGE_BAS, "Pierre Carillo");
-            doc.text(LARGEUR_A4/2, HAUTEUR_A4 - MARGE_BAS, "IUT du Limousin - GMP", "center");
-            doc.text(LARGEUR_A4 - MARGE_COTE, HAUTEUR_A4 - MARGE_BAS, "Page " + i + "/" + number_of_pages, "right");
+            doc.setLineWidth(0.5)
+            doc.line(MARGE_COTE, HAUTEUR_A4 - MARGE_BAS - 5, LARGEUR_A4-MARGE_COTE, HAUTEUR_A4 - MARGE_BAS - 5)
+            doc.text(MARGE_COTE, HAUTEUR_A4 - MARGE_BAS, "Pierre Carillo")
+            doc.text(LARGEUR_A4/2, HAUTEUR_A4 - MARGE_BAS, "IUT du Limousin - GMP", "center")
+            doc.text(LARGEUR_A4 - MARGE_COTE, HAUTEUR_A4 - MARGE_BAS, "Page " + i + "/" + number_of_pages, "right")
         }
 
-        doc.save("sujet.pdf");
+        doc.save("sujet.pdf")
     }
 
     const displayQuestions = () => {

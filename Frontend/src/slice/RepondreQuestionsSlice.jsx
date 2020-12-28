@@ -38,15 +38,36 @@ export const reponseSlice = createSlice({
                 state.tabQuestions[indexQuestion].tabReponses.splice(indexReponse, 1);
             }
         },
-        changeUniteReponse : (state, action) =>{
-            let {indexQuestion, indexReponse, newTab} = action.payload
-            state.tabQuestions[indexQuestion].tabReponses[indexReponse].tabUnite = newTab
-        }
+        changePartieUnite : (state, action) =>{
+            let {indexQuestion, indexReponse, indexUnite, value} = action.payload
+            state.tabQuestions[indexQuestion].tabReponses[indexReponse].tabUnite[indexUnite].id = value
+        },
+        addPartieUnite : (state, action) =>{
+            let {indexQuestion, indexReponse} = action.payload
+            state.tabQuestions[indexQuestion].tabReponses[indexReponse].tabUnite.push(
+                {
+                    id : 0,
+                    puissance : 1
+                }
+            )
+        },
+        deletePartieUnite : (state, action) =>{
+            let {indexQuestion, indexReponse, indexUnite} = action.payload
+            state.tabQuestions[indexQuestion].tabReponses[indexReponse].tabUnite.splice(indexUnite, 1)
+        },
+        changePuissancePartieUnite : (state, action) =>{
+            let {indexQuestion, indexReponse, indexUnite, value} = action.payload
+            console.log(value==='-')
+            if((!isNaN(value)&& Math.abs(value) < 100 ) || value==='-' ){
+                state.tabQuestions[indexQuestion].tabReponses[indexReponse].tabUnite[indexUnite].puissance = value
+            }
+        },
     },
     extraReducers: {}
-});
+})
 
-export const { addReponse, changeReponse, deleteReponse, changeUniteReponse } = reponseSlice.actions
+export const { addReponse, changeReponse, deleteReponse, changePartieUnite, addPartieUnite, deletePartieUnite,
+    changePuissancePartieUnite } = reponseSlice.actions
 
 export const selectAll = state => state.reponse.tabQuestions
 
