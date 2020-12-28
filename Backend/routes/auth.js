@@ -1,9 +1,10 @@
 const { Router } = require("express");
 const passport = require("passport");
-const CryptoJS = require("crypto-js");
 const router = Router();
 const db = require("../databases.js");
 const { isAuthenticated } = require("../middleware.js");
+const { comparePwd, encrypt } = require("../utils.js");
+
 
 router.get("/", isAuthenticated, (req, res) => {
     return res.send(req.user).status(200);
@@ -22,22 +23,18 @@ router.get('/logout', isAuthenticated, (req, res) => {
     });
 });
 
-router.post('/:username/changepwd', isAuthenticated, async (req, res) => {
+router.post('/:username/changepwd', isAuthenticated, (req, res) => {
     const { username } = req.params;
-        await db.promise().execute(`SELECT password FROM authentification WHERE username = '${username}'`).then(async ([rows]) => {
-            if (rows[0].password == null) return res.sendStatus(404);
-            if(CryptoJS.AES.decrypt(rows[0].password, process.env.CRYPT_SECRET).toString(CryptoJS.enc.Utf8) === req.body.passwords.oldPassword) {
-                await db.promise().execute(`UPDATE authentification SET password = '${CryptoJS.AES.encrypt(req.body.passwords.newPassword, process.env.CRYPT_SECRET).toString()}' WHERE username = '${username}'`).then(() => {
-                    return res.sendStatus(200);
-                }).catch(() => {
-                    return res.sendStatus(500);
-                });
-            } else {
-                return res.sendStatus(401);
-            }
+    const { oldPassword, newPassword } = req.body.passwords;
+    if (comparePwd(oldPassword, req.user.password)) {
+        db.promise().execute(`UPDATE authentification SET password = '${encrypt(newPassword)}' WHERE username = '${username}'`).then(() => {
+            return res.sendStatus(200);
         }).catch(() => {
-        return res.sendStatus(500);
-    });
+            return res.sendStatus(500);
+        });
+    } else {
+        return res.sendStatus(401);
+    }
 });
 
 router.get('/:username/profilepic', isAuthenticated, (req, res) => {

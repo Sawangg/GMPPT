@@ -3,6 +3,7 @@ const db = require("../databases.js");
 const router = Router();
 const { isAuthenticated, isProf } = require("../middleware.js");
 const ExcelJS = require('exceljs');
+const { generatePwd } = require("../utils.js");
 
 router.post('/new', isAuthenticated, isProf, async (req, res) => {
     const { idpromo } = req.body;
@@ -36,13 +37,3 @@ router.post('/new', isAuthenticated, isProf, async (req, res) => {
 });
 
 module.exports = router;
-
-function generatePwd() {
-    const length = Math.random() * 10000 % 5 + 8;
-    let result = '';
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    for (let i = 0; i < length; i++) {
-        result += characters.charAt(Math.floor(Math.random() * characters.length));
-    }
-    return result;
-}
