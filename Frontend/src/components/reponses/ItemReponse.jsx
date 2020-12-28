@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { Button, TextField, Fab,InputAdornment} from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
+import _ from "lodash"
 
 import { useDispatch, useSelector } from "react-redux";
-import { changeReponse, peutSupprimer, deleteReponse } from '../../slice/RepondreQuestionsSlice'
+import { changeReponse, peutSupprimer, deleteReponse, changeUniteReponses, 
+     changeUniteForAllReponses} from '../../slice/RepondreQuestionsSlice'
 
 import ChoixUnite from './ChoixUnite';
 
@@ -43,8 +45,25 @@ export default function Item(props) {
           )
      }
 
-     const handleClose = () =>{
+     const handleClose = (value) =>{
           setOpen(false);
+          switch(value){
+          case "annuler" : 
+               dispatch(changeUniteReponses({
+                    indexQuestion : props.indexQuestion,
+                    indexReponse : props.num,
+                    tab : _.cloneDeep(uniteCopie)
+               }))
+               break
+          case "appliquer a tous" :
+               dispatch(changeUniteForAllReponses({
+                    indexQuestion : props.indexQuestion,
+                    tab : props.reponse.tabUnite
+               }))
+               break
+          default : 
+
+          }
      }
 
      const handleOpen = () =>{

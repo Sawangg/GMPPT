@@ -35,6 +35,18 @@ export default function Item(props){
       }))
     }
 
+    const handleBlurUnite = () =>{
+      let pow = props.unite.puissance
+      if(pow === '0' || pow === '-' || pow === ''){
+        dispatch(changePuissancePartieUnite({
+          indexQuestion : props.indexQuestion, 
+          indexReponse : props.indexReponse,
+          indexUnite : props.index,
+          value : 1
+        }))
+      }
+    }
+
     const buttonDelete = () =>{
       return(
         <IconButton size="small" color="secondary" onClick={handleDeleteUnite} >
@@ -64,6 +76,7 @@ export default function Item(props){
         {props.unite.id !== 0 ? 
         <>
         <TextField value={props.unite.puissance} className="puissance" onChange={e=>handleChangePuissance(e)}
+            onBlur={handleBlurUnite}
             InputProps={{ startAdornment: (
                     <InputAdornment position="start">
                       ^
