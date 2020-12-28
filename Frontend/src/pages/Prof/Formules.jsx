@@ -10,9 +10,8 @@ import SelectionModele from '../../components/SelectionModele'
 import useUnload from '../../components/use/useUnload';
 
 import { useDispatch } from "react-redux";
-import { addCategorie, setTab, enregistrerFormules } from "../../slice/FormulesSlice";
 import { useSelector } from "react-redux";
-import { selectFormule, selectActualise, selectEnregistre } from "../../slice/FormulesSlice"
+import { selectFormule, selectActualise, selectEnregistre, addCategorie, enregistrerFormules } from "../../slice/FormulesSlice"
 import { selectModele } from "../../slice/ModeleSlice"
 
 export default function TodoListAccordeon() {
@@ -26,9 +25,6 @@ export default function TodoListAccordeon() {
     const modele = useSelector(selectModele);
 
     useConstructor(() => {
-        if (!actualise && modele.idModeleSelectionne !== undefined){
-            dispatch(setTab(modele.idModeleSelectionne));
-        } 
         if (modele.idModeleSelectionne === undefined){
             setOpen(true);
         } 
@@ -41,11 +37,10 @@ export default function TodoListAccordeon() {
     }
 
     const displayFormule = () =>{
+        console.log(tab)
         return(
             <div>
                 <h1 style={{textAlign : "center"}}>Creation des formules</h1>
-                {!actualise ? <CircularProgress className="center"/> :
-                <>
                 <div style={{display : "flex"}}>
                     <Button variant="outlined" color={isEnregistre ? "primary" : "secondary"}
                         onClick={e => dispatch(enregistrerFormules({tab : tab, idModele : modele.idModeleSelectionne}))}
@@ -63,13 +58,14 @@ export default function TodoListAccordeon() {
                 {tab.map((i, id) => (
                 <Items index={id} key={i.index} item={i} length={tab.length}/>
                 ))}
-                </>}
             </div>
         )
         
     } 
 
     return (
-        modele.idModeleSelectionne === undefined ? <SelectionModele tard={false} setOpen={e => setOpen(e)} open={open}/> : displayFormule()
+        modele.idModeleSelectionne === undefined 
+        ? <SelectionModele tard={false} setOpen={e => setOpen(e)} open={open}/> 
+        : actualise ? displayFormule() : <CircularProgress className="center"/>
     );
 }

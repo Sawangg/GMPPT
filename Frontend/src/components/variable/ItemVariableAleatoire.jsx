@@ -72,7 +72,7 @@ export default function ItemVariable(props){
                 <ArrowRightIcon fontSize="large"/>
                 <Typography>Min :{props.item.min} </Typography>
                 <Typography>Max :{props.item.max} </Typography>
-                <Typography>Précision : 10^-{props.item.precision}</Typography>
+                <Typography>Précision : 10^{props.item.precision}</Typography>
             </>
         )
     }

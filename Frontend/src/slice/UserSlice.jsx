@@ -1,62 +1,63 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-import { getInfoUserAPI, logoutAPI, setImageUserAPI, getImageUserAPI } from '../utils/api.js';
+import {
+  getInfoUserAPI,
+  logoutAPI,
+  setImageUserAPI,
+  getImageUserAPI,
+} from "../utils/api.js";
 
-export const userDetails = createAsyncThunk(
-  'users/getInfoUser',
-  async () => {
-    const response = await getInfoUserAPI();
-    return response.data
-  }
-)
+export const userDetails = createAsyncThunk("users/getInfoUser", async () => {
+  const response = await getInfoUserAPI();
+  return response.data;
+});
 
-export const logoutUser = createAsyncThunk(
-  'users/logout',
-  async () => {
-    const response = await logoutAPI();
-    return response.data
-  }
-)
+export const logoutUser = createAsyncThunk("users/logout", async () => {
+  const response = await logoutAPI();
+  return response.data;
+});
 
 export const setUserImage = createAsyncThunk(
-  'users/setUserImage',
+  "users/setUserImage",
   async (props) => {
-    const data = new FormData() ;
-    data.append('profilePic', props.image);
-    const response = await  setImageUserAPI(props.name, data);
-    return response.data
+    const data = new FormData();
+    data.append("profilePic", props.image);
+    const response = await setImageUserAPI(props.name, data);
+    return response.data;
   }
-)
+);
 
 export const getUserImage = createAsyncThunk(
-  'users/getUserImage',
+  "users/getUserImage",
   async (name) => {
-    const response = await  getImageUserAPI(name);
-    return response.data
+    const response = await getImageUserAPI(name);
+    return response.data;
   }
-)
+);
+
+let myStorage = window.localStorage;
 
 export const userSlice = createSlice({
-  name: 'user',
+  name: "user",
   initialState: {
     name: "",
-    password : "",
-    image : undefined,
-    isProf : false,
-    isLogin : undefined,
-    erreur : false
+    password: "",
+    image: myStorage.getItem('image') === null ? undefined : myStorage.getItem('image'),
+    isProf: false,
+    isLogin: undefined,
+    erreur: false,
   },
   reducers: {
     setUser: (state, action) => {
-        const {name, password, isProf} = action.payload
-        state.name = name;
-        state.password = password;
-        state.isProf = isProf;
+      const { name, password, isProf } = action.payload;
+      state.name = name;
+      state.password = password;
+      state.isProf = isProf;
     },
-    changeUserName : (state, action) => {
+    changeUserName: (state, action) => {
       state.name = action.payload;
     },
-    changePassword : (state, action) => {
+    changePassword: (state, action) => {
       state.password = action.payload;
     }
   },
@@ -78,29 +79,35 @@ export const userSlice = createSlice({
       state.isProf = undefined;
     },
     [setUserImage.rejected]: (state, action) => {
-      console.log("non")
+      console.log("non");
     },
     [setUserImage.pending]: (state, action) => {
-      console.log("coucou")
-      console.log(action.meta.arg)
       state.image = URL.createObjectURL(action.meta.arg.image);
+
+      var reader = new FileReader();
+      reader.readAsDataURL(action.meta.arg.image); 
+      reader.onloadend = function() {
+          var base64data = reader.result;
+          myStorage.setItem('image', base64data);          
+      }
     },
     [setUserImage.fulfilled]: (state, action) => {
-      console.log("parfait")
+      console.log("parfait");
     },
     [getUserImage.rejected]: (state, action) => {
-      console.log("nop")
+      console.log("nop");
     },
     [getUserImage.fulfilled]: (state, action) => {
-      let imageBase64 = 'data:image/jpeg;base64,'+Buffer.from(action.payload.profilepic).toString("base64");
+      let imageBase64 ="data:image/jpeg;base64," + Buffer.from(action.payload.profilepic).toString("base64");
       state.image = imageBase64;
-    }
-  }
+      myStorage.setItem('image', imageBase64);   
+    },
+  },
 });
 
 export const { setUser, changePassword, changeUserName } = userSlice.actions;
 
-export const selectUserName = state => state.user;
-export const selectIsLogin = state => state.user.selectIsLogin;
+export const selectUserName = (state) => state.user;
+export const selectIsLogin = (state) => state.user.selectIsLogin;
 
 export default userSlice.reducer;

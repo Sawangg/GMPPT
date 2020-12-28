@@ -41,10 +41,8 @@ export default function Profile() {
                     <Button  
                         id="buttonEnvoyerImageProfil"
                         disabled={image === ""}
-                        onClick={() => {
-                            dispatch(setUserImage({name : user.name, image : image}));
-                            dispatch(getUserImage(user.name));
-                    }}>
+                        onClick={() => dispatch(setUserImage({name : user.name, image : image}))}
+                    >
                         Enregistrer l'image
                     </Button>
                 </div>
