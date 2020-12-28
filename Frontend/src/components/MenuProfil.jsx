@@ -19,7 +19,7 @@ export default function MenuProfil() {
   const user = useSelector(selectUserName);
   
   useConstructor(() => {
-      if (user.name !== "") dispatch(getUserImage(user.name))
+      if (user.name !== "" && user.image === undefined) dispatch(getUserImage(user.name))
     });
 
   return (

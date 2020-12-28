@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { Fab, Button } from '@material-ui/core';
+import { Fab, Button, CircularProgress } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import HighlightOffOutlinedIcon from '@material-ui/icons/HighlightOffOutlined';
 import CheckCircleOutlineOutlinedIcon from '@material-ui/icons/CheckCircleOutlineOutlined';
@@ -9,8 +9,7 @@ import useConstructor from '../../components/use/useContructor'
 import SelectionModele from '../../components/SelectionModele'
 
 import { useDispatch, useSelector } from "react-redux";
-import { addVariable, getAllVariables } from "../../slice/VariablesAleatoiresSlice";
-import { selectVariablesAleatoires, selectActualise, setVariables } from "../../slice/VariablesAleatoiresSlice"
+import { selectVariablesAleatoires, selectActualise, selectEnregistre, setVariables, addVariable } from "../../slice/VariablesAleatoiresSlice"
 import { selectModele } from "../../slice/ModeleSlice"
 
 export default function VariablesAleatoires() {
@@ -19,13 +18,11 @@ export default function VariablesAleatoires() {
 
     const dispatch = useDispatch();
     const tab = useSelector(selectVariablesAleatoires);
-    const isEnregistre = useSelector(selectActualise);
+    const isEnregistre = useSelector(selectEnregistre);
+    const actualise = useSelector(selectActualise)
     const modele = useSelector(selectModele);
 
     useConstructor(() => {
-        if (!isEnregistre && modele.idModeleSelectionne !== undefined){
-            dispatch(getAllVariables(modele.idModeleSelectionne));
-        }
         if (modele.idModeleSelectionne === undefined){
             setOpen(true);
         }
@@ -34,6 +31,7 @@ export default function VariablesAleatoires() {
     const displayVariable = () =>{
         return (
             <div>
+                <h1 style={{textAlign : "center"}}>Creation des variables aléatoires</h1>
                 <Fab style={{marginLeft : "5%", marginBottom : "5%"}} size="small" color="primary" aria-label="add" onClick={(e => dispatch(addVariable()))}>
                     <AddIcon />
                 </Fab>
@@ -54,6 +52,8 @@ export default function VariablesAleatoires() {
     }
 
     return (
-        modele.idModeleSelectionne === undefined ? <SelectionModele tard={false} setOpen={e => setOpen(e)} open={open}/> : displayVariable()
+        modele.idModeleSelectionne === undefined 
+        ? <SelectionModele tard={false} setOpen={e => setOpen(e)} open={open}/> 
+        : (actualise ? displayVariable() : <CircularProgress className="center"/>)
     );
 }

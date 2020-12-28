@@ -5,11 +5,10 @@ import DeleteIcon from '@material-ui/icons/Delete';
 
 import useConstructor from './use/useContructor'
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setTab } from "../slice/FormulesSlice";
-import { selectionnerModele, addNewModele, removeModele, getModele} from "../slice/ModeleSlice";
-import { useSelector } from "react-redux";
-import { selectModele, selectActualise } from "../slice/ModeleSlice"
+import {getAllVariables } from "../slice/VariablesAleatoiresSlice"
+import { selectionnerModele, addNewModele, removeModele, getModele, selectModele, selectActualise} from "../slice/ModeleSlice";
 
 export default function DialogSelect(props) {
   const [select, setSelect] = useState("");
@@ -33,6 +32,7 @@ export default function DialogSelect(props) {
     const choisirModele = () =>{
         dispatch(selectionnerModele(select));
         dispatch(setTab(select));
+        dispatch(getAllVariables(select))
         props.setOpen(false);
     }
 
