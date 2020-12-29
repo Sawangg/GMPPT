@@ -5,11 +5,11 @@ const { isAuthenticated, isProf } = require("../middleware.js");
 
 router.post('/:idmodele/categories/new', isAuthenticated, isProf, async (req, res) => {
     const { idmodele } = req.params;
-    await db.promise().execute(`DELETE FROM categoriesTest WHERE id_modele=${idmodele}`);
+    await db.promise().execute(`DELETE FROM categories WHERE id_modele=${idmodele}`);
     req.body.forEach(async categorie => {
-        await db.promise().execute(`INSERT INTO categoriesTest VALUES (${categorie.index}, '${categorie.nom}', ${categorie.margeErreur}, ${idmodele})`);
+        await db.promise().execute(`INSERT INTO categories VALUES (${categorie.index}, '${categorie.nom}', ${categorie.margeErreur}, ${idmodele})`);
         categorie.tabFormule.forEach(async formule => {
-            await db.promise().execute(`INSERT INTO formulesTest VALUES (${formule.index}, '${formule.nomFormule}', '${formule.formule}', ${categorie.index}, ${idmodele})`);
+            await db.promise().execute(`INSERT INTO formules VALUES (${formule.index}, '${formule.nomFormule}', '${formule.formule}', ${categorie.index}, ${idmodele})`);
         });
     });
     return res.sendStatus(200);
@@ -18,22 +18,20 @@ router.post('/:idmodele/categories/new', isAuthenticated, isProf, async (req, re
 router.get('/:idmodele/categories/', isAuthenticated, isProf, (req, res) => {
     const { idmodele } = req.params;
     let arr = [];
-    db.promise().execute(`SELECT * FROM categoriesTest C JOIN formulesTest F ON C.categoIdx = F.categoIdx WHERE C.id_modele = ${idmodele} ORDER BY C.categoIdx`).then(async ([rows]) => {
+    db.promise().execute(`SELECT * FROM categories C JOIN formules F ON C.id_catego = F.id_catego WHERE C.id_modele = ${idmodele} ORDER BY C.id_catego, F.id_formule`).then(async ([rows]) => {
         if (!rows[0]) return res.sendStatus(404);
-        let compt = -1;
+        let prevCatego = -1;
         rows.forEach(r => {
-            if (r.categoIdx != compt) {
-                compt = r.categoIdx;
+            if (r.id_catego != prevCatego) {
+                prevCatego = r.id_catego;
                 arr.push({
-                    "idx": r.categoIdx,
-                    "nom": r.nomCatego,
-                    "margeErreur": r.margeErreur,
+                    "nom": r.nom_catego,
+                    "margeErreur": r.marge_erreur,
                     "formules": [],
                 });
             }
-            arr[compt].formules.push({
-                "idx": r.idx,
-                "nom": r.nomFormule,
+            arr[arr.length - 1].formules.push({
+                "nom": r.nom_formule,
                 "contenu": r.contenu,
             });
         });
@@ -45,7 +43,7 @@ router.get('/:idmodele/categories/', isAuthenticated, isProf, (req, res) => {
 
 router.get('/:idmodele', isAuthenticated, isProf, (req, res) => {
     const { idmodele } = req.params;
-    db.promise().execute(`SELECT * FROM modeleSujetTest WHERE id_modele=${idmodele}`).then(([rows]) => {
+    db.promise().execute(`SELECT * FROM modeleSujet WHERE id_modele=${idmodele}`).then(([rows]) => {
         if (!rows[0]) return res.sendStatus(404);
         return res.send(rows).status(200);
     }).catch(() => {
@@ -54,7 +52,7 @@ router.get('/:idmodele', isAuthenticated, isProf, (req, res) => {
 });
 
 router.get('/', isAuthenticated, isProf, (req, res) => {
-    db.promise().execute(`SELECT * FROM modeleSujetTest`).then(([rows]) => {
+    db.promise().execute(`SELECT * FROM modeleSujet`).then(([rows]) => {
         if (!rows[0]) return res.sendStatus(404);
         return res.send(rows).status(200);
     }).catch(() => {
@@ -64,7 +62,7 @@ router.get('/', isAuthenticated, isProf, (req, res) => {
 
 router.post('/new', isAuthenticated, isProf, (req, res) => {
     const { nommodele } = req.body;
-    db.promise().execute(`INSERT INTO modeleSujetTest(nom_modele) VALUES ('${nommodele}')`).then(([rows]) => {
+    db.promise().execute(`INSERT INTO modeleSujet(nom_modele) VALUES ('${nommodele}')`).then(([rows]) => {
         return res.send(rows).status(200);
     }).catch(() => {
         return res.sendStatus(500);
@@ -73,9 +71,11 @@ router.post('/new', isAuthenticated, isProf, (req, res) => {
 
 router.get('/:idmodele/delete', isAuthenticated, isProf, async (req, res) => {
     const { idmodele } = req.params;
-    await db.promise().execute(`DELETE FROM categoriesTest WHERE id_modele=${idmodele}`);
-    await db.promise().execute(`DELETE FROM modeleSujetTest WHERE id_modele=${idmodele}`);
-    return res.sendStatus(200);
+    db.promise().execute(`DELETE FROM modeleSujet WHERE id_modele=${idmodele}`).then(()=>{
+        return res.sendStatus(200);
+    }).catch(()=>{
+        return res.sendStatus(500);
+    });
 });
 
 router.get('/:idmodele/variables/', isAuthenticated, isProf, async (req, res) => {
@@ -88,13 +88,22 @@ router.get('/:idmodele/variables/', isAuthenticated, isProf, async (req, res) =>
     });
 });
 
-router.post('/:idmodele/variables/new', isAuthenticated, isProf, async (req, res) => {
+router.post('/:idmodele/variables/new', isAuthenticated, isProf, (req, res) => {
     const { idmodele } = req.params;
-    await db.promise().execute(`DELETE FROM variable_aleatoire WHERE id_modele=${idmodele}`);
-    req.body.forEach(async variable => {
-        await db.promise().execute(`INSERT INTO variable_aleatoire VALUES (NULL, ${idmodele}, '${variable.nom}', ${variable.min}, ${variable.max}, ${variable.precision})`);
+    db.promise().execute(`DELETE FROM variable_aleatoire WHERE id_modele=${idmodele}`).then(() => {
+        let insert = 'INSERT INTO variable_aleatoire VALUES ';
+        req.body.forEach(async variable => {
+            insert += `(NULL, ${idmodele}, '${variable.nom}', ${variable.min}, ${variable.max}, ${variable.precision}),`;
+        });
+        insert = insert.slice(0, -1);
+        db.promise().execute(insert).then(() => {
+            return res.sendStatus(200);
+        }).catch(() => {
+            return res.sendStatus(500);
+        });
+    }).catch(() => {
+        return res.sendStatus(500);
     });
-    return res.sendStatus(200);
 });
 
 module.exports = router;
