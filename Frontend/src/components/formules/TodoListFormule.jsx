@@ -13,19 +13,19 @@ import '../../styles/TodoListFormule.css'
 
 export default function TodoListFormule(props) {
 
-    const [openPopUp, setOpenPopUp] = useState(false);
+    const [openPopUpSave, setOpenPopUpSave] = useState(false);
 
     const dispatch = useDispatch();
     const tab = useSelector(selectTabFormule(props.index));
 
     const remove = (index) =>{
         dispatch(removeFormule({indexCategorie : props.index, indexFormule : index}))
-        setOpenPopUp(true);
+        setOpenPopUpSave(true);
     }
 
     const undo = () =>{
         dispatch(undoFormule(props.index))
-        setOpenPopUp(false);
+        setOpenPopUpSave(false);
      }
 
     return (
@@ -41,7 +41,14 @@ export default function TodoListFormule(props) {
             >
                     Ajouter des formules
             </Button>
-             <PopUp message="Formule supprimée" undo={() => undo()} open={openPopUp} handleClose={() => setOpenPopUp(false)}/>
+             <PopUp 
+                message="Formule supprimée" 
+                actionName="RETOUR" 
+                action={() => undo()} 
+                open={openPopUpSave} 
+                handleClose={() => setOpenPopUpSave(false)}
+                pos="right"
+            />
         </div>
     );
 } 
