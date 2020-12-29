@@ -76,9 +76,9 @@ export default function VariablesAleatoires() {
                 </div>
                 <PopUp 
                     severity={isEnregistre ? "success" : "warning"} 
-                    message={isEnregistre ? "Formules enregistrées" : "Enregistrer les modifications"} 
-                    actionName={!isEnregistre ? "Enregistrer" : null} 
-                    action={() =>  !isEnregistre ? dispatch(setVariables({tab : tab, idModele : modele.idModeleSelectionne})) : null} 
+                    message={isEnregistre ? "Variables enregistrées" : "Enregistrer les modifications"} 
+                    actionName={isEnregistre ? null : "Enregistrer"} 
+                    action={() => isEnregistre ? null : dispatch(setVariables({tab : tab, idModele : modele.idModeleSelectionne}))} 
                     open={openPopUpSave} 
                     handleClose={() => {if (isEnregistre) setOpenPopUpSave(false)}}
                     pos="left"

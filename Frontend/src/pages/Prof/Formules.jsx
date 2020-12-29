@@ -51,8 +51,8 @@ export default function TodoListAccordeon() {
                 <PopUp 
                     severity={isEnregistre ? "success" : "warning"} 
                     message={isEnregistre ? "Formules enregistrées" : "Enregistrer les modifications"} 
-                    actionName={!isEnregistre ? "Enregistrer" : null} 
-                    action={() =>  !isEnregistre ? dispatch(enregistrerFormules({tab : tab, idModele : modele.idModeleSelectionne})) : null} 
+                    actionName={isEnregistre ? null : "Enregistrer"} 
+                    action={() => {if (!isEnregistre) dispatch(enregistrerFormules({tab : tab, idModele : modele.idModeleSelectionne}))}} 
                     open={openPopUp} 
                     handleClose={() => {if (isEnregistre) setOpenPopUp(false)}}
                     pos="left"
