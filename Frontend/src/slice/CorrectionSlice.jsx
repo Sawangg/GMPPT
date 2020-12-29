@@ -10,7 +10,17 @@ export const correctionSlice = createSlice({
             promo : '',
             avancement : '', // %
             note : '' // /20
-        }]
+        }],
+        tabEssais : [{
+            dateEssai : "01/01/2020",
+            tabQuestion : [{
+                num : 1,
+                tabReponses : [{
+                    value : "0",
+                    unite : "",
+                }]
+            }]
+        }],
     },
     reducers: {
         //importe un jeu d'essai pour faire des tests

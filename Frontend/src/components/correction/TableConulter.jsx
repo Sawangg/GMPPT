@@ -5,10 +5,14 @@ import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagi
 import { useDispatch, useSelector } from 'react-redux';
 import { selectEtudiants, setEtudiantsForTests } from '../../slice/CorrectionSlice';
 
+import DialogConsulter from './DialogConsulter'
+
 
 
 export default function StickyHeadTable() {
   const dispatch = useDispatch()
+
+  const [openDialog, setOpen] = useState(false)
 
   const [page, setPage] = useState(0);
 
@@ -54,6 +58,16 @@ export default function StickyHeadTable() {
     setPage(newPage);
   };
 
+  //gère l'ouverture du dialog pour consulter les réponses de l'étudiant
+  const handleOpenConsulter = (id) =>{
+    setOpen(true)
+  }
+
+  const handleCloseConsulter = () =>{
+    setOpen(false)
+  }
+
+
   return (
     <Paper className="center" style={{width : "80%"}}>
 
@@ -80,7 +94,6 @@ export default function StickyHeadTable() {
                   {/* affiche les infos pour chaque colonne d'élément de rows */}
                   {columns.map((column) => { 
                     return (
-
                       column.id !== 'sujet' ?
 
                       //cas des données du tableau d'étudiants
@@ -91,10 +104,11 @@ export default function StickyHeadTable() {
                         {affichageEnplus(column.id)}
                       </TableCell> 
                       :
-                      
                       //cas de la colonne consulter sujet
                       <TableCell key={'sujet'} align={columnConsulterSujet.align}>
-                        <Button variant="outlined" color="primary">Consulter</Button>
+                        <Button variant="outlined" color="primary" onClick={e => handleOpenConsulter(row.id)}>
+                          Consulter
+                        </Button>
                       </TableCell>
                     )
                   })}
@@ -114,7 +128,12 @@ export default function StickyHeadTable() {
         page={page}
         onChangePage={handleChangePage}
       />
+
+      <DialogConsulter open={openDialog} handleClose={handleCloseConsulter}/>
       
     </Paper>
+
+    
+    
   );
 }
