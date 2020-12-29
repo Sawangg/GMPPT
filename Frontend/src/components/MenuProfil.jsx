@@ -23,7 +23,7 @@ export default function MenuProfil() {
   
   useConstructor(() => {
         let myStorage = window.localStorage;
-        if (user.name !== "" && user.image === undefined && myStorage.getItem('image') === null) dispatch(getUserImage(user.name))
+        if (user.name !== "" && user.image === undefined && myStorage.getItem(user.name) === null) dispatch(getUserImage(user.name))
     });
 
   return (
