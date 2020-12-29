@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { TextField, Button } from '@material-ui/core';
 import { Redirect } from "react-router-dom";
 import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
@@ -9,10 +9,8 @@ import Particules from '../components/ParticulesBackLogin';
 import useConstructor from '../components/use/useContructor';
 import InputPassword from '../components/InputPassword';
 
-import { loginAPI } from '../utils/api.js';
-
 import { useDispatch } from "react-redux";
-import { userDetails, changeUserName, changePassword } from "../slice/UserSlice";
+import { userDetails, changeUserName, changePassword, loginUser, selectError, setError } from "../slice/UserSlice";
 import { useSelector } from "react-redux";
 import { selectUserName } from "../slice/UserSlice";
 
@@ -22,38 +20,32 @@ export default function Login(){
 
     const dispatch = useDispatch();
     const user = useSelector(selectUserName);
+    const error = useSelector(selectError);
 
-    const [error, setError] = useState(false);
     const [openPopUp, setOpenPopUp] = useState(false);
 
     useConstructor(() => {
         dispatch(userDetails())
-      });
+    });
 
-    const connexion = () => {
-        loginAPI(user.name, user.password)
-        .then(() => dispatch(userDetails()))
-        .catch(() => {
-            setError(true);
-            setOpenPopUp(true);
-        })
-    } 
+    useEffect(() => {
+        if (error) setOpenPopUp(true)
+    }, [error])
 
     const connexionRedirection = () => {
         if (user.isLogin){
             return user.isProf ? <Redirect push to='/prof/home'/> : <Redirect push to='/etu/home'/>
-        } else {
-            return null;
-        }
+        } 
+        return null;
     }
 
     const onChangeUserName = (e) => {
-        setError(false);
+        dispatch(setError(false));
         dispatch(changeUserName(e.target.value));
     }
 
     const onChangePassword = (e) => {
-        setError(false);
+        dispatch(setError(false));
         dispatch(changePassword(e.target.value));
     }
 
@@ -64,16 +56,21 @@ export default function Login(){
                 <div id="backgroundLogin">
                         <div className="fieldLogin">
                             <AccountCircleOutlinedIcon className="iconLogin"/>
-                            <TextField onKeyPress={(e)=>{if (e.code === "Enter") connexion()}} error={error} autoFocus size="small" label="Login" variant="outlined" required 
+                            <TextField autoFocus size="small" label="Login" variant="outlined" required error={error}
                                 value={user.name} 
                                 onChange={e => onChangeUserName(e)}
+                                onKeyPress={(e)=>{if (e.code === "Enter")  dispatch(loginUser({name : user.name, password : user.password}))}}
                             />
                         </div>
                         <div className="fieldLogin">
                             <VpnKeyOutlinedIcon className="iconLogin"/>
-                            <InputPassword onKeyPress={e => {if (e.code === "Enter") connexion()}} label={"Mot de passe"} error={error} value={user.password} onChange={e => onChangePassword(e)}/>
+                            <InputPassword label={"Mot de passe"} error={error} 
+                                onKeyPress={e => {if (e.code === "Enter")  dispatch(loginUser({name : user.name, password : user.password}))}}  
+                                value={user.password} 
+                                onChange={e => onChangePassword(e)}
+                            />
                         </div>
-                    <Button type="submit" id="buttonConnexion" variant="outlined" onClick={e => connexion()}>Connexion</Button>
+                    <Button type="submit" id="buttonConnexion" variant="outlined" onClick={() =>  dispatch(loginUser({name : user.name, password : user.password}))}>Connexion</Button>
                     <PopUp severity="error" message="Identification invalide" open={openPopUp} handleClose={e => setOpenPopUp(false)}/>
                 </div>
                 {connexionRedirection()}

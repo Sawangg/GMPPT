@@ -6,7 +6,7 @@ import CreateIcon from '@material-ui/icons/Create';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 
 import { useDispatch } from "react-redux";
-import { changeNom, changeMax, changeMin, changeModif, removeVariable } from "../../slice/VariablesAleatoiresSlice";
+import { changeNom, changeMax, changeMin, changeModif } from "../../slice/VariablesAleatoiresSlice";
 
 import SlideBar from './SlideBarVariable'
 
@@ -85,7 +85,7 @@ export default function ItemVariable(props){
                 size="small" 
                 color="secondary" 
                 aria-label="add" 
-                onClick={() => dispatch(removeVariable(props.index))}
+                onClick={() => props.removeVariable()}
             >
             <DeleteIcon className="center" />
             </Fab>

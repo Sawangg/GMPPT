@@ -3,19 +3,21 @@ import { Fab, Button } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import HighlightOffOutlinedIcon from '@material-ui/icons/HighlightOffOutlined';
 import CheckCircleOutlineOutlinedIcon from '@material-ui/icons/CheckCircleOutlineOutlined';
-import PacmanLoader from "react-spinners/PacmanLoader";
+import CircleLoader from "react-spinners/CircleLoader";
 
 import ItemVariablesAleatoire from '../../components/variable/ItemVariableAleatoire'
 import useConstructor from '../../components/use/useContructor'
 import SelectionModele from '../../components/SelectionModele'
+import PopUp from '../../components/PopUp'
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectVariablesAleatoires, selectActualise, selectEnregistre, setVariables, addVariable } from "../../slice/VariablesAleatoiresSlice"
+import { selectVariablesAleatoires, selectActualise, selectEnregistre, setVariables, addVariable, removeVariable, undoVariable } from "../../slice/VariablesAleatoiresSlice"
 import { selectModele } from "../../slice/ModeleSlice"
 
 export default function VariablesAleatoires() {
 
     const [open, setOpen] = useState(false);
+    const [openPopUp, setOpenPopUp] = useState(false);
 
     const dispatch = useDispatch();
     const tab = useSelector(selectVariablesAleatoires);
@@ -28,6 +30,16 @@ export default function VariablesAleatoires() {
             setOpen(true);
         }
     });
+
+    const remove = (index) =>{
+        dispatch(removeVariable(index));
+        setOpenPopUp(true);
+    }
+
+    const undo = () =>{
+        dispatch(undoVariable());
+        setOpenPopUp(false);
+     }
 
     const displayVariable = () =>{
         return (
@@ -46,8 +58,9 @@ export default function VariablesAleatoires() {
                     Enregistrer
                 </Button>
                 {tab.map((item, id) => (
-                    <ItemVariablesAleatoire length={tab.length} key={id} index={id} item={item}/>
+                    <ItemVariablesAleatoire removeVariable={() => remove(id)} length={tab.length} key={id} index={id} item={item}/>
                 ))}
+                <PopUp message="Variable supprimée" undo={() => undo()} open={openPopUp} handleClose={() => setOpenPopUp(false)}/>
             </div>
         )
     }
@@ -55,6 +68,6 @@ export default function VariablesAleatoires() {
     return (
         modele.idModeleSelectionne === undefined 
         ? <SelectionModele tard={false} setClose={() => setOpen(false)} open={open}/> 
-        : actualise ? displayVariable() : <PacmanLoader size={35} color={"rgb(7, 91, 114)"} css={{margin : "auto", display : "flex", justifyContent : "center"}}/>
+        : actualise ? displayVariable() : <CircleLoader size={50} color={"rgb(7, 91, 114)"} css={{margin : "auto", display : "flex", justifyContent : "center"}}/>
     );
 }

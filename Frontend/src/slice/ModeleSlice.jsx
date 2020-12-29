@@ -30,6 +30,7 @@ export const userSlice = createSlice({
     tabName: [],
     idModeleSelectionne: undefined,
     actualise: false,
+    chargementSuppression : false
   },
   reducers: {
     selectionnerModele: (state, action) => {
@@ -50,10 +51,17 @@ export const userSlice = createSlice({
           };
         });
         state.actualise = true;
+        state.chargementSuppression = false
       }
+    },
+    [removeModele.pending]: (state, action) => {
+      state.chargementSuppression = true;
+      console.log("heee")
     },
     [removeModele.fulfilled]: (state, action) => {
       state.tabName.splice(action.meta.arg, 1);
+      state.chargementSuppression = false
+      console.log("ca marche")
     },
     [addNewModele.fulfilled]: (state, action) => {
       state.tabName[action.payload.insertId] = {
@@ -69,5 +77,7 @@ export const { selectionnerModele } = userSlice.actions;
 export const selectModele = (state) => state.modele;
 
 export const selectActualise = (state) => state.modele.actualise;
+
+export const selectChargementSupp = (state) => state.modele.chargementSuppression;
 
 export default userSlice.reducer;
