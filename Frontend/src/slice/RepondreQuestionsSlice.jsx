@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import _ from "lodash"
 
+
 export const reponseSlice = createSlice({
     name: "reponse",
     initialState: { 
@@ -16,7 +17,13 @@ export const reponseSlice = createSlice({
                 }]
             }]
         }],
-    enregi : 1},
+        sujet : "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt leo est, in placerat ex cursus id. In malesuada scelerisque leo, ut pharetra ligula venenatis laoreet. Duis in elementum est. Ut aliquam diam ultrices, sagittis nibh sit amet, <b> tincidunt ipsum </b>. Aliquam ac mauris dignissim, porttitor urna in, lacinia urna. Donec rhoncus consectetur eros ac ullamcorper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nunc commodo a enim ac ultricies. Vestibulum egestas molestie urna, in posuere odio tempus sit amet. Morbi facilisis sit amet dolor non ultrices. Donec dapibus commodo justo ac tempus. In hac habitasse platea dictumst. Curabitur ultricies iaculis lorem nec interdum. Etiam vel odio ligula. Suspendisse vestibulum nisi et risus posuere varius. In hac habitasse platea dictumst.</p>",
+        unites : [
+            {index : 0, nom : "Sans unité", abrv : " "}, 
+            {index : 1, nom : "Newton", abrv : "N"}, 
+            {index : 2, nom : "Kilogamme", abrv: "Kg"},
+        ],
+    },
     reducers: {
 
         //ajoute une réponse pour une question
@@ -34,7 +41,7 @@ export const reponseSlice = createSlice({
         //paramètres : indexQuestion, index Réponse, valeurReponse
         changeReponse : (state, action) =>{
             let {indexQuestion, indexReponse, value} = action.payload
-            if(!isNaN(value)){
+            if(!isNaN(value) || value==='-'){
                 state.tabQuestions[indexQuestion].tabReponses[indexReponse].value = value
             }
         },
@@ -112,15 +119,40 @@ export const reponseSlice = createSlice({
                 state.tabQuestions[indexQuestion].tabReponses[indexReponse].tabUnite[indexUnite].puissance = value
             }
         },
+
+        //supprime les itérations de Sans Unité (id : 0) qui ne sont pas utiles
+        //paramètres : indexQuestion, indexReponse
+        //si le tableau ne contient que des Sans unité, il n'en restera qu'un
+        removeIterationsOfSansUnite : (state, action) =>{
+            let {indexQuestion, indexReponse} = action.payload
+            let newTab = _.remove(state.tabQuestions[indexQuestion].tabReponses[indexReponse].tabUnite, function(o){
+                return o.id !== 0
+            })
+            
+            if (newTab.length === 0 ){
+                newTab.push({
+                    id : 0,
+                    puissance : 1
+                })
+            }
+            state.tabQuestions[indexQuestion].tabReponses[indexReponse].tabUnite = newTab
+        }
     },
     extraReducers: {}
 })
 
 export const { addReponse, remettreAZero, changeReponse, deleteReponse, changePartieUnite, addPartieUnite, 
-    deletePartieUnite, changePuissancePartieUnite, changeUniteReponses, changeUniteForAllReponses } = reponseSlice.actions
+    deletePartieUnite, changePuissancePartieUnite, changeUniteReponses, changeUniteForAllReponses,
+    removeIterationsOfSansUnite } = reponseSlice.actions
 
 //renvoie l'ensemble d'un tableau de questions
-export const selectAll = state => state.reponse.tabQuestions
+export const selectAllQuestions = state => state.reponse.tabQuestions
+
+//renvoie le tableau des unités possibles
+export const selectUnites = state => state.reponse.unites
+
+//renvoie le sujet en string d'html
+export const selectSujet = state => state.reponse.sujet
 
 //renvoie un bouleen pour dire si l'on peut supprimer une réponse pour une question
 export const peutSupprimer = indexQuestion => state => state.reponse.tabQuestions[indexQuestion].tabReponses.length > 1

@@ -5,25 +5,22 @@ import {Button} from '@material-ui/core';
 import GetAppIcon from '@material-ui/icons/GetApp';
 
 import { useSelector } from "react-redux";
-import {selectAll } from "../../slice/RepondreQuestionsSlice"
+import {selectAllQuestions, selectSujet, selectUnites } from "../../slice/RepondreQuestionsSlice"
 
-import Items from '../../components/reponses/ItemQuestion'
+import Question from '../../components/reponses/ItemQuestion'
 
 import '../../styles/RepondreQuestions.css'
 
 
 export default function RepondreQuestions(){
 
-    const questionsTab = useSelector(selectAll)
+    const questionsTab = useSelector(selectAllQuestions)
     
-    const unitesTab = [
-        {index : 0, nom : "Sans unité", abrv : " "}, 
-        {index : 1, nom : "Newton", abrv : "N"}, 
-        {index : 2, nom : "Kilogamme", abrv: "Kg"}]
+    const unitesTab = useSelector(selectUnites)
 
-    const sujet = "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt leo est, in placerat ex cursus id. In malesuada scelerisque leo, ut pharetra ligula venenatis laoreet. Duis in elementum est. Ut aliquam diam ultrices, sagittis nibh sit amet, <b> tincidunt ipsum </b>. Aliquam ac mauris dignissim, porttitor urna in, lacinia urna. Donec rhoncus consectetur eros ac ullamcorper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nunc commodo a enim ac ultricies. Vestibulum egestas molestie urna, in posuere odio tempus sit amet. Morbi facilisis sit amet dolor non ultrices. Donec dapibus commodo justo ac tempus. In hac habitasse platea dictumst. Curabitur ultricies iaculis lorem nec interdum. Etiam vel odio ligula. Suspendisse vestibulum nisi et risus posuere varius. In hac habitasse platea dictumst.</p>"
+    const sujet = useSelector(selectSujet)
 
-
+    //trandforme en pdf le sujet
     const downloadPdf = () =>{
         const MARGE_COTE = 15
         const MARGE_HAUT = 20
@@ -31,6 +28,10 @@ export default function RepondreQuestions(){
         const HAUTEUR_A4 = 297
         const LARGEUR_A4 = 210
 
+        //met le sujet dans la bonne font family
+        var sujetForPdf = '<div style="font-family: sans-serif">' + sujet + '</div>'
+
+        //document pdf en format a4
         var doc = new jsPDF('p', 'mm', 'a4')
 
         var options = {
@@ -41,7 +42,9 @@ export default function RepondreQuestions(){
 
         doc.setFontSize(12)
 
-        doc.fromHTML(sujet,MARGE_COTE,MARGE_HAUT + 10,options)
+        //transmet le sujet au document pdf
+        doc.fromHTML(sujetForPdf,MARGE_COTE,MARGE_HAUT + 10,options)
+        
         doc.addPage()
 
         var number_of_pages = doc.internal.getNumberOfPages()
@@ -64,16 +67,19 @@ export default function RepondreQuestions(){
         doc.save("sujet.pdf")
     }
 
+    //affiche les différentes questions avec leurs réponses
     const displayQuestions = () => {
+        //n'affiche rien si il n'y a pas de questions
         return questionsTab.length === 0 ? <div>Pas de questions pour l'instant</div> 
         : questionsTab.map((i) => (
-            <Items question={i} unites={unitesTab}/>
+            <Question question={i} unites={unitesTab}/>
         ))
     }
 
     return(<div className="contenant">
         
         <div className="buttonFixed" >
+            {/*bouton de téléchargement du sujet en pdf */}
             <Button variant="contained" color="secondary" onClick={downloadPdf}>
                 <GetAppIcon/>
                 Télécharger
@@ -82,7 +88,9 @@ export default function RepondreQuestions(){
         <h1>Répondre aux questions</h1>
         
         <h2>Sujet</h2>
+        {/* affichage du sujet */ }
         <div id="sujet">{ReactHtmlParser(sujet)}</div>
+        {/* affichage des questions */}
         {displayQuestions()}
     </div>);
 }
