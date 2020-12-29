@@ -3,13 +3,14 @@ import {Button, Dialog, DialogActions, DialogContent, DialogTitle, InputLabel, I
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 import PropagateLoader from "react-spinners/PropagateLoader";
+import BounceLoader from "react-spinners/BounceLoader";
 
 import useConstructor from './use/useContructor'
 
 import { useDispatch, useSelector } from "react-redux";
 import { setTab } from "../slice/FormulesSlice";
 import {getAllVariables } from "../slice/VariablesAleatoiresSlice"
-import { selectionnerModele, addNewModele, removeModele, getModele, selectModele, selectActualise} from "../slice/ModeleSlice";
+import { selectionnerModele, addNewModele, removeModele, getModele, selectModele, selectActualise, selectChargementSupp} from "../slice/ModeleSlice";
 
 export default function DialogSelect(props) {
   const [select, setSelect] = useState("");
@@ -17,7 +18,8 @@ export default function DialogSelect(props) {
 
   const dispatch = useDispatch();
   const modele = useSelector(selectModele);
-  const actualise = useSelector(selectActualise)
+  const actualise = useSelector(selectActualise);
+  const chargementSupp = useSelector(selectChargementSupp);
 
   useConstructor(() => {
         if (!actualise) dispatch(getModele())
@@ -82,12 +84,17 @@ export default function DialogSelect(props) {
                 <MenuItem value="Créer nouveau modèle" style={{color : "#075b72"}}>Créer nouveau modèle</MenuItem>
                 {!actualise ? <PropagateLoader size={15} color={"rgb(7, 91, 114)"} css={{margin : "30px auto", display : "flex", justifyContent : "center"}}/> : modele.tabName.map(item => <MenuItem key={item.index} value={item.index}>{item.nom}</MenuItem>)}
                 </Select>
-                <Fab style={{marginLeft : "5%"}} size="small" color="secondary" aria-label="delete" 
+
+                {chargementSupp 
+                ?<BounceLoader size={40} color={"rgb(7, 91, 114)"} css={{marginLeft : "5%", display : "block"}}/>
+                :<Fab style={{marginLeft : "5%"}} size="small" color="secondary" aria-label="delete" 
                     disabled={select === "" || nouveauModele.etat}
-                    onClick={e => dispatch(removeModele(select))}
+                    onClick={() => dispatch(removeModele(select))}
                 >
                     <DeleteIcon/>
                 </Fab>
+                }
+                
                     </div>
                 {displayNouveauModele()}
                 </FormControl>

@@ -6,7 +6,7 @@ import ParticulesFond from '../../components/ParticulesFond'
 
 export default function Accueil() {
 
-    const [excel, setExcel] = useState("")
+    const [/*excel*/, setExcel] = useState("")
 
     return (
         <div>

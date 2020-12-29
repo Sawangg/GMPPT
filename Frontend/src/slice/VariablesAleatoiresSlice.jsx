@@ -30,6 +30,7 @@ export const variablesAleatoiresReducer = createSlice({
         index: 0,
       },
     ],
+    saveTab : [],
     actualise: false,
     enregistre: false,
   },
@@ -63,6 +64,7 @@ export const variablesAleatoiresReducer = createSlice({
     },
     removeVariable: (state, action) => {
       if (state.tab.length > 1) {
+        state.saveTab = [...state.tab];
         state.tab.splice(action.payload, 1);
         state.enregistre = false;
       }
@@ -78,6 +80,9 @@ export const variablesAleatoiresReducer = createSlice({
     enregistre: (state) => {
       state.enregistre = true;
     },
+    undoVariable: (state) =>{
+      state.tab = state.saveTab;
+    }
   },
   extraReducers: {
     [getAllVariables.pending]: (state) => {
@@ -132,6 +137,7 @@ export const {
   enregistre,
   changeMin,
   changeMax,
+  undoVariable,
 } = variablesAleatoiresReducer.actions;
 
 export const selectVariablesAleatoires = (state) => state.variableAleatoire.tab;
