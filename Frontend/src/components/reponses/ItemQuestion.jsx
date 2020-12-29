@@ -23,7 +23,7 @@ export default function Question(props) {
 
                 {/* affichage des réponses une par une */}
                 {props.question.tabReponses.map((i, index) => (
-                    <Reponse num={index} reponse={i} unites={props.unites} 
+                    <Reponse num={index} reponse={i} 
                         indexQuestion={props.question.indexQuestion}/>
                 ))}
 

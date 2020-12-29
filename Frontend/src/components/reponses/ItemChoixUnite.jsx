@@ -2,12 +2,14 @@ import React from 'react';
 import {IconButton, TextField, MenuItem, InputAdornment} from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 
-import { useDispatch } from 'react-redux';
-import { changePartieUnite, deletePartieUnite, changePuissancePartieUnite } from '../../slice/RepondreQuestionsSlice'
+import { useDispatch, useSelector } from 'react-redux';
+import { changePartieUnite, deletePartieUnite, changePuissancePartieUnite, selectUnites } from '../../slice/RepondreQuestionsSlice'
 
 export default function Item(props){
 
     const dispatch = useDispatch();
+
+    const unitesReference = useSelector(selectUnites)
 
     //gère le changement d'unité par action sur le select
     const handleChangeUnite = (event) =>{
@@ -80,7 +82,7 @@ export default function Item(props){
 
         {/* Select de l'unité */}
         <TextField select value={props.unite.id} onChange={handleChangeUnite}>
-            {props.unites.map((i, index) => 
+            {unitesReference.map((i, index) => 
             <MenuItem key={index} value={index} >
                 {i.nom}
             </MenuItem>)}

@@ -5,7 +5,7 @@ import {Button} from '@material-ui/core';
 import GetAppIcon from '@material-ui/icons/GetApp';
 
 import { useSelector } from "react-redux";
-import {selectAllQuestions, selectSujet, selectUnites } from "../../slice/RepondreQuestionsSlice"
+import {selectAllQuestions, selectSujet } from "../../slice/RepondreQuestionsSlice"
 
 import Question from '../../components/reponses/ItemQuestion'
 
@@ -15,8 +15,6 @@ import '../../styles/RepondreQuestions.css'
 export default function RepondreQuestions(){
 
     const questionsTab = useSelector(selectAllQuestions)
-    
-    const unitesTab = useSelector(selectUnites)
 
     const sujet = useSelector(selectSujet)
 
@@ -72,7 +70,7 @@ export default function RepondreQuestions(){
         //n'affiche rien si il n'y a pas de questions
         return questionsTab.length === 0 ? <div>Pas de questions pour l'instant</div> 
         : questionsTab.map((i) => (
-            <Question question={i} unites={unitesTab}/>
+            <Question question={i}/>
         ))
     }
 
@@ -88,9 +86,15 @@ export default function RepondreQuestions(){
         <h1>Répondre aux questions</h1>
         
         <h2>Sujet</h2>
+
         {/* affichage du sujet */ }
         <div id="sujet">{ReactHtmlParser(sujet)}</div>
+
         {/* affichage des questions */}
         {displayQuestions()}
+
+        <Button variant="outlined" color="primary">
+            Envoyer les réponses
+        </Button>
     </div>);
 }

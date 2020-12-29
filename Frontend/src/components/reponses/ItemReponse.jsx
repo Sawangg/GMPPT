@@ -5,11 +5,13 @@ import _ from "lodash"
 
 import { useDispatch, useSelector } from "react-redux";
 import { changeReponse, peutSupprimer, deleteReponse, changeUniteReponses, 
-     changeUniteForAllReponses, removeIterationsOfSansUnite} from '../../slice/RepondreQuestionsSlice'
+     changeUniteForAllReponses, removeIterationsOfSansUnite, selectUnites} from '../../slice/RepondreQuestionsSlice'
 
 import ChoixUnite from './ChoixUnite';
 
 export default function Item(props) {
+
+     const unitesReference = useSelector(selectUnites)
 
      //indique si la boite de dialogue choix unité est ouverte ou fermée
      const [choixUniteOpen, setOpen] = useState(false);
@@ -96,7 +98,7 @@ export default function Item(props) {
           return(
                props.reponse.tabUnite.map((i) => (
                     <var>
-                         {props.unites[i.id].abrv} 
+                         {unitesReference[i.id].abrv} 
                          <sup> {i.puissance !== 1 && i.id !== 0 ? i.puissance : null } </sup>
                     </var>
                     )
@@ -132,9 +134,9 @@ export default function Item(props) {
                <Button size="small" onClick={e=>handleOpen()}>Unite</Button>
 
                {/* boite de dialogue pour changer l'unité */}
-               <ChoixUnite open={choixUniteOpen} unites={props.unites}
-                    unite={props.reponse.tabUnite} handleClose={handleClose} 
-                    indexQuestion={props.indexQuestion} indexReponse={props.num}/>
+               <ChoixUnite open={choixUniteOpen} unite={props.reponse.tabUnite} 
+                    indexQuestion={props.indexQuestion} indexReponse={props.num}
+                    handleClose={handleClose} />
 
                {/* affiche le bouton de suppression si il est possible de supprimer */}
                {canDelete ? buttonDelete() : null}

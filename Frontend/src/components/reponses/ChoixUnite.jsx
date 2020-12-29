@@ -49,7 +49,7 @@ export default function ChoixUnite(props){
                     {/* affiche un à un les différentes parties d'unités*/}
                     {props.unite.map((i, index) => 
                         <>
-                        <Item index={index} unite={i} unites={props.unites} tabLength={props.unite.length}
+                        <Item index={index} unite={i} tabLength={props.unite.length}
                         indexQuestion={props.indexQuestion} indexReponse={props.indexReponse} />
 
                         {/* interserction avec des . entre les parties d'unité */}
