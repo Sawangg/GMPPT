@@ -1,0 +1,16 @@
+#divItemvariable{
+    -webkit-box-shadow: 0px 8px 20px -5px rgba(0,0,0,0.69);
+    -moz-box-shadow: 0px 8px 20px -5px rgba(0,0,0,0.69);
+    box-shadow: 0px 8px 20px -5px rgba(0,0,0,0.69);
+    padding: 2% 3% 4% 3%;
+    width: 80%;
+    margin: auto;
+}
+
+@media screen and (max-width: 960px) {
+
+    #divItemvariable{
+        width: 90%;
+    }
+
+}

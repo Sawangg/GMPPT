@@ -67,7 +67,6 @@ export function addArchiAPI(archi){
 
 //Variables aléatoires
 export function addVariableAPI(idModele, tabVariables){
-    console.log(tabVariables)
     return axios.post(`http://${process.env.REACT_APP_SERVER}:3001/modele/${idModele}/variables/new`, tabVariables, credentials)
 }
 

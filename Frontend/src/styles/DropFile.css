@@ -6,6 +6,8 @@
     width : 40%;
     margin : 3% auto 0 auto;
     height: 172px;
+    position: relative;
+    z-index: 10;
 }
 
 .divDrop:hover{
