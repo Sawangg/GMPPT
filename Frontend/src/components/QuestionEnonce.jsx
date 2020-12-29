@@ -1,17 +1,32 @@
 import React from "react"
 import SunEditor from "suneditor-react";
 import 'suneditor/dist/css/suneditor.min.css'; // Import Sun Editor's CSS File
+import deleteButton from "./deletePlugin";
 
 export default function QuestionEnonce(props) {
     return  (
         <div className='center' style={{width:'40%'}}>
             <SunEditor
                 onChange={props.handleChange}
-                setOptions={{buttonList: [
+                setOptions={{
+                    buttonList: [
                         ['undo','redo'],
                         ['bold', 'underline', 'italic', 'strike', 'subscript', 'superscript'],
                         ['table', 'list'],
-                        ['removeFormat']
+                        ['removeFormat'],
+                        [
+                            {
+                                name: 'delete_button',
+                                dataCommand: 'delete_button',
+                                buttonClass: '',
+                                title: 'Delete Question',
+                                dataDisplay: 'command',
+                                innerHTML: '<Button>X</Button>'
+                            }
+                        ]
+                    ],
+                    plugins: [
+                      deleteButton
                     ]}}
                 lang="fr"
                 placeholder="Tapez votre question ici..."
