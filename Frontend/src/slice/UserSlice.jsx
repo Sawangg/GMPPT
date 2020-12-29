@@ -48,10 +48,7 @@ export const userSlice = createSlice({
   initialState: {
     name: "",
     password: "",
-    image:
-      myStorage.getItem("image") === null
-        ? undefined
-        : myStorage.getItem("image"),
+    image: undefined,
     isProf: false,
     isLogin: undefined,
     error: false,
@@ -100,10 +97,11 @@ export const userSlice = createSlice({
     [setUserImage.pending]: (state, action) => {
       state.image = URL.createObjectURL(action.meta.arg.image);
       let reader = new FileReader();
+      const name = state.name;
       reader.readAsDataURL(action.meta.arg.image);
       reader.onloadend = function () {
         let base64data = reader.result;
-        myStorage.setItem("image", base64data);
+        myStorage.setItem(name, base64data);
       };
     },
     [getUserImage.fulfilled]: (state, action) => {
@@ -111,7 +109,7 @@ export const userSlice = createSlice({
         "data:image/jpeg;base64," +
         Buffer.from(action.payload.profilepic).toString("base64");
       state.image = imageBase64;
-      myStorage.setItem("image", imageBase64);
+      myStorage.setItem(state.name, imageBase64);
     },
   },
 });
@@ -121,12 +119,18 @@ const disconnect = (state) => {
   state.password = "";
   state.isLogin = false;
   state.isProf = undefined;
+  state.image = undefined;
 };
 
 const connect = (state, action) => {
   state.name = action.payload.username;
   state.isProf = action.payload.isProf === 1 ? true : false;
   state.isLogin = true;
+  if (state.image === undefined){
+    state.image = myStorage.getItem(action.payload.username) === null
+      ? undefined
+      : myStorage.getItem(action.payload.username)
+  }
 };
 
 export const {

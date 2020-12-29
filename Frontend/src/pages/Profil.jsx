@@ -7,7 +7,7 @@ import DropFile from '../components/DropFile'
 
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { selectUserName, changePassword, setUserImage, getUserImage } from "../slice/UserSlice";
+import { selectUserName, changePassword, setUserImage } from "../slice/UserSlice";
 
 import '../styles/Profil.css'
 
@@ -53,7 +53,7 @@ export default function Profile() {
                     <InputPassword label={"Nouveau mot de passe"} error={password.error} 
                             onChange={e => setPassword({oldPassword : password.oldPassword, newPassword : e.target.value, error : false})}
                     />
-                    <Button id="buttonChangePwd" size="small" color="primary" onClick={e => changePasswordAPI()}>Changer de mot de passe</Button>
+                    <Button id="buttonChangePwd" size="small" color="primary" onClick={() => changePasswordAPI()}>Changer de mot de passe</Button>
                 </div>           
                 <PopUp severity="success" message="Changement de mot de passe réussi" open={openPopUp} handleClose={e => setOpenPopUp(false)}/>
             </div>
