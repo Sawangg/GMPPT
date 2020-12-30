@@ -1,14 +1,13 @@
-import React, {useState} from 'react';
-import {Fab, Button} from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
-import HighlightOffOutlinedIcon from '@material-ui/icons/HighlightOffOutlined';
-import CheckCircleOutlineOutlinedIcon from '@material-ui/icons/CheckCircleOutlineOutlined';
+import React, {useState, useEffect} from 'react';
+import { Fab  } from '@material-ui/core';
 import CircleLoader from "react-spinners/CircleLoader";
+import AddIcon from '@material-ui/icons/Add';
 
 import Items from '../../components/formules/ItemTodoAccordeon'
 import useConstructor from '../../components/use/useContructor'
 import SelectionModele from '../../components/SelectionModele'
 import useUnload from '../../components/use/useUnload';
+import PopUp from '../../components/PopUp'
 
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
@@ -18,6 +17,7 @@ import { selectModele } from "../../slice/ModeleSlice"
 export default function TodoListAccordeon() {
 
     const [open, setOpen] = useState(false);
+    const [openPopUp, setOpenPopUp] = useState(true);
 
     const dispatch = useDispatch();
     const tab = useSelector(selectFormule);
@@ -25,42 +25,40 @@ export default function TodoListAccordeon() {
     const isEnregistre = useSelector(selectEnregistre);
     const modele = useSelector(selectModele);
 
-    useConstructor(() => {
-        if (modele.idModeleSelectionne === undefined){
-            setOpen(true);
-        } 
-    });
+    useConstructor(() => {if (modele.idModeleSelectionne === undefined) setOpen(true)});
     
-    useUnload(!isEnregistre);
+    useEffect(() => {
+        setOpenPopUp(true)
+    }, [isEnregistre])
 
-    const addValue = () => {
-        dispatch(addCategorie());
-    }
+    useUnload(!isEnregistre);
 
     const displayFormule = () =>{
         return(
             <div>
                 <h1 style={{textAlign : "center"}}>Creation des formules</h1>
-                <div style={{display : "flex"}}>
-                    <Button variant="outlined" color={isEnregistre ? "primary" : "secondary"}
-                        onClick={e => dispatch(enregistrerFormules({tab : tab, idModele : modele.idModeleSelectionne}))}
-                        endIcon={isEnregistre 
-                             ? <CheckCircleOutlineOutlinedIcon fontSize="large" style={{color : "green"}}/> 
-                            : <HighlightOffOutlinedIcon fontSize="large"  style={{color : "red"}}/>
-                        }
-                    >
-                        Enregistrer
-                    </Button>
-                    <Fab style={{marginLeft : "5%"}} size="small" color="primary" aria-label="add" onClick={(e => addValue())}>
-                        <AddIcon />
-                    </Fab>
-                </div>
+                <Fab style={{marginLeft: "3%"}}
+                    size="small"
+                    color="primary"
+                    aria-label="add"
+                    onClick={() => dispatch(addCategorie())}
+                >
+                    <AddIcon />
+                </Fab>
                 {tab.map((i, id) => (
                 <Items index={id} key={i.index} item={i} length={tab.length}/>
                 ))}
+                <PopUp 
+                    severity={isEnregistre ? "success" : "warning"} 
+                    message={isEnregistre ? "Formules enregistrées" : "Enregistrer les modifications"} 
+                    actionName={isEnregistre ? null : "Enregistrer"} 
+                    action={() => {if (!isEnregistre) dispatch(enregistrerFormules({tab : tab, idModele : modele.idModeleSelectionne}))}} 
+                    open={openPopUp} 
+                    handleClose={() => {if (isEnregistre) setOpenPopUp(false)}}
+                    pos="left"
+                />
             </div>
         )
-        
     } 
 
     return (
