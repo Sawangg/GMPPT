@@ -1,54 +1,45 @@
 import MyEditor from "../../components/MyEditor";
-import React, {useState} from "react";
+import React from "react";
 import {Button} from "@material-ui/core";
 import QuestionEnonce from "../../components/QuestionEnonce";
+import {useDispatch, useSelector} from "react-redux";
+import {
+    addQuestion,
+    deleteQuestion,
+    handleChangeEnonce,
+    handleChangeQuestion,
+    selectEnonce
+} from "../../slice/EnoncesSlice";
 
 export default function Enonces() {
 
-    const [enonce, setEnonce] = useState("");
-    const [question, setQuestion] = useState([
-        {contenu: "", index: 0},
-        {contenu: "", index: 1},
-        {contenu: "", index: 2}
-    ]);
+    const enonce = useSelector(selectEnonce);
+    const dispatch = useDispatch();
 
     const sendContent = () => {
-        console.log(enonce, question);
+        console.log(enonce);
     };
-
-    const handleChangeEnonce = (content) => {
-        setEnonce(content);
-    };
-
-    const handleChangeQuestion = (content, index) => {
-        let tempArray = [...question];
-        tempArray[index].contenu = content;
-        setQuestion(tempArray);
-    };
-
-    const addQuestion = () => {
-        let tempArray = [...question, {contenu: "", index: question.length}];
-        setQuestion(tempArray);
-    };
-
-    const deleteQuestion = () => {
-        let tempArray = [...question];
-        tempArray.pop();
-        setQuestion(tempArray)
-    }
 
     return (
         <div>
             <div style={{width: "70%", margin: 'auto'}}>
                 <h1 style={{textAlign: 'center'}}>Création de l'énoncé</h1>
-                <MyEditor handleChange={e => handleChangeEnonce(e)}/>
-                <Button variant="contained" color="primary" onClick={() => sendContent()}>Enregistrer</Button>
+                <MyEditor handleChange={e => dispatch(handleChangeEnonce(e))}/>
             </div>
-            {question.map((item) => {
-                return <QuestionEnonce key={item.index} handleChange={e => handleChangeQuestion(e, item.index)}/>
+            {enonce.question.map((item, id) => {
+                return (
+                    <div key={id} style={{}}>
+                        <QuestionEnonce value={item.contenu} handleChange={e => dispatch(handleChangeQuestion({contenu:e, index:id}))}/>
+                        <Button className="center" variant="contained" color="secondary"
+                                onClick={() => dispatch(deleteQuestion(id))}>X
+                        </Button>
+                    </div>
+                )
             })}
-            <Button variant="contained" color="primary" className="center" onClick={() => addQuestion()}>Ajouter une question</Button>
-            <Button variant="contained" color="secondary" className="center" onClick={() => deleteQuestion()}>Supprimer une question</Button>
+            <Button variant="contained" color="primary" className="center" onClick={() => dispatch(addQuestion())}>Ajouter une
+                question</Button>
+            <Button variant="contained" color="primary" className="center"
+                    onClick={() => sendContent()}>Enregistrer</Button>
         </div>
     );
 }
