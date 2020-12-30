@@ -6,11 +6,7 @@ import QuestionEnonce from "../../components/QuestionEnonce";
 export default function Enonces() {
 
     const [enonce, setEnonce] = useState("");
-    const [question, setQuestion] = useState([
-        {contenu: "", index: 0},
-        {contenu: "", index: 1},
-        {contenu: "", index: 2}
-    ]);
+    const [question, setQuestion] = useState([]);
 
     const sendContent = () => {
         console.log(enonce, question);
@@ -34,7 +30,7 @@ export default function Enonces() {
     const deleteQuestion = (index) => {
         let tempArray = [...question];
         tempArray.splice(index, 1);
-        setQuestion(tempArray)
+        setQuestion(tempArray);
     }
 
     return (
@@ -43,12 +39,15 @@ export default function Enonces() {
                 <h1 style={{textAlign: 'center'}}>Création de l'énoncé</h1>
                 <MyEditor handleChange={e => handleChangeEnonce(e)}/>
             </div>
-            {question.map((item) => {
+            {question.map((item, index) => {
+                //Je mets à jour les index des questions à chaque fois, selon la map, pour qu'il n'y ait pas de "trous" dans mon tableau de questions
+                item.index = index;
                 return (
                     <div key={item.index} style={{}}>
                         <QuestionEnonce handleChange={e => handleChangeQuestion(e, item.index)}/>
                         <Button variant="contained" color="secondary" className="center"
-                                onClick={() => deleteQuestion(item.index)}>X</Button>
+                                onClick={() => deleteQuestion(item.index)}>X
+                        </Button>
                     </div>
                 )
             })}
