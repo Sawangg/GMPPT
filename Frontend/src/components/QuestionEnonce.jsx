@@ -7,6 +7,7 @@ export default function QuestionEnonce(props) {
     return  (
         <div className='center' style={{width:'40%'}}>
             <SunEditor
+                setContents={props.value}
                 onChange={props.handleChange}
                 setOptions={{
                     buttonList: [
@@ -19,7 +20,7 @@ export default function QuestionEnonce(props) {
                                 name: 'delete_button',
                                 dataCommand: 'delete_button',
                                 buttonClass: '',
-                                title: 'Delete Question',
+                                title: 'Supprimer la question',
                                 dataDisplay: 'command',
                                 innerHTML: '<Button>X</Button>'
                             }

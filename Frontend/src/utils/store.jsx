@@ -4,6 +4,7 @@ import formuleReducer from '../slice/FormulesSlice';
 import modeleReducer from '../slice/ModeleSlice';
 import variablesAleatoiresReducer from '../slice/VariablesAleatoiresSlice'
 import reponseReducer from '../slice/RepondreQuestionsSlice'
+import enoncesReducer from '../slice/EnoncesSlice'
 
 export default configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export default configureStore({
     modele: modeleReducer,
     variableAleatoire : variablesAleatoiresReducer,
     reponse : reponseReducer,
+    enonce : enoncesReducer,
   },
   middleware : getDefaultMiddleware({
     serializableCheck: false
