@@ -5,14 +5,18 @@ const { isAuthenticated, isProf } = require("../middleware.js");
 
 router.post('/:idmodele/categories/new', isAuthenticated, isProf, async (req, res) => {
     const { idmodele } = req.params;
-    await db.promise().execute(`DELETE FROM categories WHERE id_modele=${idmodele}`);
-    req.body.forEach(async categorie => {
-        await db.promise().execute(`INSERT INTO categories VALUES (${categorie.index}, '${categorie.nom}', ${categorie.margeErreur}, ${idmodele})`);
-        categorie.tabFormule.forEach(async formule => {
-            await db.promise().execute(`INSERT INTO formules VALUES (${formule.index}, '${formule.nomFormule}', '${formule.formule}', ${categorie.index}, ${idmodele})`);
+    try {
+        await db.promise().execute(`DELETE FROM categories WHERE id_modele=${idmodele}`);
+        req.body.forEach(async categorie => {
+            await db.promise().execute(`INSERT INTO categories VALUES (NULL, '${categorie.nom}', ${categorie.margeErreur}, ${idmodele})`);
+            categorie.tabFormule.forEach(async formule => {
+                await db.promise().execute(`INSERT INTO formules VALUES (NULL, '${formule.nomFormule}', '${formule.formule}', ${categorie.index}, ${idmodele})`);
+            });
         });
-    });
-    return res.sendStatus(200);
+        return res.sendStatus(200);
+    } catch (_err) {
+        return res.sendStatus(500);
+    }
 });
 
 router.get('/:idmodele/categories/', isAuthenticated, isProf, (req, res) => {
