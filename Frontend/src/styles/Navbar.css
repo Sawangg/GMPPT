@@ -1,5 +1,6 @@
 #divNavBar{
     padding : 5px 10px;
+    z-index: 99;
 }
 
 #burger{
