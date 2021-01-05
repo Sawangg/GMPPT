@@ -8,7 +8,8 @@ export default function PopUp(props) {
   return (
     <div>
       <Snackbar
-        anchorOrigin={{vertical: 'bottom', horizontal: props.pos}}
+        style={{zIndex : 10}}
+        anchorOrigin={{vertical: 'bottom', horizontal: props.pos !== undefined ? props.pos : "left"}}
         open={props.open}
         autoHideDuration={6000}
         onClose={props.handleClose} 
