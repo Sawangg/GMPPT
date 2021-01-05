@@ -241,3 +241,4 @@ $RECYCLE.BIN/
 
 *.env
 *node_modules
+.eslintcache
