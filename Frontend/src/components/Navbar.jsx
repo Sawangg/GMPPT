@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import {ListItemIcon, ListItemText, Divider, ListItem, List, SwipeableDrawer, IconButton} from "@material-ui/core";
 import { Link, Redirect } from "react-router-dom";
 import HomeOutlinedIcon from "@material-ui/icons/HomeOutlined";
-import FunctionsIcon from '@material-ui/icons/Functions';import AssignmentOutlinedIcon from "@material-ui/icons/AssignmentOutlined";
+import FunctionsIcon from '@material-ui/icons/Functions';
 import SchoolOutlinedIcon from "@material-ui/icons/SchoolOutlined";
 import MenuRoundedIcon from "@material-ui/icons/MenuRounded";
 import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
@@ -39,27 +39,21 @@ export default function SwipeableTemporaryDrawer() {
       divider : true
     },
     {
-      icon : <AssignmentOutlinedIcon/>,
-      nom : "Gestion des sujets",
-      route : "/prof/gestion-sujets",
-      divider : false
-    },
-    {
       icon : <AllInclusiveIcon/>,
       nom : "Création variables aléatoires",
       route : "/prof/variable-aleatoires",
       divider : false
     },
     {
-      icon : <PostAddIcon/>,
-      nom : "Création des énoncés",
-      route : "/prof/enonces",
-      divider : false
-    },
-    {
       icon : <FunctionsIcon/>,
       nom : "Enregistrement des formules",
       route : "/prof/formules",
+      divider : false
+    },
+    {
+      icon : <PostAddIcon/>,
+      nom : "Création des énoncés",
+      route : "/prof/enonces",
       divider : false
     },
     {
