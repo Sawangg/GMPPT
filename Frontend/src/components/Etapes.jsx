@@ -24,7 +24,7 @@ export default function VerticalLinearStepper() {
           <Step key={label}>
             <StepLabel>{label}</StepLabel>
             <StepContent>
-                  <Button disabled={activeStep === 0} onClick={handleBack}>Back</Button>
+                  <Button disabled={activeStep === 0} onClick={handleBack}>RETOUR</Button>
                   <Button variant="contained" color="primary" onClick={handleNext} >
                     {activeStep === steps.length - 1 ? 'Finir' : 'Suite'}
                   </Button>

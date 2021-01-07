@@ -63,7 +63,3 @@ Header unset Cache-Control
 </FilesMatch>
 </IfModule>
 # END Cache-Control Headers
-
-# KILL THEM ETAGS
-Header unset ETag
-FileETag none
