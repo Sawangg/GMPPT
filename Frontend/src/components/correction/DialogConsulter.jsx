@@ -11,10 +11,10 @@ export default function ConsulterEtudiant(props) {
             <AppBar className="appBar">
                 <Toolbar>
                     <IconButton onClick={props.handleClose} edge="start" color="inherit" aria-label="close">
-                    <CloseIcon />
+                        <CloseIcon />
                     </IconButton>
                     <Typography variant="h6" >
-                    Etudiant : 
+                        Etudiant : {props.etu.prenom + ' ' + props.etu.nom}
                     </Typography>
                 </Toolbar>
             </AppBar>

@@ -20,6 +20,8 @@ export default function StickyHeadTable() {
 
   const tabEtudiants = useSelector(selectEtudiants)
 
+  const [etudiantDialog, setEtudiant] = useState({})
+
   //met en place le test
   if(tabEtudiants.length <= 1){
     dispatch(setEtudiantsForTests())
@@ -59,7 +61,8 @@ export default function StickyHeadTable() {
   };
 
   //gère l'ouverture du dialog pour consulter les réponses de l'étudiant
-  const handleOpenConsulter = (id) =>{
+  const handleOpenConsulter = (etu) =>{
+    setEtudiant(etu)
     setOpen(true)
   }
 
@@ -106,7 +109,7 @@ export default function StickyHeadTable() {
                       :
                       //cas de la colonne consulter sujet
                       <TableCell key={'sujet'} align={columnConsulterSujet.align}>
-                        <Button variant="outlined" color="primary" onClick={e => handleOpenConsulter(row.id)}>
+                        <Button variant="outlined" color="primary" onClick={e => handleOpenConsulter(row)}>
                           Consulter
                         </Button>
                       </TableCell>
@@ -129,7 +132,7 @@ export default function StickyHeadTable() {
         onChangePage={handleChangePage}
       />
 
-      <DialogConsulter open={openDialog} handleClose={handleCloseConsulter}/>
+      <DialogConsulter etu={etudiantDialog} open={openDialog} handleClose={handleCloseConsulter}/>
       
     </Paper>
 
