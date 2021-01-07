@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import _ from "lodash"
 
 
+
 export const reponseSlice = createSlice({
     name: "reponse",
     initialState: { 
@@ -40,6 +41,13 @@ export const reponseSlice = createSlice({
         //change la valeur d'une réponse pour une question
         //paramètres : indexQuestion, index Réponse, valeurReponse
         changeReponse : (state, action) =>{
+            /*const reg = '#-?[1-9]*(\.[1-9]*)?(\*10\^[1-9]*)?#'
+            const reg = '[a-z]'
+            
+            if(value.match(reg)){
+                state.tabQuestions[indexQuestion].tabReponses[indexReponse].value = value
+            }*/
+
             let {indexQuestion, indexReponse, value} = action.payload
             if(!isNaN(value) || value==='-'){
                 state.tabQuestions[indexQuestion].tabReponses[indexReponse].value = value
