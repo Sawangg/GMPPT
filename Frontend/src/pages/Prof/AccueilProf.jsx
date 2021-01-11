@@ -1,18 +1,19 @@
 import React, {useState} from 'react'
 
-import Etapes from '../../components/Etapes'
-import DropFile from '../../components/DropFile';
-import ParticulesFond from '../../components/ParticulesFond'
+import Etapes from '../../components/Etapes';
+import ParticulesFond from '../../components/ParticulesFond';
+import GestionUnite from '../../components/GestionUnite'
 
 export default function Accueil() {
 
-    const [/*excel*/, setExcel] = useState("")
+    const [open, setOpen] = useState(false);
 
     return (
         <div>
             <ParticulesFond/>
             <Etapes/>
-            <DropFile typeFile='.xlsx, .xls, .ods, .xlr, .tab' compressImage={false} changeFile={e => setExcel(e)}  message="Charger la liste des étudiants"/>
+            <button className="center" style={{position : "relative", zIndex : 100}} onClick={() => setOpen(true)}>ici</button>
+            <GestionUnite tard={true} setClose={() => setOpen(false)} open={open}/>
         </div>
     );
 }

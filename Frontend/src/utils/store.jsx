@@ -7,6 +7,7 @@ import reponseReducer from '../slice/RepondreQuestionsSlice'
 import enoncesReducer from '../slice/EnoncesSlice'
 import correctionReducer from '../slice/CorrectionSlice'
 import consulterReducer from '../slice/ConsulterSlice'
+import uniteReducer from '../slice/UniteSlice'
 
 export default configureStore({
   reducer: {
@@ -18,6 +19,7 @@ export default configureStore({
     enonce : enoncesReducer,
     correction : correctionReducer,
     consulter : consulterReducer,
+    unite : uniteReducer,
   },
   middleware : getDefaultMiddleware({
     serializableCheck: false

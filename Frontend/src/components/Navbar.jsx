@@ -10,6 +10,7 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import PostAddIcon from '@material-ui/icons/PostAdd';
 import SystemUpdateAltIcon from '@material-ui/icons/SystemUpdateAlt';
 import AllInclusiveIcon from '@material-ui/icons/AllInclusive';
+import SchoolIcon from '@material-ui/icons/School';
 
 import { useDispatch } from "react-redux";
 import { logoutUser } from "../slice/UserSlice";
@@ -37,6 +38,12 @@ export default function SwipeableTemporaryDrawer() {
       nom : "Profil",
       route : "/profil",
       divider : true
+    },
+    {
+      icon : <SchoolIcon/>,
+      nom : "Promotion",
+      route : "/prof/promo",
+      divider : false
     },
     {
       icon : <AllInclusiveIcon/>,
