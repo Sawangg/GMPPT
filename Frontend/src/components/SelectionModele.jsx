@@ -10,6 +10,7 @@ import useConstructor from './use/useContructor'
 import { useDispatch, useSelector } from "react-redux";
 import { setTab } from "../slice/FormulesSlice";
 import {getAllVariables } from "../slice/VariablesAleatoiresSlice"
+import { getEnonce } from "../slice/EnoncesSlice";
 import { selectionnerModele, addNewModele, removeModele, getModele, selectModele, selectActualise, selectChargementSupp} from "../slice/ModeleSlice";
 
 export default function DialogSelect(props) {
@@ -37,6 +38,7 @@ export default function DialogSelect(props) {
             dispatch(selectionnerModele(select));
             dispatch(setTab(select));
             dispatch(getAllVariables(select))
+            dispatch(getEnonce(select))
         }
         props.setClose();
     }

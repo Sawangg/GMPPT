@@ -5,7 +5,7 @@ export const getEnonce = createAsyncThunk(
     "enonce/getEnonce",
     async (idModele) => {
         const response = await getEnonceAPI(idModele);
-        return response.data;
+        return true;
     }
 );
 
@@ -13,7 +13,7 @@ export const setEnonce = createAsyncThunk(
     "enonce/setEnonce",
     async (enonce) => {
         const response = await addEnonceAPI(enonce.idModele, enonce.enonceContenu, enonce.question);
-        return response.data;
+        return true;
     }
 )
 
@@ -21,7 +21,11 @@ export const enoncesReducer = createSlice({
     name: "enonce",
     initialState: {
         enonceContenu: "",
-        question: []
+        question: [{
+            contenu: "",
+            reponse: "",
+        }],
+        actualise: false,
     },
     reducers: {
         handleChangeEnonce: (state, action) => {
@@ -29,7 +33,10 @@ export const enoncesReducer = createSlice({
         },
 
         addQuestion: (state) => {
-            state.question.push({contenu: ""});
+            state.question.push({
+                contenu: "",
+                reponse: "",
+            });
         },
 
         deleteQuestion: (state, action) => {
@@ -38,31 +45,39 @@ export const enoncesReducer = createSlice({
 
         handleChangeQuestion: (state, action) => {
             state.question[action.payload.index].contenu = action.payload.contenu;
+            state.question[action.payload.index].reponse = action.payload.reponse;
         },
     },
     extraReducers: {
         [getEnonce.pending]: (state) => {
-
+            state.actualise = true;
         },
-        [getEnonce.rejected]: (state, action) => {
+        /*[getEnonce.rejected]: (state, action) => {
             if (action.error.message === "Request failed with status code 404") {
                 state.enonceContenu = "";
-                state.question = [];
+                state.question = [{
+                    contenu: "",
+                    reponse: "",
+                }];
+                state.actualise = true;
             }
+            console.log("rejected");
         },
         [getEnonce.fulfilled]: (state, action) => {
             let array = [];
             action.payload.forEach((element) => {
                 array.push({
                     contenu: element.contenu,
+                    reponse: element.reponse,
                 });
             });
             state.contenu = action.payload.contenu;
             state.question = array;
+            state.actualise = true;
+            console.log("fulfilled");
         },
         [setEnonce.fulfilled]: (state) => {
-
-        },
+        },*/
     },
 });
 
@@ -74,5 +89,6 @@ export const {
 } = enoncesReducer.actions
 
 export const selectEnonce = (state) => state.enonce;
+export const selectActualise = (state) => state.enonce.actualise;
 
 export default enoncesReducer.reducer;

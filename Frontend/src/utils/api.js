@@ -76,8 +76,8 @@ export function getVariablesAPI(idModele){
 
 //Enonces
 export function getEnonceAPI(idModele) {
-    return null;
+    return true;
 }
 export function addEnonceAPI(idModele, enonceContenu, question) {
-    return null;
+    return true;
 }
