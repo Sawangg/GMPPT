@@ -10,6 +10,7 @@ import ImportModele from './pages/Prof/ImportModele3D';
 import Correction from './pages/Prof/Correction';
 import Enonces from "./pages/Prof/Enonces";
 import VariableAleatoires from './pages/Prof/VariablesAleatoires'
+import Test from './pages/Prof/ConsulterEtudiant';
 
 import RepondreQuestions from './pages/Etu/RepondreQuestions';
 import AccueilEtu from './pages/Etu/AccueilEtu';
@@ -23,6 +24,7 @@ import { Provider } from 'react-redux';
 import store from './utils/store';
 
 import CssBaseline from '@material-ui/core/CssBaseline'
+
 
 function App() {
 
@@ -46,6 +48,7 @@ function App() {
         <PrivateRoute forProf={true} exact path='/prof/modeles3D' component={ImportModele}/>
         <PrivateRoute forProf={true} exact path='/prof/gestion-correction' component={Correction}/>
         <PrivateRoute forProf={true} exact path='/prof/variable-aleatoires' component={VariableAleatoires}/>
+        <PrivateRoute forProf={true} exact path='/prof/correction/:value' component={Test}/>
 
         {/* ETU */}
         <PrivateRoute forProf={false} exact path='/etu/home' component={AccueilEtu}/>

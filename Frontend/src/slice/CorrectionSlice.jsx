@@ -11,19 +11,9 @@ export const correctionSlice = createSlice({
             avancement : '', // %
             note : '' // /20
         }],
-        tabEssais : [{
-            dateEssai : "01/01/2020",
-            tabQuestion : [{
-                num : 1,
-                tabReponses : [{
-                    value : "0",
-                    unite : "",
-                }]
-            }]
-        }],
     },
     reducers: {
-        //importe un jeu d'essai pour faire des tests
+        //importe un jeu d'essai pour faire des tests sur liste d'étudiants
         setEtudiantsForTests : (state) =>{
             state.tabEtudiants = [
                 {id : 0, prenom : 'Florian', nom : 'TORIBIO', promo : 'Année 2', avancement : 10, note : 4},
@@ -34,6 +24,7 @@ export const correctionSlice = createSlice({
                 {id : 15, prenom : 'Test', nom : 'TEST', promo : 'Année 1', avancement : 100, note :  20},
             ]
         },
+
     },
     extraReducers: {}
 })
