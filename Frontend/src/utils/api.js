@@ -73,3 +73,11 @@ export function addVariableAPI(idModele, tabVariables){
 export function getVariablesAPI(idModele){
     return axios.get(`http://${host}:3001/modele/${idModele}/variables`, credentials)
 }
+
+//Enonces
+export function getEnonceAPI(idModele) {
+    return null;
+}
+export function addEnonceAPI(idModele, enonceContenu, question) {
+    return null;
+}

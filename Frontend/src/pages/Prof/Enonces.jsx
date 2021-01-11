@@ -1,5 +1,5 @@
 import MyEditor from "../../components/MyEditor";
-import React from "react";
+import React, {useState} from "react";
 import {Button} from "@material-ui/core";
 import QuestionEnonce from "../../components/QuestionEnonce";
 import {useDispatch, useSelector} from "react-redux";
@@ -10,11 +10,21 @@ import {
     handleChangeQuestion,
     selectEnonce
 } from "../../slice/EnoncesSlice";
+import useConstructor from "../../components/use/useContructor";
 
 export default function Enonces() {
 
+    /*const [open, setOpen] = useState(false);*/
+
     const enonce = useSelector(selectEnonce);
     const dispatch = useDispatch();
+    /*const modele = useSelector(selectModele);
+
+    useConstructor(() => {
+        if (modele.idModeleSelectionne === undefined){
+            setOpen(true);
+        }
+    });*/
 
     const sendContent = () => {
         console.log(enonce);
