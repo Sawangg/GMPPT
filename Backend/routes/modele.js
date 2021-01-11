@@ -7,13 +7,12 @@ router.post('/:idmodele/categories/new', isAuthenticated, isProf, async (req, re
     const { idmodele } = req.params;
     try {
         await db.promise().execute(`DELETE FROM categories WHERE id_modele=${idmodele}`);
-        let [{ AUTO_INCREMENT }] = (await db.promise().execute(`SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA ='GMP' AND TABLE_NAME = 'categories';`))[0];
         req.body.forEach(async categorie => {
-            await db.promise().execute(`INSERT INTO categories VALUES (NULL, '${categorie.nom}', ${categorie.margeErreur}, ${idmodele})`);
-            categorie.tabFormule.forEach(async formule => {
-                await db.promise().execute(`INSERT INTO formules VALUES (NULL, '${formule.nomFormule}', '${formule.formule}', ${AUTO_INCREMENT})`);
+            db.promise().execute(`INSERT INTO categories VALUES (NULL, '${categorie.nom}', ${categorie.margeErreur}, ${idmodele})`).then(([rows]) => {
+                categorie.tabFormule.forEach(async formule => {
+                    await db.promise().execute(`INSERT INTO formules VALUES (NULL, '${formule.nomFormule}', '${formule.formule}', ${rows.insertId})`);
+                });
             });
-            ++AUTO_INCREMENT;
         });
         return res.sendStatus(200);
     } catch (_err) {
