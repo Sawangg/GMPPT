@@ -12,6 +12,7 @@ const modeleRouter = require("./routes/modele.js");
 const architectureRouter = require("./routes/architecture.js");
 const etudiantRouter = require("./routes/etudiant.js");
 const promoRouter = require("./routes/promo.js");
+const uniteRouter = require("./routes/unite.js");
 
 const app = express();
 
@@ -48,6 +49,7 @@ app.use('/modele', modeleRouter);
 app.use('/architecture', architectureRouter);
 app.use('/etudiant', etudiantRouter);
 app.use('/promo', promoRouter);
+app.use('/unite', uniteRouter);
 
 app.listen(3001, () => {
     console.log("Le serveur fonctionne sur le port 3001");
