@@ -15,7 +15,7 @@ router.post('/login', passport.authenticate('local'), (req, res) => {
 });
 
 router.get('/logout', isAuthenticated, (req, res) => {
-    res.cookie("connection.sid", "", { expires: new Date() });
+    req.logout();
     db.promise().execute(`DELETE FROM sessions WHERE session_id = '${req.sessionID}'`).then(() => {
         return res.sendStatus(200);
     }).catch(() => {
