@@ -45,8 +45,11 @@ export const enoncesReducer = createSlice({
 
         handleChangeQuestion: (state, action) => {
             state.question[action.payload.index].contenu = action.payload.contenu;
-            state.question[action.payload.index].reponse = action.payload.reponse;
         },
+
+        handleChangeSelect: (state, action) => {
+            state.question[action.payload.index].reponse = action.payload.reponse;
+        }
     },
     extraReducers: {
         [getEnonce.pending]: (state) => {
@@ -86,6 +89,7 @@ export const {
     addQuestion,
     deleteQuestion,
     handleChangeQuestion,
+    handleChangeSelect,
 } = enoncesReducer.actions
 
 export const selectEnonce = (state) => state.enonce;

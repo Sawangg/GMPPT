@@ -7,7 +7,7 @@ import {
     addQuestion,
     deleteQuestion,
     handleChangeEnonce,
-    handleChangeQuestion, selectActualise,
+    handleChangeQuestion, handleChangeSelect, selectActualise,
     selectEnonce
 } from "../../slice/EnoncesSlice";
 import useConstructor from "../../components/use/useContructor";
@@ -49,7 +49,7 @@ export default function Enonces() {
                                 <Button className="center" variant="contained" color="secondary"
                                         onClick={() => dispatch(deleteQuestion(id))}>X
                                 </Button>
-                                <SelectionCatForm/>
+                                <SelectionCatForm handleChange={e => dispatch(handleChangeSelect({reponse: e, index: id}))}/>
                             </div>
                         )
                     })}

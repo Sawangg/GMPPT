@@ -5,6 +5,7 @@ import {selectActualise, selectFormule, setTab} from "../slice/FormulesSlice";
 import {Input, MenuItem, Select} from "@material-ui/core";
 import PropagateLoader from "react-spinners/PropagateLoader";
 import useConstructor from "./use/useContructor";
+import {handleChangeSelect} from "../slice/EnoncesSlice";
 
 export default function SelectionCatForm(props) {
     const [select, setSelect] = useState("");
@@ -20,13 +21,14 @@ export default function SelectionCatForm(props) {
 
     const handleChange = (event) => {
         setSelect(event.target.value);
+        props.handleChange(event.target.value);
     }
 
     return (
         <div>
             <Select style={{width : 200}} value={select} onChange={handleChange} input={<Input/>}>
                 {!actualise ? <PropagateLoader size={15} color={"rgb(7, 91, 114)"} css={{margin : "30px auto", display : "flex", justifyContent : "center"}}/> :
-                    catForm.map(item => <MenuItem key={item.index} value={item.index}>{item.nom}</MenuItem>)}
+                    catForm.map(item => <MenuItem key={item.index} value={item.nom}>{item.nom}</MenuItem>)}
             </Select>
         </div>
     )
