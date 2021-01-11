@@ -63,7 +63,11 @@ export default function DialogSelect(props) {
                     value={nouveauModele.nom} 
                     onChange={e => onChangeNouveauModele(e)}
                 />
-                <Fab style={{marginLeft : "5%"}} size="small" color="primary" aria-label="add" onClick={e => addNouveauModele()}>
+                <Fab 
+                    size="small" color="primary" aria-label="add" 
+                    disabled={nouveauModele.nom === "" ? true : false} 
+                    style={{marginLeft : "5%"}} 
+                    onClick={e => addNouveauModele()}>
                     <AddIcon />
                 </Fab>
             </div>

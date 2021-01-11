@@ -11,9 +11,8 @@ export default function DialogSelect(props) {
   const [select, setSelect] = useState("");
   const [nouveauModele, setNouveauModele] = useState({etat : false, nom : "", error : false});
 
-  useConstructor(() => {
-        /*if (!actualise) dispatch(getModele())*/
-    });
+  /*useConstructor(() => {
+    });*/
 
     const handleChange = (event) => {
         setSelect(event.target.value);
@@ -22,7 +21,7 @@ export default function DialogSelect(props) {
             : setNouveauModele({etat : false, nom : nouveauModele.nom, error : false});
     };
 
-    const choisirModele = () =>{
+    const choisirUnite = () =>{
         /*if (select !== modele.idModeleSelectionne){
             dispatch(selectionnerModele(select));
             dispatch(setTab(select));
@@ -35,7 +34,7 @@ export default function DialogSelect(props) {
         setNouveauModele({etat : true, nom : e.target.value, error : false})
     }
 
-    const addNouveauModele = () =>{
+    const addNouvelleUnite = () =>{
         /*if (modele.tabName.includes(nouveauModele.nom)){
             setNouveauModele({etat : true, nom : nouveauModele.nom, error : true})
         } else {
@@ -44,7 +43,7 @@ export default function DialogSelect(props) {
         }*/
     }
 
-    const displayNouveauModele = () =>{
+    const displayNouvelleUnite = () =>{
         return (
             nouveauModele.etat 
             ? <div style={{display : "grid", gridTemplateColumns : "80% 20%", gridGap : "7%", marginTop : 30}} >
@@ -53,7 +52,7 @@ export default function DialogSelect(props) {
                     value={nouveauModele.nom} 
                     onChange={e => onChangeNouveauModele(e)}
                 />
-                <Fab style={{marginLeft : "5%"}} size="small" color="primary" aria-label="add" onClick={e => addNouveauModele()}>
+                <Fab style={{marginLeft : "5%"}} size="small" color="primary" aria-label="add" onClick={e => addNouvelleUnite()}>
                     <AddIcon />
                 </Fab>
             </div>
@@ -73,7 +72,6 @@ export default function DialogSelect(props) {
                     <Select style={{width : 200}} value={select} onChange={handleChange} input={<Input/>}>
                     <MenuItem value="Créer nouveau modèle" style={{color : "#075b72"}}>Ajouter unité</MenuItem>
                     </Select>
-
                     {/* {chargementSupp 
                     ?<BounceLoader size={40} color={"rgb(7, 91, 114)"} css={{marginLeft : "5%", display : "block"}}/>
                     :<Fab style={{marginLeft : "5%"}} size="small" color="secondary" aria-label="delete" 
@@ -85,13 +83,13 @@ export default function DialogSelect(props) {
                     } */}
                     
                         </div>
-                    {displayNouveauModele()}
+                    {displayNouvelleUnite()}
                 </FormControl>
             </form>
             </DialogContent>
             <DialogActions style={{justifyContent : "space-around"}}>
             {props.tard ? <Button onClick={() => props.setClose()} color="primary">Choisir plus tard</Button> : null}
-            <Button disabled={select === "" || select === "Créer nouveau modèle" ? true : false} onClick={e => choisirModele()} color="primary">Ok</Button>
+            <Button disabled={select === "" || select === "Créer nouveau modèle" ? true : false} onClick={e => choisirUnite()} color="primary">Ok</Button>
             </DialogActions>
         </Dialog>
         </div>

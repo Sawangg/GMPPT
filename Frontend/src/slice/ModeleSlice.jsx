@@ -24,13 +24,12 @@ export const addNewModele = createAsyncThunk("modele/new", async (nom) => {
   return response.data;
 });
 
-export const userSlice = createSlice({
+export const modeleSlice = createSlice({
   name: "modele",
   initialState: {
     tabName: [],
     idModeleSelectionne: undefined,
-    actualise: false,
-    chargementSuppression : false
+    actualise: false
   },
   reducers: {
     selectionnerModele: (state, action) => {
@@ -55,13 +54,7 @@ export const userSlice = createSlice({
       }
     },
     [removeModele.pending]: (state, action) => {
-      state.chargementSuppression = true;
-      console.log("heee")
-    },
-    [removeModele.fulfilled]: (state, action) => {
       state.tabName.splice(action.meta.arg, 1);
-      state.chargementSuppression = false
-      console.log("ca marche")
     },
     [addNewModele.fulfilled]: (state, action) => {
       state.tabName[action.payload.insertId] = {
@@ -72,7 +65,7 @@ export const userSlice = createSlice({
   },
 });
 
-export const { selectionnerModele } = userSlice.actions;
+export const { selectionnerModele } = modeleSlice.actions;
 
 export const selectModele = (state) => state.modele;
 
@@ -80,4 +73,4 @@ export const selectActualise = (state) => state.modele.actualise;
 
 export const selectChargementSupp = (state) => state.modele.chargementSuppression;
 
-export default userSlice.reducer;
+export default modeleSlice.reducer;
