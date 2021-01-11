@@ -6,6 +6,7 @@ import variablesAleatoiresReducer from '../slice/VariablesAleatoiresSlice'
 import reponseReducer from '../slice/RepondreQuestionsSlice'
 import enoncesReducer from '../slice/EnoncesSlice'
 import correctionReducer from '../slice/CorrectionSlice'
+import uniteReducer from '../slice/UniteSlice'
 
 export default configureStore({
   reducer: {
@@ -16,6 +17,7 @@ export default configureStore({
     reponse : reponseReducer,
     enonce : enoncesReducer,
     correction : correctionReducer,
+    unite : uniteReducer,
   },
   middleware : getDefaultMiddleware({
     serializableCheck: false
