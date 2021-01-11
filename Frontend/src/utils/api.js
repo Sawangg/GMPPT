@@ -75,9 +75,11 @@ export function getVariablesAPI(idModele){
 }
 
 //Enonces
-export function getEnonceAPI(idModele) {
-    return true;
+
+export function getQuestionsAPI(idModele) {
+    return axios.get(`http://${host}:3001/modele/${idModele}/questions`, credentials);
 }
-export function addEnonceAPI(idModele, enonceContenu, question) {
-    return true;
+
+export function setQuestionsAPI(idModele, enonce, tabQuestions) {
+    return axios.post(`http://${host}:3001/modele/${idModele}/questions/new`, tabQuestions, enonce, credentials);
 }

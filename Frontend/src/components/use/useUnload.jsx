@@ -1,4 +1,4 @@
-import {useEffect} from 'react'
+import { useEffect} from 'react'
 
 export default function useUnload(active) {
 
@@ -9,6 +9,6 @@ export default function useUnload(active) {
     useEffect(() => {
         window.addEventListener("beforeunload", handleBeforeUnload);
         return () =>  window.removeEventListener("beforeunload", handleBeforeUnload);
-      }, [active]);
+    }, [active]);
 
 }

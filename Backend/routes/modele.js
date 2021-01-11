@@ -15,7 +15,7 @@ router.post('/:idmodele/categories/new', isAuthenticated, isProf, async (req, re
             });
         });
         return res.sendStatus(200);
-    } catch (_err) {
+    } catch {
         return res.sendStatus(500);
     }
 });
@@ -147,7 +147,7 @@ router.post('/:idmodele/questions/new', isAuthenticated, isProf, async (req, res
                 return res.sendStatus(200);
             });
         });
-    } catch(_err) {
+    } catch {
         return res.sendStatus(500);
     }
 });

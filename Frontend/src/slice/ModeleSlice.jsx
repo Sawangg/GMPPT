@@ -1,10 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-import {
-  getAllModeleAPI,
-  deleteModeleAPI,
-  addModeleAPI,
-} from "../utils/api.js";
+import { getAllModeleAPI, deleteModeleAPI, addModeleAPI } from "../utils/api.js";
 
 export const getModele = createAsyncThunk("modele/getAllModele", async () => {
   const response = await getAllModeleAPI();

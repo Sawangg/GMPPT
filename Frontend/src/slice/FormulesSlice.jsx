@@ -1,14 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { getCategoriesFormulesAPI, addCategorieFormuleAPI } from "../utils/api.js";
 
-import {
-  getCategoriesFormulesAPI,
-  addCategorieFormuleAPI,
-} from "../utils/api.js";
-
-export const setTab = createAsyncThunk("formule/setTab", async (idModele) => {
-  const response = await getCategoriesFormulesAPI(idModele);
-  return response.data;
-});
+export const getCategoriesFormules = createAsyncThunk(
+  "formule/getCategoriesFormules", 
+  async (idModele) => {
+    const response = await getCategoriesFormulesAPI(idModele);
+    return response.data;
+  }
+);
 
 export const enregistrerFormules = createAsyncThunk(
   "formule/enregistrerFormules",
@@ -149,10 +148,10 @@ export const formuleSlice = createSlice({
     },
   },
   extraReducers: {
-    [setTab.pending]: (state) => {
+    [getCategoriesFormules.pending]: (state) => {
       state.actualise = false;
     },
-    [setTab.rejected]: (state, action) => {
+    [getCategoriesFormules.rejected]: (state, action) => {
       if (action.error.message === "Request failed with status code 404") {
         state.tab = [
           {
@@ -182,7 +181,7 @@ export const formuleSlice = createSlice({
         state.enregistre = true;
       }
     },
-    [setTab.fulfilled]: (state, action) => {
+    [getCategoriesFormules.fulfilled]: (state, action) => {
         let array = [];
         let compt = 0;
         action.payload.forEach((element) => {
@@ -217,31 +216,15 @@ export const formuleSlice = createSlice({
   },
 });
 
-export const {
-  setActualise,
-  changeNom,
-  addCategorie,
-  removeCategorie,
-  changeModifCategorie,
-  addFormule,
-  changeMargeErreurCategorie,
-  undoFormule,
-  changeNomFormule,
-  changeFormule,
-  changeModifFormule,
-  removeFormule,
-  changePositionFormule,
-} = formuleSlice.actions;
+export const { setActualise, changeNom, addCategorie, removeCategorie, changeModifCategorie, addFormule, changeMargeErreurCategorie, undoFormule, changeNomFormule, changeFormule, changeModifFormule, removeFormule, changePositionFormule } = formuleSlice.actions;
 
 export const selectFormule = (state) => state.formule.tab;
 
-export const selectTabFormule = (index) => (state) =>
-  state.formule.tab[index].tabFormule;
+export const selectTabFormule = (index) => (state) => state.formule.tab[index].tabFormule;
 
 export const selectActualise = (state) => state.formule.actualise;
 
-export const selectMargeErreur = (index) => (state) =>
-  state.formule.tab[index].margeErreur;
+export const selectMargeErreur = (index) => (state) => state.formule.tab[index].margeErreur;
 
 export const selectEnregistre = (state) => state.formule.enregistre;
 
