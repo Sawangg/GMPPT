@@ -42,7 +42,7 @@ export default function VariablesAleatoires() {
 
     useConstructor(() => {
         if (!isEnregistre) {
-            modele.idModeleSelectionne === undefined ? setOpen(true) : dispatch(getAllVariables(modele.idModeleSelectionne));
+            modele.idModeleSelectionne === null ? setOpen(true) : dispatch(getAllVariables(modele.idModeleSelectionne));
         }
     });
 
@@ -101,7 +101,7 @@ export default function VariablesAleatoires() {
     }
 
     return (
-        modele.idModeleSelectionne === undefined 
+        modele.idModeleSelectionne === null 
         ? <SelectionModele tard={false} setClose={() => setOpen(false)} open={open}/> 
         : actualise ? displayVariable() : <CircleLoader size={50} color={"rgb(7, 91, 114)"} css={{margin : "auto", display : "flex", justifyContent : "center"}}/>
     );
