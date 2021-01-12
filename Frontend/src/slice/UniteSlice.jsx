@@ -19,7 +19,7 @@ export const deleteUnite = createAsyncThunk("unite/deleteUnite", async (idUnite)
 export const uniteSlice = createSlice({
   name: "unite",
   initialState: {
-    tabName: [{nomComplet : undefined, abr : undefined}],
+    tabUnites: [{nomComplet : undefined, abr : undefined}],
     actualise: false,
     chargementSuppression : false
   },
@@ -27,13 +27,24 @@ export const uniteSlice = createSlice({
     addUnite: (state, action) => {
       state.tabNamepush(action.payload);
     },
+    setTest : (state) =>{
+      state.tabUnites = [
+        {nomComplet : "Sans Unité", abr : " "},
+        {nomComplet : "Gramme", abr : "g"},
+        {nomComplet : "Newton", abr : "N"}
+      ]
+    }
   },
   extraReducers: {
     [getAllUnite.rejected]: (state, action) => {
+      console.log(action)
     },
     [getAllUnite.fulfilled]: (state, action) => {
+      
     },
     [getAllUnite.pending]: (state, action) => {
+      state.actualise = false
+      //console.log(action)
     },
     [addunite.rejected]: (state, action) => {
     },
@@ -50,9 +61,9 @@ export const uniteSlice = createSlice({
   }
 });
 
-export const { addUnite } = uniteSlice.actions;
+export const { addUnite, setTest } = uniteSlice.actions;
 
-export const selectUnite = (state) => state.unite;
+export const selectUnites = (state) => state.unite.tabUnites;
 
 export const selectActualise = (state) => state.unite.actualise;
 
