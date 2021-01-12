@@ -22,7 +22,7 @@ router.get('/', isAuthenticated, isProf, async (_req, res) => {
 
 router.get('/:idpromo', isAuthenticated, isProf, async (req, res) => {
     const { idPromo } = req.params;
-    db.promise().execute(`SELECT * FROM etudiant WHERE id_promo=${idPromo}`).then(([rows]) => {
+    db.promise().execute(`SELECT * FROM etudiant WHERE id_promo = ${idPromo}`).then(([rows]) => {
         return res.send(rows).status(200);
     }).catch(() => {
         return res.sendStatus(500);
@@ -31,11 +31,14 @@ router.get('/:idpromo', isAuthenticated, isProf, async (req, res) => {
 
 router.get('/:idpromo/delete', isAuthenticated, isProf, async (req, res) => {
     const { idPromo } = req.params;
-    db.promise().execute(`DELETE FROM promo WHERE id_promo=${idPromo}`).then(([rows]) => {
+    try {
+        await db.promise().execute(`DELETE FROM promo WHERE id_promo = ${idPromo}`);
+        await db.promise().execute(`DELETE FROM etudiant WHERE id_promo = ${idPromo}`);
+        await db.promise().execute(`DELETE FROM authentification WHERE id_auth NOT IN (SELECT id_auth FROM etudiant) AND isProf = false`);
         return res.send(rows).status(200);
-    }).catch(() => {
+    } catch {
         return res.sendStatus(500);
-    });
+    }
 });
 
 module.exports = router;
