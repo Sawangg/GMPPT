@@ -1,39 +1,3 @@
-#image {
-    background-size: cover;
-    background-position: center;
-}
-
-#carteProfil{
-    display : flex;
-    width : 60%;
-    margin : auto;
-    box-shadow : -2px 5px 12px 4px rgba(0,0,0,0.62);
-}
-
-#dropPhotoProfil{
-    width : 70%;
-    margin : auto;
-}
-
-#buttonEnvoyerImageProfil{
-    display : block;
-    margin : 2% auto;
-}
-
-#divPasswordChange{
-    display : flex;
-    flex-direction : column;
-    margin-top : 5%;
-    margin-left : 48px;
-}
-
-#buttonChangePwd{
-    margin : auto;
-    margin-top : 1%;
-    position: relative;
-    right : 24px;
-}
-
 @media screen and (max-width: 960px) {
 
     #image {
