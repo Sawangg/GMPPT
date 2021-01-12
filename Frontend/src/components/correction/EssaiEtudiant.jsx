@@ -34,10 +34,10 @@ export default function EssaiEtudiant(props){
                     <Table>
                         <TableHead>
                             <TableRow>
-                                <TableCell/>
-                                <TableCell>Numero</TableCell>
-                                <TableCell>Reponses Justes</TableCell>
-                                <TableCell>Question Juste?</TableCell>
+                                <TableCell align="center"/>
+                                <TableCell align="center">Numero</TableCell>
+                                <TableCell align="center">Reponses Justes</TableCell>
+                                <TableCell align="center">Question Juste?</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -130,13 +130,13 @@ function Question(props){
         <>
         <TableRow>
             {/* On affiche la fleche pour avoir plus/moins d'information */}
-            <TableCell>{collapseArrow()}</TableCell>
+            <TableCell align="center">{collapseArrow()}</TableCell>
             {/* Numéro de la question */}
-            <TableCell>{props.indexQuestion + 1}</TableCell>
+            <TableCell align="center">{props.indexQuestion + 1}</TableCell>
             {/* nombre de réponses justes dans la question */}
-            <TableCell>{nbReponsesJuste()}</TableCell>
+            <TableCell align="center">{nbReponsesJuste()}</TableCell>
             {/* voit si la question est juste */}
-            <TableCell>{questionJuste()}</TableCell>
+            <TableCell align="center">{questionJuste()}</TableCell>
         </TableRow>
         <TableRow>
             <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={4} className="boxReponses">
@@ -146,16 +146,16 @@ function Question(props){
                         <Table size="small">
                             <TableHead>
                                 <TableRow>
-                                        <TableCell>
+                                        <TableCell align="center">
                                             Valeur donnée
                                         </TableCell>
-                                        <TableCell>
+                                        <TableCell align="center">
                                             Ecart avec la bonne valeur
                                         </TableCell>
-                                        <TableCell>
+                                        <TableCell align="center">
                                             Conseil de l'application
                                         </TableCell>
-                                        <TableCell>
+                                        <TableCell align="center">
                                             Votre avis
                                         </TableCell>
                                     </TableRow>
@@ -164,11 +164,11 @@ function Question(props){
                                     {props.question.tabReponses.map((reponse, indexReponse) =>
                                     <TableRow>
                                         {/* Valeur donnée par l'étudiant */}
-                                        <TableCell padding='none'>
+                                        <TableCell align="center" padding='none'>
                                             {reponse.value}
                                         </TableCell>
                                         {/* Ecart avec la valeur juste */}
-                                        <TableCell padding='none'>
+                                        <TableCell align="center" padding='none'>
                                             {reponse.ecart}
                                         </TableCell>
                                         {/* l'avis de l'application pour savoir si la réponse est juste */}
