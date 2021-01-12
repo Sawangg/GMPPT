@@ -3,17 +3,15 @@ import React, { useState, useEffect } from "react";
 import { Button } from "@material-ui/core";
 import QuestionEnonce from "../../components/Enonce/QuestionEnonce";
 import { useDispatch, useSelector } from "react-redux";
-import { addQuestion, handleChangeEnonce, handleChangeQuestion, selectActualise, selectEnonce, setQuestions, selectEnregistre } from "../../slice/EnoncesSlice";
+import { addQuestion, handleChangeEnonce, handleChangeQuestion, selectActualise, selectEnonce, setQuestions, selectEnregistre, getQuestions } from "../../slice/EnoncesSlice";
 import useConstructor from "../../components/use/useContructor";
 import SelectionCatForm from "../../components/Enonce/SelectionCatForm";
 import { selectModele } from "../../slice/ModeleSlice";
-import SelectionModele from "../../components/SelectionModele";
 import CircleLoader from "react-spinners/CircleLoader";
 import PopUp from '../../components/PopUp';
 
 export default function Enonces() {
 
-    const [open, setOpen] = useState(false);
     const [openPopUp, setOpenPopUp] = useState(true);
 
     const enonce = useSelector(selectEnonce);
@@ -23,9 +21,7 @@ export default function Enonces() {
     const isEnregistre = useSelector(selectEnregistre);
 
     useConstructor(() => {
-        if (modele.idModeleSelectionne === undefined) {
-            setOpen(true);
-        }
+        if (!isEnregistre) dispatch(getQuestions(modele.idModeleSelectionne));
     });
 
     useEffect(() => {
@@ -62,8 +58,6 @@ export default function Enonces() {
     }
 
     return (
-        modele.idModeleSelectionne === undefined
-        ? <SelectionModele tard={false} setClose={() => setOpen(false)} open={open} />
-        : actualise ? displayEnonce() : <CircleLoader size={50} color={"rgb(7, 91, 114)"} css={{margin : "auto", display : "flex", justifyContent : "center"}}/>
+        actualise ? displayEnonce() : <CircleLoader size={50} color={"rgb(7, 91, 114)"} css={{margin : "auto", display : "flex", justifyContent : "center"}}/>
     );
 }

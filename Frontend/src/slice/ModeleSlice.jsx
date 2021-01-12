@@ -20,16 +20,19 @@ export const addNewModele = createAsyncThunk("modele/new", async (nom) => {
   return response.data;
 });
 
+let myStorage = window.localStorage;
+
 export const modeleSlice = createSlice({
   name: "modele",
   initialState: {
     tabName: [],
-    idModeleSelectionne: undefined,
+    idModeleSelectionne: myStorage.getItem("idModele") === null ? undefined : myStorage.getItem("idModele"),
     actualise: false
   },
   reducers: {
     selectionnerModele: (state, action) => {
       state.idModeleSelectionne = action.payload;
+      myStorage.setItem("idModele", action.payload);
     },
   },
   extraReducers: {
@@ -61,7 +64,7 @@ export const modeleSlice = createSlice({
   },
 });
 
-export const { selectionnerModele } = modeleSlice.actions;
+export const { selectionnerModele, modeleIsSelect } = modeleSlice.actions;
 
 export const selectModele = (state) => state.modele;
 

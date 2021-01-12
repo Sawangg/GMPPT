@@ -5,18 +5,16 @@ import AddIcon from '@material-ui/icons/Add';
 
 import Items from '../../components/formules/ItemTodoAccordeon'
 import useConstructor from '../../components/use/useContructor'
-import SelectionModele from '../../components/SelectionModele'
 import useUnload from '../../components/use/useUnload';
 import PopUp from '../../components/PopUp'
 
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { selectFormule, selectActualise, selectEnregistre, addCategorie, enregistrerFormules } from "../../slice/FormulesSlice"
+import { selectFormule, selectActualise, selectEnregistre, addCategorie, enregistrerFormules, getCategoriesFormules } from "../../slice/FormulesSlice"
 import { selectModele } from "../../slice/ModeleSlice"
 
 export default function TodoListAccordeon() {
 
-    const [open, setOpen] = useState(false);
     const [openPopUp, setOpenPopUp] = useState(true);
 
     const dispatch = useDispatch();
@@ -26,7 +24,7 @@ export default function TodoListAccordeon() {
     const modele = useSelector(selectModele);
 
     useConstructor(() => {
-        if (modele.idModeleSelectionne === undefined) setOpen(true);
+        if (!isEnregistre) dispatch(getCategoriesFormules(modele.idModeleSelectionne));
     });
     
     useEffect(() => {
@@ -64,8 +62,6 @@ export default function TodoListAccordeon() {
     }
 
     return (
-        modele.idModeleSelectionne === undefined 
-        ? <SelectionModele tard={false} setClose={() => setOpen(false)} open={open}/> 
-        : actualise ? displayFormule() : <CircleLoader size={50} color={"rgb(7, 91, 114)"} css={{margin : "auto", display : "flex", justifyContent : "center"}}/>
+        actualise ? displayFormule() : <CircleLoader size={50} color={"rgb(7, 91, 114)"} css={{margin : "auto", display : "flex", justifyContent : "center"}}/>
     );
 }
