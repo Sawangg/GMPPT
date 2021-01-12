@@ -1,11 +1,11 @@
-import MyEditor from "../../components/MyEditor";
+import MyEditor from "../../components/Enonce/MyEditor";
 import React, { useState, useEffect } from "react";
 import { Button } from "@material-ui/core";
-import QuestionEnonce from "../../components/QuestionEnonce";
+import QuestionEnonce from "../../components/Enonce/QuestionEnonce";
 import { useDispatch, useSelector } from "react-redux";
-import { addQuestion, deleteQuestion, handleChangeEnonce, handleChangeQuestion, handleChangeSelect, selectActualise, selectEnonce, setQuestions, selectEnregistre } from "../../slice/EnoncesSlice";
+import { addQuestion, handleChangeEnonce, handleChangeQuestion, selectActualise, selectEnonce, setQuestions, selectEnregistre } from "../../slice/EnoncesSlice";
 import useConstructor from "../../components/use/useContructor";
-import SelectionCatForm from "../../components/SelectionCatForm";
+import SelectionCatForm from "../../components/Enonce/SelectionCatForm";
 import { selectModele } from "../../slice/ModeleSlice";
 import SelectionModele from "../../components/SelectionModele";
 import CircleLoader from "react-spinners/CircleLoader";
@@ -42,10 +42,8 @@ export default function Enonces() {
                 {enonce.question.map((item, id) => {
                     return (
                         <div key={id} style={{display: "flex"}}>
-                            <QuestionEnonce value={item.contenu} handleChange={e => dispatch(handleChangeQuestion({contenu:e, index:id}))}/>
-                            <Button className="center" variant="contained" color="secondary"onClick={() => dispatch(deleteQuestion(id))}>X
-                            </Button>
-                            <SelectionCatForm handleChange={e => dispatch(handleChangeSelect({reponse: e, index: id}))}/>
+                            <QuestionEnonce id={id} value={item.contenu} handleChange={e => dispatch(handleChangeQuestion({contenu:e, index:id}))}/>
+                            <SelectionCatForm index={id}/>
                         </div>
                     )
                 })}
