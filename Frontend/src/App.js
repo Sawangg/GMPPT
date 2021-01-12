@@ -25,9 +25,42 @@ import { Provider } from 'react-redux';
 import store from './utils/store';
 
 import CssBaseline from '@material-ui/core/CssBaseline'
+import "./styles/App.css";
 
 
-function App() {
+export default function App() {
+
+    const theme = createMuiTheme({
+        palette: {
+            primary: {
+                light: '#c0dff8',
+                main: '#075b72'
+            },
+            secondary: {
+                main: '#cfcfcf'
+            },
+            error: {
+                main: '#c51150'
+            },
+            warning: {
+                main: '#ffa016',
+                dark: '#b75c08'
+            },
+            success: {
+                main: '#5bb65f',
+                dark: '#244826'
+            },
+        },
+        overrides: {
+            MuiCssBaseline: {
+                '@global': {
+                    body: {
+                        fontFamily: "Amaranth",
+                    },
+                },
+            },
+        },
+    }, frFR);
 
   return (
     <MuiThemeProvider theme={theme}>
@@ -69,17 +102,3 @@ function App() {
     </MuiThemeProvider>
   );
 }
-
-
-export default App;
-
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      main: '#075b72'
-    },
-    secondary: {
-      main: '#c51150'
-    }
-  }
-}, frFR);

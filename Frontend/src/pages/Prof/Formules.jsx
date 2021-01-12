@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { Fab } from '@material-ui/core';
+import {Fab, makeStyles} from '@material-ui/core';
 import CircleLoader from "react-spinners/CircleLoader";
 import AddIcon from '@material-ui/icons/Add';
 
@@ -15,6 +15,13 @@ import { selectFormule, selectActualise, selectEnregistre, addCategorie, enregis
 import { selectModele } from "../../slice/ModeleSlice"
 
 export default function TodoListAccordeon() {
+
+    const useStyles = makeStyles((theme) => ({
+        h1: {textAlign : "center"},
+        fab: {marginLeft: "3%"}
+    }));
+
+    const classes = useStyles();
 
     const [open, setOpen] = useState(false);
     const [openPopUp, setOpenPopUp] = useState(true);
@@ -38,8 +45,8 @@ export default function TodoListAccordeon() {
     const displayFormule = () => {
         return (
             <div>
-                <h1 style={{textAlign : "center"}}>Creation des formules</h1>
-                <Fab style={{marginLeft: "3%"}}
+                <h1 className={classes.h1}>Creation des formules</h1>
+                <Fab className={classes.fab}
                     size="small"
                     color="primary"
                     aria-label="add"
