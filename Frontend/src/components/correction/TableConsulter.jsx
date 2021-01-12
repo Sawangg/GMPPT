@@ -1,26 +1,22 @@
 import React, {useState} from 'react';
 import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, 
-  TableRow, Button} from '@material-ui/core';
+  TableRow} from '@material-ui/core';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { selectEtudiants, setEtudiantsForTests } from '../../slice/CorrectionSlice';
 
-import DialogConsulter from './DialogConsulter'
+import {Link} from 'react-router-dom'
 
 
 
 export default function StickyHeadTable() {
   const dispatch = useDispatch()
 
-  const [openDialog, setOpen] = useState(false)
-
   const [page, setPage] = useState(0);
 
   const rowsPerPage = 10;
 
   const tabEtudiants = useSelector(selectEtudiants)
-
-  const [etudiantDialog, setEtudiant] = useState({})
 
   //met en place le test
   if(tabEtudiants.length <= 1){
@@ -59,16 +55,6 @@ export default function StickyHeadTable() {
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
-
-  //gère l'ouverture du dialog pour consulter les réponses de l'étudiant
-  const handleOpenConsulter = (etu) =>{
-    setEtudiant(etu)
-    setOpen(true)
-  }
-
-  const handleCloseConsulter = () =>{
-    setOpen(false)
-  }
 
 
   return (
@@ -109,9 +95,9 @@ export default function StickyHeadTable() {
                       :
                       //cas de la colonne consulter sujet
                       <TableCell key={'sujet'} align={columnConsulterSujet.align}>
-                        <Button variant="outlined" color="primary" onClick={e => handleOpenConsulter(row)}>
+                        <Link to={"/prof/correction/" + row.id}>
                           Consulter
-                        </Button>
+                        </Link>
                       </TableCell>
                     )
                   })}
@@ -132,7 +118,7 @@ export default function StickyHeadTable() {
         onChangePage={handleChangePage}
       />
 
-      <DialogConsulter etu={etudiantDialog} open={openDialog} handleClose={handleCloseConsulter}/>
+      
       
     </Paper>
 
