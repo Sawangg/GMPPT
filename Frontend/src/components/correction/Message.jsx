@@ -1,9 +1,25 @@
-import React, {useState} from 'react'
+import React from 'react'
 
-import { Dialog, DialogActions, DialogContent, DialogTitle, Typography, TextField, Button } from '@material-ui/core'
+import {
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    Typography,
+    TextField,
+    Button,
+    makeStyles
+} from '@material-ui/core'
 
 
 export default function Message(props){
+
+    const useStyles = makeStyles((theme) => ({
+        messageField: {
+            width: "100%"
+        }
+    }));
+    const classes = useStyles();
 
     const handleClose = () =>{
         props.setOpen(false)
@@ -21,7 +37,7 @@ export default function Message(props){
                 <Typography variant="h6">Message adressé à </Typography>
             </DialogTitle>
             <DialogContent>
-                <TextField autoFocus multiline rows={4} className="messageField"
+                <TextField className={classes.messageField} autoFocus multiline rows={4}
                 variant="outlined" placeholder="Saisissez votre message" />
             </DialogContent>
             <DialogActions>

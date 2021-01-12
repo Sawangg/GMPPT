@@ -10,8 +10,6 @@ import { setEssaisForTest } from '../../slice/ConsulterSlice'
 import EssaiEtudiant from '../../components/correction/EssaiEtudiant'
 import Message from '../../components/correction/Message';
 
-import '../../styles/Correction.css'
-
 export default function Consulter(props){
 
     const useStyles = makeStyles((theme) => ({

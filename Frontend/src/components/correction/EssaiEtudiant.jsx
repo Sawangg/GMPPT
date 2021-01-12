@@ -1,7 +1,9 @@
 import React, {useState} from 'react'
 
-import { Table, TableContainer, TableHead, TableRow, Paper, TableCell, TableBody, 
-    Typography,Collapse, Box, IconButton, DialogActions, Button } from '@material-ui/core'
+import {
+    Table, TableContainer, TableHead, TableRow, Paper, TableCell, TableBody,
+    Typography, Collapse, Box, IconButton, DialogActions, Button, makeStyles
+} from '@material-ui/core'
 import { Dialog, DialogContent, DialogTitle} from '@material-ui/core'
 import CheckIcon from '@material-ui/icons/Check'
 import ClearIcon from '@material-ui/icons/Clear'
@@ -11,8 +13,15 @@ import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import { useDispatch, useSelector } from 'react-redux'
 import { changeReponseJuste, selectEssaisWithID } from '../../slice/ConsulterSlice'
 
-export default function EssaiEtudiant(props){
+const useStyles = makeStyles((theme) => ({
+    boxReponses: {
+        paddingBottom: 0,
+        paddingTop: 0,
+        backgroundColor: "#f2f2f2"
+    }
+}));
 
+export default function EssaiEtudiant(props){
     const essai = useSelector(selectEssaisWithID(props.indexEssai))
 
     const handleClose = () =>{
@@ -74,6 +83,8 @@ function IconeJuste(props){
 
 
 function Question(props){
+    const classes = useStyles();
+
     const [open, setOpen] = useState(false)
 
     const dispatch = useDispatch()
@@ -139,7 +150,7 @@ function Question(props){
             <TableCell align="center">{questionJuste()}</TableCell>
         </TableRow>
         <TableRow>
-            <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={4} className="boxReponses">
+            <TableCell className={classes.boxReponses} colSpan={4}>
                 <Collapse in={open} timeout="auto" unmountOnExit>
                     <Box margin={1}>
                         <Typography variant="h6" gutterBottom >Reponses</Typography>
@@ -191,7 +202,6 @@ function Question(props){
                             </>
                             :
                             <Typography variant = "h6">Pas de justification de l'étudiant</Typography>
-
                         }
                     </Box>
                 </Collapse>
