@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { TextField, Button } from '@material-ui/core';
+import {TextField, Button, makeStyles} from '@material-ui/core';
 import { Redirect } from "react-router-dom";
 import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
 import VpnKeyOutlinedIcon from '@material-ui/icons/VpnKeyOutlined';
@@ -14,9 +14,46 @@ import { userDetails, changeUserName, changePassword, loginUser, selectError, se
 import { useSelector } from "react-redux";
 import { selectUserName } from "../slice/UserSlice";
 
-import '../styles/Login.css';
-
 export default function Login(){
+
+    const useStyles = makeStyles((theme) => ({
+        divLogin: {
+            display : "flex",
+            flexDirection : "column",
+            height : "120px",
+            margin : "50px auto"
+        },
+        backgroundLogin: {
+            display: "block",
+            margin : "10% auto 0 auto",
+            border : "solid  2px",
+            borderColor: theme.palette.primary.main,
+            borderRadius: "2%",
+            padding: "0.5% 4%",
+            backgroundColor: "rgba(255,255,255,0.6)",
+            zIndex: 2
+        },
+        buttonConnexion: {
+            display : "block",
+            margin : "50px auto 10px auto",
+            backgroundColor: theme.palette.primary.main,
+                "&:hover": {
+                    backgroundColor: theme.palette.primary.dark,
+                },
+            border : "none",
+            color : "white"
+        },
+        fieldLogin: {
+            display : "flex",
+            marginTop : "30px"
+        },
+        iconLogin: {
+            marginRight : "25px",
+            marginTop : "6px"
+        },
+    }));
+
+    const classes = useStyles();
 
     const dispatch = useDispatch();
     const user = useSelector(selectUserName);
@@ -51,26 +88,26 @@ export default function Login(){
 
     return (
         (user.isLogin === undefined) ? null : 
-            <div id="divLogin">
+            <div className={classes.divLogin}>
                 <Particules/>
-                <div id="backgroundLogin">
-                        <div className="fieldLogin">
-                            <AccountCircleOutlinedIcon className="iconLogin"/>
+                <div className={classes.backgroundLogin}>
+                        <div className={classes.fieldLogin}>
+                            <AccountCircleOutlinedIcon className={classes.iconLogin}/>
                             <TextField autoFocus size="small" label="Login" variant="outlined" required error={error}
                                 value={user.name} 
                                 onChange={e => onChangeUserName(e)}
                                 onKeyPress={(e)=>{if (e.code === "Enter")  dispatch(loginUser({name : user.name, password : user.password}))}}
                             />
                         </div>
-                        <div className="fieldLogin">
-                            <VpnKeyOutlinedIcon className="iconLogin"/>
+                        <div className={classes.fieldLogin}>
+                            <VpnKeyOutlinedIcon className={classes.iconLogin}/>
                             <InputPassword label={"Mot de passe"} error={error} 
                                 onKeyPress={e => {if (e.code === "Enter")  dispatch(loginUser({name : user.name, password : user.password}))}}  
                                 value={user.password} 
                                 onChange={e => onChangePassword(e)}
                             />
                         </div>
-                    <Button type="submit" id="buttonConnexion" variant="outlined" onClick={() =>  dispatch(loginUser({name : user.name, password : user.password}))}>Connexion</Button>
+                    <Button type="submit" className={classes.buttonConnexion} variant="outlined" onClick={() =>  dispatch(loginUser({name : user.name, password : user.password}))}>Connexion</Button>
                     <PopUp severity="error" message="Identification invalide" open={openPopUp} handleClose={e => setOpenPopUp(false)}/>
                 </div>
                 {connexionRedirection()}

@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from "react";
-import MyEditor from "../../components/Enonce/MyEditor";
-import { Button } from "@material-ui/core";
-import CircleLoader from "react-spinners/CircleLoader";
-
+import {Button, makeStyles} from "@material-ui/core";
 import QuestionEnonce from "../../components/Enonce/QuestionEnonce";
 import useConstructor from "../../components/use/useContructor";
 import SelectionCatForm from "../../components/Enonce/SelectionCatForm";
@@ -16,6 +13,30 @@ import { addQuestion, handleChangeEnonce, handleChangeQuestion, selectActualise,
 export default function Enonces() {
 
     const [open, setOpen] = useState(false);
+  
+    const useStyles = makeStyles((theme) => ({
+        enonceSujet: {
+            width: "70%",
+            margin: 'auto'
+        },
+        h1: {
+            textAlign: 'center'
+        },
+        divQuestion: {
+            display: "flex"
+        },
+        buttonAddQuestion: {
+            backgroundColor: theme.palette.primary.main,
+                "&:hover": {
+                    backgroundColor: theme.palette.primary.dark,
+                },
+            color: "white",
+            display: "block",
+            margin: "auto"
+        }
+    }));
+    const classes = useStyles();
+
     const [openPopUp, setOpenPopUp] = useState(true);
 
     const enonce = useSelector(selectEnonce);
@@ -37,25 +58,25 @@ export default function Enonces() {
     const displayEnonce = () => {
         return (
             <div>
-                <div style={{width: "70%", margin: 'auto'}}>
-                    <h1 style={{textAlign: 'center'}}>Création de l'énoncé</h1>
+                <div className={classes.enonceSujet}>
+                    <h1 className={classes.h1}>Création de l'énoncé</h1>
                     <MyEditor handleChange={e => dispatch(handleChangeEnonce(e))}/>
                 </div>
                 {enonce.question.map((item, id) => {
                     return (
-                        <div key={id} style={{display: "flex"}}>
+                        <div key={id} className={classes.divQuestion}>
                             <QuestionEnonce id={id} value={item.contenu} handleChange={e => dispatch(handleChangeQuestion({contenu:e, index:id}))}/>
                             <SelectionCatForm index={id}/>
                         </div>
                     )
                 })}
-                <Button variant="contained" color="primary" className="center" onClick={() => dispatch(addQuestion())}>Ajouter une question</Button>
-                <PopUp 
-                    severity={isEnregistre ? "success" : "warning"} 
-                    message={isEnregistre ? "Formules enregistrées" : "Enregistrer les modifications"} 
-                    actionName={isEnregistre ? null : "Enregistrer"} 
-                    action={() => {if (!isEnregistre) dispatch(setQuestions({ idModele : modele.idModeleSelectionne, enonce: "", tabQuestions : enonce.question }))}} 
-                    open={openPopUp} 
+                <Button className={classes.buttonAddQuestion} variant="contained" onClick={() => dispatch(addQuestion())}>Ajouter une question</Button>
+                <PopUp
+                    severity={isEnregistre ? "success" : "warning"}
+                    message={isEnregistre ? "Formules enregistrées" : "Enregistrer les modifications"}
+                    actionName={isEnregistre ? null : "Enregistrer"}
+                    action={() => {if (!isEnregistre) dispatch(setQuestions({ idModele : modele.idModeleSelectionne, enonce: "", tabQuestions : enonce.question }))}}
+                    open={openPopUp}
                     handleClose={() => {if (isEnregistre) setOpenPopUp(false)}}
                     pos="left"
                 />

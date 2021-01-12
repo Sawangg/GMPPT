@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactHtmlParser from 'react-html-parser';
 import jsPDF from 'jspdf';
-import {Button} from '@material-ui/core';
+import {Button, makeStyles} from '@material-ui/core';
 import GetAppIcon from '@material-ui/icons/GetApp';
 
 import { useSelector } from "react-redux";
@@ -13,6 +13,30 @@ import '../../styles/RepondreQuestions.css'
 
 
 export default function RepondreQuestions(){
+
+    const useStyles = makeStyles((theme) => ({
+        contenant: {
+            margin : "10%",
+            textAlign: "center"
+        },
+        buttonFixed: {
+            position: "fixed",
+            top : "30px",
+            right : "120px"
+        },
+        buttonDl: {
+            backgroundColor: theme.palette.primary.main,
+            color: "white",
+                "&:hover": {
+                    backgroundColor: theme.palette.primary.dark,
+                }
+        },
+        buttonSend: {
+            color: theme.palette.primary.main,
+            borderColor: theme.palette.primary.main
+        }
+    }));
+    const classes = useStyles();
 
     const questionsTab = useSelector(selectAllQuestions)
 
@@ -74,11 +98,11 @@ export default function RepondreQuestions(){
         ))
     }
 
-    return(<div className="contenant">
+    return(<div className={classes.contenant}>
         
-        <div className="buttonFixed" >
+        <div className={classes.buttonFixed} >
             {/*bouton de téléchargement du sujet en pdf */}
-            <Button variant="contained" color="secondary" onClick={downloadPdf}>
+            <Button className={classes.buttonDl} variant="contained" onClick={downloadPdf}>
                 <GetAppIcon/>
                 Télécharger
             </Button>
@@ -93,7 +117,7 @@ export default function RepondreQuestions(){
         {/* affichage des questions */}
         {displayQuestions()}
 
-        <Button variant="outlined" color="primary">
+        <Button className={classes.buttonSend} variant="outlined">
             Envoyer les réponses
         </Button>
     </div>);
