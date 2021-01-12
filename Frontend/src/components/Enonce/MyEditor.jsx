@@ -8,6 +8,7 @@ const MyEditor = props => {
         <div>
             <SunEditor
                 onChange={props.handleChange}
+                setContents={props.value}
                 setOptions={{buttonList: [
                     ['undo','redo'],
                     ['bold', 'underline', 'italic', 'strike', 'subscript', 'superscript'],

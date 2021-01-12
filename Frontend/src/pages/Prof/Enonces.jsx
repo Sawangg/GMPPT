@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
 import {Button, makeStyles} from "@material-ui/core";
-import QuestionEnonce from "../../components/Enonce/QuestionEnonce";
+import CircleLoader from "react-spinners/CircleLoader";
+
+import QuestionEnonce from "../../components/enonce/QuestionEnonce";
 import useConstructor from "../../components/use/useContructor";
-import SelectionCatForm from "../../components/Enonce/SelectionCatForm";
+import SelectionCatForm from "../../components/enonce/SelectionCatForm";
 import PopUp from '../../components/PopUp';
 import SelectionModele from '../../components/SelectionModele'
+import MyEditor from '../../components/enonce/MyEditor'
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectModele, getModele } from "../../slice/ModeleSlice";
-import { addQuestion, handleChangeEnonce, handleChangeQuestion, selectActualise, selectEnonce, setQuestions, selectEnregistre, getQuestions } from "../../slice/EnoncesSlice";
+import { selectModele, handleChangeEnonce } from "../../slice/ModeleSlice";
+import { addQuestion, handleChangeQuestion, selectActualise, selectEnonce, selectEnregistre, getQuestions, setQuestions } from "../../slice/EnoncesSlice";
 
 export default function Enonces() {
 
@@ -23,7 +26,9 @@ export default function Enonces() {
             textAlign: 'center'
         },
         divQuestion: {
-            display: "flex"
+            display: "flex",
+            justifyContent : "space-around",
+            marginTop : 40
         },
         buttonAddQuestion: {
             backgroundColor: theme.palette.primary.main,
@@ -32,7 +37,7 @@ export default function Enonces() {
                 },
             color: "white",
             display: "block",
-            margin: "auto"
+            margin: "50px auto"
         }
     }));
     const classes = useStyles();
@@ -61,13 +66,13 @@ export default function Enonces() {
             <div>
                 <div className={classes.enonceSujet}>
                     <h1 className={classes.h1}>Création de l'énoncé</h1>
-                    <MyEditor handleChange={e => dispatch(handleChangeEnonce(e))}/>
+                    <MyEditor value={modele.enonceSelectionne} handleChange={e => dispatch(handleChangeEnonce(e))}/>
                 </div>
                 {enonce.question.map((item, id) => {
                     return (
                         <div key={id} className={classes.divQuestion}>
                             <QuestionEnonce id={id} value={item.contenu} handleChange={e => dispatch(handleChangeQuestion({contenu:e, index:id}))}/>
-                            <SelectionCatForm idModele={modele.idModeleSelectionne}/>
+                            <SelectionCatForm id={id} idModele={modele.idModeleSelectionne}/>
                         </div>
                     )
                 })}
@@ -76,7 +81,7 @@ export default function Enonces() {
                     severity={isEnregistre ? "success" : "warning"}
                     message={isEnregistre ? "Formules enregistrées" : "Enregistrer les modifications"}
                     actionName={isEnregistre ? null : "Enregistrer"}
-                    action={() => {if (!isEnregistre) dispatch(setQuestions({ idModele : modele.idModeleSelectionne, enonce: "", tabQuestions : enonce.question }))}}
+                    action={() => {if (!isEnregistre) dispatch(setQuestions({ idModele : modele.idModeleSelectionne, enonce : modele.enonceSelectionne, tabQuestions : enonce }))}}
                     open={openPopUp}
                     handleClose={() => {if (isEnregistre) setOpenPopUp(false)}}
                     pos="left"
