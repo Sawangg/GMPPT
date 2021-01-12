@@ -57,7 +57,7 @@ export default function Accueil(props) {
 
     return (
         <div className={classes.divImportModele}>
-            <div className={classes.divDropModele}>
+            <div className={classes.divDropModele} id="divDropModele">
                 <DropFile typeFile='image/*' compressImage={false} changeFile={e => setImage1(e)}  message="Importer la PREMIERE image du modèle 3D"/>
                 <DropFile typeFile='image/*' compressImage={true} changeFile={e => setImage2(e)}  message="Importer la SECONDE image du modèle 3D"/>
             </div>
