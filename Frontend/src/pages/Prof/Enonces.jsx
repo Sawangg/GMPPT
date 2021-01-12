@@ -1,69 +1,71 @@
 import MyEditor from "../../components/MyEditor";
-import React, {useState} from "react";
-import {Button} from "@material-ui/core";
+import React, { useState, useEffect } from "react";
+import { Button } from "@material-ui/core";
 import QuestionEnonce from "../../components/QuestionEnonce";
-import {useDispatch, useSelector} from "react-redux";
-import {
-    addQuestion,
-    deleteQuestion,
-    handleChangeEnonce,
-    handleChangeQuestion, handleChangeSelect, selectActualise,
-    selectEnonce
-} from "../../slice/EnoncesSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { addQuestion, deleteQuestion, handleChangeEnonce, handleChangeQuestion, handleChangeSelect, selectActualise, selectEnonce, setQuestions, selectEnregistre } from "../../slice/EnoncesSlice";
 import useConstructor from "../../components/use/useContructor";
 import SelectionCatForm from "../../components/SelectionCatForm";
-import {selectModele} from "../../slice/ModeleSlice";
+import { selectModele } from "../../slice/ModeleSlice";
 import SelectionModele from "../../components/SelectionModele";
 import CircleLoader from "react-spinners/CircleLoader";
+import PopUp from '../../components/PopUp';
 
 export default function Enonces() {
 
     const [open, setOpen] = useState(false);
+    const [openPopUp, setOpenPopUp] = useState(true);
 
     const enonce = useSelector(selectEnonce);
     const dispatch = useDispatch();
     const modele = useSelector(selectModele);
     const actualise = useSelector(selectActualise);
+    const isEnregistre = useSelector(selectEnregistre);
 
     useConstructor(() => {
-        if (modele.idModeleSelectionne === undefined){
+        if (modele.idModeleSelectionne === undefined) {
             setOpen(true);
         }
     });
 
-    const sendContent = () => {
-        console.log(enonce);
-    };
+    useEffect(() => {
+        setOpenPopUp(true)
+    }, [isEnregistre])
 
     const displayEnonce = () => {
-            return (
-                <div>
-                    <div style={{width: "70%", margin: 'auto'}}>
-                        <h1 style={{textAlign: 'center'}}>Création de l'énoncé</h1>
-                        <MyEditor handleChange={e => dispatch(handleChangeEnonce(e))}/>
-                    </div>
-                    {enonce.question.map((item, id) => {
-                        return (
-                            <div key={id} style={{display: "flex"}}>
-                                <QuestionEnonce value={item.contenu} handleChange={e => dispatch(handleChangeQuestion({contenu:e, index:id}))}/>
-                                <Button className="center" variant="contained" color="secondary"
-                                        onClick={() => dispatch(deleteQuestion(id))}>X
-                                </Button>
-                                <SelectionCatForm handleChange={e => dispatch(handleChangeSelect({reponse: e, index: id}))}/>
-                            </div>
-                        )
-                    })}
-                    <Button variant="contained" color="primary" className="center" onClick={() => dispatch(addQuestion())}>Ajouter une
-                        question</Button>
-                    <Button variant="contained" color="primary" className="center"
-                            onClick={() => sendContent()}>Enregistrer</Button>
+        return (
+            <div>
+                <div style={{width: "70%", margin: 'auto'}}>
+                    <h1 style={{textAlign: 'center'}}>Création de l'énoncé</h1>
+                    <MyEditor handleChange={e => dispatch(handleChangeEnonce(e))}/>
                 </div>
-            )
+                {enonce.question.map((item, id) => {
+                    return (
+                        <div key={id} style={{display: "flex"}}>
+                            <QuestionEnonce value={item.contenu} handleChange={e => dispatch(handleChangeQuestion({contenu:e, index:id}))}/>
+                            <Button className="center" variant="contained" color="secondary"onClick={() => dispatch(deleteQuestion(id))}>X
+                            </Button>
+                            <SelectionCatForm handleChange={e => dispatch(handleChangeSelect({reponse: e, index: id}))}/>
+                        </div>
+                    )
+                })}
+                <Button variant="contained" color="primary" className="center" onClick={() => dispatch(addQuestion())}>Ajouter une question</Button>
+                <PopUp 
+                    severity={isEnregistre ? "success" : "warning"} 
+                    message={isEnregistre ? "Formules enregistrées" : "Enregistrer les modifications"} 
+                    actionName={isEnregistre ? null : "Enregistrer"} 
+                    action={() => {if (!isEnregistre) dispatch(setQuestions({ idModele : modele.idModeleSelectionne, enonce: "", tabQuestions : enonce.question }))}} 
+                    open={openPopUp} 
+                    handleClose={() => {if (isEnregistre) setOpenPopUp(false)}}
+                    pos="left"
+                />
+            </div>
+        );
     }
 
     return (
         modele.idModeleSelectionne === undefined
-            ? <SelectionModele tard={false} setClose={() => setOpen(false)} open={open}/>
-            : actualise ? displayEnonce() : <CircleLoader size={50} color={"rgb(7, 91, 114)"} css={{margin : "auto", display : "flex", justifyContent : "center"}}/>
+        ? <SelectionModele tard={false} setClose={() => setOpen(false)} open={open} />
+        : actualise ? displayEnonce() : <CircleLoader size={50} color={"rgb(7, 91, 114)"} css={{margin : "auto", display : "flex", justifyContent : "center"}}/>
     );
 }

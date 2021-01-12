@@ -1,21 +1,21 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {addEnonceAPI, getEnonceAPI} from "../utils/api.js";
+import { getQuestionsAPI, setQuestionsAPI } from "../utils/api.js";
 
-export const getEnonce = createAsyncThunk(
-    "enonce/getEnonce",
+export const getQuestions = createAsyncThunk(
+    "enonce/getQuestions",
     async (idModele) => {
-        const response = await getEnonceAPI(idModele);
-        return true;
+        const response = await getQuestionsAPI(idModele);
+        return response.data;
     }
 );
 
-export const setEnonce = createAsyncThunk(
-    "enonce/setEnonce",
-    async (enonce) => {
-        const response = await addEnonceAPI(enonce.idModele, enonce.enonceContenu, enonce.question);
-        return true;
+export const setQuestions = createAsyncThunk(
+    "enonce/setQuestions",
+    async (props) => {
+        const response = await setQuestionsAPI(props.idModele, props.enonce, props.tabQuestions);
+        return response.data;
     }
-)
+);
 
 export const enoncesReducer = createSlice({
     name: "enonce",
@@ -23,9 +23,15 @@ export const enoncesReducer = createSlice({
         enonceContenu: "",
         question: [{
             contenu: "",
-            reponse: "",
+            reponse: [{
+                nomFormule: "",
+                unite: [{
+                    valeur: "",
+                }],
+            }],
         }],
         actualise: false,
+        enregistre: false,
     },
     reducers: {
         handleChangeEnonce: (state, action) => {
@@ -41,58 +47,68 @@ export const enoncesReducer = createSlice({
 
         deleteQuestion: (state, action) => {
             state.question.splice(action.payload, 1);
+            state.enregistre = false;
         },
 
         handleChangeQuestion: (state, action) => {
             state.question[action.payload.index].contenu = action.payload.contenu;
+            state.enregistre = false;
         },
 
         handleChangeSelect: (state, action) => {
             state.question[action.payload.index].reponse = action.payload.reponse;
-        }
+            state.enregistre = false;
+        },
+        enregistre: (state) => {
+            state.enregistre = true;
+        },
     },
     extraReducers: {
-        [getEnonce.pending]: (state) => {
+        [getQuestions.pending]: (state) => {
             state.actualise = true;
+            state.enregistre = false;
         },
-        /*[getEnonce.rejected]: (state, action) => {
-            if (action.error.message === "Request failed with status code 404") {
+        [getQuestions.rejected]: (state, action) => {
+            if (action.error.status === "error") {
                 state.enonceContenu = "";
                 state.question = [{
                     contenu: "",
                     reponse: "",
                 }];
                 state.actualise = true;
+                state.enregistre = false;
             }
             console.log("rejected");
         },
-        [getEnonce.fulfilled]: (state, action) => {
+        [getQuestions.fulfilled]: (state, action) => {
             let array = [];
-            action.payload.forEach((element) => {
-                array.push({
-                    contenu: element.contenu,
-                    reponse: element.reponse,
-                });
-            });
+            console.log(action.payload);
+            // .forEach((element) => {
+            //     let t = {
+            //         contenu: element.contenu,
+            //         reponse: [],
+            //     }
+            //     array.push(t);
+
+            // });
             state.contenu = action.payload.contenu;
             state.question = array;
             state.actualise = true;
             console.log("fulfilled");
         },
-        [setEnonce.fulfilled]: (state) => {
-        },*/
+        [setQuestions.fulfilled]: (state) => {
+            state.enregistre = true;
+
+        },
     },
 });
 
-export const {
-    handleChangeEnonce,
-    addQuestion,
-    deleteQuestion,
-    handleChangeQuestion,
-    handleChangeSelect,
-} = enoncesReducer.actions
+export const { handleChangeEnonce, addQuestion, deleteQuestion, handleChangeQuestion, handleChangeSelect } = enoncesReducer.actions
 
 export const selectEnonce = (state) => state.enonce;
+
 export const selectActualise = (state) => state.enonce.actualise;
+
+export const selectEnregistre = (state) => state.enonce.enregistre;
 
 export default enoncesReducer.reducer;

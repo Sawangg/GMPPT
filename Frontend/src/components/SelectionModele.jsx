@@ -8,21 +8,21 @@ import BounceLoader from "react-spinners/BounceLoader";
 import useConstructor from './use/useContructor'
 
 import { useDispatch, useSelector } from "react-redux";
-import { setTab } from "../slice/FormulesSlice";
-import {getAllVariables } from "../slice/VariablesAleatoiresSlice"
-import { getEnonce } from "../slice/EnoncesSlice";
+import { getCategoriesFormules } from "../slice/FormulesSlice";
+import { getAllVariables } from "../slice/VariablesAleatoiresSlice"
+import { getQuestions } from "../slice/EnoncesSlice";
 import { selectionnerModele, addNewModele, removeModele, getModele, selectModele, selectActualise, selectChargementSupp} from "../slice/ModeleSlice";
 
 export default function DialogSelect(props) {
-  const [select, setSelect] = useState("");
-  const [nouveauModele, setNouveauModele] = useState({etat : false, nom : "", error : false});
+    const [select, setSelect] = useState("");
+    const [nouveauModele, setNouveauModele] = useState({etat : false, nom : "", error : false});
 
-  const dispatch = useDispatch();
-  const modele = useSelector(selectModele);
-  const actualise = useSelector(selectActualise);
-  const chargementSupp = useSelector(selectChargementSupp);
+    const dispatch = useDispatch();
+    const modele = useSelector(selectModele);
+    const actualise = useSelector(selectActualise);
+    const chargementSupp = useSelector(selectChargementSupp);
 
-  useConstructor(() => {
+    useConstructor(() => {
         if (!actualise) dispatch(getModele())
     });
 
@@ -33,21 +33,21 @@ export default function DialogSelect(props) {
             : setNouveauModele({etat : false, nom : nouveauModele.nom, error : false});
     };
 
-    const choisirModele = () =>{
-        if (select !== modele.idModeleSelectionne){
+    const choisirModele = () => {
+        if (select !== modele.idModeleSelectionne) {
             dispatch(selectionnerModele(select));
-            dispatch(setTab(select));
-            dispatch(getAllVariables(select))
-            dispatch(getEnonce(select))
+            dispatch(getCategoriesFormules(select));
+            dispatch(getAllVariables(select));
+            dispatch(getQuestions(select));
         }
         props.setClose();
     }
 
-    const onChangeNouveauModele = (e) =>{
+    const onChangeNouveauModele = (e) => {
         setNouveauModele({etat : true, nom : e.target.value, error : false})
     }
 
-    const addNouveauModele = () =>{
+    const addNouveauModele = () => {
         if (modele.tabName.includes(nouveauModele.nom)){
             setNouveauModele({etat : true, nom : nouveauModele.nom, error : true})
         } else {
@@ -56,7 +56,7 @@ export default function DialogSelect(props) {
         }
     }
 
-    const displayNouveauModele = () =>{
+    const displayNouveauModele = () => {
         return (
             nouveauModele.etat 
             ? <div style={{display : "grid", gridTemplateColumns : "80% 20%", gridGap : "7%", marginTop : 30}} >
@@ -69,12 +69,12 @@ export default function DialogSelect(props) {
                     size="small" color="primary" aria-label="add" 
                     disabled={nouveauModele.nom === "" ? true : false} 
                     style={{marginLeft : "5%"}} 
-                    onClick={e => addNouveauModele()}>
+                    onClick={() => addNouveauModele()}>
                     <AddIcon />
                 </Fab>
             </div>
             : null
-        )
+        );
     }
 
     return (

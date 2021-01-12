@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { Fab  } from '@material-ui/core';
+import { Fab } from '@material-ui/core';
 import CircleLoader from "react-spinners/CircleLoader";
 import AddIcon from '@material-ui/icons/Add';
 
@@ -25,7 +25,9 @@ export default function TodoListAccordeon() {
     const isEnregistre = useSelector(selectEnregistre);
     const modele = useSelector(selectModele);
 
-    useConstructor(() => {if (modele.idModeleSelectionne === undefined) setOpen(true)});
+    useConstructor(() => {
+        if (modele.idModeleSelectionne === undefined) setOpen(true);
+    });
     
     useEffect(() => {
         setOpenPopUp(true)
@@ -33,8 +35,8 @@ export default function TodoListAccordeon() {
 
     useUnload(!isEnregistre);
 
-    const displayFormule = () =>{
-        return(
+    const displayFormule = () => {
+        return (
             <div>
                 <h1 style={{textAlign : "center"}}>Creation des formules</h1>
                 <Fab style={{marginLeft: "3%"}}
@@ -58,8 +60,8 @@ export default function TodoListAccordeon() {
                     pos="left"
                 />
             </div>
-        )
-    } 
+        );
+    }
 
     return (
         modele.idModeleSelectionne === undefined 
