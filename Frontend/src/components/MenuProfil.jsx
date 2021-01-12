@@ -64,7 +64,7 @@ export default function MenuProfil() {
             <Typography variant="inherit">Déconnexion</Typography>
             </MenuItem>
         </Menu>
-        <SelectionModele tard={true} setClose={() => setOpen(false)} open={open}/>
+        {user.isProf ? <SelectionModele tard={true} setClose={() => setOpen(false)} open={open}/> : null}
         {user.isLogin ? null : <Redirect to='/'/>}
     </div>
   );
