@@ -1,17 +1,21 @@
-import MyEditor from "../../components/Enonce/MyEditor";
 import React, { useState, useEffect } from "react";
+import MyEditor from "../../components/Enonce/MyEditor";
 import { Button } from "@material-ui/core";
+import CircleLoader from "react-spinners/CircleLoader";
+
 import QuestionEnonce from "../../components/Enonce/QuestionEnonce";
-import { useDispatch, useSelector } from "react-redux";
-import { addQuestion, handleChangeEnonce, handleChangeQuestion, selectActualise, selectEnonce, setQuestions, selectEnregistre, getQuestions } from "../../slice/EnoncesSlice";
 import useConstructor from "../../components/use/useContructor";
 import SelectionCatForm from "../../components/Enonce/SelectionCatForm";
-import { selectModele } from "../../slice/ModeleSlice";
-import CircleLoader from "react-spinners/CircleLoader";
 import PopUp from '../../components/PopUp';
+import SelectionModele from '../../components/SelectionModele'
+
+import { useDispatch, useSelector } from "react-redux";
+import { selectModele } from "../../slice/ModeleSlice";
+import { addQuestion, handleChangeEnonce, handleChangeQuestion, selectActualise, selectEnonce, setQuestions, selectEnregistre, getQuestions } from "../../slice/EnoncesSlice";
 
 export default function Enonces() {
 
+    const [open, setOpen] = useState(false);
     const [openPopUp, setOpenPopUp] = useState(true);
 
     const enonce = useSelector(selectEnonce);
@@ -21,7 +25,9 @@ export default function Enonces() {
     const isEnregistre = useSelector(selectEnregistre);
 
     useConstructor(() => {
-        if (!isEnregistre) dispatch(getQuestions(modele.idModeleSelectionne));
+        if (!isEnregistre) {
+            modele.idModeleSelectionne === undefined ? setOpen(true) : dispatch(getQuestions(modele.idModeleSelectionne));
+        }
     });
 
     useEffect(() => {
@@ -58,6 +64,8 @@ export default function Enonces() {
     }
 
     return (
-        actualise ? displayEnonce() : <CircleLoader size={50} color={"rgb(7, 91, 114)"} css={{margin : "auto", display : "flex", justifyContent : "center"}}/>
+        modele.idModeleSelectionne === undefined 
+        ? <SelectionModele tard={false} setClose={() => setOpen(false)} open={open}/> 
+        : actualise ? displayEnonce() : <CircleLoader size={50} color={"rgb(7, 91, 114)"} css={{margin : "auto", display : "flex", justifyContent : "center"}}/>
     );
 }

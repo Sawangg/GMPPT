@@ -7,6 +7,7 @@ import ItemVariablesAleatoire from '../../components/variable/ItemVariableAleato
 import useConstructor from '../../components/use/useContructor'
 import PopUp from '../../components/PopUp'
 import useUnload from '../../components/use/useUnload';
+import SelectionModele from '../../components/SelectionModele'
 
 import { useDispatch, useSelector } from "react-redux";
 import { selectVariablesAleatoires, selectActualise, selectEnregistre, setVariables, addVariable, removeVariable, undoVariable, getAllVariables } from "../../slice/VariablesAleatoiresSlice"
@@ -16,6 +17,7 @@ import '../../styles/VariablesAleatoires.css'
 
 export default function VariablesAleatoires() {
 
+    const [open, setOpen] = useState(false);
     const [openPopUpUndo, setOpenPopUpUndo] = useState(false);
     const [openPopUpSave, setOpenPopUpSave] = useState(true);
 
@@ -25,13 +27,15 @@ export default function VariablesAleatoires() {
     const actualise = useSelector(selectActualise)
     const modele = useSelector(selectModele);
 
+    useConstructor(() => {
+        if (!isEnregistre) {
+            modele.idModeleSelectionne === undefined ? setOpen(true) : dispatch(getAllVariables(modele.idModeleSelectionne));
+        }
+    });
+
     useEffect(() => {
         setOpenPopUpSave(true)
     }, [isEnregistre])
-
-    useConstructor(() => {
-        if (!isEnregistre) dispatch(getAllVariables(modele.idModeleSelectionne));
-    });
 
     useUnload(!isEnregistre);
 
@@ -84,6 +88,8 @@ export default function VariablesAleatoires() {
     }
 
     return (
-        actualise ? displayVariable() : <CircleLoader size={50} color={"rgb(7, 91, 114)"} css={{margin : "auto", display : "flex", justifyContent : "center"}}/>
+        modele.idModeleSelectionne === undefined 
+        ? <SelectionModele tard={false} setClose={() => setOpen(false)} open={open}/> 
+        : actualise ? displayVariable() : <CircleLoader size={50} color={"rgb(7, 91, 114)"} css={{margin : "auto", display : "flex", justifyContent : "center"}}/>
     );
 }
