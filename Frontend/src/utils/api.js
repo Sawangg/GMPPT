@@ -65,6 +65,19 @@ export function addArchiAPI(archi){
     return axios.post(`http://${host}:3001/architecture/${archi.sujet}/modeles/new`, archi.images, credentials)
 }
 
+// //Promotion
+export function addPromoAPI(nomPromo){
+    return axios.post(`http://${host}:3001/promo/new`, {nomPromo : nomPromo}, credentials)
+}
+
+export function getAllPromoAPI(){
+    return axios.get(`http://${host}:3001/promo/`, credentials)
+}
+
+export function getInfoPromoAPI(idPromo){
+    return axios.get(`http://${host}:3001/promo/${idPromo}`, credentials)
+}
+
 //Variables aléatoires
 export function addVariableAPI(idModele, tabVariables){
     return axios.post(`http://${host}:3001/modele/${idModele}/variables/new`, tabVariables, credentials)
@@ -75,11 +88,23 @@ export function getVariablesAPI(idModele){
 }
 
 //Enonces
-
 export function getQuestionsAPI(idModele) {
     return axios.get(`http://${host}:3001/modele/${idModele}/questions`, credentials);
 }
 
 export function setQuestionsAPI(idModele, enonce, tabQuestions) {
     return axios.post(`http://${host}:3001/modele/${idModele}/questions/new`, tabQuestions, enonce, credentials);
+}
+
+//Unite
+export function addUniteAPI(nom, abrev){
+    return axios.post(`http://${host}:3001/unite/new`, nom, abrev, credentials);
+}
+
+export function getAllUniteAPI(){
+    return axios.get(`http://${host}:3001/unite/`, credentials);
+}
+
+export function deleteUniteAPI(idUnite){
+    return axios.get(`http://${host}:3001/unite/${idUnite}/delete`, credentials);
 }

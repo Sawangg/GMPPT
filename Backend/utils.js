@@ -18,4 +18,10 @@ function generatePwd() {
     return result;
 }
 
-module.exports = { comparePwd, encrypt, generatePwd };
+function random(max, min, decimalPlaces) {
+    const rand = Math.random() * (max + 1 - min) + min;
+    const power = Math.pow(10, decimalPlaces);
+    return Math.floor(rand * power) / power;
+}
+
+module.exports = { comparePwd, encrypt, generatePwd, random };
