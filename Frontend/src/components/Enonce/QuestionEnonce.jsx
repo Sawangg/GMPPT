@@ -4,9 +4,11 @@ import 'suneditor/dist/css/suneditor.min.css'; // Import Sun Editor's CSS File
 import deleteButton from "./deletePlugin";
 
 export default function QuestionEnonce(props) {
+
     return  (
         <div className='center' style={{width:'40%'}}>
             <SunEditor
+                id={"cocou"}
                 setContents={props.value}
                 onChange={props.handleChange}
                 setOptions={{
@@ -19,15 +21,14 @@ export default function QuestionEnonce(props) {
                             {
                                 name: 'delete_button',
                                 dataCommand: 'delete_button',
-                                buttonClass: '',
                                 title: 'Supprimer la question',
                                 dataDisplay: 'command',
-                                innerHTML: '<Button>X</Button>'
+                                innerHTML: "<Button id='"+props.id+"'>X</Button>"
                             }
                         ]
                     ],
                     plugins: [
-                      deleteButton
+                        deleteButton()
                     ]}}
                 lang="fr"
                 placeholder="Tapez votre question ici..."
