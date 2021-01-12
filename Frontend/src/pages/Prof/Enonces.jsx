@@ -31,12 +31,6 @@ export default function Enonces() {
             color: "white",
             display: "block",
             margin: "auto"
-        },
-        loader: {
-            color: theme.palette.primary.main,
-            margin : "auto",
-            display : "flex",
-            justifyContent : "center"
         }
     }));
     const classes = useStyles();
@@ -87,6 +81,6 @@ export default function Enonces() {
     }
 
     return (
-        actualise ? displayEnonce() : <CircleLoader className={classes.loader} size={50}/>
+        actualise ? displayEnonce() : <CircleLoader size={50} color={"rgb(7, 91, 114)"} css={{margin : "auto", display : "flex", justifyContent : "center"}}/>
     );
 }
