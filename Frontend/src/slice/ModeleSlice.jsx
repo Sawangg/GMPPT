@@ -26,17 +26,18 @@ export const modeleSlice = createSlice({
   name: "modele",
   initialState: {
     tabName: [],
-    idModeleSelectionne: myStorage.getItem("idModele") === null ? undefined : myStorage.getItem("idModele"),
+    idModeleSelectionne: JSON.parse(myStorage.getItem("modele")).id,
+    enonceSelectionne : JSON.parse(myStorage.getItem("modele")).enonce,
     actualise: false
   },
   reducers: {
     selectionnerModele: (state, action) => {
       state.idModeleSelectionne = action.payload;
-      myStorage.setItem("idModele", action.payload);
+      myStorage.setItem("modele", JSON.stringify({id : action.payload, enonce : state.tabName[action.payload].enonce}));
     },
   },
   extraReducers: {
-    [getModele.rejected]: (state, action) => {
+    [getModele.rejected]: (state) => {
       state.actualise = true; //pour ne pas bloquer
     },
     [getModele.fulfilled]: (state, action) => {
@@ -46,6 +47,7 @@ export const modeleSlice = createSlice({
           state.tabName[element.id_modele] = {
             nom: element.nom_modele,
             index: element.id_modele,
+            enonce : element.enonce
           };
         });
         state.actualise = true;

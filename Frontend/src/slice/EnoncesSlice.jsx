@@ -20,7 +20,7 @@ export const setQuestions = createAsyncThunk(
 export const enoncesReducer = createSlice({
     name: "enonce",
     initialState: {
-        enonceContenu: "",
+        enonceContenu: "cocou",
         question: [{
             contenu: "",
             reponse: [{
@@ -36,6 +36,7 @@ export const enoncesReducer = createSlice({
     reducers: {
         handleChangeEnonce: (state, action) => {
             state.enonceContenu = action.payload;
+            console.log(action.payload)
         },
 
         addQuestion: (state) => {

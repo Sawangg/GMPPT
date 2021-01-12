@@ -2,12 +2,20 @@ import React, { useState } from "react";
 import { Button, Input, MenuItem, Select } from "@material-ui/core";
 import PropagateLoader from "react-spinners/PropagateLoader";
 
-import { useSelector } from "react-redux";
-import { selectActualise, selectFormule } from "../../slice/FormulesSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { selectActualise, selectFormule, selectEnregistre, getCategoriesFormules } from "../../slice/FormulesSlice";
+import useConstructor from "../use/useContructor";
 
-export default function SelectionCatForm() {
+export default function SelectionCatForm(props) {
     const catForm = useSelector(selectFormule);
     const actualise = useSelector(selectActualise);
+    const isEnregistre = useSelector(selectEnregistre);
+
+    const dispatch = useDispatch();
+
+    useConstructor(() => {
+        if (!isEnregistre) dispatch(getCategoriesFormules(props.idModele))
+    })
 
     const [tab, setTab] = useState([{selectCat : "", selectForm : ""}]);
 

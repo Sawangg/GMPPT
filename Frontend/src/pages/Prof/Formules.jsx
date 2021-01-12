@@ -9,8 +9,7 @@ import useUnload from '../../components/use/useUnload';
 import PopUp from '../../components/PopUp';
 import SelectionModele from '../../components/SelectionModele'
 
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectFormule, selectActualise, selectEnregistre, addCategorie, enregistrerFormules, getCategoriesFormules } from "../../slice/FormulesSlice"
 import { selectModele } from "../../slice/ModeleSlice"
 
@@ -34,7 +33,7 @@ export default function TodoListAccordeon() {
 
     useConstructor(() => {
         if (!isEnregistre) {
-            modele.idModeleSelectionne === undefined ? setOpen(true) : dispatch(getCategoriesFormules(modele.idModeleSelectionne));
+            modele.idModeleSelectionne === null ? setOpen(true) : dispatch(getCategoriesFormules(modele.idModeleSelectionne));
         }
     });
     
@@ -73,7 +72,7 @@ export default function TodoListAccordeon() {
     }
 
     return (
-        modele.idModeleSelectionne === undefined 
+        modele.idModeleSelectionne === null 
         ? <SelectionModele tard={false} setClose={() => setOpen(false)} open={open}/> 
         : actualise ? displayFormule() : <CircleLoader size={50} color={"rgb(7, 91, 114)"} css={{margin : "auto", display : "flex", justifyContent : "center"}}/>
     );
