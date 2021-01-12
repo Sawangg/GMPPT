@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import {ListItemText, ListItem, List, Divider, Button} from '@material-ui/core'
+import {ListItemText, ListItem, List, Divider, Button, makeStyles} from '@material-ui/core'
 import SendIcon from '@material-ui/icons/Send';
 
 import { useDispatch, useSelector } from 'react-redux'
@@ -13,6 +13,14 @@ import Message from '../../components/correction/Message';
 import '../../styles/Correction.css'
 
 export default function Consulter(props){
+
+    const useStyles = makeStyles((theme) => ({
+        messageBouton: {
+            float : "right",
+            color: theme.palette.primary.main
+        }
+    }));
+    const classes = useStyles();
 
     const dispatch = useDispatch()
 
@@ -72,21 +80,21 @@ export default function Consulter(props){
 
     return(
         <div>
-            <Button className="messageBouton" color="primary" onClick={hancleClickMessage}>
+            <Button className={classes.messageBouton} onClick={hancleClickMessage}>
                 <SendIcon/>Envoyer un message à l'étudiant
             </Button>
             <h1>
                 Etudiant : pas encore fait le lien avec l'API ;) {/*etu.prenom + ' ' + etu.nom*/}
             </h1>
-            
+
             <List>
                 <Divider />
                 {tabEssais.map((item, index) => (
                     <>
                         <ListItem button onClick={e => handleClickDetails(index)}>
-                            <ListItemText 
-                                primary={"Essai du " + item.dateEssai} 
-                                secondary={"Questions justes : " + nbQuestionsJustes(index) 
+                            <ListItemText
+                                primary={"Essai du " + item.dateEssai}
+                                secondary={"Questions justes : " + nbQuestionsJustes(index)
                                     +  "/" + nbQuestions()}/>
                         </ListItem>
 

@@ -1,5 +1,15 @@
 import React, {useState} from 'react'
-import { TextField, Button, Select, MenuItem, Input, Typography, InputLabel, FormControl } from '@material-ui/core';
+import {
+    TextField,
+    Button,
+    Select,
+    MenuItem,
+    Input,
+    Typography,
+    InputLabel,
+    FormControl,
+    makeStyles
+} from '@material-ui/core';
 import DropFile from '../../components/DropFile';
 import useConstructor from '../../components/use/useContructor'
 
@@ -8,6 +18,53 @@ import {getAllPromoAPI, addPromoAPI} from '../../utils/api'
 import '../../styles/ImportModele3D.css'
 
 export default function Accueil() {
+
+    const useStyles = makeStyles((theme) => ({
+        divNomPromo: {
+            display : "flex",
+            justifyContent : "center",
+            marginTop : "3%"
+        },
+        button: {
+            marginLeft : 20,
+            backgroundColor: theme.palette.primary.main,
+            color: "white",
+            "&:disabled": {
+                backgroundColor: theme.palette.secondary.main
+            },
+            "&:hover": {
+                backgroundColor: theme.palette.primary.dark
+            }
+        },
+        divPromo: {
+            marginTop : 50
+        },
+        typo: {
+            textAlign: "center"
+        },
+        form: {
+            display: "flex",
+            justifyContent: "center",
+            marginBottom: 20
+        },
+        formControl: {
+            display : "block",
+            margin : "50px auto",
+            width : "100%"
+        },
+        divSelectPromo: {
+            display : "block",
+            margin : "auto",
+            width : "10%"
+        },
+        labelSelectPromo: {
+            position : "relative"
+        },
+        selectPromo: {
+            width : 200
+        }
+    }));
+    const classes = useStyles();
 
     const [promo, setPromo] = useState("");
     const [excel, setExcel] = useState("");
@@ -47,17 +104,17 @@ export default function Accueil() {
 
     return (
         <div>
-             <div style={{display : "flex", justifyContent : "center", marginTop : "3%"}}>
+             <div className={classes.divNomPromo}>
                 <TextField autoFocus size="small" label="Nom de la promo" variant="outlined" required value={promo} onChange={e => changePromo(e)}/>
-                <Button disabled={promo==="" ? true : false} style={{marginLeft : 20}} color="primary" variant="outlined" onClick={e => envoie()}>Envoyer</Button>
+                <Button className={classes.button} disabled={promo==="" ? true : false} variant="outlined" onClick={e => envoie()}>Envoyer</Button>
             </div>
-            <div style={{marginTop : 50}}>
-                <Typography align="center">Selectionner une promotion pour ajouter une liste d'étudiants</Typography>
-                <form style={{display : "flex", justifyContent : "center", marginBottom : 20}}>
-                    <FormControl style={{display : "block", margin : "50px auto", width : "100%"}}>
-                        <div style={{display : "block", margin : "auto", width : "10%"}}>
-                            <InputLabel style={{position : "relative"}}>Promotion</InputLabel>
-                            <Select style={{width : 200}} value={select} onChange={handleChange} input={<Input/>}>
+            <div className={classes.divPromo}>
+                <Typography className={classes.typo}>Selectionner une promotion pour ajouter une liste d'étudiants</Typography>
+                <form className={classes.form}>
+                    <FormControl className={classes.formControl}>
+                        <div className={classes.divSelectPromo}>
+                            <InputLabel className={classes.labelSelectPromo}>Promotion</InputLabel>
+                            <Select className={classes.selectPromo} value={select} onChange={handleChange} input={<Input/>}>
                                 {tabPromo.map((element, index) => (
                                     <MenuItem key={index} value={element.id_promo}>{element.nom_promo}</MenuItem>
                                 ))}
