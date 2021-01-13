@@ -58,9 +58,8 @@ export default function Enonces() {
                 setOpen(true);
             }else {
                 if (!actualiseFormule) dispatch(getCategoriesFormules(modele.idModeleSelectionne));
-                dispatch(getQuestions(modele.idModeleSelectionne));
+                if (!actualiseEnonce) dispatch(getQuestions(modele.idModeleSelectionne));
             }
-            dispatch(handleChangeEnonce(modele.enonceSelectionne));
         }
     });
 

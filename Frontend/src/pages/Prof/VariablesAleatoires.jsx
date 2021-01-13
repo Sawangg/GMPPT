@@ -31,16 +31,22 @@ export default function VariablesAleatoires() {
     }));
     const classes = useStyles();
 
+    //gerer pop up pour le undo lors de suppression
     const [openPopUpUndo, setOpenPopUpUndo] = useState(false);
+    //gerer pop up d'enregistrement pour la BD
     const [openPopUpSave, setOpenPopUpSave] = useState(true);
 
     const dispatch = useDispatch();
-    const tab = useSelector(selectVariablesAleatoires);
+
+    const tableauVariables = useSelector(selectVariablesAleatoires);
+    //savoir si les variables sont récupérées de la BD
     const isEnregistre = useSelector(selectEnregistre);
-    const actualise = useSelector(selectActualise)
+    //savoir si la recupération les données sont conectées à la BD
+    const isActualise = useSelector(selectActualise)
     const modele = useSelector(selectModele);
 
     useConstructor(() => {
+        //si pas encore récupérées de la BD 
         if (!isEnregistre) {
             modele.idModeleSelectionne === null ? setOpen(true) : dispatch(getAllVariables(modele.idModeleSelectionne));
         }
@@ -50,8 +56,10 @@ export default function VariablesAleatoires() {
         setOpenPopUpSave(true)
     }, [isEnregistre])
 
+    //ne pas quitter la page si pas enregistré dans la BD
     useUnload(!isEnregistre);
 
+    //supprimer une ligne de variables aléatoires
     const remove = (index) =>{
         dispatch(removeVariable(index));
         setOpenPopUpUndo(true);
@@ -75,8 +83,8 @@ export default function VariablesAleatoires() {
                     <AddIcon />
                 </Fab>
                 <div className={classes.divItemvariable} id="divItemvariable">
-                    {tab.map((item, id) => (
-                        <ItemVariablesAleatoire removeVariable={() => remove(id)} length={tab.length} key={id} index={id} item={item}/>
+                    {tableauVariables.map((item, id) => (
+                        <ItemVariablesAleatoire removeVariable={() => remove(id)} length={tableauVariables.length} key={id} index={id} item={item}/>
                     ))}
                 <PopUp 
                     message="Variable supprimée" 
@@ -91,7 +99,7 @@ export default function VariablesAleatoires() {
                     severity={isEnregistre ? "success" : "warning"} 
                     message={isEnregistre ? "Variables enregistrées" : "Enregistrer les modifications"} 
                     actionName={isEnregistre ? null : "Enregistrer"} 
-                    action={() => isEnregistre ? null : dispatch(setVariables({tab : tab, idModele : modele.idModeleSelectionne}))} 
+                    action={() => isEnregistre ? null : dispatch(setVariables({tab : tableauVariables, idModele : modele.idModeleSelectionne}))} 
                     open={openPopUpSave} 
                     handleClose={() => {if (isEnregistre) setOpenPopUpSave(false)}}
                     pos="left"
@@ -103,6 +111,6 @@ export default function VariablesAleatoires() {
     return (
         modele.idModeleSelectionne === null 
         ? <SelectionModele tard={false} setClose={() => setOpen(false)} open={open}/> 
-        : actualise ? displayVariable() : <CircleLoader size={50} color={"rgb(7, 91, 114)"} css={{margin : "auto", display : "flex", justifyContent : "center"}}/>
+        : isActualise ? displayVariable() : <CircleLoader size={50} color={"rgb(7, 91, 114)"} css={{margin : "auto", display : "flex", justifyContent : "center"}}/>
     );
 }

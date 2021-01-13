@@ -24,8 +24,11 @@ export default function SwipeableTemporaryDrawer() {
   const user = useSelector(selectUserName);
 
   const dispatch = useDispatch();
+
+  //gerer ouverture/fermeture du burger
   const [menu, setMenu] = useState(false);
 
+  //gerer la liste des pages affichées pour le prof
   const listeProf = [
     {
       icon : <HomeOutlinedIcon/>,
@@ -77,6 +80,7 @@ export default function SwipeableTemporaryDrawer() {
     },
   ]
 
+  //gerer la liste des pages affichées pour les étudiants
   const listeEtudiant = [
     {
       icon : <HomeOutlinedIcon/>,
@@ -98,6 +102,7 @@ export default function SwipeableTemporaryDrawer() {
     }
   ]
 
+  //selectionne la bonne liste de pages
   const liste = user.isProf ? listeProf : listeEtudiant;
 
   const navigation = () => (
