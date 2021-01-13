@@ -12,6 +12,7 @@ export const getQuestions = createAsyncThunk(
 export const setQuestions = createAsyncThunk(
     "enonce/setQuestions",
     async (props) => {
+        console.log(props.enonce)
         const response = await setQuestionsAPI(props.idModele, props.enonce, props.tabQuestions);
         return response.data;
     }
@@ -20,6 +21,7 @@ export const setQuestions = createAsyncThunk(
 export const enoncesReducer = createSlice({
     name: "enonce",
     initialState: {
+        enonceContenu : "",
         question: [{
             contenu: "",
             reponse: [{
@@ -83,6 +85,12 @@ export const enoncesReducer = createSlice({
         handleChangeMargeErreur: (state, action) =>{
             state.question[action.payload.indexQuestion].reponse[action.payload.indexReponse].margeErreur = action.payload.marge;
             state.enregistre = false;
+        },
+        setEnregistre: (state, action) => {
+            state.enregistre = action.payload;
+        },
+        handleChangeEnonce: (state, action) => {
+            state.enonceContenu = action.payload;
         }
     },
     extraReducers: {
@@ -90,6 +98,7 @@ export const enoncesReducer = createSlice({
             state.actualise = false;
         },
         [getQuestions.rejected]: (state) => {
+            state.enonceContenu = "";
             state.question = [{
                 contenu: "",
                 reponse: [{
@@ -103,10 +112,22 @@ export const enoncesReducer = createSlice({
             state.enregistre = true;
         },
         [getQuestions.fulfilled]: (state, action) => {
-            console.log(action.payload);
-            // state.contenu = action.payload.contenu;
-            // state.question = array;
-            //A FAIRE
+            let question = [];
+            let reponse = [];
+            state.enonceContenu = action.payload.enonce;
+            action.payload.forEach(element => {
+                element.reponses.forEach(elem => {
+                    reponse.push({ 
+                        selectCat : elem.selectCat,
+                        selectForm: elem.selectForm,
+                        margeErreur : elem.margeErreur,
+                        unite: elem.unite
+                    });
+                });
+                question.push({contenu : element.contenu, reponse : reponse});
+            });
+            state.question = question;
+            state.actualise = true;
             state.actualise = true;
         },
         [setQuestions.fulfilled]: (state) => {
@@ -115,13 +136,13 @@ export const enoncesReducer = createSlice({
     },
 });
 
-export const { handleChangeEnonce, handleChangeMargeErreur, addQuestion, deleteQuestion, handleChangeQuestion, handleChangeSelect, addReponse, handleChangeUnite, handleChangeCat, handleChangeForm } = enoncesReducer.actions
+export const { handleChangeEnonce, handleChangeMargeErreur, setEnregistre, addQuestion, deleteQuestion, handleChangeQuestion, handleChangeSelect, addReponse, handleChangeUnite, handleChangeCat, handleChangeForm } = enoncesReducer.actions
 
 export const selectEnonce = (state) => state.enonce;
 
 export const selectTabReponse = (index) => (state) => state.enonce.question[index].reponse; 
 
-export const selectActualise = (state) => state.enonce.actualise;
+export const selectActualiseEnonce = (state) => state.enonce.actualise;
 
 export const selectEnregistre = (state) => state.enonce.enregistre;
 

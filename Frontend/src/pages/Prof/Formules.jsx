@@ -10,7 +10,7 @@ import PopUp from '../../components/PopUp';
 import SelectionModele from '../../components/SelectionModele'
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectFormule, selectActualise, selectEnregistre, addCategorie, enregistrerFormules, getCategoriesFormules } from "../../slice/FormulesSlice"
+import { selectFormule, selectActualiseFormule, selectEnregistre, addCategorie, enregistrerFormules, getCategoriesFormules } from "../../slice/FormulesSlice"
 import { selectModele } from "../../slice/ModeleSlice"
 
 export default function TodoListAccordeon() {
@@ -27,7 +27,7 @@ export default function TodoListAccordeon() {
 
     const dispatch = useDispatch();
     const tab = useSelector(selectFormule);
-    const actualise = useSelector(selectActualise);
+    const actualise = useSelector(selectActualiseFormule);
     const isEnregistre = useSelector(selectEnregistre);
     const modele = useSelector(selectModele);
 
@@ -56,7 +56,7 @@ export default function TodoListAccordeon() {
                     <AddIcon />
                 </Fab>
                 {tab.map((i, id) => (
-                <Items index={id} key={i.index} item={i} length={tab.length}/>
+                <Items index={id} key={id} item={i} length={tab.length}/>
                 ))}
                 <PopUp 
                     severity={isEnregistre ? "success" : "warning"} 
