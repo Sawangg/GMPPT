@@ -9,7 +9,8 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 
 import { useDispatch, useSelector } from 'react-redux'
-import { changeReponseJuste, selectEssaisWithID, changeCommentaire } from '../../slice/ConsulterSlice'
+import { changeReponseJuste, selectEssaisWithID, changeCommentaire, changeNote,
+    selectNbReponsesAAvoir } from '../../slice/ConsulterSlice'
 
 export default function EssaiEtudiant(props){
 
@@ -38,6 +39,9 @@ export default function EssaiEtudiant(props){
                                 <TableCell align="center">Numero</TableCell>
                                 <TableCell align="center">Reponses Justes</TableCell>
                                 <TableCell align="center">Question Juste?</TableCell>
+                                <TableCell align="center"  
+                                title="Attention, cette note est à titre indicatif et ne concerne que cet essai"
+                                >Votre Note</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -73,6 +77,13 @@ function Question(props){
     const useStyles = makeStyles((theme) => ({
         commentaire: {
             width : "100%"
+        },
+        noteTextField : {
+            width : '30px'
+        },
+        noteInput : {
+            textAlign : 'center',
+            fontWeight : 'bold'
         }
     }));
     const classes = useStyles();
@@ -81,6 +92,9 @@ function Question(props){
 
     const dispatch = useDispatch()
 
+    const nbReponsesAAvoir = useSelector(selectNbReponsesAAvoir(props.question.num))
+
+    //s'occupe de changer le bouléen disant qu'une réponse est juste ou non d'après le prof
     const handleClickJuste = (indexQ, indexR) =>{
         dispatch(changeReponseJuste({
             indexE : props.indexEssai,
@@ -89,6 +103,7 @@ function Question(props){
         }))
     }
 
+    //s'occupe de changer le commentaire du prof sur une question
     const handleChangeCommentaire = (event) =>{
         dispatch(changeCommentaire({
             indexE : props.indexEssai,
@@ -97,9 +112,18 @@ function Question(props){
         }))
     }
 
+    //s'occupe de changer la note
+    const handleChangeNote = (event) =>{
+        dispatch(changeNote({
+            indexE : props.indexEssai,
+            indexQ : props.indexQuestion,
+            note : event.target.value
+        }))
+    }
+
+    //s'occupe de donner le nombre de réponses correctes dans cette question
     const nbReponsesJuste = () =>{
         let nb = 0
-        console.log(props.question)
         props.question.tabReponses.forEach(reponse => {
             if (reponse.justeProf) {
                 nb++
@@ -124,8 +148,7 @@ function Question(props){
     }
 
     const questionJuste = () =>{
-        // CHANGER CA !!!
-        return(<IconeJuste juste={nbReponsesJuste() === 1}/>)
+        return(<IconeJuste juste={nbReponsesJuste() === nbReponsesAAvoir}/>)
     }
 
     //bouton du prof pour dire si une réponse est juste ou non
@@ -150,6 +173,17 @@ function Question(props){
         )
     }
 
+    const note = () =>{
+        return(
+            <TextField className={classes.noteTextField} align="center"
+            onChange={e=>handleChangeNote(e)}
+            value={props.question.note}
+            InputProps={{
+                className : classes.noteInput
+            }}/>
+        )
+    }
+
     return(
         <>
         <TableRow>
@@ -161,28 +195,30 @@ function Question(props){
             <TableCell align="center">{nbReponsesJuste()}</TableCell>
             {/* voit si la question est juste */}
             <TableCell align="center">{questionJuste()}</TableCell>
+            {/* note */}
+            <TableCell align="center">{note()}</TableCell>
         </TableRow>
         <TableRow>
-            <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={4} className="boxReponses">
+            <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={5} className="boxReponses">
                 <Collapse in={open} timeout="auto" unmountOnExit>
                     <Box margin={1}>
                         <Typography variant="h6" gutterBottom >Reponses</Typography>
                         <Table size="small">
                             <TableHead>
                                 <TableRow>
-                                        <TableCell align="center">
-                                            Valeur donnée
-                                        </TableCell>
-                                        <TableCell align="center">
-                                            Ecart avec la bonne valeur
-                                        </TableCell>
-                                        <TableCell align="center">
-                                            Conseil de l'application
-                                        </TableCell>
-                                        <TableCell align="center">
-                                            Votre avis
-                                        </TableCell>
-                                    </TableRow>
+                                    <TableCell align="center">
+                                        Valeur donnée
+                                    </TableCell>
+                                    <TableCell align="center">
+                                        Ecart avec la bonne valeur
+                                    </TableCell>
+                                    <TableCell align="center">
+                                        Conseil de l'application
+                                    </TableCell>
+                                    <TableCell align="center">
+                                        Votre avis
+                                    </TableCell>
+                                </TableRow>
                             </TableHead>
                             <TableBody>
                                     {props.question.tabReponses.map((reponse, indexReponse) =>

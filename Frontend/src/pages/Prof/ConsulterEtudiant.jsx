@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import _ from 'lodash'
 
 import {ListItemText, ListItem, List, Divider, Button, makeStyles} from '@material-ui/core'
 import SendIcon from '@material-ui/icons/Send';
@@ -81,9 +82,9 @@ export default function Consulter(props){
         let nb = 0
         //on analyse chaque question
         tabEssais[index].tabQuestions.forEach(question => {
-            //on regarde si il y a le bon nombre de 
-            //PROBLEME !!!!!!!!!!!!!! Flemme de le faire maintenant ;)
-            let questionJuste = question.tabReponses.length === tabReponsesJustes[0].tabReponses.length
+            //on regarde si il y a le bon nombre de réponses justes
+            let indexQ = _.findIndex(tabReponsesJustes, function(o) { return o.num === question.num; })
+            let questionJuste = question.tabReponses.length === tabReponsesJustes[indexQ].tabReponses.length
             let i = 0
             //on regarde si toutes les réponses sont justes
             while (questionJuste && i < question.tabReponses.length){
@@ -109,7 +110,7 @@ export default function Consulter(props){
             </Button>
             <h1>
                 Etudiant : pas encore fait le lien avec l'API ;) {/*etu.prenom + ' ' + etu.nom*/}
-            </h1>
+            </h1>   
 
             <List>
                 <Divider />
