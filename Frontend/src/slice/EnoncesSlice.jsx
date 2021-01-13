@@ -61,16 +61,18 @@ export const enoncesReducer = createSlice({
                 selectForm: "",
                 unite: [{unite: "", abr : ""}],
             });
+            state.enregistre = false;
         },
         enregistre: (state) => {
             state.enregistre = true;
         },
         handleChangeCat: (state, action) =>{
             state.question[action.payload.idQuestion].reponse[action.payload.idReponse].selectCat = action.payload.value;
-            console.log(action.payload)
+            state.enregistre = false;
         },
         handleChangeForm: (state, action) => {
             state.question[action.payload.idQuestion].reponse[action.payload.idReponse].selectForm = action.payload.value;
+            state.enregistre = false;
         }
     },
     extraReducers: {

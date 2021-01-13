@@ -21,6 +21,7 @@ export default function SelectionCatForm(props) {
 
     const addElem = () =>{
         dispatch(addReponse(props.id))
+        console.log(tab)
     }
 
     const displayElem = (elem, id) =>{
@@ -28,12 +29,12 @@ export default function SelectionCatForm(props) {
             <div key={id} style={{marginTop : 30, boxShadow : "0px 8px 20px -5px rgba(0,0,0,0.69)", padding : "2% 0", display : "flex", justifyContent : "space-around"}}>
                     <Select style={{width : 200}} value={elem.selectCat} onChange={e => dispatch(handleChangeCat({idQuestion : props.id, idReponse : id, value : e.target.value}))} input={<Input/>}>
                         {!actualise ? <PropagateLoader size={15} color={"rgb(7, 91, 114)"} css={{margin : "30px auto", display : "flex", justifyContent : "center"}}/> :
-                            catForm.map((item, index) => <MenuItem key={index} value={item}>{item.nom}</MenuItem>)}
+                            catForm.map((item, index) => <MenuItem key={index} value={index}>{item.nom}</MenuItem>)}
                     </Select>
                     {elem.selectCat === "" ? null 
                     :<>
                         <Select style={{width : 200}} value={elem.selectForm} onChange={e =>dispatch(handleChangeForm({idQuestion : props.id, idReponse : id, value : e.target.value}))} input={<Input/>}>
-                            {elem.selectCat.tabFormule.map((item, index) => <MenuItem key={index} value={item}>{item.nomFormule}</MenuItem>)}
+                            {catForm[elem.selectCat].tabFormule.map((item, index) => <MenuItem key={index} value={item.nomFormule}>{item.nomFormule}</MenuItem>)}
                         </Select>
                     </>
                 }

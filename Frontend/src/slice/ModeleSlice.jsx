@@ -26,8 +26,8 @@ export const modeleSlice = createSlice({
   name: "modele",
   initialState: {
     tabName: [],
-    idModeleSelectionne: JSON.parse(myStorage.getItem("modele")).id,
-    enonceSelectionne : JSON.parse(myStorage.getItem("modele")).enonce,
+    idModeleSelectionne: myStorage.getItem("modele") == null ? null : JSON.parse(myStorage.getItem("modele")).id,
+    enonceSelectionne :  myStorage.getItem("modele") == null ? null : JSON.parse(myStorage.getItem("modele")).enonce,
     actualise: false
   },
   reducers: {
