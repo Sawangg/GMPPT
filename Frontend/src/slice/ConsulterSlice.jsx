@@ -26,7 +26,8 @@ export const consulterSlice = createSlice({
                     unite : "",
                 }]
             }]
-        }]
+        }],
+        message : ""
     },
     reducers: {
         //change la reponse
@@ -53,7 +54,11 @@ export const consulterSlice = createSlice({
                 }
             ]
         },
-
+        //change le message que le prof peut envoyer
+        //paramètres : valeur du message
+        changeMessage : (state, action) =>{
+            state.message = action.payload
+        }
         
 
     },
@@ -61,10 +66,13 @@ export const consulterSlice = createSlice({
 })
 
 
-export const {setEssaisForTest, changeReponseJuste } = consulterSlice.actions
+export const {setEssaisForTest, changeReponseJuste, changeMessage } = consulterSlice.actions
 
-//retourne tous le tableau d'essai
+//retourne tous le tableau des essais
 export const selectEssais = state => state.consulter.tabEssais
+
+//retourne le message que le professeur peut envoyer à l'étudiant
+export const selectMessage = state => state.consulter.message
 
 //retourne un essai particulier suivant un ID
 export const selectEssaisWithID = index => state => state.consulter.tabEssais[index]

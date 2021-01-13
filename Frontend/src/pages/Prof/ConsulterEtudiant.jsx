@@ -4,8 +4,8 @@ import {ListItemText, ListItem, List, Divider, Button, makeStyles} from '@materi
 import SendIcon from '@material-ui/icons/Send';
 
 import { useDispatch, useSelector } from 'react-redux'
-import { selectEssais, selectReponsesJustes } from '../../slice/ConsulterSlice'
-import { setEssaisForTest } from '../../slice/ConsulterSlice'
+import { selectEssais, selectMessage, selectReponsesJustes } from '../../slice/ConsulterSlice'
+import { setEssaisForTest, changeMessage } from '../../slice/ConsulterSlice'
 
 import EssaiEtudiant from '../../components/correction/EssaiEtudiant'
 import Message from '../../components/correction/Message';
@@ -24,21 +24,31 @@ export default function Consulter(props){
 
     const dispatch = useDispatch()
 
+    //le tableau d'essai
     const tabEssais = useSelector(selectEssais)
 
+    //tableau des réponses qui sont justes
     const tabReponsesJustes = useSelector(selectReponsesJustes)
 
+    //message qui est à envoyer
+    const message = useSelector(selectMessage)
+
+    //index de l'essai sur lequel les détails du dialogue EssaiEtudiant
     const [indexEssaiDialog, setIndexEssai] = useState(0)
 
+    //booléen pour l'ouvertire des détails de l'essai
     const [openDetails, setOpenDetails] = useState(false)
 
+    //booléen pour l'ouverture du message
     const [openMessage, setOpenMessage] = useState(false)
 
+    //numéro de l'étudiant
+    const etu = props.match.params.value
+
+    //test
     if(tabEssais.length === 1){
         dispatch(setEssaisForTest())
     }
-
-    const etu = props.match.params.value
 
     //affiche un dialog lors d'un clic sur un essai pour avoir plus de détail
     //Paramètres : l'index de l'essai
@@ -47,8 +57,21 @@ export default function Consulter(props){
         setOpenDetails(true)
     }
 
+    //s'occupe de l'ouverture de l'éditeur du message
     const hancleClickMessage = () =>{
         setOpenMessage(true)
+    }
+
+    //s'occupe du changement du message au fur et à mesure de sa saisie
+    const handleChangeMessage = (message) =>{
+        dispatch(changeMessage(message))
+    }
+
+    //PAS ENCORE FAIT LE LIEN A L'API
+    //envoie le message à l'étudiant
+    const handleSend = () =>{
+        console.log("lien avec l'api pour envoyer pas encore fait")
+        console.log(message)
     }
 
     //le nombre de question juste dans un essai
@@ -74,6 +97,7 @@ export default function Consulter(props){
         return nb
     }
 
+    //retourne le nombre de questions
     const nbQuestions = () =>{
         return tabReponsesJustes.length
     }
@@ -106,7 +130,8 @@ export default function Consulter(props){
             <EssaiEtudiant indexEssai={indexEssaiDialog} open={openDetails}
                 setOpen={setOpenDetails}/>
 
-            <Message open={openMessage} setOpen={setOpenMessage}/>
+            <Message open={openMessage} setOpen={setOpenMessage} message={message}
+            handleChangeMessage={handleChangeMessage} handleSend={handleSend}/>
         </div>
     )
 }
