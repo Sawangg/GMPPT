@@ -7,14 +7,18 @@ import {
     Accordion,
     AccordionSummary,
     AccordionDetails,
-    makeStyles
+    makeStyles,
+    Dialog, 
+    DialogActions, 
+    DialogContent, 
+    DialogContentText,
+    DialogTitle
 } from '@material-ui/core';
 import SaveIcon from '@material-ui/icons/Save';
 import CreateIcon from '@material-ui/icons/Create';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import TodoListFormule from './TodoListFormule'
-import Dialogue from '../Dialogue'
 
 import { useDispatch } from "react-redux";
 import { changeModifCategorie, changeNom, removeCategorie } from "../../slice/FormulesSlice";
@@ -118,13 +122,16 @@ export default function Item(props) {
                 >
                     Supprimer la catégorie
                 </Button>
-                <Dialogue 
-                    ok={() =>  dispatch(removeCategorie(props.index))} 
-                    titre="Suppression" 
-                    message="Voulez-vous vraiment supprimer la catégorie ?" 
-                    open={open} 
-                    handleClose={e => setOpen(false)}
-                />
+                <Dialog open={open} onClose={() => setOpen(false)}>
+                    <DialogTitle>Suppression</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>Voulez-vous vraiment supprimer la catégorie ?</DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => setOpen(false)} color="primary">Annuler</Button>
+                        <Button onClick={() => {dispatch(removeCategorie(props.index)); setOpen(false)}} color="primary" autoFocus>OK</Button>
+                    </DialogActions>
+                </Dialog>
             </div>
 
             <Accordion className={classes.accordion} square expanded={expanded} onChange={() =>setExpanded(!expanded)}>

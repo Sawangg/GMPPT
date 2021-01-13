@@ -79,7 +79,7 @@ export default function Enonces() {
                 <Button className={classes.buttonAddQuestion} variant="contained" onClick={() => dispatch(addQuestion())}>Ajouter une question</Button>
                 <PopUp
                     severity={isEnregistre ? "success" : "warning"}
-                    message={isEnregistre ? "Formules enregistrées" : "Enregistrer les modifications"}
+                    message={isEnregistre ? "Enoncé enregistré" : "Enregistrer les modifications"}
                     actionName={isEnregistre ? null : "Enregistrer"}
                     action={() => {if (!isEnregistre) dispatch(setQuestions({ idModele : modele.idModeleSelectionne, enonce : modele.enonceSelectionne, tabQuestions : enonce.question }))}}
                     open={openPopUp}
