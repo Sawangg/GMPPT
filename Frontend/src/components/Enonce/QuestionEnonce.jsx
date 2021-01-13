@@ -6,7 +6,7 @@ import deleteButton from "./deletePlugin";
 export default function QuestionEnonce(props) {
 
     return  (
-        <div className='center' style={{width:'40%'}}>
+        <div style={{width:'40%'}}>
             <SunEditor
                 id={"cocou"}
                 setContents={props.value}

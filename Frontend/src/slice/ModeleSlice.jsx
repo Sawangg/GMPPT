@@ -33,12 +33,16 @@ export const modeleSlice = createSlice({
   reducers: {
     selectionnerModele: (state, action) => {
       state.idModeleSelectionne = action.payload;
+      state.enonceSelectionne = state.tabName[action.payload].enonce;
       myStorage.setItem("modele", JSON.stringify({id : action.payload, enonce : state.tabName[action.payload].enonce}));
     },
+    handleChangeEnonce: (state, action) =>{
+      state.enonceSelectionne = action.payload;
+    }
   },
   extraReducers: {
     [getModele.rejected]: (state) => {
-      state.actualise = true; //pour ne pas bloquer
+      state.actualise = true; 
     },
     [getModele.fulfilled]: (state, action) => {
       if (!state.actualise) {
@@ -51,7 +55,7 @@ export const modeleSlice = createSlice({
           };
         });
         state.actualise = true;
-        state.chargementSuppression = false
+        state.chargementSuppression = false;
       }
     },
     [removeModele.pending]: (state, action) => {
@@ -66,7 +70,7 @@ export const modeleSlice = createSlice({
   },
 });
 
-export const { selectionnerModele, modeleIsSelect } = modeleSlice.actions;
+export const { selectionnerModele, handleChangeEnonce } = modeleSlice.actions;
 
 export const selectModele = (state) => state.modele;
 
