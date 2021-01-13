@@ -4,7 +4,7 @@ import CircleLoader from "react-spinners/CircleLoader";
 
 import QuestionEnonce from "../../components/enonce/QuestionEnonce";
 import useConstructor from "../../components/use/useContructor";
-import SelectionCatForm from "../../components/enonce/SelectionCatForm";
+import ListeReponses from "../../components/enonce/ListeReponses";
 import PopUp from '../../components/PopUp';
 import SelectionModele from '../../components/SelectionModele'
 import MyEditor from '../../components/enonce/MyEditor'
@@ -72,7 +72,7 @@ export default function Enonces() {
                     return (
                         <div key={id} className={classes.divQuestion}>
                             <QuestionEnonce id={id} value={item.contenu} handleChange={e => dispatch(handleChangeQuestion({contenu:e, index:id}))}/>
-                            <SelectionCatForm id={id} idModele={modele.idModeleSelectionne}/>
+                            <ListeReponses id={id} idModele={modele.idModeleSelectionne}/>
                         </div>
                     )
                 })}

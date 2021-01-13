@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import _ from "lodash"
-import {Button, IconButton, Dialog, DialogActions, DialogContent, DialogTitle} from '@material-ui/core';
+import {Button, IconButton, Dialog, DialogActions, DialogContent, DialogTitle, makeStyles} from '@material-ui/core';
 import {TextField, MenuItem, InputAdornment} from '@material-ui/core';
 import LoopIcon from '@material-ui/icons/Loop';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -15,6 +15,35 @@ import { selectUnites, getAllUnite, setTest } from '../../slice/UniteSlice'
 //  => setTabUnite() (fonction changeant le tableau d'unités)
 //  => handleClose() (fonction appelé à la fermeture du dialog (doit s'occupe de fermer le dialog))
 export default function ChoixUnite(props){
+
+    const useStyles = makeStyles((theme) => ({
+        alignementHorizontal: {
+            display : "flex",
+            flexDirection: "row",
+            justifyContent: "center",
+            columnGap: "20px",
+            alignItems: "center",
+            flexWrap: "wrap"
+        },
+        buttonDelete: {
+            color: theme.palette.error.main,
+            "&:hover": {
+                color: theme.palette.error.dark,
+            }
+        },
+        buttonGap: {
+            display: "flex",
+            justifyContent: "center",
+            columnGap: "10px"
+        },
+        choixInput: {
+            marginBottom : "10px"
+        },
+        puissance: {
+            width: "40px"
+        }
+    }));
+    const classes = useStyles();
 
     //Partie unité : 'Kg^3' est une partie d'unité de 'm^2.Kg^3'
     //caractérisé par un    id (identifiant de l'unité dans le tableau unites)
@@ -123,11 +152,11 @@ export default function ChoixUnite(props){
     //affiche une partie d'unité
     const partieUnite = (partieUnite, index) => {
         return(
-            <div className="choix_input">
-              <div className="button_gap">
+            <div className={classes.choixInput}>
+              <div className={classes.buttonGap}>
                 {tabUnites.length > 1 
                 ? 
-                <IconButton size="small" color="secondary" onClick={e=>handleDeleteUnite(index)} >
+                <IconButton className={classes.buttonDelete} size="small" onClick={e=>handleDeleteUnite(index)} >
                     <DeleteIcon/>
                 </IconButton>
                 : null 
@@ -146,7 +175,7 @@ export default function ChoixUnite(props){
               {partieUnite.abr !== " " ? 
               <>
               {/* modif puissance */}
-              <TextField value={partieUnite.puissance} className="puissance" 
+              <TextField value={partieUnite.puissance} className={classes.puissance}
                   onChange={e=>handleChangePuissance(index, e)}
                   onBlur={e=>handleBlurUnite(index)}
                   InputProps={{ startAdornment: (
@@ -170,12 +199,12 @@ export default function ChoixUnite(props){
             fullWidth={false}
         >
             {actualiseOpen()}
-            <DialogTitle className="alignement_horizontal">
+            <DialogTitle className={classes.alignementHorizontal}>
                 Choix de l'unité
             </DialogTitle>
 
             <DialogContent>
-                <div className="alignement_horizontal"> 
+                <div className={classes.alignementHorizontal}>
                     {/* affiche un à un les différentes parties d'unités*/}
                     {tabUnites.map((i, index) => 
                         <>
@@ -188,7 +217,7 @@ export default function ChoixUnite(props){
                 </div>
 
                 {/* boutons d'action dans la fenêtre */}
-                <div className="alignement_horizontal">
+                <div className={classes.alignementHorizontal}>
 
                     {/* bouton ajout de partie d"unité */}
                     <Button 
