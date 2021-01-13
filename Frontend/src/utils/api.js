@@ -56,8 +56,7 @@ export function addModeleAPI(nomModele){
 }
 
 //Architectures
-export function getInfoArchiAPI(/*archi*/){
-    const archi = 0;
+export function getInfoArchiAPI(archi){
     return axios.get(`http://${host}:3001/architecture/${archi}/modeles`, credentials)
 }
 
