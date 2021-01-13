@@ -93,7 +93,7 @@ export function getQuestionsAPI(idModele) {
 }
 
 export function setQuestionsAPI(idModele, enonce, tabQuestions) {
-    return axios.post(`http://${host}:3001/modele/${idModele}/questions/new`, tabQuestions, enonce, credentials);
+    return axios.post(`http://${host}:3001/modele/${idModele}/questions/new`, { tabQuestions, enonce }, credentials);
 }
 
 //Unite
