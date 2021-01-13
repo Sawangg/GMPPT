@@ -1,11 +1,19 @@
 import React, { useState } from "react";
-import { Button, Input, MenuItem, Select } from "@material-ui/core";
+import {Button, Input, makeStyles, MenuItem, Select} from "@material-ui/core";
 import PropagateLoader from "react-spinners/PropagateLoader";
 
 import { useSelector } from "react-redux";
 import { selectActualise, selectFormule } from "../../slice/FormulesSlice";
 
 export default function SelectionCatForm() {
+
+    const useStyles = makeStyles((theme) => ({
+        select: {
+            width : 200
+        }
+    }));
+    const classes = useStyles();
+
     const catForm = useSelector(selectFormule);
     const actualise = useSelector(selectActualise);
 
@@ -30,13 +38,13 @@ export default function SelectionCatForm() {
     const displayElem = (id, elem) =>{
         return (
             <div key={id}>
-                    <Select style={{width : 200}} value={elem.selectCat} onChange={e => handleChangeCat(e, id)} input={<Input/>}>
+                    <Select className={classes.select} value={elem.selectCat} onChange={e => handleChangeCat(e, id)} input={<Input/>}>
                         {!actualise ? <PropagateLoader size={15} color={"rgb(7, 91, 114)"} css={{margin : "30px auto", display : "flex", justifyContent : "center"}}/> :
                             catForm.map((item, index) => <MenuItem key={index} value={index}>{item.nom}</MenuItem>)}
                     </Select>
                     {elem.selectCat === "" ? null 
                     :<>
-                        <Select style={{width : 200}} value={elem.selectForm} onChange={e => handleChangeFormule(e, id)} input={<Input/>}>
+                        <Select className={classes.select} value={elem.selectForm} onChange={e => handleChangeFormule(e, id)} input={<Input/>}>
                             {catForm[elem.selectCat].tabFormule.map((item, index) => <MenuItem key={index} value={index}>{item.nomFormule}</MenuItem>)}
                         </Select>
                     </>
