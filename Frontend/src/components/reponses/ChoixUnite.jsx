@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, IconButton, Dialog, DialogActions, DialogContent, DialogTitle} from '@material-ui/core';
+import {Button, IconButton, Dialog, DialogActions, DialogContent, DialogTitle, makeStyles} from '@material-ui/core';
 import LoopIcon from '@material-ui/icons/Loop';
 
 import { useDispatch } from 'react-redux';
@@ -8,6 +8,18 @@ import { addPartieUnite, remettreAZero} from '../../slice/RepondreQuestionsSlice
 import Item from './ItemChoixUnite';
 
 export default function ChoixUnite(props){
+
+    const useStyles = makeStyles((theme) => ({
+        alignementHorizontal: {
+            display : "flex",
+            flexDirection: "row",
+            justifyContent: "center",
+            columnGap: "20px",
+            alignItems: "center",
+            flexWrap: "wrap"
+        }
+    }));
+    const classes = useStyles();
 
     //Partie unité : 'Kg^3' est une partie d'unité de 'm^2.Kg^3'
     //caractérisé par un    id (identifiant de l'unité dans le tableau unites)
@@ -40,12 +52,12 @@ export default function ChoixUnite(props){
             maxWidth={MAX_WIDTH}
             fullWidth={false}
         >
-            <DialogTitle className="alignement_horizontal">
+            <DialogTitle className={classes.alignementHorizontal}>
                 Choix de l'unité
             </DialogTitle>
 
             <DialogContent>
-                <div className="alignement_horizontal"> 
+                <div className={classes.alignementHorizontal}>
                     {/* affiche un à un les différentes parties d'unités*/}
                     {props.unite.map((i, index) => 
                         <>
@@ -59,7 +71,7 @@ export default function ChoixUnite(props){
                 </div>
 
                 {/* boutons d'action dans la fenêtre */}
-                <div className="alignement_horizontal">
+                <div className={classes.alignementHorizontal}>
 
                     {/* bouton ajout de partie d"unité */}
                     <Button 

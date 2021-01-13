@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, TextField, Fab,InputAdornment} from '@material-ui/core';
+import {Button, TextField, Fab, InputAdornment, makeStyles} from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import _ from "lodash"
 
@@ -10,6 +10,26 @@ import { changeReponse, peutSupprimer, deleteReponse, changeUniteReponses,
 import ChoixUnite from './ChoixUnite';
 
 export default function Item(props) {
+
+     const useStyles = makeStyles((theme) => ({
+          buttonDelete: {
+               color: "white",
+               backgroundColor: theme.palette.error.main,
+               "&:hover": {
+                    backgroundColor: theme.palette.error.dark
+               },
+          },
+          reponse: {
+               margin : "5px 0px",
+               display : "flex",
+               alignItems : "center",
+               columnGap: "10px"
+          },
+          inputAdornmentReponse: {
+               width : "100px",
+          }
+     }));
+     const classes = useStyles();
 
      const unitesReference = useSelector(selectUnites)
 
@@ -109,7 +129,7 @@ export default function Item(props) {
 
      //affiche le bouton pour supprimer cette réponse
      const buttonDelete = () =>{ return(
-               <Fab size="small" color="secondary" aria-label="delete" 
+               <Fab className={classes.buttonDelete} size="small" aria-label="delete"
                     onClick={handleDeleteReponse}
                >
                     <DeleteIcon />
@@ -117,14 +137,14 @@ export default function Item(props) {
      )}
 
      return(
-          <div className="reponse">
+          <div className={classes.reponse}>
                {/* input de la réponse */}
                <TextField label={"Reponse " + (props.num + 1)} variant="outlined" size="small" 
                value={props.reponse.value} onChange={e => handleChangeReponse(e.target.value)}
                onBlur={handleBlurReponse}
                InputProps={{ //affichage unité
                     endAdornment: (
-                         <InputAdornment className="inputAdornmentReponse" position="start">
+                         <InputAdornment className={classes.inputAdornmentReponse} position="start">
                          {afficherUnite()}                               
                          </InputAdornment>
                     ),

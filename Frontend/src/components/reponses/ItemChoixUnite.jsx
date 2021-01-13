@@ -1,11 +1,32 @@
 import React from 'react';
-import {IconButton, TextField, MenuItem, InputAdornment} from '@material-ui/core';
+import {IconButton, TextField, MenuItem, InputAdornment, makeStyles} from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { changePartieUnite, deletePartieUnite, changePuissancePartieUnite, selectUnites } from '../../slice/RepondreQuestionsSlice'
 
 export default function Item(props){
+
+    const useStyles = makeStyles((theme) => ({
+        buttonDelete: {
+            color: theme.palette.error.main,
+                "&:hover": {
+                    color: theme.palette.error.dark,
+                }
+        },
+        buttonGap: {
+            display: "flex",
+            justifyContent: "center",
+            columnGap: "10px"
+        },
+        choixInput: {
+            marginBottom : "10px"
+        },
+        puissance: {
+            width: "40px"
+        }
+    }));
+    const classes = useStyles();
 
     const dispatch = useDispatch();
 
@@ -58,7 +79,7 @@ export default function Item(props){
     //affichage du bouton de suppression de partie d'unité
     const buttonDelete = () =>{
       return(
-        <IconButton size="small" color="secondary" onClick={handleDeleteUnite} >
+        <IconButton className={classes.buttonDelete} size="small" color="secondary" onClick={handleDeleteUnite} >
           <DeleteIcon/>
         </IconButton>
       )
@@ -68,7 +89,7 @@ export default function Item(props){
     //affichage des boutons au dessus du choix d'une partie d'unité
     const buttons = () =>{
       return(
-        <div className="button_gap">
+        <div className={classes.buttonGap}>
           {/* n'affiche le bouton de suppression que si il y a plus d'une partie d'unité */}
           {props.tabLength > 1 ? buttonDelete() : null }
         </div>
@@ -77,7 +98,7 @@ export default function Item(props){
 
 
     return(
-      <div className="choix_input">
+      <div className={classes.choixInput}>
         {buttons()}
 
         {/* Select de l'unité */}
@@ -92,7 +113,7 @@ export default function Item(props){
         {props.unite.id !== 0 ? 
         <>
         {/* modif puissance */}
-        <TextField value={props.unite.puissance} className="puissance" 
+        <TextField value={props.unite.puissance} className={classes.puissance}
             onChange={e=>handleChangePuissance(e)}
             onBlur={handleBlurUnite}
             InputProps={{ startAdornment: (
