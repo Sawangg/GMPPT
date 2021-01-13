@@ -30,8 +30,8 @@ router.post('/:idpromo/new', isAuthenticated, isProf, async (req, res) => {
     insertAuth = insertAuth.slice(0, -1);
     insertEtu = insertEtu.slice(0, -1);
     try {
-        await db.promise().execute(insertAuth).catch((err) => console.log('auth: ', insertAuth, err));
-        await db.promise().execute(insertEtu).catch((err) => console.log('etu: ', insertEtu, err));
+        await db.promise().execute(insertAuth);
+        await db.promise().execute(insertEtu);
         let tempFilePath = tempfile('.xlsx');
         await workbook.xlsx.writeFile(tempFilePath).then(() => {
             res.sendFile(tempFilePath);
@@ -40,6 +40,16 @@ router.post('/:idpromo/new', isAuthenticated, isProf, async (req, res) => {
     } catch {
         return res.sendStatus(500);
     }
+});
+
+router.get('/:idauth/variables', isAuthenticated, (req, res) => {
+    const { idauth } = req.params;
+    db.promise().execute(`SELECT * FROM variables_etu WHERE id_auth = ${idauth}`).then(([rows]) => {
+        if (!rows[0]) return res.sendStatus(404);
+        return res.send(rows).status(200);
+    }).catch(() => {
+        return res.sendStatus(500);
+    });
 });
 
 module.exports = router;

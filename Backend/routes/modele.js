@@ -58,7 +58,7 @@ router.get('/:idmodele/:idcategorie/formules', isAuthenticated, isProf, (req, re
 
 router.get('/:idmodele', isAuthenticated, isProf, (req, res) => {
     const { idmodele } = req.params;
-    db.promise().execute(`SELECT * FROM modeleSujet WHERE id_modele = ${idmodele}`).then(([rows]) => {
+    db.promise().execute(`SELECT * FROM modele_sujet WHERE id_modele = ${idmodele}`).then(([rows]) => {
         if (!rows[0]) return res.sendStatus(404);
         return res.send(rows).status(200);
     }).catch(() => {
@@ -67,7 +67,7 @@ router.get('/:idmodele', isAuthenticated, isProf, (req, res) => {
 });
 
 router.get('/', isAuthenticated, isProf, (_req, res) => {
-    db.promise().execute(`SELECT * FROM modeleSujet`).then(([rows]) => {
+    db.promise().execute(`SELECT * FROM modele_sujet`).then(([rows]) => {
         if (!rows[0]) return res.sendStatus(404);
         return res.send(rows).status(200);
     }).catch(() => {
@@ -77,7 +77,7 @@ router.get('/', isAuthenticated, isProf, (_req, res) => {
 
 router.post('/new', isAuthenticated, isProf, (req, res) => {
     const { nommodele } = req.body;
-    db.promise().execute(`INSERT INTO modeleSujet(nom_modele) VALUES ('${nommodele}')`).then(([rows]) => {
+    db.promise().execute(`INSERT INTO modele_sujet(nom_modele) VALUES ('${nommodele}')`).then(([rows]) => {
         return res.send(rows).status(200);
     }).catch(() => {
         return res.sendStatus(500);
@@ -86,7 +86,7 @@ router.post('/new', isAuthenticated, isProf, (req, res) => {
 
 router.get('/:idmodele/delete', isAuthenticated, isProf, async (req, res) => {
     const { idmodele } = req.params;
-    db.promise().execute(`DELETE FROM modeleSujet WHERE id_modele = ${idmodele}`).then(()=>{
+    db.promise().execute(`DELETE FROM modele_sujet WHERE id_modele = ${idmodele}`).then(()=>{
         return res.sendStatus(200);
     }).catch(()=> {
         return res.sendStatus(500);
@@ -121,24 +121,27 @@ router.post('/:idmodele/variables/new', isAuthenticated, isProf, (req, res) => {
     });
 });
 
-router.get('/:idmodele/questions', isAuthenticated, (req, res) => {
+router.get('/:idmodele/questions', isAuthenticated, async (req, res) => {
     const { idmodele } = req.params;
-    db.promise().execute(`SELECT contenu, reponses FROM question WHERE id_modele = ${idmodele}`).then(([rows]) => {
-        if (!rows[0]) return res.sendStatus(404);
-        rows.map(r => {
-            r.reponses = (r.reponses == undefined ? r.reponses : JSON.parse(r.reponses));
-            return r;
+    try {
+        const enonce = (await db.promise().execute(`SELECT enonce FROM modele_sujet WHERE id_modele = ${idmodele}`))[0][0].enonce;
+        db.promise().execute(`SELECT contenu, reponses FROM question WHERE id_modele = ${idmodele}`).then(([questions]) => {
+            if (!questions[0]) return res.sendStatus(404);
+            questions.map(r => {
+                r.reponses = (r.reponses == undefined ? r.reponses : JSON.parse(r.reponses));
+                return r;
+            });
+            return res.send({ questions, enonce }).status(200);
         });
-        return res.send(rows).status(200);
-    }).catch(() => {
+    } catch {
         return res.sendStatus(500);
-    });
+    }
 });
 
 router.post('/:idmodele/questions/new', isAuthenticated, isProf, async (req, res) => {
     const { idmodele } = req.params;
     try {
-        await db.promise().execute(`UPDATE modeleSujet SET enonce = '${req.body.enonce}' WHERE id_modele = ${idmodele}`);
+        await db.promise().execute(`UPDATE modele_sujet SET enonce = '${req.body.enonce}' WHERE id_modele = ${idmodele}`);
         db.promise().execute(`DELETE FROM question WHERE id_modele = ${idmodele}`).then(() => {
             let insert = 'INSERT INTO question VALUES ';
             req.body.tabQuestions.forEach(async question => {
