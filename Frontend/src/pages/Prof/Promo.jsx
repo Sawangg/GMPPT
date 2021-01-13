@@ -3,6 +3,8 @@ import { TextField, Button, Select, MenuItem, Input, Typography, InputLabel, For
 import DropFile from '../../components/DropFile';
 import useConstructor from '../../components/use/useContructor'
 import { getAllPromoAPI, addPromoAPI, etudiantNewAPI } from '../../utils/api'
+import { selectModele } from "../../slice/ModeleSlice";
+import { useSelector } from "react-redux";
 
 import '../../styles/ImportModele3D.css'
 
@@ -51,6 +53,9 @@ export default function Accueil() {
         },
         selectPromo: {
             width : 200
+        },
+        selectModele: {
+            width : 200
         }
     }));
     const classes = useStyles();
@@ -59,6 +64,10 @@ export default function Accueil() {
     const [excel, setExcel] = useState("");
     const [select, setSelect] = useState("");
     const [tabPromo, setTabPromo] = useState([])
+    const [select2, setSelect2] = useState("");
+    const [selectionModele, setSelectionModele] = useState("");
+
+    const modele = useSelector(selectModele);
 
     useConstructor(() => {
         getAllPromoAPI().then(e => {
@@ -83,6 +92,10 @@ export default function Accueil() {
         etudiantNewAPI(select, data).then(fichier => console.log(fichier)).catch((err) => console.log(err));
     };
 
+    const envoieAttribution = () => {
+        console.log(select2, selectionModele)
+    };
+
     const changePromo = (e) => {
         setPromo(e.target.value);
     }
@@ -91,11 +104,19 @@ export default function Accueil() {
         setSelect(event.target.value);
     };
 
+    const handleChange2 = (event) => {
+        setSelect2(event.target.value);
+    };
+
+    const handleChangeModele = (event) => {
+        setSelectionModele(event.target.value);
+    };
+
     return (
         <div>
              <div className={classes.divNomPromo}>
                 <TextField autoFocus size="small" label="Nom de la promo" variant="outlined" required value={promo} onChange={e => changePromo(e)}/>
-                <Button className={classes.button} disabled={promo==="" ? true : false} variant="outlined" onClick={e => envoiePromo()}>Envoyer</Button>
+                <Button className={classes.button} disabled={promo==="" ? true : false} variant="outlined" onClick={() => envoiePromo()}>Envoyer</Button>
             </div>
             <div className={classes.divPromo}>
                 <Typography className={classes.typo}>Selectionner une promotion pour ajouter une liste d'étudiants</Typography>
@@ -113,6 +134,19 @@ export default function Accueil() {
                         <Button className={classes.button} disabled={excel==="" ? true : false} variant="outlined" onClick={e => envoieExcel()}>Envoyer</Button>
                     </FormControl>
                 </form>
+            </div>
+            <div className={classes.divPromo}>
+                <Select className={classes.selectPromo} value={select2} onChange={handleChange2} input={<Input/>}>
+                    {tabPromo.map((element, index) => (
+                        <MenuItem key={index} value={element.id_promo}>{element.nom_promo}</MenuItem>
+                    ))}
+                </Select>
+                <Select className={classes.selectModele} value={selectionModele} onChange={handleChangeModele} input={<Input/>}>
+                    {modele.tabName.map((element, index) => (
+                        <MenuItem key={index} value={element.index}>{element.nom}</MenuItem>
+                    ))}
+                </Select>
+                <Button className={classes.button} disabled={(selectionModele === "") || (select2 === "") ? true : false} variant="outlined" onClick={() => envoieAttribution()}>Envoyer</Button>
             </div>
         </div>
     );
