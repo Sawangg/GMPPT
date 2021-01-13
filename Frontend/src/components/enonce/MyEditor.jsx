@@ -19,7 +19,7 @@ const MyEditor = props => {
                 ]}}
                 lang="fr"
                 placeholder="Tapez votre énoncé ici..."
-                height="200"
+                height="300"
                 setDefaultStyle="background-color: lightgrey"
             />
         </div>

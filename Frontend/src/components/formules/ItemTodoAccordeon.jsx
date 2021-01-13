@@ -83,7 +83,7 @@ export default function Item(props) {
                     onChange={e => dispatch(changeNom({index : props.index, event : e.target.value}))}
                 />
                 <Fab 
-                    disabled={props.item.nom === "" ? true : false} 
+                    disabled={props.item.nom === ""} 
                     size="small" 
                     color="primary" 
                     aria-label="add" 

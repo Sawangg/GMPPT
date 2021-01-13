@@ -29,7 +29,11 @@ export default function Enonces() {
         divQuestion: {
             display: "flex",
             justifyContent : "space-around",
-            marginTop : 40
+            flexWrap : "wrap",
+            boxShadow : "0px 8px 20px -5px rgba(0,0,0,0.69)",
+            width : "80%",
+            margin : "40px auto",
+            padding : "2%"
         },
         buttonAddQuestion: {
             backgroundColor: theme.palette.primary.main,
@@ -68,7 +72,7 @@ export default function Enonces() {
     }, [isEnregistre])
 
     const envoyer = () =>{
-        dispatch(setQuestions({ idModele : modele.idModeleSelectionne, enonce : enonce.enonceSelectionne, tabQuestions : enonce.question }));
+        dispatch(setQuestions({ idModele : modele.idModeleSelectionne, enonce : enonce.enonceContenu, tabQuestions : enonce.question }));
     }
 
     const displayEnonce = () => {
@@ -76,7 +80,7 @@ export default function Enonces() {
             <div>
                 <div className={classes.enonceSujet}>
                     <h1 className={classes.h1}>Création de l'énoncé</h1>
-                    <MyEditor value={modele.enonceSelectionne} handleChange={e => dispatch(handleChangeEnonce(e))}/>
+                    <MyEditor value={enonce.enonceContenu} handleChange={e => dispatch(handleChangeEnonce(e))}/>
                 </div>
                 {enonce.question.map((item, id) => {
                     return (

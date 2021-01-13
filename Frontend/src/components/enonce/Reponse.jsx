@@ -13,14 +13,18 @@ export default function Reponse (props) {
     const useStyles = makeStyles((theme) => ({
         divReponse: {
             marginTop : 10,
-            boxShadow : "0px 8px 20px -5px rgba(0,0,0,0.69)",
-            padding : "3%",
             display : "grid",
-            gridTemplateColumns: "0fr 0fr 1fr 1fr",
-            gap: "0 1%"
+            gridTemplateColumns: "1fr 1fr 1fr 1fr",
+            gap: "0 1%",
+            border : "solid 1px",
+            borderColor : theme.palette.primary.light,
+            borderRadius : 3,
+            padding : "1%"
         },
         select: {
-            width : 200
+            width : 200,
+            maxHeight : "38px !important",
+            top : 26
         },
         divUniteMarge: {
             height : 40,
@@ -36,6 +40,13 @@ export default function Reponse (props) {
         },
         divMarge: {
             gridColumn: 4
+        },
+        buttonAjouterUnite: {
+            maxWidth: "350px",
+            maxHeight: "36px",
+            display : "block",
+            color: theme.palette.primary.main,
+            borderColor: theme.palette.primary.main
         }
     }));
     const classes = useStyles();
@@ -59,7 +70,7 @@ export default function Reponse (props) {
                 </>
             }
             <div className={classes.divUniteMarge}>
-                <Button onClick={() => setOpen(true)}>Choisir les unités</Button>
+                <Button variant="outlined" className={classes.buttonAjouterUnite} onClick={() => setOpen(true)}>Choisir les unités</Button>
                 <p className={classes.affichageUnite}>Affichage unité</p>
             </div>
             <ChoixUnite open={open} handleClose={() => setOpen(false)} unite={props.element.unite} setTabUnite={e => dispatch(handleChangeUnite({idQuestion : props.indexQuestion, idReponse : props.indexReponse, tabUnite : e}))}/>

@@ -10,7 +10,8 @@ export default function QuestionEnonce(props) {
         divQuestion: {
             display: "block",
             margin: "auto",
-            width:'40%'
+            width:'100%',
+            boxShadow : "0px 8px 20px -5px rgba(0,0,0,0.3)",
         }
     }));
     const classes = useStyles();
@@ -42,7 +43,7 @@ export default function QuestionEnonce(props) {
                     ]}}
                 lang="fr"
                 placeholder="Tapez votre question ici..."
-                height="50"
+                height="200"
                 setDefaultStyle="background-color: lightgrey"
             />
         </div>

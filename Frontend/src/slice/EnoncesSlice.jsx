@@ -12,7 +12,6 @@ export const getQuestions = createAsyncThunk(
 export const setQuestions = createAsyncThunk(
     "enonce/setQuestions",
     async (props) => {
-        console.log(props.enonce)
         const response = await setQuestionsAPI(props.idModele, props.enonce, props.tabQuestions);
         return response.data;
     }
@@ -86,11 +85,13 @@ export const enoncesReducer = createSlice({
             state.question[action.payload.indexQuestion].reponse[action.payload.indexReponse].margeErreur = action.payload.marge;
             state.enregistre = false;
         },
-        setEnregistre: (state, action) => {
-            state.enregistre = action.payload;
-        },
         handleChangeEnonce: (state, action) => {
             state.enonceContenu = action.payload;
+            state.enregistre = false;
+        },
+        removeReponse: (state, action) => {
+            console.log(action.payload)
+            state.question[action.payload.indexQuestion].reponse.splice(action.payload.indexReponse, 1);
         }
     },
     extraReducers: {
@@ -136,7 +137,7 @@ export const enoncesReducer = createSlice({
     },
 });
 
-export const { handleChangeEnonce, handleChangeMargeErreur, setEnregistre, addQuestion, deleteQuestion, handleChangeQuestion, handleChangeSelect, addReponse, handleChangeUnite, handleChangeCat, handleChangeForm } = enoncesReducer.actions
+export const { handleChangeEnonce, removeReponse, handleChangeMargeErreur, addQuestion, deleteQuestion, handleChangeQuestion, handleChangeSelect, addReponse, handleChangeUnite, handleChangeCat, handleChangeForm } = enoncesReducer.actions
 
 export const selectEnonce = (state) => state.enonce;
 
