@@ -3,13 +3,13 @@ import {Fab, makeStyles} from '@material-ui/core';
 import CircleLoader from "react-spinners/CircleLoader";
 import AddIcon from '@material-ui/icons/Add';
 
-import Items from '../../components/formules/ItemTodoAccordeon'
-import useConstructor from '../../components/use/useContructor'
+import Items from '../../components/formules/ItemTodoAccordeon';
+import useConstructor from '../../components/use/useContructor';
 import useUnload from '../../components/use/useUnload';
-import PopUp from '../../components/PopUp'
+import PopUp from '../../components/PopUp';
+import SelectionModele from '../../components/SelectionModele'
 
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectFormule, selectActualise, selectEnregistre, addCategorie, enregistrerFormules, getCategoriesFormules } from "../../slice/FormulesSlice"
 import { selectModele } from "../../slice/ModeleSlice"
 
@@ -21,6 +21,8 @@ export default function TodoListAccordeon() {
     }));
 
     const classes = useStyles();
+
+    const [open, setOpen] = useState(false);
     const [openPopUp, setOpenPopUp] = useState(true);
 
     const dispatch = useDispatch();
@@ -30,7 +32,9 @@ export default function TodoListAccordeon() {
     const modele = useSelector(selectModele);
 
     useConstructor(() => {
-        if (!isEnregistre) dispatch(getCategoriesFormules(modele.idModeleSelectionne));
+        if (!isEnregistre) {
+            modele.idModeleSelectionne === null ? setOpen(true) : dispatch(getCategoriesFormules(modele.idModeleSelectionne));
+        }
     });
     
     useEffect(() => {
@@ -68,6 +72,8 @@ export default function TodoListAccordeon() {
     }
 
     return (
-        actualise ? displayFormule() : <CircleLoader size={50} color={"rgb(7, 91, 114)"} css={{margin : "auto", display : "flex", justifyContent : "center"}}/>
+        modele.idModeleSelectionne === null 
+        ? <SelectionModele tard={false} setClose={() => setOpen(false)} open={open}/> 
+        : actualise ? displayFormule() : <CircleLoader size={50} color={"rgb(7, 91, 114)"} css={{margin : "auto", display : "flex", justifyContent : "center"}}/>
     );
 }

@@ -140,7 +140,7 @@ router.post('/:idmodele/questions/new', isAuthenticated, isProf, async (req, res
         db.promise().execute(`DELETE FROM question WHERE id_modele = ${idmodele}`).then(() => {
             let insert = 'INSERT INTO question VALUES ';
             req.body.forEach(async question => {
-                insert += `(NULL, ${question.id_question}, ${question.id_modele}, ${JSON.stringify(question.unite)}, ${question.contenu}, ${JSON.stringify(question.reponses)}),`;
+                insert += `(NULL, ${question.id_modele}, ${question.contenu}, ${JSON.stringify(question.reponses)}),`;
             });
             insert = insert.slice(0, -1);
             db.promise().execute(insert).then(() => {

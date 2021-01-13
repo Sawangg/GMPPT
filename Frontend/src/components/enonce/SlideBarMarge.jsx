@@ -1,10 +1,8 @@
 import React from 'react';
 import {Typography, Slider, makeStyles} from '@material-ui/core';
 
-import { useDispatch } from "react-redux";
-import { changeMargeErreurCategorie } from "../../slice/FormulesSlice";
-import { useSelector } from "react-redux";
-import { selectMargeErreur } from "../../slice/FormulesSlice"
+import { useSelector, useDispatch } from "react-redux";
+import { selectMargeErreur, handleChangeMargeErreur } from '../../slice/EnoncesSlice'
 
 export default function SliderBar(props) {
 
@@ -17,14 +15,15 @@ export default function SliderBar(props) {
     const classes = useStyles();
 
     const dispatch = useDispatch();
-    const marge = useSelector(selectMargeErreur(props.index));
+    const marge = useSelector(selectMargeErreur(props.indexQuestion, props.indexReponse));
 
     const handleChange = (event, newValue) => {
-      dispatch(changeMargeErreurCategorie({index : props.index, marge : newValue}))
+      dispatch(handleChangeMargeErreur({indexQuestion : props.indexQuestion, indexReponse : props.indexReponse, marge : newValue}))
     };
 
   return (
     <div className={classes.divSlideBar}>
+      <Typography variant="caption" gutterBottom>Marge d'erreur autorisée</Typography>
       <Slider
         onChange={handleChange}
         marks={[{value: 0, label: '0%'}, {value : 100, label : "100%"}]}
@@ -33,7 +32,6 @@ export default function SliderBar(props) {
         valueLabelDisplay="auto"
         aria-labelledby="discrete-slider-always"
       />
-      <Typography variant="caption" gutterBottom>Marge d'erreur autorisée</Typography>
     </div>
   );
 }

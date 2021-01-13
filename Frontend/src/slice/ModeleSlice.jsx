@@ -26,18 +26,23 @@ export const modeleSlice = createSlice({
   name: "modele",
   initialState: {
     tabName: [],
-    idModeleSelectionne: myStorage.getItem("idModele") === null ? undefined : myStorage.getItem("idModele"),
+    idModeleSelectionne: myStorage.getItem("modele") == null ? null : JSON.parse(myStorage.getItem("modele")).id,
+    enonceSelectionne :  myStorage.getItem("modele") == null ? null : JSON.parse(myStorage.getItem("modele")).enonce,
     actualise: false
   },
   reducers: {
     selectionnerModele: (state, action) => {
       state.idModeleSelectionne = action.payload;
-      myStorage.setItem("idModele", action.payload);
+      state.enonceSelectionne = state.tabName[action.payload].enonce;
+      myStorage.setItem("modele", JSON.stringify({id : action.payload, enonce : state.tabName[action.payload].enonce}));
     },
+    handleChangeEnonce: (state, action) =>{
+      state.enonceSelectionne = action.payload;
+    }
   },
   extraReducers: {
-    [getModele.rejected]: (state, action) => {
-      state.actualise = true; //pour ne pas bloquer
+    [getModele.rejected]: (state) => {
+      state.actualise = true; 
     },
     [getModele.fulfilled]: (state, action) => {
       if (!state.actualise) {
@@ -46,10 +51,11 @@ export const modeleSlice = createSlice({
           state.tabName[element.id_modele] = {
             nom: element.nom_modele,
             index: element.id_modele,
+            enonce : element.enonce
           };
         });
         state.actualise = true;
-        state.chargementSuppression = false
+        state.chargementSuppression = false;
       }
     },
     [removeModele.pending]: (state, action) => {
@@ -64,7 +70,7 @@ export const modeleSlice = createSlice({
   },
 });
 
-export const { selectionnerModele, modeleIsSelect } = modeleSlice.actions;
+export const { selectionnerModele, handleChangeEnonce } = modeleSlice.actions;
 
 export const selectModele = (state) => state.modele;
 

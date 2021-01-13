@@ -97,7 +97,6 @@ export const variablesAleatoiresReducer = createSlice({
             max: 0,
             precision: 0,
             modif: true,
-            index: 0,
           },
         ];
         state.actualise = true;
@@ -106,7 +105,6 @@ export const variablesAleatoiresReducer = createSlice({
     },
     [getAllVariables.fulfilled]: (state, action) => {
         let array = [];
-        let compt = 0;
         action.payload.forEach((element) => {
           array.push({
             nom: element.nom,
@@ -114,9 +112,7 @@ export const variablesAleatoiresReducer = createSlice({
             max: element.max,
             precision: element.precision,
             modif: false,
-            index: compt,
           });
-          ++compt;
         });
         state.actualise = true;
         state.enregistre = true;

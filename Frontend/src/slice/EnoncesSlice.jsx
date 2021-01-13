@@ -20,95 +20,111 @@ export const setQuestions = createAsyncThunk(
 export const enoncesReducer = createSlice({
     name: "enonce",
     initialState: {
-        enonceContenu: "",
         question: [{
             contenu: "",
             reponse: [{
-                nomFormule: "",
-                unite: [{
-                    valeur: "",
-                }],
+                selectCat : "",
+                selectForm: "",
+                margeErreur : 5,
+                unite: [{abr : " ", puissance : 1 }],
             }],
         }],
         actualise: false,
         enregistre: false,
     },
     reducers: {
-        handleChangeEnonce: (state, action) => {
-            state.enonceContenu = action.payload;
-        },
-
         addQuestion: (state) => {
             state.question.push({
                 contenu: "",
-                reponse: "",
+                reponse: [{
+                    selectCat : "",
+                    selectForm: "",
+                    margeErreur : 5,
+                    unite: [{abr : " ", puissance : 1 }],
+                }],
             });
         },
-
         deleteQuestion: (state, action) => {
             state.question.splice(action.payload, 1);
             state.enregistre = false;
         },
-
         handleChangeQuestion: (state, action) => {
             state.question[action.payload.index].contenu = action.payload.contenu;
             state.enregistre = false;
         },
-
         handleChangeSelect: (state, action) => {
             state.question[action.payload.index].reponse = action.payload.reponse;
+            state.enregistre = false;
+        },
+        handleChangeUnite: (state, action) => {
+            state.question[action.payload.idQuestion].reponse[action.payload.idReponse].unite = action.payload.tabUnite;
+            state.enregistre = false;
+        },
+        addReponse : (state, action) => {
+            state.question[action.payload].reponse.push({
+                selectCat : "",
+                selectForm: "",
+                margeErreur : 5,
+                unite: [{abr : " ", puissance : 1 }],
+            });
             state.enregistre = false;
         },
         enregistre: (state) => {
             state.enregistre = true;
         },
+        handleChangeCat: (state, action) =>{
+            state.question[action.payload.idQuestion].reponse[action.payload.idReponse].selectCat = action.payload.value;
+            state.enregistre = false;
+        },
+        handleChangeForm: (state, action) => {
+            state.question[action.payload.idQuestion].reponse[action.payload.idReponse].selectForm = action.payload.value;
+            state.enregistre = false;
+        },
+        handleChangeMargeErreur: (state, action) =>{
+            state.question[action.payload.indexQuestion].reponse[action.payload.indexReponse].margeErreur = action.payload.marge;
+            state.enregistre = false;
+        }
     },
     extraReducers: {
         [getQuestions.pending]: (state) => {
-            state.actualise = true;
-            state.enregistre = false;
+            state.actualise = false;
         },
-        [getQuestions.rejected]: (state, action) => {
-            if (action.error.status === "error") {
-                state.enonceContenu = "";
-                state.question = [{
-                    contenu: "",
-                    reponse: "",
-                }];
-                state.actualise = true;
-                state.enregistre = false;
-            }
-            console.log("rejected");
+        [getQuestions.rejected]: (state) => {
+            state.question = [{
+                contenu: "",
+                reponse: [{
+                    selectCat : "",
+                    selectForm: "",
+                    margeErreur : 5,
+                    unite: [{abr : " ", puissance : 1 }],
+                }],
+            }];
+            state.actualise = true;
+            state.enregistre = true;
         },
         [getQuestions.fulfilled]: (state, action) => {
-            let array = [];
             console.log(action.payload);
-            // .forEach((element) => {
-            //     let t = {
-            //         contenu: element.contenu,
-            //         reponse: [],
-            //     }
-            //     array.push(t);
-
-            // });
-            state.contenu = action.payload.contenu;
-            state.question = array;
+            // state.contenu = action.payload.contenu;
+            // state.question = array;
+            //A FAIRE
             state.actualise = true;
-            console.log("fulfilled");
         },
         [setQuestions.fulfilled]: (state) => {
             state.enregistre = true;
-
         },
     },
 });
 
-export const { handleChangeEnonce, addQuestion, deleteQuestion, handleChangeQuestion, handleChangeSelect } = enoncesReducer.actions
+export const { handleChangeEnonce, handleChangeMargeErreur, addQuestion, deleteQuestion, handleChangeQuestion, handleChangeSelect, addReponse, handleChangeUnite, handleChangeCat, handleChangeForm } = enoncesReducer.actions
 
 export const selectEnonce = (state) => state.enonce;
+
+export const selectTabReponse = (index) => (state) => state.enonce.question[index].reponse; 
 
 export const selectActualise = (state) => state.enonce.actualise;
 
 export const selectEnregistre = (state) => state.enonce.enregistre;
+
+export const selectMargeErreur = (indexQuestion, indexReponse) => (state) => state.enonce.question[indexQuestion].reponse[indexReponse].margeErreur;
 
 export default enoncesReducer.reducer;
