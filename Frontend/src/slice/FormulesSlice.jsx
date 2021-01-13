@@ -24,13 +24,11 @@ export const formuleSlice = createSlice({
       {
         nom: "",
         modif: true,
-        index: 0,
         tabFormule: [
           {
             nomFormule: "",
             formule: "",
             modif: true,
-            index: 0,
           },
         ],
         saveTabFormule: [
@@ -38,7 +36,6 @@ export const formuleSlice = createSlice({
             nomFormule: "",
             formule: "",
             modif: true,
-            index: 0,
           },
         ],
       },
@@ -51,13 +48,11 @@ export const formuleSlice = createSlice({
       state.tab.push({
         nom: "",
         modif: true,
-        index: state.tab[state.tab.length - 1].index + 1,
         tabFormule: [
           {
             nomFormule: "",
             formule: "",
             modif: true,
-            index: 0,
           },
         ],
       });
@@ -83,10 +78,6 @@ export const formuleSlice = createSlice({
         nomFormule: "",
         formule: "",
         modif: true,
-        index:
-          state.tab[action.payload].tabFormule[
-            state.tab[action.payload].tabFormule.length - 1
-          ].index + 1,
       });
       state.enregistre = false;
     },
@@ -128,11 +119,7 @@ export const formuleSlice = createSlice({
       ) {
         let value = up ? -1 : 1;
         let save = state.tab[indexCategorie].tabFormule[indexFormule + value];
-        save.index = save.index - value;
-        state.tab[indexCategorie].tabFormule[indexFormule].index =
-          state.tab[indexCategorie].tabFormule[indexFormule].index + value;
-        state.tab[indexCategorie].tabFormule[indexFormule + value] =
-          state.tab[indexCategorie].tabFormule[indexFormule];
+        state.tab[indexCategorie].tabFormule[indexFormule + value] = state.tab[indexCategorie].tabFormule[indexFormule];
         state.tab[indexCategorie].tabFormule[indexFormule] = save;
       }
       state.enregistre = false;
@@ -205,7 +192,7 @@ export const selectFormule = (state) => state.formule.tab;
 
 export const selectTabFormule = (index) => (state) => state.formule.tab[index].tabFormule;
 
-export const selectActualise = (state) => state.formule.actualise;
+export const selectActualiseFormule = (state) => state.formule.actualise;
 
 export const selectEnregistre = (state) => state.formule.enregistre;
 

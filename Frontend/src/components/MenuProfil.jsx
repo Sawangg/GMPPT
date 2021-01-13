@@ -15,14 +15,18 @@ import { selectUserName, getUserImage } from "../slice/UserSlice"
 
 export default function MenuProfil() {
 
+  //permet de placer le menu de profil correctement sur la page
   const [openLocation, setOpenLocation] = useState(null);
+  //gerer ouverture/fermeture du modele
   const [open, setOpen] = useState(false);
 
   const dispatch = useDispatch();
   const user = useSelector(selectUserName);
   
   useConstructor(() => {
+        //gerer le stockage local
         let myStorage = window.localStorage;
+        //si le nom de l'utilisateur est vide et que l'image est vide et que le stockage local de l'image est vide 
         if (user.name !== "" && user.image === undefined && myStorage.getItem(user.name) === null) dispatch(getUserImage(user.name))
     });
 
@@ -41,9 +45,9 @@ export default function MenuProfil() {
             anchorEl={openLocation}
             keepMounted
             open={Boolean(openLocation)}
-            onClose={e => setOpenLocation(null)}
+            onClose={() => setOpenLocation(null)}
         >
-            <MenuItem component={Link} to='/profil' onClick={e => setOpenLocation(null)}>
+            <MenuItem component={Link} to='/profil' onClick={() => setOpenLocation(null)}>
             <ListItemIcon>
                 <AccountBoxOutlinedIcon />
             </ListItemIcon>

@@ -41,7 +41,7 @@ export default function TodoListFormule(props) {
     return (
         <div>
             {tab.map((i, id) => (
-                <Item remove={e => remove(id)} index={id} item={i} nb={tab.length} key={i.index} indexCategorie={props.index}/>
+                <Item remove={e => remove(id)} index={id} item={i} nb={tab.length} key={id} indexCategorie={props.index}/>
             ))}
              <Button 
                 className={classes.buttonAjouterFormule}

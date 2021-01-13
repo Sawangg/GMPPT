@@ -6,12 +6,12 @@ import SlideBar from './SlideBarMarge'
 
 import { useSelector, useDispatch } from "react-redux";
 import { handleChangeCat, handleChangeForm, handleChangeUnite} from '../../slice/EnoncesSlice'
-import { selectActualise, selectFormule } from "../../slice/FormulesSlice";
+import { selectActualiseFormule, selectFormule } from "../../slice/FormulesSlice";
 
 export default function Reponse (props) {
 
     const catForm = useSelector(selectFormule);
-    const actualise = useSelector(selectActualise);
+    const actualise = useSelector(selectActualiseFormule);
     const dispatch = useDispatch();
     const [open, setOpen] = useState(false);
 
