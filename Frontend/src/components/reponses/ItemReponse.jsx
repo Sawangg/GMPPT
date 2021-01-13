@@ -5,6 +5,7 @@ import _ from "lodash"
 
 import { useDispatch, useSelector } from "react-redux";
 import { changeReponse, peutSupprimer, deleteReponse, setUnite} from '../../slice/RepondreQuestionsSlice'
+import { selectUnites } from '../../slice/UniteSlice'
 
 import ChoixUnite from '../unite/ChoixUnite';
 
