@@ -7,6 +7,7 @@ export const consulterSlice = createSlice({
             dateEssai : "01/01/2020",
             tabQuestions : [{
                 justif : "",
+                commentProf : "",
                 num : 1,
                 tabReponses : [{
                     justeApp : true, //reponse juste d'après l'application
@@ -40,14 +41,13 @@ export const consulterSlice = createSlice({
         setEssaisForTest : (state) =>{
             state.tabEssais = [
                 {dateEssai : "05/01/2020", tabQuestions : 
-                    [{num : 1, justif : "Scotland Forever󠁧󠁢", tabReponses : 
+                    [{num : 1, justif : "Scotland Forever󠁧󠁢", commentProf : "", tabReponses : 
                         [ {justeApp : true, justeProf : false, value : 12, 
                         unite : "N^12", ecart : "0.3"} ] 
                     }] 
                 },
-                {dateEssai : "05/01/2020", justif : "",
-                tabQuestions : 
-                    [{num : 1, justif : "", tabReponses : 
+                {dateEssai : "05/01/2020", tabQuestions : 
+                    [{num : 1, justif : "", commentProf : "", tabReponses : 
                         [ {justeApp : false, justeProf : false, value : 11, 
                         unite : "N^11", ecart : "1.3"} ] 
                     }] 
@@ -58,6 +58,12 @@ export const consulterSlice = createSlice({
         //paramètres : valeur du message
         changeMessage : (state, action) =>{
             state.message = action.payload
+        },
+        //change le commentaire d'une question dans un essai
+        //paramètres : indexEssai, indexQuestion, commentaire
+        changeCommentaire : (state, action) =>{
+            let {indexE, indexQ, commentaire} = action.payload
+            state.tabEssais[indexE].tabQuestions[indexQ].commentProf = commentaire
         }
         
 
@@ -66,7 +72,7 @@ export const consulterSlice = createSlice({
 })
 
 
-export const {setEssaisForTest, changeReponseJuste, changeMessage } = consulterSlice.actions
+export const {setEssaisForTest, changeReponseJuste, changeMessage, changeCommentaire } = consulterSlice.actions
 
 //retourne tous le tableau des essais
 export const selectEssais = state => state.consulter.tabEssais

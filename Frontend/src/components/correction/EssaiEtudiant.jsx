@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 
 import { Table, TableContainer, TableHead, TableRow, Paper, TableCell, TableBody, 
-    Typography,Collapse, Box, IconButton, DialogActions, Button } from '@material-ui/core'
+    Typography,Collapse, Box, IconButton, DialogActions, Button, TextField, makeStyles } from '@material-ui/core'
 import { Dialog, DialogContent, DialogTitle} from '@material-ui/core'
 import CheckIcon from '@material-ui/icons/Check'
 import ClearIcon from '@material-ui/icons/Clear'
@@ -9,7 +9,7 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 
 import { useDispatch, useSelector } from 'react-redux'
-import { changeReponseJuste, selectEssaisWithID } from '../../slice/ConsulterSlice'
+import { changeReponseJuste, selectEssaisWithID, changeCommentaire } from '../../slice/ConsulterSlice'
 
 export default function EssaiEtudiant(props){
 
@@ -48,10 +48,6 @@ export default function EssaiEtudiant(props){
                         </TableBody>
                     </Table>
                 </TableContainer>
-
-                
-                
-                
             </DialogContent>
 
             <DialogActions>
@@ -74,6 +70,13 @@ function IconeJuste(props){
 
 
 function Question(props){
+    const useStyles = makeStyles((theme) => ({
+        commentaire: {
+            width : "100%"
+        }
+    }));
+    const classes = useStyles();
+
     const [open, setOpen] = useState(false)
 
     const dispatch = useDispatch()
@@ -83,6 +86,14 @@ function Question(props){
             indexE : props.indexEssai,
             indexQ : indexQ,
             indexR : indexR
+        }))
+    }
+
+    const handleChangeCommentaire = (event) =>{
+        dispatch(changeCommentaire({
+            indexE : props.indexEssai,
+            indexQ : props.indexQuestion,
+            commentaire : event.target.value
         }))
     }
 
@@ -97,6 +108,7 @@ function Question(props){
         return nb
     }
 
+    //la flècle pour afficher plus ou moins d'information sur la question
     const collapseArrow = () =>{
         return(
         <IconButton onClick={()=>setOpen(!open)}>
@@ -116,13 +128,25 @@ function Question(props){
         return(<IconeJuste juste={nbReponsesJuste() === 1}/>)
     }
 
-     //bouton du prof pour dire si une réponse est juste ou non
+    //bouton du prof pour dire si une réponse est juste ou non
     //paramètres : index de la question, index de la reponse, bool
     const boutonJustePourProf = (indexQ, indexR, juste) =>{
         return(
             <IconButton onClick={e=>handleClickJuste(indexQ, indexR)}>
                 <IconeJuste juste={juste}/>
             </IconButton>
+        )
+    }
+
+    //affiche la zone où le professeur peut saisir son commentaire
+    const commentaireProf = () =>{
+        return(
+            <>
+            <Typography variant = "h6" padding={5}>Vos commentaires sur ce travail :</Typography>
+            <TextField value={props.question.commentProf} onChange={handleChangeCommentaire}
+                multiline rows={4} variant="outlined" placeholder="Écrivez vos commentaires"
+                className={classes.commentaire}/>
+            </>
         )
     }
 
@@ -193,6 +217,8 @@ function Question(props){
                             <Typography variant = "h6">Pas de justification de l'étudiant</Typography>
 
                         }
+
+                        {commentaireProf()}
                     </Box>
                 </Collapse>
             </TableCell>
