@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import { TextField, Button, Select, MenuItem, Input, Typography, InputLabel, FormControl, makeStyles } from '@material-ui/core';
 import DropFile from '../../components/DropFile';
 import useConstructor from '../../components/use/useContructor'
-import { getAllPromoAPI, addPromoAPI, etudiantNewAPI } from '../../utils/api'
+import { getAllPromoAPI, addPromoAPI, etudiantNewAPI, attributionSujetAPI } from '../../utils/api'
 import { selectModele } from "../../slice/ModeleSlice";
 import { useSelector } from "react-redux";
 
@@ -64,7 +64,8 @@ export default function Accueil() {
     const [excel, setExcel] = useState("");
     const [select, setSelect] = useState("");
     const [tabPromo, setTabPromo] = useState([])
-    const [select2, setSelect2] = useState("");
+
+    const [selectPromo, setSelectPromo] = useState("");
     const [selectionModele, setSelectionModele] = useState("");
 
     const modele = useSelector(selectModele);
@@ -93,19 +94,19 @@ export default function Accueil() {
     };
 
     const envoieAttribution = () => {
-        console.log(select2, selectionModele)
+        attributionSujetAPI(selectPromo, selectionModele);
     };
 
     const changePromo = (e) => {
         setPromo(e.target.value);
-    }
+    };
 
     const handleChange = (event) => {
         setSelect(event.target.value);
     };
 
     const handleChange2 = (event) => {
-        setSelect2(event.target.value);
+        setSelectPromo(event.target.value);
     };
 
     const handleChangeModele = (event) => {
@@ -136,7 +137,7 @@ export default function Accueil() {
                 </form>
             </div>
             <div className={classes.divPromo}>
-                <Select className={classes.selectPromo} value={select2} onChange={handleChange2} input={<Input/>}>
+                <Select className={classes.selectPromo} value={selectPromo} onChange={handleChange2} input={<Input/>}>
                     {tabPromo.map((element, index) => (
                         <MenuItem key={index} value={element.id_promo}>{element.nom_promo}</MenuItem>
                     ))}
@@ -146,7 +147,7 @@ export default function Accueil() {
                         <MenuItem key={index} value={element.index}>{element.nom}</MenuItem>
                     ))}
                 </Select>
-                <Button className={classes.button} disabled={(selectionModele === "") || (select2 === "") ? true : false} variant="outlined" onClick={() => envoieAttribution()}>Envoyer</Button>
+                <Button className={classes.button} disabled={(selectionModele === "") || (selectPromo === "") ? true : false} variant="outlined" onClick={() => envoieAttribution()}>Envoyer</Button>
             </div>
         </div>
     );
