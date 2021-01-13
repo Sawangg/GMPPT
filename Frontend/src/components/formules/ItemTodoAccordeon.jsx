@@ -6,7 +6,6 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import TodoListFormule from './TodoListFormule'
 import Dialogue from '../Dialogue'
-import SlideBar from './SlideBarFormule'
 
 import { useDispatch } from "react-redux";
 import { changeModifCategorie, changeNom, removeCategorie } from "../../slice/FormulesSlice";
@@ -87,7 +86,6 @@ export default function Item(props) {
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}/>
                 <AccordionDetails style={{display : "flex", flexDirection : "column"}}>
                     <TodoListFormule index={props.index}/>
-                    <SlideBar index={props.index}/>
                 </AccordionDetails>
             </Accordion>
         </div>
