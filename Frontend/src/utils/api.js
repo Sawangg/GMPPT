@@ -65,7 +65,7 @@ export function addArchiAPI(archi){
     return axios.post(`http://${host}:3001/architecture/${archi.sujet}/modeles/new`, archi.images, credentials)
 }
 
-// //Promotion
+// Promotion
 export function addPromoAPI(nomPromo){
     return axios.post(`http://${host}:3001/promo/new`, {nomPromo : nomPromo}, credentials)
 }
@@ -93,7 +93,7 @@ export function getQuestionsAPI(idModele) {
 }
 
 export function setQuestionsAPI(idModele, enonce, tabQuestions) {
-    return axios.post(`http://${host}:3001/modele/${idModele}/questions/new`, tabQuestions, enonce, credentials);
+    return axios.post(`http://${host}:3001/modele/${idModele}/questions/new`, { tabQuestions, enonce }, credentials);
 }
 
 //Unite
@@ -107,4 +107,10 @@ export function getAllUniteAPI(){
 
 export function deleteUniteAPI(idUnite){
     return axios.get(`http://${host}:3001/unite/${idUnite}/delete`, credentials);
+}
+
+// Etudiant 
+
+export function etudiantNewAPI(idPromo, fileUploaded) {
+    return axios.post(`http://${host}:3001/etudiant/${idPromo}/new`, fileUploaded, credentials);
 }

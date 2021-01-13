@@ -1,7 +1,9 @@
 import React, {useState} from 'react'
 
+
 import { Table, TableContainer, TableHead, TableRow, Paper, TableCell, TableBody, 
     Typography,Collapse, Box, IconButton, DialogActions, Button, TextField, makeStyles } from '@material-ui/core'
+
 import { Dialog, DialogContent, DialogTitle} from '@material-ui/core'
 import CheckIcon from '@material-ui/icons/Check'
 import ClearIcon from '@material-ui/icons/Clear'
@@ -12,8 +14,25 @@ import { useDispatch, useSelector } from 'react-redux'
 import { changeReponseJuste, selectEssaisWithID, changeCommentaire, changeNote,
     selectNbReponsesAAvoir } from '../../slice/ConsulterSlice'
 
-export default function EssaiEtudiant(props){
+const useStyles = makeStyles((theme) => ({
+    boxReponses: {
+        paddingBottom: 0,
+        paddingTop: 0,
+        backgroundColor: "#f2f2f2"
+    },
+    commentaire: {
+        width : "100%"
+    },
+    noteTextField : {
+        width : '30px'
+    },
+    noteInput : {
+        textAlign : 'center',
+        fontWeight : 'bold'
+    }
+}));
 
+export default function EssaiEtudiant(props){
     const essai = useSelector(selectEssaisWithID(props.indexEssai))
 
     const handleClose = () =>{
@@ -74,18 +93,7 @@ function IconeJuste(props){
 
 
 function Question(props){
-    const useStyles = makeStyles((theme) => ({
-        commentaire: {
-            width : "100%"
-        },
-        noteTextField : {
-            width : '30px'
-        },
-        noteInput : {
-            textAlign : 'center',
-            fontWeight : 'bold'
-        }
-    }));
+
     const classes = useStyles();
 
     const [open, setOpen] = useState(false)
@@ -199,7 +207,7 @@ function Question(props){
             <TableCell align="center">{note()}</TableCell>
         </TableRow>
         <TableRow>
-            <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={5} className="boxReponses">
+            <TableCell className={classes.boxReponses} colSpan={4}>
                 <Collapse in={open} timeout="auto" unmountOnExit>
                     <Box margin={1}>
                         <Typography variant="h6" gutterBottom >Reponses</Typography>
@@ -251,7 +259,6 @@ function Question(props){
                             </>
                             :
                             <Typography variant = "h6">Pas de justification de l'étudiant</Typography>
-
                         }
 
                         {commentaireProf()}

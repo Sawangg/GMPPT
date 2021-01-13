@@ -1,15 +1,16 @@
 import React, {useState} from 'react';
-import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, 
-  TableRow} from '@material-ui/core';
+import {
+  Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination,
+  TableRow
+} from '@material-ui/core';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { selectEtudiants, setEtudiantsForTests } from '../../slice/CorrectionSlice';
 
 import {Link} from 'react-router-dom'
 
-
-
 export default function StickyHeadTable() {
+
   const dispatch = useDispatch()
 
   const [page, setPage] = useState(0);
@@ -22,7 +23,6 @@ export default function StickyHeadTable() {
   if(tabEtudiants.length <= 1){
     dispatch(setEtudiantsForTests())
   }
- 
 
   const columns = [
     {id: 'nom', label: 'Nom', minWidth: 170 },
@@ -58,7 +58,7 @@ export default function StickyHeadTable() {
 
 
   return (
-    <Paper className="center" style={{width : "80%"}}>
+    <Paper>
 
       <TableContainer>
         <Table stickyHeader aria-label="sticky table">

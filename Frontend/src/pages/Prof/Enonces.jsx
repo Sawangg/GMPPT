@@ -81,7 +81,7 @@ export default function Enonces() {
                     severity={isEnregistre ? "success" : "warning"}
                     message={isEnregistre ? "Formules enregistrées" : "Enregistrer les modifications"}
                     actionName={isEnregistre ? null : "Enregistrer"}
-                    action={() => {if (!isEnregistre) dispatch(setQuestions({ idModele : modele.idModeleSelectionne, enonce : modele.enonceSelectionne, tabQuestions : enonce }))}}
+                    action={() => {if (!isEnregistre) dispatch(setQuestions({ idModele : modele.idModeleSelectionne, enonce : modele.enonceSelectionne, tabQuestions : enonce.question }))}}
                     open={openPopUp}
                     handleClose={() => {if (isEnregistre) setOpenPopUp(false)}}
                     pos="left"

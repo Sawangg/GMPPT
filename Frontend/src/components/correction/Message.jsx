@@ -1,9 +1,25 @@
-import React, {useState} from 'react'
+import React from 'react'
 
-import { Dialog, DialogActions, DialogContent, DialogTitle, Typography, TextField, Button } from '@material-ui/core'
+import {
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    Typography,
+    TextField,
+    Button,
+    makeStyles
+} from '@material-ui/core'
 
 
 export default function Message(props){
+  
+  const useStyles = makeStyles((theme) => ({
+        messageField: {
+            width: "100%"
+        }
+    }));
+    const classes = useStyles();
 
     //s'occupe du changement du message
     const handleChangeMessage = (event) =>{
@@ -33,9 +49,9 @@ export default function Message(props){
                 <Typography variant="h6">Message adressé à </Typography>
             </DialogTitle>
             <DialogContent>
-                <TextField autoFocus multiline rows={4} className="messageField"
-                variant="outlined" placeholder="Saisissez votre message" 
-                onChange={e => handleChangeMessage(e)} value={props.message}/>
+                <TextField className={classes.messageField} autoFocus multiline rows={4}
+                variant="outlined" placeholder="Saisissez votre message"
+                onChange={e => handleChangeMessage(e)} value={props.message} />
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose}>

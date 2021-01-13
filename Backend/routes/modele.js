@@ -121,12 +121,14 @@ router.post('/:idmodele/variables/new', isAuthenticated, isProf, (req, res) => {
     });
 });
 
-router.get('/:idmodele/questions', isAuthenticated, isProf, (req, res) => {
+router.get('/:idmodele/questions', isAuthenticated, (req, res) => {
     const { idmodele } = req.params;
-    db.promise().execute(`SELECT unite, contenu, reponses FROM question WHERE id_modele = ${idmodele}`).then(([rows]) => {
+    db.promise().execute(`SELECT contenu, reponses FROM question WHERE id_modele = ${idmodele}`).then(([rows]) => {
         if (!rows[0]) return res.sendStatus(404);
-        rows.reponses = JSON.parse(rows.reponses);
-        rows.unite = JSON.parse(rows.unite);
+        rows.map(r => {
+            r.reponses = (r.reponses == undefined ? r.reponses : JSON.parse(r.reponses));
+            return r;
+        });
         return res.send(rows).status(200);
     }).catch(() => {
         return res.sendStatus(500);
@@ -136,11 +138,11 @@ router.get('/:idmodele/questions', isAuthenticated, isProf, (req, res) => {
 router.post('/:idmodele/questions/new', isAuthenticated, isProf, async (req, res) => {
     const { idmodele } = req.params;
     try {
-        await db.promise().execute(`UPDATE modele SET enonce = ${req.body.enonce} WHERE id_modele = ${idmodele}`);
+        await db.promise().execute(`UPDATE modeleSujet SET enonce = '${req.body.enonce}' WHERE id_modele = ${idmodele}`);
         db.promise().execute(`DELETE FROM question WHERE id_modele = ${idmodele}`).then(() => {
             let insert = 'INSERT INTO question VALUES ';
-            req.body.forEach(async question => {
-                insert += `(NULL, ${question.id_question}, ${question.id_modele}, ${JSON.stringify(question.unite)}, ${question.contenu}, ${JSON.stringify(question.reponses)}),`;
+            req.body.tabQuestions.forEach(async question => {
+                insert += `(NULL, ${idmodele}, '${question.contenu}', '${JSON.stringify(question.reponse)}'),`;
             });
             insert = insert.slice(0, -1);
             db.promise().execute(insert).then(() => {

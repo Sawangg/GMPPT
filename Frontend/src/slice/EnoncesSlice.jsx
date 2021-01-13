@@ -12,7 +12,6 @@ export const getQuestions = createAsyncThunk(
 export const setQuestions = createAsyncThunk(
     "enonce/setQuestions",
     async (props) => {
-        console.log(props);
         const response = await setQuestionsAPI(props.idModele, props.enonce, props.tabQuestions);
         return response.data;
     }
@@ -26,7 +25,8 @@ export const enoncesReducer = createSlice({
             reponse: [{
                 selectCat : "",
                 selectForm: "",
-                unite: [{unite: "", abr : ""}],
+                margeErreur : 5,
+                unite: [{abr : " ", puissance : 1 }],
             }],
         }],
         actualise: false,
@@ -39,7 +39,8 @@ export const enoncesReducer = createSlice({
                 reponse: [{
                     selectCat : "",
                     selectForm: "",
-                    unite: [{unite: "", abr : ""}],
+                    margeErreur : 5,
+                    unite: [{abr : " ", puissance : 1 }],
                 }],
             });
         },
@@ -55,11 +56,16 @@ export const enoncesReducer = createSlice({
             state.question[action.payload.index].reponse = action.payload.reponse;
             state.enregistre = false;
         },
+        handleChangeUnite: (state, action) => {
+            state.question[action.payload.idQuestion].reponse[action.payload.idReponse].unite = action.payload.tabUnite;
+            state.enregistre = false;
+        },
         addReponse : (state, action) => {
             state.question[action.payload].reponse.push({
                 selectCat : "",
                 selectForm: "",
-                unite: [{unite: "", abr : ""}],
+                margeErreur : 5,
+                unite: [{abr : " ", puissance : 1 }],
             });
             state.enregistre = false;
         },
@@ -73,6 +79,10 @@ export const enoncesReducer = createSlice({
         handleChangeForm: (state, action) => {
             state.question[action.payload.idQuestion].reponse[action.payload.idReponse].selectForm = action.payload.value;
             state.enregistre = false;
+        },
+        handleChangeMargeErreur: (state, action) =>{
+            state.question[action.payload.indexQuestion].reponse[action.payload.indexReponse].margeErreur = action.payload.marge;
+            state.enregistre = false;
         }
     },
     extraReducers: {
@@ -85,7 +95,8 @@ export const enoncesReducer = createSlice({
                 reponse: [{
                     selectCat : "",
                     selectForm: "",
-                    unite: [{unite: "", abr : ""}],
+                    margeErreur : 5,
+                    unite: [{abr : " ", puissance : 1 }],
                 }],
             }];
             state.actualise = true;
@@ -104,7 +115,7 @@ export const enoncesReducer = createSlice({
     },
 });
 
-export const { handleChangeEnonce, addQuestion, deleteQuestion, handleChangeQuestion, handleChangeSelect, addReponse, handleChangeCat, handleChangeForm } = enoncesReducer.actions
+export const { handleChangeEnonce, handleChangeMargeErreur, addQuestion, deleteQuestion, handleChangeQuestion, handleChangeSelect, addReponse, handleChangeUnite, handleChangeCat, handleChangeForm } = enoncesReducer.actions
 
 export const selectEnonce = (state) => state.enonce;
 
@@ -113,5 +124,7 @@ export const selectTabReponse = (index) => (state) => state.enonce.question[inde
 export const selectActualise = (state) => state.enonce.actualise;
 
 export const selectEnregistre = (state) => state.enonce.enregistre;
+
+export const selectMargeErreur = (indexQuestion, indexReponse) => (state) => state.enonce.question[indexQuestion].reponse[indexReponse].margeErreur;
 
 export default enoncesReducer.reducer;

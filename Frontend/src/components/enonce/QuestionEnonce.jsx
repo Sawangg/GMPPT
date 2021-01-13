@@ -2,11 +2,21 @@ import React from "react"
 import SunEditor from "suneditor-react";
 import 'suneditor/dist/css/suneditor.min.css'; // Import Sun Editor's CSS File
 import deleteButton from "./deletePlugin";
+import {makeStyles} from "@material-ui/core";
 
 export default function QuestionEnonce(props) {
 
+    const useStyles = makeStyles((theme) => ({
+        divQuestion: {
+            display: "block",
+            margin: "auto",
+            width:'40%'
+        }
+    }));
+    const classes = useStyles();
+
     return  (
-        <div style={{width:'40%'}}>
+        <div className={classes.divQuestion}>
             <SunEditor
                 id={"cocou"}
                 setContents={props.value}
