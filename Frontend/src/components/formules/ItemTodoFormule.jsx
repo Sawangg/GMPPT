@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, TextField, Typography, Fab } from '@material-ui/core';
+import {Button, TextField, Typography, Fab, makeStyles} from '@material-ui/core';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
@@ -10,8 +10,61 @@ import '../../styles/ItemTodoFormule.css'
 
 import { changeNomFormule, changeFormule, changeModifFormule, changePositionFormule } from "../../slice/FormulesSlice"
 import { useDispatch } from "react-redux";
+import clsx from 'clsx'
 
 export default function Item(props) {
+
+    const useStyles = makeStyles((theme) => ({
+        affichageFormule: {
+            display: "flex",
+        },
+        nomForm: {
+            width: "30%",
+        },
+        center: {
+            display: "block",
+            margin: "auto"
+        },
+        formule: {
+            width : "40%",
+            marginLeft : "2%"
+        },
+        buttonSave: {
+            backgroundColor : "#c0dff8",
+            height: "40px"
+        },
+        typoNomFormule: {
+            overflowWrap: "break-word",
+            width: "30%"
+        },
+        typoFormule: {
+            overflowWrap: "break-word",
+            width : "40%",
+            marginLeft : "2%"
+        },
+        buttonModif: {
+            height: "40px",
+            backgroundColor: theme.palette.primary.light
+        },
+        containerFormules: {
+            display: "grid",
+            gridTemplateColumns: "0.5fr 3.5fr 2fr 0.75fr 0.75fr",
+            gridTemplateRows: "1fr",
+            gap: "0px 15px",
+            margin: "0px 1% 3%"
+        },
+        fabDelete: {
+            color: "white",
+            backgroundColor: theme.palette.error.main,
+                "&:hover": {
+                    backgroundColor: theme.palette.error.dark
+                },
+        },
+        fabDownward: {
+            marginLeft : "10%"
+        }
+    }));
+    const classes = useStyles();
 
     const dispatch = useDispatch();
     const matches = useMediaQuery('(min-width:960px)');
@@ -20,52 +73,52 @@ export default function Item(props) {
         dispatch(changeModifFormule({indexCategorie :props.indexCategorie, indexFormule : props.index}))
     }
 
-    const field = () =>{
+    const field = () => {
         return(
             <>
-                <div className="affichageFormule">
-                    <TextField 
-                        className="nomFormule center" 
-                        multiline 
-                        label="Nom formule" 
-                        variant="outlined" 
-                        size="small" 
-                        value={props.item.nomFormule} 
-                        onChange={e => dispatch(changeNomFormule({indexCategorie :props.indexCategorie, indexFormule : props.index, event : e.target.value}))} 
+                <div className={classes.affichageFormule}>
+                    <TextField
+                        className={clsx(classes.nomForm, classes.center)}
+                        multiline
+                        label="Nom formule"
+                        variant="outlined"
+                        size="small"
+                        value={props.item.nomFormule}
+                        onChange={e => dispatch(changeNomFormule({indexCategorie :props.indexCategorie, indexFormule : props.index, event : e.target.value}))}
                     />
-                    <ArrowForwardIcon className="center" />
-                    <TextField 
-                        className="formule center" 
-                        multiline 
-                        label="formule" 
-                        variant="outlined" 
-                        size="small" 
-                        value={props.item.formule} 
+                    <ArrowForwardIcon className={classes.center} />
+                    <TextField
+                        className={clsx(classes.formule, classes.center)}
+                        multiline
+                        label="formule"
+                        variant="outlined"
+                        size="small"
+                        value={props.item.formule}
                         onChange={e => dispatch(changeFormule({indexCategorie :props.indexCategorie, indexFormule : props.index, event : e.target.value}))}
                     />
                 </div>
-                <Button 
-                    className="buttonItem center ButtonEnregistrer" 
-                    variant="contained" 
+                <Button
+                    className={clsx(classes.buttonSave, classes.center)}
+                    variant="contained"
                     onClick={() => changeModif()}
                 >
                     Enregistrer
                 </Button>
-            </> 
+            </>
         )
     }
 
     const txt = () =>{
         return (
             <>
-                <div className="affichageFormule">
-                    <Typography className="nomFormule typoFormule center">{props.item.nomFormule}</Typography>
-                    <ArrowForwardIcon className="center" />
-                    <Typography className="typoFormule formule center">{props.item.formule}</Typography>
+                <div className={classes.affichageFormule}>
+                    <Typography className={clsx(classes.typoNomFormule, classes.center)}>{props.item.nomFormule}</Typography>
+                    <ArrowForwardIcon className={classes.center} />
+                    <Typography className={clsx(classes.typoFormule, classes.center)}>{props.item.formule}</Typography>
                 </div>
-                <Button 
-                    className="buttonItem center" 
-                    variant="contained" 
+                <Button
+                    className={clsx(classes.buttonModif, classes.center)}
+                    variant="contained"
                     onClick={() => changeModif()}
                 >
                     Modifier
@@ -75,36 +128,34 @@ export default function Item(props) {
     }
 
     return (
-        <div className="containerFormules">
-            
-            <Fab 
-                disabled={props.nb === 1} 
-                className="center" 
-                size="small" 
-                color="secondary" 
-                aria-label="add" 
+        <div className={classes.containerFormules} id="containerFormules">
+
+            <Fab
+                className={clsx(classes.fabDelete, classes.center)}
+                disabled={props.nb === 1}
+                size="small"
+                aria-label="add"
                 onClick={() => props.remove()}
             >
-                <DeleteIcon className="center" />
+                <DeleteIcon className={classes.center}/>
             </Fab>
 
             {props.item.modif ? field() : txt()}
 
-            {matches 
-                ?<>
-                    <Fab 
-                        color="primary" 
-                        variant='extended' 
-                        size='small' 
+            {matches ?
+                <>
+                    <Fab
+                        color="primary"
+                        variant='extended'
+                        size='small'
                         onClick={e => dispatch(changePositionFormule({indexCategorie :props.indexCategorie, indexFormule : props.index, up : true}))}
                     >
                         <ArrowUpwardIcon/>
                     </Fab>
-                    <Fab 
-                        style={{marginLeft : "10%"}} 
-                        color="primary" 
-                        variant='extended' 
-                        size='small' 
+                    <Fab className={classes.fabDownward}
+                        color="primary"
+                        variant='extended'
+                        size='small'
                         onClick={() => dispatch(changePositionFormule({indexCategorie :props.indexCategorie, indexFormule : props.index, up : false}))}
                     >
                         <ArrowDownwardIcon/>
@@ -113,5 +164,5 @@ export default function Item(props) {
                 : null}
         </div>
     )
-    
+
 }
