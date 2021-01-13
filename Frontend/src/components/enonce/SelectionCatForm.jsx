@@ -8,12 +8,9 @@ import { selectEnregistre, getCategoriesFormules } from "../../slice/FormulesSli
 import {addReponse, selectTabReponse } from '../../slice/EnoncesSlice'
 
 export default function SelectionCatForm(props) {
-
     const isEnregistre = useSelector(selectEnregistre);
     const tab = useSelector(selectTabReponse(props.id))
     const dispatch = useDispatch();
-
-    const [open, setOpen] = useState([false]);
 
     useConstructor(() => {
         if (!isEnregistre) dispatch(getCategoriesFormules(props.idModele))
@@ -21,11 +18,10 @@ export default function SelectionCatForm(props) {
 
     const addElem = () =>{
         dispatch(addReponse(props.id))
-        setOpen([...open, false]);
     }
 
     return (
-        <div style={{width : "52vw"}}>
+        <div style={{width : "48vw"}}>
             <Button onClick={() => addElem()}>Ajouter</Button>
             {tab.map((elem, index) => (
                 <Reponse key={index} element={elem} indexReponse={index} indexQuestion={props.id}/>
