@@ -136,11 +136,11 @@ router.get('/:idmodele/questions', isAuthenticated, isProf, (req, res) => {
 router.post('/:idmodele/questions/new', isAuthenticated, isProf, async (req, res) => {
     const { idmodele } = req.params;
     try {
-        await db.promise().execute(`UPDATE modele SET enonce = ${req.body.enonce} WHERE id_modele = ${idmodele}`);
+        await db.promise().execute(`UPDATE modeleSujet SET enonce = '${req.body.enonce}' WHERE id_modele = ${idmodele}`);
         db.promise().execute(`DELETE FROM question WHERE id_modele = ${idmodele}`).then(() => {
             let insert = 'INSERT INTO question VALUES ';
-            req.body.forEach(async question => {
-                insert += `(NULL, ${question.id_modele}, ${question.contenu}, ${JSON.stringify(question.reponses)}),`;
+            req.body.tabQuestions.forEach(async question => {
+                insert += `(NULL, ${idmodele}, '${question.contenu}', '${JSON.stringify(question.reponses)}'),`;
             });
             insert = insert.slice(0, -1);
             db.promise().execute(insert).then(() => {
