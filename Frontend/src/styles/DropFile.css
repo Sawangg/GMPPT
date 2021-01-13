@@ -1,23 +1,5 @@
-.divDrop{
-    border : dashed 2px #075b72;
-    text-align: center;
-    cursor: pointer;
-    padding: 0 2%;
-    width : 40%;
-    margin : 3% auto 0 auto;
-    height: 172px;
-    position: relative;
-    z-index: 10;
-}
-
-.divDrop:hover{
-    background-color: rgba(0, 0, 0, 0.015);
-}
-
 @media screen and (max-width: 960px) {
-
     .divDrop{
         width : 90%;
     }
-    
 }

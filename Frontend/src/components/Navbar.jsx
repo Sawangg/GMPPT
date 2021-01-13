@@ -1,5 +1,14 @@
 import React, { useState } from "react";
-import {ListItemIcon, ListItemText, Divider, ListItem, List, SwipeableDrawer, IconButton} from "@material-ui/core";
+import {
+  ListItemIcon,
+  ListItemText,
+  Divider,
+  ListItem,
+  List,
+  SwipeableDrawer,
+  IconButton,
+  makeStyles
+} from "@material-ui/core";
 import { Link, Redirect } from "react-router-dom";
 import HomeOutlinedIcon from "@material-ui/icons/HomeOutlined";
 import FunctionsIcon from '@material-ui/icons/Functions';
@@ -17,9 +26,40 @@ import { logoutUser } from "../slice/UserSlice";
 import { useSelector } from "react-redux";
 import { selectUserName } from "../slice/UserSlice"
 
-import "../styles/Navbar.css";
-
 export default function SwipeableTemporaryDrawer() {
+
+  const useStyles = makeStyles((theme) => ({
+    divNavigation: {
+      padding : "5px 10px",
+      zIndex: 99
+    },
+    divider: {
+      margin : "3% 0"
+    },
+    deconnexionNav: {
+      backgroundColor : theme.palette.error.main,
+      "&:hover": {
+        backgroundColor : theme.palette.error.dark,
+      },
+      borderRadius : "3px",
+    },
+    deconnexionText: {
+      color: "white"
+    },
+    deconnexionIcon: {
+      color: "white"
+    },
+    divNavBar: {
+      marginBottom: 100
+    },
+    burger: {
+      position : "fixed",
+      left : "20px",
+      top : "20px",
+      zIndex: 10
+    }
+  }));
+  const classes = useStyles();
 
   const user = useSelector(selectUserName);
 
@@ -107,7 +147,7 @@ export default function SwipeableTemporaryDrawer() {
 
   const navigation = () => (
     <SwipeableDrawer onOpen={() => setMenu(true)} open={menu} onClose={() => setMenu(false)}>
-      <nav id="divNavBar">
+      <nav className={classes.divNavigation}>
         <List>
         {liste.map((item) => (
           <div key={item.nom}>
@@ -117,14 +157,14 @@ export default function SwipeableTemporaryDrawer() {
               </ListItemIcon>
               <ListItemText>{item.nom}</ListItemText>
             </ListItem>
-            {item.divider ? <Divider className="divider"/> : null}
+            {item.divider ? <Divider className={classes.divider}/> : null}
           </div>
         ))}
-          <ListItem id="deconnexionNav" button onClick={e => dispatch(logoutUser())}>
+          <ListItem className={classes.deconnexionNav} button onClick={e => dispatch(logoutUser())}>
             <ListItemIcon>
-              <ExitToAppIcon style={{color : "white"}} />
+              <ExitToAppIcon className={classes.deconnexionIcon}/>
             </ListItemIcon>
-            <ListItemText style={{color : "white"}}>Déconnexion</ListItemText>
+            <ListItemText className={classes.deconnexionText}>Déconnexion</ListItemText>
           </ListItem>
         </List>
       </nav>
@@ -132,8 +172,8 @@ export default function SwipeableTemporaryDrawer() {
   );
 
   return (
-    <div style={{ marginBottom: 100 }}>
-      <IconButton id="burger" onClick={(e) => setMenu(true)}>
+    <div className={classes.divNavBar}>
+      <IconButton className={classes.burger} onClick={(e) => setMenu(true)}>
         <MenuRoundedIcon fontSize="large" />
       </IconButton>
       {navigation()}

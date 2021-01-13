@@ -4,8 +4,31 @@ import CloudUploadOutlinedIcon from '@material-ui/icons/CloudUploadOutlined';
 import imageCompression from 'browser-image-compression';
 
 import '../styles/DropFile.css'
+import {makeStyles} from "@material-ui/core";
 
 export default function DropFile(props) {
+
+    const useStyles = makeStyles((theme) => ({
+        divDrop: {
+            "&:hover": {
+                backgroundColor: theme.palette.secondary.light
+            },
+            border : "dashed 2px",
+            borderColor: theme.palette.primary.main,
+            textAlign: "center",
+            cursor: "pointer",
+            padding: "0 2%",
+            width : "40%",
+            margin : "3% auto 0 auto",
+            height: "172px",
+            position: "relative",
+            zIndex: 10
+        },
+        cloudIcon: {
+            fontSize : "400%"
+        }
+    }));
+    const classes = useStyles();
 
   //s'execute lors de l'ajout d'un (ou plusieurs) fichier(s) dans le dropFile
   const onDrop = useCallback(acceptedFiles => {
@@ -32,10 +55,10 @@ export default function DropFile(props) {
     ));
 
   return (
-      <div {...getRootProps()} className="divDrop">
+      <div {...getRootProps()} className={classes.divDrop} id="divDrop">
         <input {...getInputProps()} />
         <p>{props.message}</p>
-        <CloudUploadOutlinedIcon style={{fontSize : "400%"}}/>
+        <CloudUploadOutlinedIcon className={classes.cloudIcon}/>
         {files}
       </div>
   );

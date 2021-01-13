@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Avatar, IconButton, Menu, MenuItem, ListItemIcon,Typography } from '@material-ui/core';
+import {Avatar, IconButton, Menu, MenuItem, ListItemIcon, Typography, makeStyles} from '@material-ui/core';
 import { Redirect, Link } from "react-router-dom";
 import AccountBoxOutlinedIcon from '@material-ui/icons/AccountBoxOutlined';
 import ExitToAppOutlinedIcon from '@material-ui/icons/ExitToAppOutlined';
@@ -14,12 +14,24 @@ import { useSelector } from "react-redux";
 import { selectUserName, getUserImage } from "../slice/UserSlice"
 
 export default function MenuProfil() {
+    const useStyles = makeStyles((theme) => ({
+        divMenuProfil: {
+            position : "absolute",
+            right : 30,
+            top : 17.5,
+            display : "flex",
+            zIndex : 10
+        },
+        avatar: {
+            backgroundColor : theme.palette.error.main
+        }
+    }));
+    const classes = useStyles();
 
   //permet de placer le menu de profil correctement sur la page
   const [openLocation, setOpenLocation] = useState(null);
   //gerer ouverture/fermeture du modele
   const [open, setOpen] = useState(false);
-
   const dispatch = useDispatch();
   const user = useSelector(selectUserName);
   
@@ -31,10 +43,10 @@ export default function MenuProfil() {
     });
 
   return (
-    <div style={{position : "absolute", right : 30, top : 17.5, display : "flex", zIndex : 10}}>
+    <div className={classes.divMenuProfil}>
         <IconButton aria-controls="simple-menu" aria-haspopup="true" onClick={e => setOpenLocation(e.currentTarget)}>
             {user.image === undefined
-                ?<Avatar style={{backgroundColor : "#c51150"}}>{user.name.substring(0, 1).toUpperCase()}</Avatar>
+                ?<Avatar className={classes.avatar}>{user.name.substring(0, 1).toUpperCase()}</Avatar>
                 :<Avatar src={user.image}/>
             }
         </IconButton>

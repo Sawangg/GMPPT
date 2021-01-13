@@ -1,10 +1,20 @@
 import React from 'react'
 import Particles from 'react-particles-js';
+import {makeStyles} from "@material-ui/core";
 
 export default function Particules(){
+    const useStyles = makeStyles((theme) => ({
+        particles: {
+            position: "absolute",
+            opacity : "0.6",
+            top : 0
+        }
+    }));
+    const classes = useStyles();
+
     return(
         <Particles
-            style={{ position: "absolute", opacity : "0.6", top : 0}}
+            className={classes.particles}
             height="100vh"
             width="100%"
             params={{

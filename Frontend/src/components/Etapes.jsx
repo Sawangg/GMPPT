@@ -1,7 +1,16 @@
 import React, {useState} from 'react';
-import { Stepper, Step, StepLabel, StepContent, Button, Typography}  from '@material-ui/core';
+import {Stepper, Step, StepLabel, StepContent, Button, Typography, makeStyles} from '@material-ui/core';
 
 export default function VerticalLinearStepper() {
+  const useStyles = makeStyles((theme) => ({
+    divEtapes: {
+      width : "25%",
+      display: "block",
+      margin: "auto"
+    }
+  }));
+  const classes = useStyles();
+
   const [activeStep, setActiveStep] = useState(0);
   const steps = ['Créer les énoncés', 'Créer les formules', 'Intégrer les modèles 3D'];
 
@@ -18,8 +27,8 @@ export default function VerticalLinearStepper() {
   };
 
   return (
-    <div style={{width : "25%"}} className="center">
-      <Stepper style={{backgroundColor : "rgba(0, 0, 0, 0)"}} activeStep={activeStep} orientation="vertical">
+    <div className={classes.divEtapes}>
+      <Stepper activeStep={activeStep} orientation="vertical">
         {steps.map((label) => (
           <Step key={label}>
             <StepLabel>{label}</StepLabel>
