@@ -56,8 +56,7 @@ export function addModeleAPI(nomModele){
 }
 
 //Architectures
-export function getInfoArchiAPI(/*archi*/){
-    const archi = 0;
+export function getInfoArchiAPI(archi){
     return axios.get(`http://${host}:3001/architecture/${archi}/modeles`, credentials)
 }
 
@@ -78,7 +77,11 @@ export function getInfoPromoAPI(idPromo){
     return axios.get(`http://${host}:3001/promo/${idPromo}`, credentials)
 }
 
-//Variables aléatoires
+export function attributionSujetAPI(idPromo, idModele) {
+    return axios.get(`http://${host}:3001/promo/${idPromo}/${idModele}/attribution`, credentials)
+}
+
+// Variables aléatoires
 export function addVariableAPI(idModele, tabVariables){
     return axios.post(`http://${host}:3001/modele/${idModele}/variables/new`, tabVariables, credentials)
 }
@@ -93,7 +96,7 @@ export function getQuestionsAPI(idModele) {
 }
 
 export function setQuestionsAPI(idModele, enonce, tabQuestions) {
-    return axios.post(`http://${host}:3001/modele/${idModele}/questions/new`, tabQuestions, enonce, credentials);
+    return axios.post(`http://${host}:3001/modele/${idModele}/questions/new`, { tabQuestions, enonce }, credentials);
 }
 
 //Unite

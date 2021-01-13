@@ -10,8 +10,9 @@ import SelectionModele from '../../components/SelectionModele'
 import MyEditor from '../../components/enonce/MyEditor'
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectModele, handleChangeEnonce } from "../../slice/ModeleSlice";
-import { addQuestion, handleChangeQuestion, selectActualise, selectEnonce, selectEnregistre, getQuestions, setQuestions } from "../../slice/EnoncesSlice";
+import { selectModele } from "../../slice/ModeleSlice";
+import { addQuestion, handleChangeEnonce, handleChangeQuestion, selectActualiseEnonce, selectEnonce, selectEnregistre, getQuestions, setQuestions } from "../../slice/EnoncesSlice";
+import { selectActualiseFormule, getCategoriesFormules } from "../../slice/FormulesSlice"
 
 export default function Enonces() {
 
@@ -47,19 +48,28 @@ export default function Enonces() {
     const enonce = useSelector(selectEnonce);
     const dispatch = useDispatch();
     const modele = useSelector(selectModele);
-    const actualise = useSelector(selectActualise);
+    const actualiseEnonce = useSelector(selectActualiseEnonce);
+    const actualiseFormule = useSelector(selectActualiseFormule);
     const isEnregistre = useSelector(selectEnregistre);
 
     useConstructor(() => {
         if (!isEnregistre) {
-            modele.idModeleSelectionne === null ? setOpen(true) : dispatch(getQuestions(modele.idModeleSelectionne));
-            dispatch(handleChangeEnonce(modele.enonceSelectionne));
+            if ( modele.idModeleSelectionne === null){
+                setOpen(true);
+            }else {
+                if (!actualiseFormule) dispatch(getCategoriesFormules(modele.idModeleSelectionne));
+                if (!actualiseEnonce) dispatch(getQuestions(modele.idModeleSelectionne));
+            }
         }
     });
 
     useEffect(() => {
         setOpenPopUp(true)
     }, [isEnregistre])
+
+    const envoyer = () =>{
+        dispatch(setQuestions({ idModele : modele.idModeleSelectionne, enonce : enonce.enonceSelectionne, tabQuestions : enonce.question }));
+    }
 
     const displayEnonce = () => {
         return (
@@ -79,9 +89,9 @@ export default function Enonces() {
                 <Button className={classes.buttonAddQuestion} variant="contained" onClick={() => dispatch(addQuestion())}>Ajouter une question</Button>
                 <PopUp
                     severity={isEnregistre ? "success" : "warning"}
-                    message={isEnregistre ? "Formules enregistrées" : "Enregistrer les modifications"}
+                    message={isEnregistre ? "Enoncé enregistré" : "Enregistrer les modifications"}
                     actionName={isEnregistre ? null : "Enregistrer"}
-                    action={() => {if (!isEnregistre) dispatch(setQuestions({ idModele : modele.idModeleSelectionne, enonce : modele.enonceSelectionne, tabQuestions : enonce.question }))}}
+                    action={() => {if (!isEnregistre) envoyer()}}
                     open={openPopUp}
                     handleClose={() => {if (isEnregistre) setOpenPopUp(false)}}
                     pos="left"
@@ -93,6 +103,6 @@ export default function Enonces() {
     return (
         modele.idModeleSelectionne === null 
         ? <SelectionModele tard={false} setClose={() => setOpen(false)} open={open}/> 
-        : actualise ? displayEnonce() : <CircleLoader size={50} color={"rgb(7, 91, 114)"} css={{margin : "auto", display : "flex", justifyContent : "center"}}/>
+        : actualiseEnonce ? displayEnonce() : <CircleLoader size={50} color={"rgb(7, 91, 114)"} css={{margin : "auto", display : "flex", justifyContent : "center"}}/>
     );
 }

@@ -1,9 +1,9 @@
 import React, {useState} from 'react'
 
-import {
-    Table, TableContainer, TableHead, TableRow, Paper, TableCell, TableBody,
-    Typography, Collapse, Box, IconButton, DialogActions, Button, makeStyles
-} from '@material-ui/core'
+
+import { Table, TableContainer, TableHead, TableRow, Paper, TableCell, TableBody, 
+    Typography,Collapse, Box, IconButton, DialogActions, Button, TextField, makeStyles } from '@material-ui/core'
+
 import { Dialog, DialogContent, DialogTitle} from '@material-ui/core'
 import CheckIcon from '@material-ui/icons/Check'
 import ClearIcon from '@material-ui/icons/Clear'
@@ -11,13 +11,24 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 
 import { useDispatch, useSelector } from 'react-redux'
-import { changeReponseJuste, selectEssaisWithID } from '../../slice/ConsulterSlice'
+import { changeReponseJuste, selectEssaisWithID, changeCommentaire, changeNote,
+    selectNbReponsesAAvoir } from '../../slice/ConsulterSlice'
 
 const useStyles = makeStyles((theme) => ({
     boxReponses: {
         paddingBottom: 0,
         paddingTop: 0,
         backgroundColor: "#f2f2f2"
+    },
+    commentaire: {
+        width : "100%"
+    },
+    noteTextField : {
+        width : '30px'
+    },
+    noteInput : {
+        textAlign : 'center',
+        fontWeight : 'bold'
     }
 }));
 
@@ -47,6 +58,9 @@ export default function EssaiEtudiant(props){
                                 <TableCell align="center">Numero</TableCell>
                                 <TableCell align="center">Reponses Justes</TableCell>
                                 <TableCell align="center">Question Juste?</TableCell>
+                                <TableCell align="center"  
+                                title="Attention, cette note est à titre indicatif et ne concerne que cet essai"
+                                >Votre Note</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -57,10 +71,6 @@ export default function EssaiEtudiant(props){
                         </TableBody>
                     </Table>
                 </TableContainer>
-
-                
-                
-                
             </DialogContent>
 
             <DialogActions>
@@ -83,12 +93,16 @@ function IconeJuste(props){
 
 
 function Question(props){
+
     const classes = useStyles();
 
     const [open, setOpen] = useState(false)
 
     const dispatch = useDispatch()
 
+    const nbReponsesAAvoir = useSelector(selectNbReponsesAAvoir(props.question.num))
+
+    //s'occupe de changer le bouléen disant qu'une réponse est juste ou non d'après le prof
     const handleClickJuste = (indexQ, indexR) =>{
         dispatch(changeReponseJuste({
             indexE : props.indexEssai,
@@ -97,9 +111,27 @@ function Question(props){
         }))
     }
 
+    //s'occupe de changer le commentaire du prof sur une question
+    const handleChangeCommentaire = (event) =>{
+        dispatch(changeCommentaire({
+            indexE : props.indexEssai,
+            indexQ : props.indexQuestion,
+            commentaire : event.target.value
+        }))
+    }
+
+    //s'occupe de changer la note
+    const handleChangeNote = (event) =>{
+        dispatch(changeNote({
+            indexE : props.indexEssai,
+            indexQ : props.indexQuestion,
+            note : event.target.value
+        }))
+    }
+
+    //s'occupe de donner le nombre de réponses correctes dans cette question
     const nbReponsesJuste = () =>{
         let nb = 0
-        console.log(props.question)
         props.question.tabReponses.forEach(reponse => {
             if (reponse.justeProf) {
                 nb++
@@ -108,6 +140,7 @@ function Question(props){
         return nb
     }
 
+    //la flècle pour afficher plus ou moins d'information sur la question
     const collapseArrow = () =>{
         return(
         <IconButton onClick={()=>setOpen(!open)}>
@@ -123,17 +156,39 @@ function Question(props){
     }
 
     const questionJuste = () =>{
-        // CHANGER CA !!!
-        return(<IconeJuste juste={nbReponsesJuste() === 1}/>)
+        return(<IconeJuste juste={nbReponsesJuste() === nbReponsesAAvoir}/>)
     }
 
-     //bouton du prof pour dire si une réponse est juste ou non
+    //bouton du prof pour dire si une réponse est juste ou non
     //paramètres : index de la question, index de la reponse, bool
     const boutonJustePourProf = (indexQ, indexR, juste) =>{
         return(
             <IconButton onClick={e=>handleClickJuste(indexQ, indexR)}>
                 <IconeJuste juste={juste}/>
             </IconButton>
+        )
+    }
+
+    //affiche la zone où le professeur peut saisir son commentaire
+    const commentaireProf = () =>{
+        return(
+            <>
+            <Typography variant = "h6" padding={5}>Vos commentaires sur ce travail :</Typography>
+            <TextField value={props.question.commentProf} onChange={handleChangeCommentaire}
+                multiline rows={4} variant="outlined" placeholder="Écrivez vos commentaires"
+                className={classes.commentaire}/>
+            </>
+        )
+    }
+
+    const note = () =>{
+        return(
+            <TextField className={classes.noteTextField} align="center"
+            onChange={e=>handleChangeNote(e)}
+            value={props.question.note}
+            InputProps={{
+                className : classes.noteInput
+            }}/>
         )
     }
 
@@ -148,6 +203,8 @@ function Question(props){
             <TableCell align="center">{nbReponsesJuste()}</TableCell>
             {/* voit si la question est juste */}
             <TableCell align="center">{questionJuste()}</TableCell>
+            {/* note */}
+            <TableCell align="center">{note()}</TableCell>
         </TableRow>
         <TableRow>
             <TableCell className={classes.boxReponses} colSpan={4}>
@@ -157,19 +214,19 @@ function Question(props){
                         <Table size="small">
                             <TableHead>
                                 <TableRow>
-                                        <TableCell align="center">
-                                            Valeur donnée
-                                        </TableCell>
-                                        <TableCell align="center">
-                                            Ecart avec la bonne valeur
-                                        </TableCell>
-                                        <TableCell align="center">
-                                            Conseil de l'application
-                                        </TableCell>
-                                        <TableCell align="center">
-                                            Votre avis
-                                        </TableCell>
-                                    </TableRow>
+                                    <TableCell align="center">
+                                        Valeur donnée
+                                    </TableCell>
+                                    <TableCell align="center">
+                                        Ecart avec la bonne valeur
+                                    </TableCell>
+                                    <TableCell align="center">
+                                        Conseil de l'application
+                                    </TableCell>
+                                    <TableCell align="center">
+                                        Votre avis
+                                    </TableCell>
+                                </TableRow>
                             </TableHead>
                             <TableBody>
                                     {props.question.tabReponses.map((reponse, indexReponse) =>
@@ -203,6 +260,8 @@ function Question(props){
                             :
                             <Typography variant = "h6">Pas de justification de l'étudiant</Typography>
                         }
+
+                        {commentaireProf()}
                     </Box>
                 </Collapse>
             </TableCell>
