@@ -25,7 +25,6 @@ export const formuleSlice = createSlice({
         nom: "",
         modif: true,
         index: 0,
-        margeErreur: "5",
         tabFormule: [
           {
             nomFormule: "",
@@ -53,7 +52,6 @@ export const formuleSlice = createSlice({
         nom: "",
         modif: true,
         index: state.tab[state.tab.length - 1].index + 1,
-        margeErreur: "5",
         tabFormule: [
           {
             nomFormule: "",
@@ -75,10 +73,6 @@ export const formuleSlice = createSlice({
     },
     changeModifCategorie: (state, action) => {
       state.tab[action.payload].modif = !state.tab[action.payload].modif;
-      state.enregistre = false;
-    },
-    changeMargeErreurCategorie: (state, action) => {
-      state.tab[action.payload.index].margeErreur = action.payload.marge;
       state.enregistre = false;
     },
     addFormule: (state, action) => {
@@ -157,14 +151,11 @@ export const formuleSlice = createSlice({
           {
             nom: "",
             modif: true,
-            index: 0,
-            margeErreur: "5",
             tabFormule: [
               {
                 nomFormule: "",
                 formule: "",
                 modif: true,
-                index: 0,
               },
             ],
             saveTabFormule: [
@@ -172,7 +163,6 @@ export const formuleSlice = createSlice({
                 nomFormule: "",
                 formule: "",
                 modif: true,
-                index: 0,
               },
             ],
           },
@@ -183,28 +173,21 @@ export const formuleSlice = createSlice({
     },
     [getCategoriesFormules.fulfilled]: (state, action) => {
         let array = [];
-        let compt = 0;
         action.payload.forEach((element) => {
           let tabFormule = [];
-          let comptFormule = 0;
           element.formules.forEach((elemForm) => {
             tabFormule.push({
               nomFormule: elemForm.nom,
               formule: elemForm.contenu,
               modif: false,
-              index: comptFormule,
             });
-            ++comptFormule;
           });
           array.push({
             nom: element.nom,
             modif: false,
-            index: compt,
-            margeErreur: element.margeErreur,
             tabFormule: tabFormule,
             saveTabFormule: tabFormule,
           });
-          ++compt;
         });
         state.actualise = true;
         state.enregistre = true;
@@ -216,15 +199,13 @@ export const formuleSlice = createSlice({
   },
 });
 
-export const { setActualise, changeNom, addCategorie, removeCategorie, changeModifCategorie, addFormule, changeMargeErreurCategorie, undoFormule, changeNomFormule, changeFormule, changeModifFormule, removeFormule, changePositionFormule } = formuleSlice.actions;
+export const { setActualise, changeNom, addCategorie, removeCategorie, changeModifCategorie, addFormule, undoFormule, changeNomFormule, changeFormule, changeModifFormule, removeFormule, changePositionFormule } = formuleSlice.actions;
 
 export const selectFormule = (state) => state.formule.tab;
 
 export const selectTabFormule = (index) => (state) => state.formule.tab[index].tabFormule;
 
 export const selectActualise = (state) => state.formule.actualise;
-
-export const selectMargeErreur = (index) => (state) => state.formule.tab[index].margeErreur;
 
 export const selectEnregistre = (state) => state.formule.enregistre;
 
