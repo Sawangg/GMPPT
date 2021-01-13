@@ -1,5 +1,19 @@
 import React, {useState} from 'react';
-import {Button, Dialog, DialogActions, DialogContent, DialogTitle, InputLabel, Input, MenuItem,FormControl, Select, TextField, Fab} from '@material-ui/core';
+import {
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    InputLabel,
+    Input,
+    MenuItem,
+    FormControl,
+    Select,
+    TextField,
+    Fab,
+    makeStyles
+} from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 import PropagateLoader from "react-spinners/PropagateLoader";
@@ -14,6 +28,46 @@ import { getQuestions } from "../slice/EnoncesSlice";
 import { selectionnerModele, addNewModele, removeModele, getModele, selectModele, selectActualise, selectChargementSupp} from "../slice/ModeleSlice";
 
 export default function DialogSelect(props) {
+    const useStyles = makeStyles((theme) => ({
+        divNouveauModele: {
+            display : "grid",
+            gridTemplateColumns : "80% 20%",
+            gridGap : "7%",
+            marginTop : 30
+        },
+        fabAdd: {
+            marginLeft : "5%"
+        },
+        form: {
+            display : "flex",
+            justifyContent : "center",
+            marginBottom : 20
+        },
+        divSelectModele: {
+            display : "grid",
+            gridTemplateColumns : "80% 20%",
+            gridGap : "7%",
+            marginTop : 15
+        },
+        selectModele: {
+            width : 200
+        },
+        menuItem: {
+            color : theme.palette.primary.main
+        },
+        fabDelete: {
+            margin: "5%",
+            backgroundColor: theme.palette.error.main,
+            "&:hover": {
+                backgroundColor: theme.palette.error.dark
+            }
+        },
+        dialogActions: {
+            justifyContent : "space-around"
+        }
+    }));
+    const classes = useStyles();
+
     const [select, setSelect] = useState("");
     const [nouveauModele, setNouveauModele] = useState({etat : false, nom : "", error : false});
 
@@ -59,16 +113,15 @@ export default function DialogSelect(props) {
     const displayNouveauModele = () => {
         return (
             nouveauModele.etat 
-            ? <div style={{display : "grid", gridTemplateColumns : "80% 20%", gridGap : "7%", marginTop : 30}} >
+            ? <div className={classes.divNouveauModele}>
                 <TextField autoFocus size="small" label="Nom du modèle" variant="outlined" required 
                     error={nouveauModele.error} 
                     value={nouveauModele.nom} 
                     onChange={e => onChangeNouveauModele(e)}
                 />
-                <Fab 
+                <Fab className={classes.fabAdd}
                     size="small" color="primary" aria-label="add" 
                     disabled={nouveauModele.nom === "" ? true : false} 
-                    style={{marginLeft : "5%"}} 
                     onClick={() => addNouveauModele()}>
                     <AddIcon />
                 </Fab>
@@ -82,31 +135,30 @@ export default function DialogSelect(props) {
         <Dialog disableBackdropClick disableEscapeKeyDown open={props.open} onClose={() => props.setClose()}>
             <DialogTitle>Selection du modèle de sujet</DialogTitle>
             <DialogContent>
-            <form style={{display : "flex", justifyContent : "center", marginBottom : 20}}>
+            <form className={classes.form}>
                 <FormControl>
                 <InputLabel>Modèle</InputLabel>
-                <div style={{display : "grid", gridTemplateColumns : "80% 20%", gridGap : "7%", marginTop : 15}} >
-                <Select style={{width : 200}} value={select} onChange={handleChange} input={<Input/>}>
-                <MenuItem value="Créer nouveau modèle" style={{color : "#075b72"}}>Créer nouveau modèle</MenuItem>
-                {!actualise ? <PropagateLoader size={15} color={"rgb(7, 91, 114)"} css={{margin : "30px auto", display : "flex", justifyContent : "center"}}/> : modele.tabName.map(item => <MenuItem key={item.index} value={item.index}>{item.nom}</MenuItem>)}
-                </Select>
+                <div className={classes.divSelectModele}>
+                    <Select className={classes.selectModele} value={select} onChange={handleChange} input={<Input/>}>
+                    <MenuItem className={classes.menuItem} value="Créer nouveau modèle">Créer nouveau modèle</MenuItem>
+                    {!actualise ? <PropagateLoader size={15} color={"rgb(7, 91, 114)"} css={{margin : "30px auto", display : "flex", justifyContent : "center"}}/> : modele.tabName.map(item => <MenuItem key={item.index} value={item.index}>{item.nom}</MenuItem>)}
+                    </Select>
 
-                {chargementSupp 
-                ?<BounceLoader size={40} color={"rgb(7, 91, 114)"} css={{marginLeft : "5%", display : "block"}}/>
-                :<Fab style={{marginLeft : "5%"}} size="small" color="secondary" aria-label="delete" 
-                    disabled={select === "" || nouveauModele.etat}
-                    onClick={() => dispatch(removeModele(select))}
-                >
-                    <DeleteIcon/>
-                </Fab>
-                }
-                
-                    </div>
+                    {chargementSupp
+                    ?<BounceLoader size={40} color={"rgb(7, 91, 114)"} css={{marginLeft : "5%", display : "block"}}/>
+                    :<Fab className={classes.fabDelete} size="small" aria-label="delete"
+                        disabled={select === "" || nouveauModele.etat}
+                        onClick={() => dispatch(removeModele(select))}
+                    >
+                        <DeleteIcon/>
+                    </Fab>
+                    }
+                </div>
                 {displayNouveauModele()}
                 </FormControl>
             </form>
             </DialogContent>
-            <DialogActions style={{justifyContent : "space-around"}}>
+            <DialogActions className={classes.dialogActions}>
             {props.tard ? <Button onClick={() => props.setClose()} color="primary">Choisir plus tard</Button> : null}
             <Button disabled={select === "" || select === "Créer nouveau modèle" ? true : false} onClick={e => choisirModele()} color="primary">Ok</Button>
             </DialogActions>

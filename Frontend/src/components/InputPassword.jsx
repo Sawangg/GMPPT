@@ -1,16 +1,24 @@
 import React, {useState} from 'react'
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
-import {IconButton, TextField} from '@material-ui/core'
+import {IconButton, makeStyles, TextField} from '@material-ui/core'
 
 export default function InputPwd(props){
+
+    const useStyles = makeStyles((theme) => ({
+        divInputPassword: {
+            margin : "auto"
+        },
+
+    }));
+    const classes = useStyles();
 
     const [showMdp, setShowMdp] = useState(false)
     
     const changeShowMdp = () => setShowMdp(!showMdp)
 
     return (
-        <div style={{margin : "auto"}}>
+        <div className={classes.divInputPassword}>
             <TextField 
                 error={props.error} 
                 label={props.label}

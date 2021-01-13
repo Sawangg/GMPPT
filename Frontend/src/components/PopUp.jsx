@@ -1,14 +1,20 @@
 import React from 'react';
-import {Button, Snackbar, IconButton} from '@material-ui/core';
+import {Button, Snackbar, IconButton, makeStyles} from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import CloseIcon from '@material-ui/icons/Close';
 
 export default function PopUp(props) {
-    
-  return (
+    const useStyles = makeStyles((theme) => ({
+        snackbar: {
+            zIndex : 10
+        }
+    }));
+    const classes = useStyles();
+
+    return (
     <div>
       <Snackbar
-        style={{zIndex : 10}}
+        className={classes.snackbar}
         anchorOrigin={{vertical: 'bottom', horizontal: props.pos !== undefined ? props.pos : "left"}}
         open={props.open}
         autoHideDuration={6000}

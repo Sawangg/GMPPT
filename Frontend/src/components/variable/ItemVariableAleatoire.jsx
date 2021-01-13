@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextField, Fab, Typography } from '@material-ui/core';
+import {TextField, Fab, Typography, makeStyles} from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import SaveIcon from '@material-ui/icons/Save';
 import CreateIcon from '@material-ui/icons/Create';
@@ -13,13 +13,45 @@ import { changeNom, changeMax, changeMin, changeModif } from "../../slice/Variab
 import '../../styles/itemVariablesAleatoire.css'
 
 export default function ItemVariable(props){
+    const useStyles = makeStyles((theme) => ({
+        typo: {
+            marginTop : 8
+        },
+        containerVariables: {
+            display: "grid",
+            gridTemplateColumns: "0.25fr 1fr 0.10fr 0.5fr 0.5fr 0.5fr 0.25fr",
+            gridTemplateRows: "1fr",
+            gap: "0px 30px",
+            margin: "auto",
+            width: "90%",
+            marginTop: "3%"
+        },
+        center: {
+            margin: "auto",
+            display: "block",
+        },
+        fabDelete: {
+            backgroundColor: theme.palette.error.main,
+            "&:hover": {
+                backgroundColor: theme.palette.error.dark
+            },
+            color: "white"
+        },
+        fabSave: {
+            backgroundColor: theme.palette.primary.light,
+        },
+        fabModif: {
+            backgroundColor: theme.palette.primary.light
+        }
+    }));
+    const classes = useStyles();
 
     const dispatch = useDispatch();
 
     const displayModif = () =>{
         return (
             <>
-                <Fab size="small" color="primary" aria-label="add"
+                <Fab className={classes.fabSave} size="small" aria-label="add"
                     disabled={props.item.nom === "" || props.item.min > props.item.max} 
                     onClick={() => dispatch(changeModif(props.index))}
                 >
@@ -46,14 +78,14 @@ export default function ItemVariable(props){
     const displayTxt = () =>{
         return (
             <>
-                <Fab 
+                <Fab className={classes.fabModif}
                     size="small" 
-                    aria-label="add" 
+                    aria-label="add"
                     onClick={() => dispatch(changeModif(props.index))}
                 >
                     <CreateIcon/>
                 </Fab>
-                <Typography style={{marginTop : 8}}>{props.item.nom} </Typography>
+                <Typography className={classes.typo}>{props.item.nom}</Typography>
                 <ArrowRightIcon fontSize="large"/>
                 <Typography align="center">Min <br/>{props.item.min}</Typography>
                 <Typography align="center">Max <br/>{props.item.max} </Typography>
@@ -63,16 +95,15 @@ export default function ItemVariable(props){
     }
 
     return (
-            <div className="containerVariables">
+            <div className={classes.containerVariables} id="containerVariables">
                 {props.item.modif ? displayModif() : displayTxt()}
-                <Fab 
+                <Fab className={classes.fabDelete}
                     disabled={props.length <= 1}
                     size="small" 
-                    color="secondary" 
-                    aria-label="add" 
+                    aria-label="add"
                     onClick={() => props.removeVariable()}
                 >
-                <DeleteIcon className="center" />
+                <DeleteIcon className={classes.center}/>
                 </Fab>
             </div>
     );
