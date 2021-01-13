@@ -17,7 +17,7 @@ export default function Accueil() {
             marginTop : "3%"
         },
         button: {
-            marginLeft : 20,
+            height : 36,
             backgroundColor: theme.palette.primary.main,
             color: "white",
             "&:disabled": {
@@ -30,6 +30,13 @@ export default function Accueil() {
         divPromo: {
             marginTop : 50
         },
+        divPromoModele: {
+            marginTop : 50,
+            display : "flex",
+            justifyContent : "space-around",
+            width : "60%",
+            margin : "auto"
+        },
         typo: {
             textAlign: "center"
         },
@@ -40,7 +47,7 @@ export default function Accueil() {
         },
         formControl: {
             display : "block",
-            margin : "50px auto",
+            margin : "30px auto",
             width : "100%"
         },
         divSelectPromo: {
@@ -52,7 +59,8 @@ export default function Accueil() {
             position : "relative"
         },
         selectPromo: {
-            width : 200
+            width : 200,
+            marginTop : "0 !important"
         },
         selectModele: {
             width : 200
@@ -115,38 +123,47 @@ export default function Accueil() {
 
     return (
         <div>
-             <div className={classes.divNomPromo}>
-                <TextField autoFocus size="small" label="Nom de la promo" variant="outlined" required value={promo} onChange={e => changePromo(e)}/>
-                <Button className={classes.button} disabled={promo==="" ? true : false} variant="outlined" onClick={() => envoiePromo()}>Envoyer</Button>
-            </div>
             <div className={classes.divPromo}>
-                <Typography className={classes.typo}>Selectionner une promotion pour ajouter une liste d'étudiants</Typography>
+                <h1 className={classes.typo}>Selectionner une promotion pour ajouter une liste d'étudiants</h1>
                 <form className={classes.form}>
                     <FormControl className={classes.formControl}>
                         <div className={classes.divSelectPromo}>
-                            <InputLabel className={classes.labelSelectPromo}>Promotion</InputLabel>
+                            <InputLabel className={classes.labelSelectPromo}>Promotion selectionnée</InputLabel>
                             <Select className={classes.selectPromo} value={select} onChange={handleChange} input={<Input/>}>
+                                <MenuItem style={{color : "#075b72"}} value={"ajoutPromo"}>Ajouter promotion</MenuItem>
                                 {tabPromo.map((element, index) => (
                                     <MenuItem key={index} value={element.id_promo}>{element.nom_promo}</MenuItem>
                                 ))}
                             </Select>
                         </div>
+                        {select !== "ajoutPromo" ? null 
+                            :<div className={classes.divNomPromo}>
+                                <TextField autoFocus size="small" label="Nom de la promo" variant="outlined" required value={promo} onChange={e => changePromo(e)}/>
+                                <Button className={classes.button} disabled={promo==="" ? true : false} variant="outlined" onClick={() => envoiePromo()}>Créer</Button>
+                            </div>
+                        }
                         <DropFile typeFile='.xlsx' compressImage={false} changeFile={e => setExcel(e)}  message="Charger la liste des étudiants"/>
-                        <Button className={classes.button} disabled={excel==="" ? true : false} variant="outlined" onClick={e => envoieExcel()}>Envoyer</Button>
+                        <Button style={{display : "block", margin : "20px auto"}} className={classes.button} disabled={excel==="" ? true : false} variant="outlined" onClick={e => envoieExcel()}>Enregistrer liste étudiants</Button>
                     </FormControl>
                 </form>
             </div>
-            <div className={classes.divPromo}>
-                <Select className={classes.selectPromo} value={selectPromo} onChange={handleChange2} input={<Input/>}>
-                    {tabPromo.map((element, index) => (
-                        <MenuItem key={index} value={element.id_promo}>{element.nom_promo}</MenuItem>
-                    ))}
-                </Select>
-                <Select className={classes.selectModele} value={selectionModele} onChange={handleChangeModele} input={<Input/>}>
-                    {modele.tabName.map((element, index) => (
-                        <MenuItem key={index} value={element.index}>{element.nom}</MenuItem>
-                    ))}
-                </Select>
+            <div className={classes.divPromoModele}>
+                <div>
+                    <InputLabel className={classes.labelSelectPromo}>Promotion selectionnée</InputLabel>
+                    <Select className={classes.selectPromo} value={selectPromo} onChange={handleChange2} input={<Input/>}>
+                        {tabPromo.map((element, index) => (
+                            <MenuItem key={index} value={element.id_promo}>{element.nom_promo}</MenuItem>
+                        ))}
+                    </Select>
+                </div>
+                <div> 
+                    <InputLabel className={classes.labelSelectPromo}>Modèle selectionné</InputLabel>
+                    <Select className={classes.selectModele} value={selectionModele} onChange={handleChangeModele} input={<Input/>}>
+                        {modele.tabName.map((element, index) => (
+                            <MenuItem key={index} value={element.index}>{element.nom}</MenuItem>
+                        ))}
+                    </Select>
+                </div>
                 <Button className={classes.button} disabled={(selectionModele === "") || (selectPromo === "") ? true : false} variant="outlined" onClick={() => envoieAttribution()}>Envoyer</Button>
             </div>
         </div>

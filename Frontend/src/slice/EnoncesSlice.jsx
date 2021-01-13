@@ -115,7 +115,7 @@ export const enoncesReducer = createSlice({
             let question = [];
             let reponse = [];
             state.enonceContenu = action.payload.enonce;
-            action.payload.forEach(element => {
+            action.payload.questions.forEach(element => {
                 element.reponses.forEach(elem => {
                     reponse.push({ 
                         selectCat : elem.selectCat,
@@ -128,7 +128,7 @@ export const enoncesReducer = createSlice({
             });
             state.question = question;
             state.actualise = true;
-            state.actualise = true;
+            state.enregistre = true;
         },
         [setQuestions.fulfilled]: (state) => {
             state.enregistre = true;
