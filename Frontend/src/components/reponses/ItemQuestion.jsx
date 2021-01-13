@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {Button} from '@material-ui/core';
+import {Button, makeStyles} from '@material-ui/core';
 
 import { useDispatch } from 'react-redux';
 import { addReponse } from '../../slice/RepondreQuestionsSlice'
@@ -8,6 +8,27 @@ import { addReponse } from '../../slice/RepondreQuestionsSlice'
 import Reponse from './ItemReponse';
 
 export default function Question(props) {
+
+    const useStyles = makeStyles((theme) => ({
+        listeReponses: {
+            display : "flex",
+            flexDirection: "column",
+            flexWrap : "wrap",
+            rowGap : "30px",
+            alignItems: "center"
+        },
+        listeQuestions: {
+            marginBottom: "30px"
+        },
+        enonce: {
+            margin : "20px 0px",
+            fontSize : "18px"
+        },
+        buttonAjouterReponse: {
+            margin : "20px 0px"
+        }
+    }));
+    const classes = useStyles();
 
     const dispatch = useDispatch()
 
@@ -19,7 +40,7 @@ export default function Question(props) {
     //liste les différentes réponses
     const listeReponses = () =>{
         return(
-            <div className="liste_reponse">
+            <div className={classes.listeReponses}>
 
                 {/* affichage des réponses une par une */}
                 {props.question.tabReponses.map((i, index) => (
@@ -31,18 +52,17 @@ export default function Question(props) {
         )
     }
 
-
     return (
-        <div className="liste_questions" >
+        <div className={classes.listeQuestions} >
             <h2>Question {props.question.indexQuestion + 1}</h2>
 
             {/* affichage énoncé de la question */ }
-            <p className="enonce">{props.question.enonce}</p>
+            <p className={classes.enonce}>{props.question.enonce}</p>
 
             {/* bouton ajouter réponse visible uniquement si la question attend plus d'une réponse */ }
             {props.question.nbMaxReponses > 1 ?
                 <Button variant="contained" 
-                        className="buttonAjouterReponse" 
+                        className={classes.buttonAjouterReponse}
                         color="primary"
                         onClick={handleAddReponse} 
                         //est disabled dès que la limte de réponses possibles est atteinte

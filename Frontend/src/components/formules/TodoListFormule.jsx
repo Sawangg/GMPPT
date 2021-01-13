@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Button} from '@material-ui/core';
+import {Button, makeStyles} from '@material-ui/core';
 
 import Item from './ItemTodoFormule'
 import PopUp from '../PopUp'
@@ -9,9 +9,19 @@ import { addFormule, removeFormule, undoFormule } from "../../slice/FormulesSlic
 import { useSelector } from "react-redux";
 import { selectTabFormule } from "../../slice/FormulesSlice"
 
-import '../../styles/TodoListFormule.css'
-
 export default function TodoListFormule(props) {
+
+    const useStyles = makeStyles((theme) => ({
+        buttonAjouterFormule: {
+            maxWidth: "220px",
+            maxHeight: "36px",
+            display : "block",
+            margin: "6% auto 0 auto",
+            color: theme.palette.primary.main,
+            borderColor: theme.palette.primary.main
+        }
+    }));
+    const classes = useStyles();
 
     const [openPopUpSave, setOpenPopUpSave] = useState(false);
 
@@ -34,9 +44,8 @@ export default function TodoListFormule(props) {
                 <Item remove={e => remove(id)} index={id} item={i} nb={tab.length} key={i.index} indexCategorie={props.index}/>
             ))}
              <Button 
-                className="buttonAjouterFormule" 
+                className={classes.buttonAjouterFormule}
                 variant="outlined" 
-                color="primary" 
                 onClick={() => dispatch(addFormule(props.index))}
             >
                     Ajouter des formules

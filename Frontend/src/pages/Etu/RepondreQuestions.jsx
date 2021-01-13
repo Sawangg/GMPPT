@@ -9,9 +9,6 @@ import {selectAllQuestions, selectSujet } from "../../slice/RepondreQuestionsSli
 
 import Question from '../../components/reponses/ItemQuestion'
 
-import '../../styles/RepondreQuestions.css'
-
-
 export default function RepondreQuestions(){
 
     const useStyles = makeStyles((theme) => ({

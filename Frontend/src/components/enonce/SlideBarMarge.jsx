@@ -1,10 +1,18 @@
 import React from 'react';
-import { Typography, Slider} from '@material-ui/core';
+import {Typography, Slider, makeStyles} from '@material-ui/core';
 
 import { useSelector, useDispatch } from "react-redux";
 import { selectMargeErreur, handleChangeMargeErreur } from '../../slice/EnoncesSlice'
 
 export default function SliderBar(props) {
+
+    const useStyles = makeStyles((theme) => ({
+        divSlideBar: {
+            width : "70%",
+            margin : "5% auto 0 auto"
+        }
+    }));
+    const classes = useStyles();
 
     const dispatch = useDispatch();
     const marge = useSelector(selectMargeErreur(props.indexQuestion, props.indexReponse));
@@ -14,7 +22,7 @@ export default function SliderBar(props) {
     };
 
   return (
-    <div style={{height : 40, position : "relative", bottom : 10}}>
+    <div className={classes.divSlideBar}>
       <Typography variant="caption" gutterBottom>Marge d'erreur autorisée</Typography>
       <Slider
         onChange={handleChange}

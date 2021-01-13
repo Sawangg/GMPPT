@@ -1,39 +1,4 @@
-.buttonItem {
-    height: 40px;
-}
-
-.ButtonEnregistrer{
-    background-color : #c0dff8 !important;
-}
-
-.containerFormules {
-    display: grid;
-    grid-template-columns: 0.5fr 3.5fr 2fr 0.75fr 0.75fr;
-    grid-template-rows: 1fr;
-    gap: 0px 15px;
-    margin: 0px 1% 3%;
-}
-
-.affichageFormule{
-    display: flex;
-    justify-content: space-around;
-}
-
-.nomFormule{
-    width : 30%;
-}
-
-.formule{
-    width : 40%;
-    margin-left : 2% !important;
-}
-
-.typoFormule{
-    overflow-wrap: break-word;
-}
-
 @media screen and (max-width: 960px) {
-    
     .containerFormules {
         grid-template-columns: 0.5fr 3.5fr 2fr;
         gap: 0px 10px;
