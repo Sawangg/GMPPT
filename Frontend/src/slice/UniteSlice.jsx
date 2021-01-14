@@ -6,24 +6,49 @@ export const getAllUnite = createAsyncThunk("unite/getAllUnite", async () => {
   return response.data;
 });
 
-export const addUnite = createAsyncThunk("unite/addunite", async (nom, abr) => {
-  const response = await addUniteAPI(nom, abr);
+export const enregistreUnite = createAsyncThunk("unite/addunite", async (props) => {
+  const response = await addUniteAPI(props.nomComplet, props.abr);
   return response.data;
 });
 
-export const deleteUnite = createAsyncThunk("unite/deleteUnite", async (idUnite) => {
-  const response = await deleteUniteAPI(idUnite);
+export const deleteUnite = createAsyncThunk("unite/deleteUnite", async (nomUnite) => {
+  const response = await deleteUniteAPI(nomUnite);
   return response.data;
 });
 
 export const uniteSlice = createSlice({
   name: "unite",
   initialState: {
-    tabUnites: [{nomComplet : undefined, abr : undefined}],
-    actualise: false,
+    tabUnites: [{
+      nomComplet : undefined,
+      abr : undefined,
+    }],
+    indexEnModif : -1, //l'index de l'unité qui est en modif (-1 coorespond à aucune unité en modif)
+    actualise : false, //indique si l'importation des données est terminée
     chargementSuppression : false
   },
   reducers: {
+    //ajoute une unité dans le tableau Unité (ATTENTION : n'enregistre pas dans la BD)
+    //paramètres : nomComplet de l'unité, abréviation
+    addUnite : (state) =>{
+      let index = state.tabUnites.push({
+        nomComplet : "",
+        abr : ""
+      })
+      state.indexEnModif = index - 1
+    },
+    //change le nom complet d'une unité
+    //paramètres : nom complet de l'unité et index
+    changeNomComplet : (state, action) =>{
+      let {index, value} = action.payload
+      state.tabUnites[index].nomComplet = value
+    },
+    //change l'abréviation d'une unité
+    //paramètres : abréviation de l'unité et index
+    changeAbreviation : (state, action) =>{
+      let {index, value} = action.payload
+      state.tabUnites[index].abr = value
+    },
     setTest : (state) =>{
       state.tabUnites = [
         {nomComplet : "Sans Unité", abr : " "},
@@ -34,24 +59,30 @@ export const uniteSlice = createSlice({
   },
   extraReducers: {
     [getAllUnite.rejected]: (state, action) => {
-      console.log("reject")
+      console.log("reject get")
     },
     [getAllUnite.fulfilled]: (state, action) => {
-      let nom = action.payload.nom
-      let abr = action.payload.abrev
-      console.log(nom + "; " + abr)
+      state.tabUnites = []
+      action.payload.forEach(unite => {
+        state.tabUnites.push({
+          nomComplet : unite.nom,
+          abr : unite.abrev
+        })
+      });
+      //state.tabUnites = action.payload
+      console.log(state.tabUnites)
+      state.actualise = true
     },
     [getAllUnite.pending]: (state, action) => {
       state.actualise = false
-      //console.log(action)
     },
-    [addUnite.rejected]: (state, action) => {
+    [enregistreUnite.rejected]: (state, action) => {
       console.log("reject")
     },
-    [addUnite.fulfilled]: (state, action) => {
+    [enregistreUnite.fulfilled]: (state, action) => {
       console.log("fulfill")
     },
-    [addUnite.pending]: (state, action) => {
+    [enregistreUnite.pending]: (state, action) => {
     },
     [deleteUnite.rejected]: (state, action) => {
     },
@@ -62,11 +93,13 @@ export const uniteSlice = createSlice({
   }
 });
 
-export const { setTest } = uniteSlice.actions;
+export const { setTest, addUnite, changeNomComplet, changeAbreviation } = uniteSlice.actions;
 
 export const selectUnites = (state) => state.unite.tabUnites;
 
 export const selectActualise = (state) => state.unite.actualise;
+
+export const selectIndexEnMofid = (state) => state.unite.indexEnModif
 
 export const selectChargementSupp = (state) => state.unite.chargementSuppression;
 
