@@ -9,6 +9,7 @@ import ListeReponses from "../../components/enonce/ListeReponses";
 import PopUp from '../../components/PopUp';
 import SelectionModele from '../../components/SelectionModele'
 import MyEditor from '../../components/enonce/MyEditor'
+import useUnload from '../../components/use/useUnload';
 
 import { useDispatch, useSelector } from "react-redux";
 import { selectModele } from "../../slice/ModeleSlice";
@@ -73,6 +74,8 @@ export default function Enonces() {
     useEffect(() => {
         setOpenPopUp(true)
     }, [isEnregistreEnonce])
+
+    useUnload(!isEnregistreEnonce);
 
     const envoyer = () =>{
         dispatch(setQuestions({ idModele : modele.idModeleSelectionne, enonce : enonce.enonceContenu, tabQuestions : enonce.question }));
