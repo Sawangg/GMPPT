@@ -30,8 +30,8 @@ router.get('/modele', isAuthenticated, isStudent, (req, res) => {
 });
 
 router.get('/:idpromo', isAuthenticated, isProf, async (req, res) => {
-    const { idPromo } = req.params;
-    db.promise().execute(`SELECT * FROM etudiant WHERE id_promo = ${idPromo}`).then(([rows]) => {
+    const { idpromo } = req.params;
+    db.promise().execute(`SELECT * FROM etudiant WHERE id_promo = ${idpromo}`).then(([rows]) => {
         return res.send(rows).status(200);
     }).catch(() => {
         return res.sendStatus(500);
@@ -39,10 +39,11 @@ router.get('/:idpromo', isAuthenticated, isProf, async (req, res) => {
 });
 
 router.get('/:idpromo/delete', isAuthenticated, isProf, async (req, res) => {
-    const { idPromo } = req.params;
+    const { idpromo } = req.params;
+    console.log(req.params)
     try {
-        await db.promise().execute(`DELETE FROM promo WHERE id_promo = ${idPromo}`);
-        await db.promise().execute(`DELETE FROM etudiant WHERE id_promo = ${idPromo}`);
+        await db.promise().execute(`DELETE FROM promo WHERE id_promo = ${idpromo}`);
+        await db.promise().execute(`DELETE FROM etudiant WHERE id_promo = ${idpromo}`);
         await db.promise().execute(`DELETE FROM authentification WHERE id_auth NOT IN (SELECT id_auth FROM etudiant) AND isProf = false`);
         return res.sendStatus(200);
     } catch {

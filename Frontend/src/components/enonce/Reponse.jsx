@@ -45,8 +45,7 @@ export default function Reponse (props) {
             maxWidth: "350px",
             maxHeight: "36px",
             display : "block",
-            color: theme.palette.primary.main,
-            borderColor: theme.palette.primary.main
+            backgroundColor: theme.palette.primary.light
         }
     }));
     const classes = useStyles();
@@ -70,7 +69,7 @@ export default function Reponse (props) {
                 </>
             }
             <div className={classes.divUniteMarge}>
-                <Button variant="outlined" className={classes.buttonAjouterUnite} onClick={() => setOpen(true)}>Choisir les unités</Button>
+                <Button variant="contained" className={classes.buttonAjouterUnite} onClick={() => setOpen(true)}>Choisir les unités</Button>
                 <p className={classes.affichageUnite}>Affichage unité</p>
             </div>
             <ChoixUnite open={open} handleClose={() => setOpen(false)} unite={props.element.unite} setTabUnite={e => dispatch(handleChangeUnite({idQuestion : props.indexQuestion, idReponse : props.indexReponse, tabUnite : e}))}/>

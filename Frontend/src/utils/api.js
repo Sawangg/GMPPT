@@ -85,6 +85,10 @@ export function attributionSujetAPI(idPromo, idModele) {
     return axios.get(`http://${host}:3001/promo/${idPromo}/${idModele}/attribution`, credentials)
 }
 
+export function deletePromoAPI(idPromo){
+    return axios.get(`http://${host}:3001/promo/${idPromo}/delete`, credentials)
+}
+
 // Variables aléatoires
 export function addVariableAPI(idModele, tabVariables) {
     return axios.post(`http://${host}:3001/modele/${idModele}/variables/new`, tabVariables, credentials)

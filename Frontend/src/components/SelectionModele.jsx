@@ -60,6 +60,7 @@ export default function SelectionModele({setClose, open, tard}) {
         },
         fabDelete: {
             margin: "5%",
+            color: "white",
             backgroundColor: theme.palette.error.main,
             "&:hover": {
                 backgroundColor: theme.palette.error.dark
@@ -67,6 +68,9 @@ export default function SelectionModele({setClose, open, tard}) {
         },
         dialogActions: {
             justifyContent : "space-around"
+        },
+        buttonLater: {
+            backgroundColor: theme.palette.primary.light
         }
     }));
     const classes = useStyles();
@@ -157,8 +161,8 @@ export default function SelectionModele({setClose, open, tard}) {
             </form>
             </DialogContent>
             <DialogActions className={classes.dialogActions}>
-            {tard ? <Button onClick={() => setClose()} color="primary">Choisir plus tard</Button> : null}
-            <Button disabled={select === "" || select === "Créer nouveau modèle" ? true : false} onClick={e => choisirModele()} color="primary">Ok</Button>
+            {tard ? <Button className={classes.buttonLater} variant="contained" onClick={() => setClose()}>Choisir plus tard</Button> : null}
+            <Button disabled={select === "" || select === "Créer nouveau modèle" ? true : false} onClick={e => choisirModele()} variant="contained" color="primary">Ok</Button>
             </DialogActions>
         </Dialog>
         </div>
