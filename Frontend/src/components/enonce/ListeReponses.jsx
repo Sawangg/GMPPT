@@ -16,8 +16,6 @@ export default function ListeReponses(props) {
             marginTop : "1%"
         },
         buttonAjouterReponse: {
-            maxWidth: "350px",
-            maxHeight: "36px",
             display : "block",
             marginBottom : "2%",
         },

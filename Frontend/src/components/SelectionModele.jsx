@@ -67,6 +67,7 @@ export default function SelectionModele({setClose, open, tard}) {
             }
         },
         dialogActions: {
+            marginBottom:"3%",
             justifyContent : "space-around"
         },
         buttonLater: {

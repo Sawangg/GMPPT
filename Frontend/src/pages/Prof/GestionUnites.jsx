@@ -1,4 +1,4 @@
-import { Button, Table, TableCell, TableHead, TableRow, TableBody, TextField } from '@material-ui/core';
+import { Button, Table, TableCell, TableHead, TableRow, TableBody, TextField, Typography } from '@material-ui/core';
 import {makeStyles} from '@material-ui/core';
 import React, {useState} from 'react'
 import _ from 'lodash'
@@ -12,6 +12,10 @@ import {getAllUnite, selectUnites, enregistreUnite, selectActualise, addUnite,
 export default function GestionUnites(){
 
     const useStyles = makeStyles((theme) => ({
+        hr: {
+            width: "80%",
+            marginBottom: "2%"
+        },
         tableauUnite : {
             width : "40%",
             margin : "auto"
@@ -106,7 +110,9 @@ export default function GestionUnites(){
 
     return(
         <div>
-            <h1>Gestion des Unités</h1>
+            <Typography variant="h1">Gestion des unités</Typography>
+            <hr className={classes.hr}/>
+        
             <Button onClick={handleAjouterUnite}>
                 Ajouter une unité
             </Button>

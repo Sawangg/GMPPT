@@ -57,9 +57,11 @@ export default function App() {
                 fontWeight: "bold",
                 textAlign: "center",
                 textTransform: "uppercase",
-                marginBottom: "2%",
                 color: "#393939",
-                padding: "1%"
+            },
+            button: {
+                height : 36,
+                width: "max-content",
             }
         },
     }, frFR);

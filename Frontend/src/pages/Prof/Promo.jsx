@@ -13,28 +13,24 @@ import '../../styles/ImportModele3D.css'
 export default function Accueil() {
 
     const useStyles = makeStyles((theme) => ({
+        hr: {
+            width: "80%",
+            marginBottom: "2%"
+        },
         divNomPromo: {
             display : "flex",
             justifyContent : "center",
-            marginTop : "3%"
+            marginTop : "3%",
         },
         button: {
-            height : 36,
-            backgroundColor: theme.palette.primary.main,
-            color: "white",
-            "&:disabled": {
-                backgroundColor: theme.palette.secondary.main
-            },
-            "&:hover": {
-                backgroundColor: theme.palette.primary.dark
-            }
+            display : "block",
+            margin : "20px auto"
         },
         divPromo: {
-            marginTop : 50,
             boxShadow : "0px 8px 20px -5px rgba(0,0,0,0.69)",
             padding : "1% 0.5%",
             width : "80%",
-            margin : "auto"
+            margin : "auto",
         },
         typo: {
             textAlign: "center"
@@ -62,6 +58,13 @@ export default function Accueil() {
         selectPromo: {
             width : 200,
             marginTop : "0 !important"
+        },
+        fabDelete: {
+            color: "white",
+            backgroundColor: theme.palette.error.main,
+            "&:hover": {
+                backgroundColor: theme.palette.error.dark
+            }
         }
     }));
     const classes = useStyles();
@@ -114,6 +117,7 @@ export default function Accueil() {
     return (
         <div>
             <Typography variant="h1">PROMOTION</Typography>
+            <hr className={classes.hr}/>
             <div className={classes.divPromo}>
                 <form className={classes.form}>
                     <FormControl className={classes.formControl}>
@@ -134,14 +138,14 @@ export default function Accueil() {
                                 <DeleteIcon/>
                             </Fab>
                         </div>
-                        {select !== "ajoutPromo" ? null 
+                        {select !== "ajoutPromo" ? null
                             :<div className={classes.divNomPromo}>
                                 <TextField autoFocus size="small" label="Nom de la promo" variant="outlined" required value={promo} onChange={e => changePromo(e)}/>
                                 <Button className={classes.button} disabled={promo===""} variant="outlined" onClick={() => addPromo()}>Créer</Button>
                             </div>
                         }
                         <DropFile typeFile='.xlsx' compressImage={false} changeFile={e => setExcel(e)}  message="Charger la liste des étudiants de la promotion"/>
-                        <Button style={{display : "block", margin : "20px auto"}} className={classes.button} disabled={excel===""} variant="outlined" onClick={() => envoieExcel()}>Enregistrer liste étudiants</Button>
+                        <Button className={classes.button} disabled={excel===""} variant="contained" color="primary" onClick={() => envoieExcel()}>Enregistrer liste étudiants</Button>
                     </FormControl>
                 </form>
             </div>

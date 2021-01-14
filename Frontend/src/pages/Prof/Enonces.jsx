@@ -21,6 +21,10 @@ export default function Enonces() {
     const [open, setOpen] = useState(false);
   
     const useStyles = makeStyles((theme) => ({
+        hr: {
+            width: "80%",
+            marginBottom: "2%"
+        },
         enonceSujet: {
             width: "70%",
             margin: 'auto'
@@ -38,11 +42,6 @@ export default function Enonces() {
             flexWrap : "wrap",
         },
         buttonAddQuestion: {
-            backgroundColor: theme.palette.primary.main,
-                "&:hover": {
-                    backgroundColor: theme.palette.primary.dark,
-                },
-            color: "white",
             display: "block",
             margin: "50px auto"
         },
@@ -91,6 +90,7 @@ export default function Enonces() {
         return (
             <div>
                 <Typography variant="h1">énoncé</Typography>
+                <hr className={classes.hr}/>
                 <div className={classes.enonceSujet}>
                     <MyEditor value={enonce.enonceContenu} handleChange={e => dispatch(handleChangeEnonce(e))}/>
                 </div>
@@ -110,7 +110,7 @@ export default function Enonces() {
                         </div>
                     )
                 })}
-                <Button className={classes.buttonAddQuestion} variant="contained" onClick={() => dispatch(addQuestion())}>Ajouter une question</Button>
+                <Button className={classes.buttonAddQuestion} variant="contained" color="primary" onClick={() => dispatch(addQuestion())}>Ajouter une question</Button>
                 <PopUp
                     severity={isEnregistreEnonce ? "success" : "warning"}
                     message={isEnregistreEnonce ? "Enoncé enregistré" : "Enregistrer les modifications"}

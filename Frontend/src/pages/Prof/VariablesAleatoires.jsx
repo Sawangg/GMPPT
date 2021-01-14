@@ -20,6 +20,10 @@ export default function VariablesAleatoires() {
     const [open, setOpen] = useState(false);
         
     const useStyles = makeStyles((theme) => ({
+        hr: {
+            width: "80%",
+            marginBottom: "2%"
+        },
         fab: {marginLeft: "3%"},
         divItemvariable: {
             boxShadow: "0px 8px 20px -5px rgba(0,0,0,0.69)",
@@ -73,6 +77,7 @@ export default function VariablesAleatoires() {
         return (
             <div>
                 <Typography variant="h1">Variables aléatoires</Typography>
+                <hr className={classes.hr}/>
                 <Fab className={classes.fab}
                     size="small"
                     color="primary"

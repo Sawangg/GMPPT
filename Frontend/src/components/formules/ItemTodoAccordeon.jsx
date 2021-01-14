@@ -38,7 +38,7 @@ export default function Item(props) {
         },
         divItemAccordeon: {
             display: "block",
-            margin: "2% auto",
+            margin: "0 auto 2% auto",
             width: "70%",
             borderRadius: "3px",
             padding: "2% 3%",
