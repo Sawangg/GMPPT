@@ -60,8 +60,12 @@ export function getInfoArchiAPI(archi){
     return axios.get(`http://${host}:3001/architecture/${archi}/modeles`, credentials)
 }
 
-export function addArchiAPI(archi){
+export function addModele3DAPI(archi){
     return axios.post(`http://${host}:3001/architecture/${archi.sujet}/modeles/new`, archi.images, credentials)
+}
+
+export function addArchiAPI(excel){
+    return axios.post(`http://${host}:3001/architecture/new`, excel, credentials)
 }
 
 // Promotion
