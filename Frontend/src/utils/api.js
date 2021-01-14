@@ -3,7 +3,7 @@ import axios from 'axios';
 const credentials = { withCredentials: true }
 const host = 'localhost';
 
-//User 
+// User 
 export function getInfoUserAPI() {
     return axios.get(`http://${host}:3001/auth`, credentials);
 }
@@ -28,56 +28,56 @@ export function setPwdUserAPI(username, passwords) {
     return axios.post(`http://${host}:3001/auth/${username}/changepwd`, { passwords }, credentials)
 }
 
-//Formules
-export function getCategoriesFormulesAPI(idModele){
+// Formules
+export function getCategoriesFormulesAPI(idModele) {
     return axios.get(`http://${host}:3001/modele/${idModele}/categories`, credentials)
 }
 
-export function addCategorieFormuleAPI(idModele, tabFormules){
+export function addCategorieFormuleAPI(idModele, tabFormules) {
     return axios.post(`http://${host}:3001/modele/${idModele}/categories/new`, tabFormules, credentials)
 }
 
-//Modele
-export function getInfoModeleAPI(idModele){
+// Modele
+export function getInfoModeleAPI(idModele) {
     return axios.get(`http://${host}:3001/modele/${idModele}`, credentials)
 }
 
-export function deleteModeleAPI(idModele){
+export function deleteModeleAPI(idModele) {
     return axios.get(`http://${host}:3001/modele/${idModele}/delete`, credentials)
 }
 
-export function getAllModeleAPI(){
+export function getAllModeleAPI() {
     return axios.get(`http://${host}:3001/modele`, credentials)
 }
 
-//renvoie ausi le numéro modele
-export function addModeleAPI(nomModele){
-    return axios.post(`http://${host}:3001/modele/new`, {"nommodele" : nomModele}, credentials)
+// renvoie ausi le numéro modele
+export function addModeleAPI(nomModele) {
+    return axios.post(`http://${host}:3001/modele/new`, { "nommodele" : nomModele }, credentials)
 }
 
-//Architectures
-export function getInfoArchiAPI(archi){
+// Architectures
+export function getInfoArchiAPI(archi) {
     return axios.get(`http://${host}:3001/architecture/${archi}/modeles`, credentials)
 }
 
-export function addModele3DAPI(archi){
+export function addModele3DAPI(archi) {
     return axios.post(`http://${host}:3001/architecture/${archi.sujet}/modeles/new`, archi.images, credentials)
 }
 
-export function addArchiAPI(excel){
+export function addArchiAPI(excel) {
     return axios.post(`http://${host}:3001/architecture/new`, excel, credentials)
 }
 
 // Promotion
-export function addPromoAPI(nomPromo){
-    return axios.post(`http://${host}:3001/promo/new`, {nomPromo : nomPromo}, credentials)
+export function addPromoAPI(nomPromo) {
+    return axios.post(`http://${host}:3001/promo/new`, { nomPromo : nomPromo }, credentials)
 }
 
-export function getAllPromoAPI(){
+export function getAllPromoAPI() {
     return axios.get(`http://${host}:3001/promo/`, credentials)
 }
 
-export function getInfoPromoAPI(idPromo){
+export function getInfoPromoAPI(idPromo) {
     return axios.get(`http://${host}:3001/promo/${idPromo}`, credentials)
 }
 
@@ -90,15 +90,15 @@ export function deletePromoAPI(idPromo){
 }
 
 // Variables aléatoires
-export function addVariableAPI(idModele, tabVariables){
+export function addVariableAPI(idModele, tabVariables) {
     return axios.post(`http://${host}:3001/modele/${idModele}/variables/new`, tabVariables, credentials)
 }
 
-export function getVariablesAPI(idModele){
+export function getVariablesAPI(idModele) {
     return axios.get(`http://${host}:3001/modele/${idModele}/variables`, credentials)
 }
 
-//Enonces
+// Enonces
 export function getQuestionsAPI(idModele) {
     return axios.get(`http://${host}:3001/modele/${idModele}/questions`, credentials);
 }
@@ -107,16 +107,16 @@ export function setQuestionsAPI(idModele, enonce, tabQuestions) {
     return axios.post(`http://${host}:3001/modele/${idModele}/questions/new`, { tabQuestions, enonce }, credentials);
 }
 
-//Unite
-export function addUniteAPI(nom, abrev){
+// Unite
+export function addUniteAPI(nom, abrev) {
     return axios.post(`http://${host}:3001/unite/new`, { nom , abrev }, credentials);
 }
 
-export function getAllUniteAPI(){
+export function getAllUniteAPI() {
     return axios.get(`http://${host}:3001/unite/`, credentials);
 }
 
-export function deleteUniteAPI(idUnite){
+export function deleteUniteAPI(idUnite) {
     return axios.get(`http://${host}:3001/unite/${idUnite}/delete`, credentials);
 }
 
@@ -124,4 +124,8 @@ export function deleteUniteAPI(idUnite){
 
 export function etudiantNewAPI(idPromo, fileUploaded) {
     return axios.post(`http://${host}:3001/etudiant/${idPromo}/new`, fileUploaded, credentials);
+}
+
+export function etudiantModeleAPI() {
+    return axios.get(`http://${host}:3001/promo/modele`, credentials);
 }

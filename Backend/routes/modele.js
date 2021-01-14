@@ -127,10 +127,15 @@ router.get('/:idmodele/questions', isAuthenticated, async (req, res) => {
         const enonce = (await db.promise().execute(`SELECT enonce FROM modele_sujet WHERE id_modele = ${idmodele}`))[0][0].enonce;
         db.promise().execute(`SELECT contenu, reponses FROM question WHERE id_modele = ${idmodele}`).then(([questions]) => {
             if (!questions[0]) return res.sendStatus(404);
-            questions.map(r => {
-                r.reponses = (r.reponses == undefined ? r.reponses : JSON.parse(r.reponses));
-                return r;
-            });
+            if(req.user.isProf) {
+                questions.map(r => {
+                    r.reponses = (r.reponses == undefined ? r.reponses : JSON.parse(r.reponses));
+                });
+            } else {
+                questions.map(r => {
+                    delete r.reponses;
+                });
+            }
             return res.send({ questions, enonce }).status(200);
         });
     } catch {
@@ -142,15 +147,14 @@ router.post('/:idmodele/questions/new', isAuthenticated, isProf, async (req, res
     const { idmodele } = req.params;
     try {
         await db.promise().execute(`UPDATE modele_sujet SET enonce = '${req.body.enonce}' WHERE id_modele = ${idmodele}`);
-        db.promise().execute(`DELETE FROM question WHERE id_modele = ${idmodele}`).then(() => {
+        db.promise().execute(`DELETE FROM question WHERE id_modele = ${idmodele}`).then(async () => {
             let insert = 'INSERT INTO question VALUES ';
-            req.body.tabQuestions.forEach(async question => {
+            req.body.tabQuestions.forEach(question => {
                 insert += `(NULL, ${idmodele}, '${question.contenu}', '${JSON.stringify(question.reponse)}'),`;
             });
             insert = insert.slice(0, -1);
-            db.promise().execute(insert).then(() => {
-                return res.sendStatus(200);
-            });
+            await db.promise().execute(insert);
+            return res.sendStatus(200);
         });
     } catch {
         return res.sendStatus(500);
