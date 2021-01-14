@@ -7,11 +7,11 @@ const { comparePwd, encrypt } = require("../utils.js");
 
 
 router.get("/", isAuthenticated, (req, res) => {
-    return res.send({username : req.user.username, isProf : req.user.isProf, idPromo : req.user.id_promo}).status(200);
+    return res.send({ username: req.user.username, isProf: req.user.isProf, idPromo: req.user.id_promo }).status(200);
 });
 
 router.post('/login', passport.authenticate('local'), (req, res) => {
-    return res.send({username : req.user.username, isProf : req.user.isProf}).status(200);
+    return res.send({ username: req.user.username, isProf: req.user.isProf }).status(200);
 });
 
 router.get('/logout', isAuthenticated, (req, res) => {
