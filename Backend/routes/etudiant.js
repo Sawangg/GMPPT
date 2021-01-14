@@ -10,21 +10,14 @@ router.post('/:idpromo/new', isAuthenticated, isProf, async (req, res) => {
     const { idpromo } = req.params;
     const workbook = new ExcelJS.Workbook();
     const feuille = (await workbook.xlsx.load(req.files.fileUploaded.data)).worksheets[0];
-    const file = [];
-    feuille.eachRow((rows) => {
-        const ligne = [];
-        rows.eachCell((cell) => {
-            ligne.push(cell.value);
-        });
-        ligne.push(generatePwd());
-        file.push(ligne);
-    });
     let insertEtu = 'INSERT INTO etudiant VALUES ';
     let insertAuth = 'INSERT INTO authentification VALUES ';
     let [{ AUTO_INCREMENT }] = (await db.promise().execute(`SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA ='GMP' AND TABLE_NAME = 'authentification';`))[0];
-    file.forEach(ligne => {
-        insertAuth += ` ('${ligne[2]}', '${ligne[3]}', false, NULL, NULL),`;
-        insertEtu += ` (${AUTO_INCREMENT}, '${ligne[0]}', '${ligne[1]}', ${idpromo}),`;
+    feuille.eachRow((row) => {
+        row.getCell(4).value = generatePwd();
+        // nom, prenom, username, password
+        insertEtu += ` (${AUTO_INCREMENT}, '${row.getCell(1).value}', '${row.getCell(2).value}', ${idpromo}),`;
+        insertAuth += ` ('${row.getCell(3).value}', '${row.getCell(4).value}', false, NULL, NULL),`;
         ++AUTO_INCREMENT;
     });
     insertAuth = insertAuth.slice(0, -1);
