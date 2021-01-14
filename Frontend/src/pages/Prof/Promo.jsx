@@ -35,7 +35,9 @@ export default function Accueil() {
             display : "flex",
             justifyContent : "space-around",
             width : "60%",
-            margin : "auto"
+            margin : "3% auto",
+            boxShadow : "0px 8px 20px -5px rgba(0,0,0,0.69)",
+            padding : "2% 1%"
         },
         typo: {
             textAlign: "center"

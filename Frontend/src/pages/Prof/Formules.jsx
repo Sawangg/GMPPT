@@ -10,7 +10,7 @@ import PopUp from '../../components/PopUp';
 import SelectionModele from '../../components/SelectionModele'
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectFormule, selectActualiseFormule, selectEnregistre, addCategorie, enregistrerFormules, getCategoriesFormules } from "../../slice/FormulesSlice"
+import { selectFormule, selectActualiseFormule, selectEnregistreFormule, addCategorie, enregistrerFormules, getCategoriesFormules } from "../../slice/FormulesSlice"
 import { selectModele } from "../../slice/ModeleSlice"
 
 export default function TodoListAccordeon() {
@@ -28,7 +28,7 @@ export default function TodoListAccordeon() {
     const dispatch = useDispatch();
     const tab = useSelector(selectFormule);
     const actualise = useSelector(selectActualiseFormule);
-    const isEnregistre = useSelector(selectEnregistre);
+    const isEnregistre = useSelector(selectEnregistreFormule);
     const modele = useSelector(selectModele);
 
     useConstructor(() => {
