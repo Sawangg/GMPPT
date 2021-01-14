@@ -88,7 +88,7 @@ export const reponseSlice = createSlice({
     extraReducers: {
         [getQuestions.fulfilled]: (state, action) => {
             state.sujet = action.payload.enonce;
-            console.log(action.payload.questions)
+            state.tabQuestions = []
             action.payload.questions.forEach((question, index) => {
                 state.tabQuestions.push({
                     indexQuestion : index,

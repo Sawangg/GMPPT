@@ -12,7 +12,7 @@ router.post('/new', isAuthenticated, isProf, async (req, res) => {
     });
 });
 
-router.get('/', isAuthenticated, isProf, async (_req, res) => {
+router.get('/', isAuthenticated, async (_req, res) => {
     db.promise().execute(`SELECT * FROM unite`).then(([rows]) => {
         return res.send(rows).status(200);
     }).catch(() => {

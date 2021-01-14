@@ -52,8 +52,6 @@ export default function Question(props) {
 
     return (
         <div className={classes.listeQuestions} >
-            <h2>Question {props.question.indexQuestion + 1}</h2>
-
             {/* affichage énoncé de la question */}
             <p className={classes.enonce}>{ReactHtmlParser(props.question.enonce)}</p>
 
