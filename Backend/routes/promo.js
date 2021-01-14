@@ -1,7 +1,7 @@
 const { Router } = require("express");
 const db = require("../databases.js");
 const router = Router();
-const { isAuthenticated, isProf } = require("../middleware.js");
+const { isAuthenticated, isProf, isStudent } = require("../middleware.js");
 const { random } = require('../utils.js');
 
 router.post('/new', isAuthenticated, isProf, async (req, res) => {
@@ -15,6 +15,14 @@ router.post('/new', isAuthenticated, isProf, async (req, res) => {
 
 router.get('/', isAuthenticated, isProf, async (_req, res) => {
     db.promise().execute(`SELECT * FROM promo`).then(([rows]) => {
+        return res.send(rows).status(200);
+    }).catch(() => {
+        return res.sendStatus(500);
+    });
+});
+
+router.get('/modele', isAuthenticated, isStudent, (req, res) => {
+    db.promise().execute(`SELECT MP.id_modele FROM modele_promo MP JOIN modele_sujet MS ON MS.id_modele = MP.id_modele WHERE id_promo = ${req.user.id_promo}`).then(([rows]) => {
         return res.send(rows).status(200);
     }).catch(() => {
         return res.sendStatus(500);

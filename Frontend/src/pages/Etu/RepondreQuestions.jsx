@@ -1,13 +1,15 @@
 import React from 'react';
 import ReactHtmlParser from 'react-html-parser';
 import jsPDF from 'jspdf';
-import {Button, makeStyles} from '@material-ui/core';
+import { Button, makeStyles } from '@material-ui/core';
 import GetAppIcon from '@material-ui/icons/GetApp';
 
-import { useSelector } from "react-redux";
-import {selectAllQuestions, selectSujet } from "../../slice/RepondreQuestionsSlice"
+import { useDispatch, useSelector } from "react-redux";
+import { selectAllQuestions, selectSujet, getQuestions} from "../../slice/RepondreQuestionsSlice"
+import useConstructor from '../../components/use/useContructor'
 
 import Question from '../../components/reponses/ItemQuestion'
+import { etudiantModeleAPI } from '../../utils/api';
 
 export default function RepondreQuestions(){
 
@@ -33,11 +35,17 @@ export default function RepondreQuestions(){
             borderColor: theme.palette.primary.main
         }
     }));
+
     const classes = useStyles();
+    const questionsTab = useSelector(selectAllQuestions);
+    const sujet = useSelector(selectSujet);
+    const dispatch = useDispatch();
 
-    const questionsTab = useSelector(selectAllQuestions)
-
-    const sujet = useSelector(selectSujet)
+    useConstructor(async () => {
+        etudiantModeleAPI().then(modele => {
+            dispatch(getQuestions(modele.data[0].id_modele));
+        });
+    });
 
     //trandforme en pdf le sujet
     const downloadPdf = () =>{
@@ -92,30 +100,31 @@ export default function RepondreQuestions(){
         return questionsTab.length === 0 ? <div>Pas de questions pour l'instant</div> 
         : questionsTab.map((i) => (
             <Question question={i}/>
-        ))
+        ));
     }
 
-    return(<div className={classes.contenant}>
-        
-        <div className={classes.buttonFixed} >
-            {/*bouton de téléchargement du sujet en pdf */}
-            <Button className={classes.buttonDl} variant="contained" onClick={downloadPdf}>
-                <GetAppIcon/>
-                Télécharger
+    return (
+        <div className={classes.contenant}>
+            <div className={classes.buttonFixed} >
+                {/*bouton de téléchargement du sujet en pdf */}
+                <Button className={classes.buttonDl} variant="contained" onClick={downloadPdf}>
+                    <GetAppIcon/>
+                    Télécharger
+                </Button>
+            </div>
+            <h1>Répondre aux questions</h1>
+            
+            <h2>Sujet</h2>
+
+            {/* affichage du sujet */ }
+            <div id="sujet">{ReactHtmlParser(sujet)}</div>
+
+            {/* affichage des questions */}
+            {displayQuestions()}
+
+            <Button className={classes.buttonSend} variant="outlined">
+                Envoyer les réponses
             </Button>
         </div>
-        <h1>Répondre aux questions</h1>
-        
-        <h2>Sujet</h2>
-
-        {/* affichage du sujet */ }
-        <div id="sujet">{ReactHtmlParser(sujet)}</div>
-
-        {/* affichage des questions */}
-        {displayQuestions()}
-
-        <Button className={classes.buttonSend} variant="outlined">
-            Envoyer les réponses
-        </Button>
-    </div>);
+    );
 }
