@@ -105,7 +105,7 @@ export function setQuestionsAPI(idModele, enonce, tabQuestions) {
 
 //Unite
 export function addUniteAPI(nom, abrev){
-    return axios.post(`http://${host}:3001/unite/new`, nom, abrev, credentials);
+    return axios.post(`http://${host}:3001/unite/new`, { nom , abrev }, credentials);
 }
 
 export function getAllUniteAPI(){

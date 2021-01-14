@@ -12,6 +12,7 @@ import Enonces from "./pages/Prof/Enonces";
 import VariableAleatoires from './pages/Prof/VariablesAleatoires'
 import Consulter from './pages/Prof/ConsulterEtudiant';
 import Promo from './pages/Prof/Promo';
+import GestionUnites from './pages/Prof/GestionUnites'
 
 import RepondreQuestions from './pages/Etu/RepondreQuestions';
 import AccueilEtu from './pages/Etu/AccueilEtu';
@@ -78,6 +79,7 @@ export default function App() {
         <PrivateRoute forProf={true} exact path='/prof/home' component={AccueilProf}/>
         <PrivateRoute forProf={true} exact path='/prof/gestion-sujets' component={AccueilProf}/>
         <PrivateRoute forProf={true} exact path='/prof/promo' component={Promo}/>
+        <PrivateRoute forProf={true} exact path='/prof/unites' component={GestionUnites}/>
         <PrivateRoute forProf={true} exact path='/prof/enonces' component={Enonces}/>
         <PrivateRoute forProf={true} exact path='/prof/formules' component={Formules}/>
         <PrivateRoute forProf={true} exact path='/prof/architecture' component={Architecture}/>

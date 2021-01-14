@@ -20,6 +20,7 @@ import PostAddIcon from '@material-ui/icons/PostAdd';
 import SystemUpdateAltIcon from '@material-ui/icons/SystemUpdateAlt';
 import AllInclusiveIcon from '@material-ui/icons/AllInclusive';
 import SchoolIcon from '@material-ui/icons/School';
+import PolymerIcon from '@material-ui/icons/Polymer';
 
 import { useDispatch } from "react-redux";
 import { logoutUser } from "../slice/UserSlice";
@@ -80,6 +81,12 @@ export default function NavBar() {
       nom : "Profil",
       route : "/profil",
       divider : true
+    },
+    {
+      icon : <PolymerIcon/>,
+      nom : "Gérer les unités",
+      route : "/prof/unites",
+      divider : false
     },
     {
       icon : <SchoolIcon/>,
