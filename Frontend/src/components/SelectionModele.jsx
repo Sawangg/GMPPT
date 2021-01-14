@@ -17,7 +17,6 @@ import {
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 import PropagateLoader from "react-spinners/PropagateLoader";
-import BounceLoader from "react-spinners/BounceLoader";
 
 import useConstructor from './use/useContructor'
 
@@ -25,9 +24,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { getCategoriesFormules } from "../slice/FormulesSlice";
 import { getAllVariables } from "../slice/VariablesAleatoiresSlice"
 import { getQuestions } from "../slice/EnoncesSlice";
-import { selectionnerModele, addNewModele, removeModele, getModele, selectModele, selectActualise, selectChargementSupp} from "../slice/ModeleSlice";
+import { selectionnerModele, addNewModele, removeModele, getModele, selectModele, selectActualise} from "../slice/ModeleSlice";
 
-export default function DialogSelect(props) {
+//setClose pour fermer la PopUp (fonction)
+//open pour connaitre l'état de la pop u (ouvert ou fermé)
+//tard pour savoir si on autorise a selectionner plus tard le modèle
+export default function SelectionModele({setClose, open, tard}) {
+
     const useStyles = makeStyles((theme) => ({
         divNouveauModele: {
             display : "grid",
@@ -74,7 +77,6 @@ export default function DialogSelect(props) {
     const dispatch = useDispatch();
     const modele = useSelector(selectModele);
     const actualise = useSelector(selectActualise);
-    const chargementSupp = useSelector(selectChargementSupp);
 
     useConstructor(() => {
         if (!actualise) dispatch(getModele())
@@ -94,7 +96,7 @@ export default function DialogSelect(props) {
             dispatch(getAllVariables(select));
             dispatch(getQuestions(select));
         }
-        props.setClose();
+        setClose();
     }
 
     const onChangeNouveauModele = (e) => {
@@ -132,7 +134,7 @@ export default function DialogSelect(props) {
 
     return (
         <div>
-        <Dialog disableBackdropClick disableEscapeKeyDown open={props.open} onClose={() => props.setClose()}>
+        <Dialog disableBackdropClick disableEscapeKeyDown open={open} onClose={() => setClose()}>
             <DialogTitle>Selection du modèle de sujet</DialogTitle>
             <DialogContent>
             <form className={classes.form}>
@@ -143,23 +145,19 @@ export default function DialogSelect(props) {
                     <MenuItem className={classes.menuItem} value="Créer nouveau modèle">Créer nouveau modèle</MenuItem>
                     {!actualise ? <PropagateLoader size={15} color={"rgb(7, 91, 114)"} css={{margin : "30px auto", display : "flex", justifyContent : "center"}}/> : modele.tabName.map(item => <MenuItem key={item.index} value={item.index}>{item.nom}</MenuItem>)}
                     </Select>
-
-                    {chargementSupp
-                    ?<BounceLoader size={40} color={"rgb(7, 91, 114)"} css={{marginLeft : "5%", display : "block"}}/>
-                    :<Fab className={classes.fabDelete} size="small" aria-label="delete"
+                    <Fab className={classes.fabDelete} size="small" aria-label="delete"
                         disabled={select === "" || nouveauModele.etat}
                         onClick={() => dispatch(removeModele(select))}
                     >
                         <DeleteIcon/>
                     </Fab>
-                    }
                 </div>
                 {displayNouveauModele()}
                 </FormControl>
             </form>
             </DialogContent>
             <DialogActions className={classes.dialogActions}>
-            {props.tard ? <Button onClick={() => props.setClose()} color="primary">Choisir plus tard</Button> : null}
+            {tard ? <Button onClick={() => setClose()} color="primary">Choisir plus tard</Button> : null}
             <Button disabled={select === "" || select === "Créer nouveau modèle" ? true : false} onClick={e => choisirModele()} color="primary">Ok</Button>
             </DialogActions>
         </Dialog>

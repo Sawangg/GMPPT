@@ -6,7 +6,7 @@ import useConstructor from "../use/useContructor";
 import Reponse from './Reponse';
 
 import { useSelector, useDispatch } from "react-redux";
-import { selectEnregistre, getCategoriesFormules } from "../../slice/FormulesSlice";
+import { selectEnregistreFormule, getCategoriesFormules } from "../../slice/FormulesSlice";
 import {addReponse, selectTabReponse, removeReponse } from '../../slice/EnoncesSlice'
 
 export default function ListeReponses(props) {
@@ -26,7 +26,7 @@ export default function ListeReponses(props) {
     }));
     const classes = useStyles();
 
-    const isEnregistre = useSelector(selectEnregistre);
+    const isEnregistre = useSelector(selectEnregistreFormule);
     const tab = useSelector(selectTabReponse(props.id))
     const [expanded, setExpanded] = useState(true);
     const dispatch = useDispatch();

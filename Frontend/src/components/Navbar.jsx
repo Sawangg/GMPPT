@@ -26,7 +26,7 @@ import { logoutUser } from "../slice/UserSlice";
 import { useSelector } from "react-redux";
 import { selectUserName } from "../slice/UserSlice"
 
-export default function SwipeableTemporaryDrawer() {
+export default function NavBar() {
 
   const useStyles = makeStyles((theme) => ({
     divNavigation: {

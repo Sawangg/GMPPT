@@ -194,6 +194,6 @@ export const selectTabFormule = (index) => (state) => state.formule.tab[index].t
 
 export const selectActualiseFormule = (state) => state.formule.actualise;
 
-export const selectEnregistre = (state) => state.formule.enregistre;
+export const selectEnregistreFormule = (state) => state.formule.enregistre;
 
 export default formuleSlice.reducer;
