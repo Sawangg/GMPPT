@@ -98,6 +98,7 @@ export default function Accueil() {
 
     const handleChange = (event) => {
         setSelect(event.target.value);
+        console.log(event.target.value)
     };
 
     const removePromo = () => {
@@ -127,13 +128,13 @@ export default function Accueil() {
                                 </Select>
                             </div>
                             <Fab className={classes.fabDelete} size="small" aria-label="delete"
-                                disabled={select.id_promo === "" || select.id_promo === "ajoutPromo"}
+                                disabled={select.id_promo === "" || select === "ajoutPromo"}
                                 onClick={() => removePromo()}
                             >
                                 <DeleteIcon/>
                             </Fab>
                         </div>
-                        {select.id_promo !== "ajoutPromo" ? null 
+                        {select !== "ajoutPromo" ? null 
                             :<div className={classes.divNomPromo}>
                                 <TextField autoFocus size="small" label="Nom de la promo" variant="outlined" required value={promo} onChange={e => changePromo(e)}/>
                                 <Button className={classes.button} disabled={promo===""} variant="outlined" onClick={() => addPromo()}>Créer</Button>
