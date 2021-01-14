@@ -43,7 +43,7 @@ export default function Question(props) {
             <div className={classes.listeReponses}>
                 {/* affichage des réponses une par une */}
                 {props.question.tabReponses.map((i, index) => (
-                    <Reponse num={index} reponse={i} 
+                    <Reponse key={index} reponse={i} 
                         indexQuestion={props.question.indexQuestion}/>
                 ))}
             </div>

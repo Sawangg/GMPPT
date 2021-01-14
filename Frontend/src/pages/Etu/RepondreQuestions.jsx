@@ -6,7 +6,7 @@ import { Button, makeStyles, Typography } from '@material-ui/core';
 import GetAppIcon from '@material-ui/icons/GetApp';
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectAllQuestions, selectSujet, getQuestions} from "../../slice/RepondreQuestionsSlice"
+import { selectAllQuestions, selectSujet, getQuestions, getReponses} from "../../slice/RepondreQuestionsSlice"
 import useConstructor from '../../components/use/useContructor'
 
 import Question from '../../components/reponses/ItemQuestion'
@@ -46,6 +46,7 @@ export default function RepondreQuestions(){
         etudiantModeleAPI().then(modele => {
             dispatch(getQuestions(modele.data[0].id_modele));
         });
+        dispatch(getReponses())
     });
 
     //trandforme en pdf le sujet
@@ -100,7 +101,7 @@ export default function RepondreQuestions(){
         //n'affiche rien si il n'y a pas de questions
         return questionsTab.length === 0 ? <div>Pas de questions pour l'instant</div> 
         : questionsTab.map((i) => (
-            <Question question={i}/>
+            <Question key={i.indexQuestion} question={i}/>
         ));
     }
 

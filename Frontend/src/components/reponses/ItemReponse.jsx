@@ -96,8 +96,8 @@ export default function Item(props) {
      //affiche l'unité en entière de la réponse (en mettant les puissances)
      const afficherUnite = () =>{
           return(
-               props.reponse.tabUnite.map((i) => (
-                    <var>
+               props.reponse.tabUnite.map((i, index) => (
+                    <var key={index}>
                          {i.abr} 
                          <sup> {i.puissance !== 1 && i.abr !== " " ? i.puissance : null } </sup>
                     </var>

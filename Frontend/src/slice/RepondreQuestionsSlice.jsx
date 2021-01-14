@@ -1,9 +1,19 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getQuestionsAPI } from "../utils/api.js";
+import { getQuestionsAPI, etudiantReponsesNewestAPI, getVariablesAPI } from "../utils/api.js";
 import _ from "lodash"
 
 export const getQuestions = createAsyncThunk("etudiant/getQuestions", async (idModele) => {
     const response = await getQuestionsAPI(idModele);
+    return response.data;
+});
+
+export const getReponses = createAsyncThunk("etudiant/getReponses", async () => {
+    const response = await etudiantReponsesNewestAPI();
+    return response.data;
+});
+
+export const getVariables = createAsyncThunk("etudiant/getVariables", async () => {
+    const response = await getVariablesAPI();
     return response.data;
 });
 
@@ -104,6 +114,9 @@ export const reponseSlice = createSlice({
                 });
             });
         },
+        [getReponses.fulfilled]: (state, action) =>{
+            console.log(action)
+        }
     }
 })
 

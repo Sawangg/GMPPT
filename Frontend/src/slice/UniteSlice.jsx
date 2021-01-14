@@ -69,8 +69,6 @@ export const uniteSlice = createSlice({
           abr : unite.abrev
         })
       });
-      //state.tabUnites = action.payload
-      console.log(state.tabUnites)
       state.actualise = true
     },
     [getAllUnite.pending]: (state, action) => {
