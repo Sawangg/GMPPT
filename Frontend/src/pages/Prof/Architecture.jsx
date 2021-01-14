@@ -59,11 +59,11 @@ export default function Architecture() {
     }
 
     return (
-        <div className={classes.archi}>
+        <div>
             <Typography variant="h1">Architecture</Typography>
             <div>
                 <DropFile typeFile='.xlsx' compressImage={false} changeFile={e => setExcel(e)}  message="Charger la liste des architectures"/>
-                <Button disabled={excel === ""} variant="outlined" style={{display : "block", margin : "20px auto"}} onClick={() => envoieArchi()}>Enregistrer</Button>
+                <Button disabled={excel === ""} variant="contained" color="primary" style={{display : "block", margin : "20px auto"}} onClick={() => envoieArchi()}>Enregistrer</Button>
             </div>
             <div className={classes.divImportModele}>
                 <div className={classes.divDropModele} id="divDropModele">

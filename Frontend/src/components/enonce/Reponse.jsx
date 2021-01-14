@@ -42,8 +42,6 @@ export default function Reponse (props) {
             gridColumn: 4
         },
         buttonAjouterUnite: {
-            maxWidth: "350px",
-            maxHeight: "36px",
             display : "block",
             backgroundColor: theme.palette.primary.light
         }

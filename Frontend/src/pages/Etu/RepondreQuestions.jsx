@@ -23,17 +23,6 @@ export default function RepondreQuestions(){
             position: "fixed",
             top : "30px",
             right : "120px"
-        },
-        buttonDl: {
-            backgroundColor: theme.palette.primary.main,
-            color: "white",
-                "&:hover": {
-                    backgroundColor: theme.palette.primary.dark,
-                }
-        },
-        buttonSend: {
-            color: theme.palette.primary.main,
-            borderColor: theme.palette.primary.main
         }
     }));
 
@@ -106,15 +95,15 @@ export default function RepondreQuestions(){
 
     return (
         <div className={classes.contenant}>
+            <Typography variant="h1">Réponses aux questions</Typography>
             <div className={classes.buttonFixed} >
                 {/*bouton de téléchargement du sujet en pdf */}
-                <Button className={classes.buttonDl} variant="contained" onClick={downloadPdf}>
+                <Button variant="contained" color="primary" onClick={downloadPdf}>
                     <GetAppIcon/>
                     Télécharger
                 </Button>
             </div>
-            <Typography variant="h1">Réponses aux questions</Typography>
-            
+
             <h2>Sujet</h2>
 
             {/* affichage du sujet */ }
@@ -123,7 +112,7 @@ export default function RepondreQuestions(){
             {/* affichage des questions */}
             {displayQuestions()}
 
-            <Button className={classes.buttonSend} variant="outlined">
+            <Button variant="contained" color="primary">
                 Envoyer les réponses
             </Button>
         </div>

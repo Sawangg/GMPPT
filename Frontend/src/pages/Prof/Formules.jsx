@@ -16,7 +16,9 @@ import { selectModele } from "../../slice/ModeleSlice"
 export default function TodoListAccordeon() {
   
     const useStyles = makeStyles((theme) => ({
-        fab: {marginLeft: "3%"}
+        fab: {
+            marginLeft: "3%",
+        }
     }));
 
     const classes = useStyles();

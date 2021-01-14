@@ -59,7 +59,15 @@ export default function App() {
                 textTransform: "uppercase",
                 marginBottom: "2%",
                 color: "#393939",
-                padding: "1%"
+                padding: "1%",
+                backgroundColor: '#cfcfcf'
+            },
+            button: {
+                height : 36,
+                width: "max-content",
+            },
+            fab: {
+                paddingTop: "0.5vw"
             }
         },
     }, frFR);

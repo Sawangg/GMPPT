@@ -19,15 +19,8 @@ export default function Accueil() {
             marginTop : "3%"
         },
         button: {
-            height : 36,
-            backgroundColor: theme.palette.primary.main,
-            color: "white",
-            "&:disabled": {
-                backgroundColor: theme.palette.secondary.main
-            },
-            "&:hover": {
-                backgroundColor: theme.palette.primary.dark
-            }
+            display : "block",
+            margin : "20px auto"
         },
         divPromo: {
             marginTop : 50,
@@ -62,6 +55,13 @@ export default function Accueil() {
         selectPromo: {
             width : 200,
             marginTop : "0 !important"
+        },
+        fabDelete: {
+            color: "white",
+            backgroundColor: theme.palette.error.main,
+            "&:hover": {
+                backgroundColor: theme.palette.error.dark
+            }
         }
     }));
     const classes = useStyles();
@@ -141,7 +141,7 @@ export default function Accueil() {
                             </div>
                         }
                         <DropFile typeFile='.xlsx' compressImage={false} changeFile={e => setExcel(e)}  message="Charger la liste des étudiants de la promotion"/>
-                        <Button style={{display : "block", margin : "20px auto"}} className={classes.button} disabled={excel===""} variant="outlined" onClick={() => envoieExcel()}>Enregistrer liste étudiants</Button>
+                        <Button className={classes.button} disabled={excel===""} variant="contained" color="primary" onClick={() => envoieExcel()}>Enregistrer liste étudiants</Button>
                     </FormControl>
                 </form>
             </div>

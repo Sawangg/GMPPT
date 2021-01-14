@@ -65,7 +65,7 @@ export default function AttributionSujet(props){
                         ))}
                     </Select>
                 </div>
-                <Button className={classes.button} disabled={(selectionModele === "") || (selectPromo === "") ? true : false} variant="outlined" onClick={() => envoieAttribution()}>Envoyer</Button>
+                <Button className={classes.button} disabled={(selectionModele === "") || (selectPromo === "") ? true : false} variant="contained" color="primary" onClick={() => envoieAttribution()}>Envoyer</Button>
         </div>
     )
 

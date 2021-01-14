@@ -38,11 +38,6 @@ export default function Enonces() {
             flexWrap : "wrap",
         },
         buttonAddQuestion: {
-            backgroundColor: theme.palette.primary.main,
-                "&:hover": {
-                    backgroundColor: theme.palette.primary.dark,
-                },
-            color: "white",
             display: "block",
             margin: "50px auto"
         },
@@ -110,7 +105,7 @@ export default function Enonces() {
                         </div>
                     )
                 })}
-                <Button className={classes.buttonAddQuestion} variant="contained" onClick={() => dispatch(addQuestion())}>Ajouter une question</Button>
+                <Button className={classes.buttonAddQuestion} variant="contained" color="primary" onClick={() => dispatch(addQuestion())}>Ajouter une question</Button>
                 <PopUp
                     severity={isEnregistreEnonce ? "success" : "warning"}
                     message={isEnregistreEnonce ? "Enoncé enregistré" : "Enregistrer les modifications"}

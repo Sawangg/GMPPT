@@ -30,8 +30,7 @@ export default function Item(props) {
             marginLeft : "2%"
         },
         buttonSave: {
-            backgroundColor : "#c0dff8",
-            height: "40px"
+            backgroundColor : theme.palette.primary.light,
         },
         typoNomFormule: {
             overflowWrap: "break-word",
@@ -43,7 +42,6 @@ export default function Item(props) {
             marginLeft : "2%"
         },
         buttonModif: {
-            height: "40px",
             backgroundColor: theme.palette.primary.light
         },
         containerFormules: {

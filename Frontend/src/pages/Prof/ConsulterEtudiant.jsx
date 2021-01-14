@@ -16,7 +16,6 @@ export default function Consulter(props){
     const useStyles = makeStyles((theme) => ({
         messageBouton: {
             float : "right",
-            color: theme.palette.primary.main
         }
     }));
     const classes = useStyles();
@@ -103,7 +102,7 @@ export default function Consulter(props){
 
     return(
         <div>
-            <Button className={classes.messageBouton} onClick={hancleClickMessage}>
+            <Button className={classes.messageBouton} variant="contained" color="primary" onClick={hancleClickMessage}>
                 <SendIcon/>Envoyer un message à l'étudiant
             </Button>
             <h1>

@@ -13,8 +13,6 @@ export default function TodoListFormule(props) {
 
     const useStyles = makeStyles((theme) => ({
         buttonAjouterFormule: {
-            maxWidth: "220px",
-            maxHeight: "36px",
             display : "block",
             margin: "6% auto 0 auto",
         }
