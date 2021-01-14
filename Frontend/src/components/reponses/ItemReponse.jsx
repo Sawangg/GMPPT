@@ -53,6 +53,7 @@ export default function Item(props) {
 
      //dès que la réponse perd le focus, s'assure que la réponse ne puisse être un '-' tout seul
      const handleBlurReponse = () =>{
+          console.log(props)
           if (props.reponse.value === '-'){
                dispatch(changeReponse({
                     indexQuestion : props.indexQuestion, 
@@ -96,8 +97,8 @@ export default function Item(props) {
      //affiche l'unité en entière de la réponse (en mettant les puissances)
      const afficherUnite = () =>{
           return(
-               props.reponse.tabUnite.map((i) => (
-                    <var>
+               props.reponse.tabUnite.map((i, index) => (
+                    <var key={index}>
                          {i.abr} 
                          <sup> {i.puissance !== 1 && i.abr !== " " ? i.puissance : null } </sup>
                     </var>

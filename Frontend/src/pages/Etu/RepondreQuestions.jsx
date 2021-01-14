@@ -6,7 +6,8 @@ import { Button, makeStyles, Typography } from '@material-ui/core';
 import GetAppIcon from '@material-ui/icons/GetApp';
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectAllQuestions, selectSujet, getQuestions} from "../../slice/RepondreQuestionsSlice"
+import { selectAllQuestions, selectSujet, getQuestions, getReponses, enregistrerReponses
+        } from "../../slice/RepondreQuestionsSlice"
 import useConstructor from '../../components/use/useContructor'
 
 import Question from '../../components/reponses/ItemQuestion'
@@ -27,15 +28,20 @@ export default function RepondreQuestions(){
     }));
 
     const classes = useStyles();
-    const questionsTab = useSelector(selectAllQuestions);
+    const tabQuestions = useSelector(selectAllQuestions);
     const sujet = useSelector(selectSujet);
     const dispatch = useDispatch();
 
     useConstructor(async () => {
         etudiantModeleAPI().then(modele => {
             dispatch(getQuestions(modele.data[0].id_modele));
+            dispatch(getReponses())
         });
     });
+
+    const handleEnvoyerReponses = () =>{
+        dispatch(enregistrerReponses(tabQuestions))
+    }
 
     //trandforme en pdf le sujet
     const downloadPdf = () =>{
@@ -87,9 +93,9 @@ export default function RepondreQuestions(){
     //affiche les différentes questions avec leurs réponses
     const displayQuestions = () => {
         //n'affiche rien si il n'y a pas de questions
-        return questionsTab.length === 0 ? <div>Pas de questions pour l'instant</div> 
-        : questionsTab.map((i) => (
-            <Question question={i}/>
+        return tabQuestions.length === 0 ? <div>Pas de questions pour l'instant</div> 
+        : tabQuestions.map((i, index) => (
+            <Question key={i.indexQuestion} question={i} id={index}/>
         ));
     }
 
@@ -112,7 +118,10 @@ export default function RepondreQuestions(){
             {/* affichage des questions */}
             {displayQuestions()}
 
-            <Button variant="contained" color="primary">
+
+            <Button variant="contained" color="primary"
+                onClick={handleEnvoyerReponses}>
+              
                 Envoyer les réponses
             </Button>
         </div>

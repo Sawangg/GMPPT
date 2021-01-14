@@ -125,7 +125,7 @@ router.get('/:idmodele/questions', isAuthenticated, async (req, res) => {
     const { idmodele } = req.params;
     try {
         const enonce = (await db.promise().execute(`SELECT enonce FROM modele_sujet WHERE id_modele = ${idmodele}`))[0][0].enonce;
-        db.promise().execute(`SELECT contenu, reponses FROM question WHERE id_modele = ${idmodele}`).then(([questions]) => {
+        db.promise().execute(`SELECT id_question, contenu, reponses FROM question WHERE id_modele = ${idmodele}`).then(([questions]) => {
             if (!questions[0]) return res.sendStatus(404);
             if(req.user.isProf) {
                 questions.map(r => {

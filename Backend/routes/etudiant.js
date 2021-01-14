@@ -1,10 +1,26 @@
 const { Router } = require("express");
 const db = require("../databases.js");
 const router = Router();
-const { isAuthenticated, isProf } = require("../middleware.js");
+const { isAuthenticated, isProf, isStudent } = require("../middleware.js");
 const ExcelJS = require('exceljs');
 const { generatePwd } = require("../utils.js");
 const tempfile = require('tempfile');
+
+router.post('/reponses/new', isAuthenticated, isStudent, async (req, res) => {
+    let insert = 'INSERT INTO reponse_etudiant VALUES';
+    req.body.tabQuestions.forEach(question => {
+        insert += ` (${req.user.id_auth}, ${question.indexQuestion}, '${JSON.stringify(question.tabReponses)}', (SELECT now())),`;
+    });
+    insert = insert.slice(0, -1);
+    try {
+        console.log(insert)
+        await db.promise().execute(`${insert}`);
+        return res.sendStatus(200);
+    } catch (err){
+        console.log(err)
+        return res.sendStatus(500);
+    }
+});
 
 router.post('/:idpromo/new', isAuthenticated, isProf, async (req, res) => {
     const { idpromo } = req.params;
@@ -39,6 +55,28 @@ router.get('/:idauth/variables', isAuthenticated, (req, res) => {
     const { idauth } = req.params;
     db.promise().execute(`SELECT * FROM variables_etu WHERE id_auth = ${idauth}`).then(([rows]) => {
         if (!rows[0]) return res.sendStatus(404);
+        return res.send(rows).status(200);
+    }).catch(() => {
+        return res.sendStatus(500);
+    });
+});
+
+router.get('/reponses/newest', isAuthenticated, isStudent, (req, res) => {
+    db.promise().execute(`SELECT * FROM reponse_etudiant WHERE id_auth = ${req.user.id_auth} AND date IN (SELECT MAX(date) FROM reponse_etudiant)`).then(([rows]) => {
+        if (!rows[0]) return res.sendStatus(404);
+        rows[0].reponses = (rows[0].reponses == undefined ? rows[0].reponses : JSON.parse(rows[0].reponses));
+        return res.send(rows).status(200);
+    }).catch(() => {
+        return res.sendStatus(500);
+    });
+});
+
+router.get('/:id_auth/reponses', isAuthenticated, (req, res) => {
+    db.promise().execute(`SELECT * FROM reponse_etudiant WHERE id_auth = ${req.params.id_auth}`).then(([rows]) => {
+        if (!rows[0]) return res.sendStatus(404);
+        rows.map(r => {
+            r.reponses = (r.reponses == undefined ? r.reponses : JSON.parse(r.reponses));
+        });
         return res.send(rows).status(200);
     }).catch(() => {
         return res.sendStatus(500);

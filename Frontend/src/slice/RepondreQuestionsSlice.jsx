@@ -1,9 +1,28 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getQuestionsAPI } from "../utils/api.js";
+import { getQuestionsAPI, etudiantReponsesNewestAPI, getVariablesAPI, etudiantReponsesNewAPI} from "../utils/api.js";
 import _ from "lodash"
 
-export const getQuestions = createAsyncThunk("etudiant/getQuestions", async (idModele) => {
+export const getQuestions = createAsyncThunk("etudiant/getQuestions", 
+async (idModele) => {
     const response = await getQuestionsAPI(idModele);
+    return response.data;
+});
+
+export const getReponses = createAsyncThunk("etudiant/getReponses", 
+async () => {
+    const response = await etudiantReponsesNewestAPI();
+    return response.data;
+});
+
+export const getVariables = createAsyncThunk("etudiant/getVariables", 
+async () => {
+    const response = await getVariablesAPI();
+    return response.data;
+});
+
+export const enregistrerReponses = createAsyncThunk("etudiant/enregistrerReponses", 
+async (tabQuestions) => {
+    const response = await etudiantReponsesNewAPI(tabQuestions);
     return response.data;
 });
 
@@ -88,10 +107,10 @@ export const reponseSlice = createSlice({
     extraReducers: {
         [getQuestions.fulfilled]: (state, action) => {
             state.sujet = action.payload.enonce;
-            console.log(action.payload.questions)
-            action.payload.questions.forEach((question, index) => {
+            state.tabQuestions = []
+            action.payload.questions.forEach((question) => {
                 state.tabQuestions.push({
-                    indexQuestion : index,
+                    indexQuestion : question.id_question,
                     enonce : question.contenu,
                     nbMaxReponses : 5,
                     tabReponses : [{
@@ -104,6 +123,27 @@ export const reponseSlice = createSlice({
                 });
             });
         },
+        [getReponses.fulfilled]: (state, action) =>{
+            console.log(action)
+            /*state.tabQuestions = []
+            action.payload.questions.forEach((question) => {
+                state.tabQuestions.push({
+                    indexQuestion : question.id_question,
+                    enonce : question.contenu,
+                    nbMaxReponses : 5,
+                    tabReponses : [{
+                        value : "",
+                        tabUnite : [{
+                            abr : " ",
+                            puissance : 1
+                        }]
+                    }]
+                });
+            });*/
+        },
+        [enregistrerReponses.fulfilled] : (state, action) =>{
+            console.log("fulfill")
+        }
     }
 })
 
