@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Fab, makeStyles} from '@material-ui/core';
+import {Fab, makeStyles, Typography} from '@material-ui/core';
 import CircleLoader from "react-spinners/CircleLoader";
 import AddIcon from '@material-ui/icons/Add';
 
@@ -16,7 +16,6 @@ import { selectModele } from "../../slice/ModeleSlice"
 export default function TodoListAccordeon() {
   
     const useStyles = makeStyles((theme) => ({
-        h1: {textAlign : "center"},
         fab: {marginLeft: "3%"}
     }));
 
@@ -46,7 +45,7 @@ export default function TodoListAccordeon() {
     const displayFormule = () => {
         return (
             <div>
-                <h1 className={classes.h1}>Creation des formules</h1>
+                <Typography variant="h1">FORMULES</Typography>
                 <Fab className={classes.fab}
                     size="small"
                     color="primary"

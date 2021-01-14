@@ -1,24 +1,28 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { getQuestionsAPI } from "../utils/api.js";
 import _ from "lodash"
 
-
+export const getQuestions = createAsyncThunk("etudiant/getQuestions", async (idModele) => {
+    const response = await getQuestionsAPI(idModele);
+    return response.data;
+});
 
 export const reponseSlice = createSlice({
     name: "reponse",
     initialState: { 
         tabQuestions : [{
             indexQuestion : 0,
-            enonce : "Énoncé de question avec plusieurs réponses",
+            enonce : "",
             nbMaxReponses : 5,
             tabReponses : [{
-                value : '',
+                value : "",
                 tabUnite : [{
                     abr : " ",
                     puissance : 1
                 }]
             }]
         }],
-        sujet : "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt leo est, in placerat ex cursus id. In malesuada scelerisque leo, ut pharetra ligula venenatis laoreet. Duis in elementum est. Ut aliquam diam ultrices, sagittis nibh sit amet, <b> tincidunt ipsum </b>. Aliquam ac mauris dignissim, porttitor urna in, lacinia urna. Donec rhoncus consectetur eros ac ullamcorper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nunc commodo a enim ac ultricies. Vestibulum egestas molestie urna, in posuere odio tempus sit amet. Morbi facilisis sit amet dolor non ultrices. Donec dapibus commodo justo ac tempus. In hac habitasse platea dictumst. Curabitur ultricies iaculis lorem nec interdum. Etiam vel odio ligula. Suspendisse vestibulum nisi et risus posuere varius. In hac habitasse platea dictumst.</p>",
+        sujet : "",
     },
     reducers: {
 
@@ -81,7 +85,26 @@ export const reponseSlice = createSlice({
             state.tabQuestions[indexQuestion].tabReponses[indexReponse].tabUnite = newTab
         }
     },
-    extraReducers: {}
+    extraReducers: {
+        [getQuestions.fulfilled]: (state, action) => {
+            state.sujet = action.payload.enonce;
+            console.log(action.payload.questions)
+            action.payload.questions.forEach((question, index) => {
+                state.tabQuestions.push({
+                    indexQuestion : index,
+                    enonce : question.contenu,
+                    nbMaxReponses : 5,
+                    tabReponses : [{
+                        value : "",
+                        tabUnite : [{
+                            abr : " ",
+                            puissance : 1
+                        }]
+                    }]
+                });
+            });
+        },
+    }
 })
 
 export const { addReponse, changeReponse, deleteReponse, changeUniteReponses, 

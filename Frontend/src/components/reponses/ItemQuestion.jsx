@@ -1,6 +1,6 @@
 import React from 'react';
-
-import {Button, makeStyles} from '@material-ui/core';
+import ReactHtmlParser from 'react-html-parser';
+import { Button, makeStyles } from '@material-ui/core';
 
 import { useDispatch } from 'react-redux';
 import { addReponse } from '../../slice/RepondreQuestionsSlice'
@@ -33,31 +33,29 @@ export default function Question(props) {
     const dispatch = useDispatch()
 
     //fonction pour ajouter une réponse (valeur vide) à cette question
-    const handleAddReponse = () =>{
+    const handleAddReponse = () => {
         dispatch(addReponse(props.question.indexQuestion))
     }
 
     //liste les différentes réponses
-    const listeReponses = () =>{
-        return(
+    const listeReponses = () => {
+        return (
             <div className={classes.listeReponses}>
-
                 {/* affichage des réponses une par une */}
                 {props.question.tabReponses.map((i, index) => (
                     <Reponse num={index} reponse={i} 
                         indexQuestion={props.question.indexQuestion}/>
                 ))}
-
             </div>
-        )
+        );
     }
 
     return (
         <div className={classes.listeQuestions} >
             <h2>Question {props.question.indexQuestion + 1}</h2>
 
-            {/* affichage énoncé de la question */ }
-            <p className={classes.enonce}>{props.question.enonce}</p>
+            {/* affichage énoncé de la question */}
+            <p className={classes.enonce}>{ReactHtmlParser(props.question.enonce)}</p>
 
             {/* bouton ajouter réponse visible uniquement si la question attend plus d'une réponse */ }
             {props.question.nbMaxReponses > 1 ?
@@ -72,7 +70,6 @@ export default function Question(props) {
                 </Button>
             : null
             }
-
             {listeReponses()}
         </div>
     )

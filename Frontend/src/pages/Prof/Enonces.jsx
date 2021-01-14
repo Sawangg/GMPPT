@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {Button, makeStyles, Fab} from "@material-ui/core";
+import {Button, makeStyles, Fab, Typography} from "@material-ui/core";
 import CircleLoader from "react-spinners/CircleLoader";
 import DeleteIcon from '@material-ui/icons/Delete';
 
@@ -25,9 +25,6 @@ export default function Enonces() {
             width: "70%",
             margin: 'auto'
         },
-        h1: {
-            textAlign: 'center'
-        },
         divQuestion: {
             boxShadow : "0px 8px 20px -5px rgba(0,0,0,0.69)",
             width : "80%",
@@ -48,6 +45,15 @@ export default function Enonces() {
             color: "white",
             display: "block",
             margin: "50px auto"
+        },
+        fabDelete: {
+            float : "right",
+            marginLeft : 20,
+            color: "white",
+            backgroundColor: theme.palette.error.main,
+            "&:hover": {
+                backgroundColor: theme.palette.error.dark
+            }
         }
     }));
     const classes = useStyles();
@@ -84,14 +90,14 @@ export default function Enonces() {
     const displayEnonce = () => {
         return (
             <div>
+                <Typography variant="h1">énoncé</Typography>
                 <div className={classes.enonceSujet}>
-                    <h1 className={classes.h1}>Création de l'énoncé</h1>
                     <MyEditor value={enonce.enonceContenu} handleChange={e => dispatch(handleChangeEnonce(e))}/>
                 </div>
                 {enonce.question.map((item, id) => {
                     return (
                         <div key={id} className={classes.divQuestion}>
-                            <Fab style={{float : "right", marginLeft : 20}} size="small" aria-label="delete"
+                            <Fab className={classes.fabDelete} size="small" aria-label="delete"
                                 disabled={enonce.question.length === 1}
                                 onClick={() => dispatch(removeQuestion(id))}
                             >

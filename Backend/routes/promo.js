@@ -1,7 +1,7 @@
 const { Router } = require("express");
 const db = require("../databases.js");
 const router = Router();
-const { isAuthenticated, isProf } = require("../middleware.js");
+const { isAuthenticated, isProf, isStudent } = require("../middleware.js");
 const { random } = require('../utils.js');
 
 router.post('/new', isAuthenticated, isProf, async (req, res) => {
@@ -21,9 +21,17 @@ router.get('/', isAuthenticated, isProf, async (_req, res) => {
     });
 });
 
+router.get('/modele', isAuthenticated, isStudent, (req, res) => {
+    db.promise().execute(`SELECT MP.id_modele FROM modele_promo MP JOIN modele_sujet MS ON MS.id_modele = MP.id_modele WHERE id_promo = ${req.user.id_promo}`).then(([rows]) => {
+        return res.send(rows).status(200);
+    }).catch(() => {
+        return res.sendStatus(500);
+    });
+});
+
 router.get('/:idpromo', isAuthenticated, isProf, async (req, res) => {
-    const { idPromo } = req.params;
-    db.promise().execute(`SELECT * FROM etudiant WHERE id_promo = ${idPromo}`).then(([rows]) => {
+    const { idpromo } = req.params;
+    db.promise().execute(`SELECT * FROM etudiant WHERE id_promo = ${idpromo}`).then(([rows]) => {
         return res.send(rows).status(200);
     }).catch(() => {
         return res.sendStatus(500);
@@ -31,10 +39,11 @@ router.get('/:idpromo', isAuthenticated, isProf, async (req, res) => {
 });
 
 router.get('/:idpromo/delete', isAuthenticated, isProf, async (req, res) => {
-    const { idPromo } = req.params;
+    const { idpromo } = req.params;
+    console.log(req.params)
     try {
-        await db.promise().execute(`DELETE FROM promo WHERE id_promo = ${idPromo}`);
-        await db.promise().execute(`DELETE FROM etudiant WHERE id_promo = ${idPromo}`);
+        await db.promise().execute(`DELETE FROM promo WHERE id_promo = ${idpromo}`);
+        await db.promise().execute(`DELETE FROM etudiant WHERE id_promo = ${idpromo}`);
         await db.promise().execute(`DELETE FROM authentification WHERE id_auth NOT IN (SELECT id_auth FROM etudiant) AND isProf = false`);
         return res.sendStatus(200);
     } catch {
