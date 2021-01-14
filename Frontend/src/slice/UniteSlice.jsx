@@ -6,8 +6,8 @@ export const getAllUnite = createAsyncThunk("unite/getAllUnite", async () => {
   return response.data;
 });
 
-export const addunite = createAsyncThunk("unite/addunite", async (nom, abrev) => {
-  const response = await addUniteAPI(nom, abrev);
+export const addUnite = createAsyncThunk("unite/addunite", async (nom, abr) => {
+  const response = await addUniteAPI(nom, abr);
   return response.data;
 });
 
@@ -24,9 +24,6 @@ export const uniteSlice = createSlice({
     chargementSuppression : false
   },
   reducers: {
-    addUnite: (state, action) => {
-      state.tabNamepush(action.payload);
-    },
     setTest : (state) =>{
       state.tabUnites = [
         {nomComplet : "Sans Unité", abr : " "},
@@ -37,20 +34,24 @@ export const uniteSlice = createSlice({
   },
   extraReducers: {
     [getAllUnite.rejected]: (state, action) => {
-      console.log(action)
+      console.log("reject")
     },
     [getAllUnite.fulfilled]: (state, action) => {
-      
+      let nom = action.payload.nom
+      let abr = action.payload.abrev
+      console.log(nom + "; " + abr)
     },
     [getAllUnite.pending]: (state, action) => {
       state.actualise = false
       //console.log(action)
     },
-    [addunite.rejected]: (state, action) => {
+    [addUnite.rejected]: (state, action) => {
+      console.log("reject")
     },
-    [addunite.fulfilled]: (state, action) => {
+    [addUnite.fulfilled]: (state, action) => {
+      console.log("fulfill")
     },
-    [addunite.pending]: (state, action) => {
+    [addUnite.pending]: (state, action) => {
     },
     [deleteUnite.rejected]: (state, action) => {
     },
@@ -61,7 +62,7 @@ export const uniteSlice = createSlice({
   }
 });
 
-export const { addUnite, setTest } = uniteSlice.actions;
+export const { setTest } = uniteSlice.actions;
 
 export const selectUnites = (state) => state.unite.tabUnites;
 
