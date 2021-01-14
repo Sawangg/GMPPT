@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {Button, makeStyles, Fab} from "@material-ui/core";
+import {Button, makeStyles, Fab, Typography} from "@material-ui/core";
 import CircleLoader from "react-spinners/CircleLoader";
 import DeleteIcon from '@material-ui/icons/Delete';
 
@@ -24,9 +24,6 @@ export default function Enonces() {
         enonceSujet: {
             width: "70%",
             margin: 'auto'
-        },
-        h1: {
-            textAlign: 'center'
         },
         divQuestion: {
             boxShadow : "0px 8px 20px -5px rgba(0,0,0,0.69)",
@@ -85,7 +82,7 @@ export default function Enonces() {
         return (
             <div>
                 <div className={classes.enonceSujet}>
-                    <h1 className={classes.h1}>Création de l'énoncé</h1>
+                    <Typography variant="h1">énoncé</Typography>
                     <MyEditor value={enonce.enonceContenu} handleChange={e => dispatch(handleChangeEnonce(e))}/>
                 </div>
                 {enonce.question.map((item, id) => {

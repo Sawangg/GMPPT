@@ -1,5 +1,15 @@
 import React, {useState} from 'react'
-import { TextField, Button, Select, MenuItem, Input, InputLabel, FormControl, makeStyles } from '@material-ui/core';
+import {
+    TextField,
+    Button,
+    Select,
+    MenuItem,
+    Input,
+    InputLabel,
+    FormControl,
+    makeStyles,
+    Typography
+} from '@material-ui/core';
 import DropFile from '../../components/DropFile';
 import useConstructor from '../../components/use/useContructor'
 import { getAllPromoAPI, addPromoAPI, etudiantNewAPI, attributionSujetAPI } from '../../utils/api'
@@ -43,9 +53,6 @@ export default function Accueil() {
             margin : "3% auto",
             boxShadow : "0px 8px 20px -5px rgba(0,0,0,0.69)",
             padding : "2% 1%"
-        },
-        typo: {
-            textAlign: "center"
         },
         form: {
             display: "flex",
@@ -131,7 +138,7 @@ export default function Accueil() {
     return (
         <div>
             <div className={classes.divPromo}>
-                <h1 className={classes.typo}>Selectionner une promotion pour ajouter une liste d'étudiants</h1>
+                <Typography variant="h1">PROMOTION</Typography>
                 <form className={classes.form}>
                     <FormControl className={classes.formControl}>
                         <div className={classes.divSelectPromo}>

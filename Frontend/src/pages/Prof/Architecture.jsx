@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {TextField, Button, makeStyles} from '@material-ui/core';
+import {TextField, Button, makeStyles, Typography} from '@material-ui/core';
 
 import DropFile from '../../components/DropFile'
 
@@ -69,7 +69,7 @@ export default function Architecture() {
     return (
         <div className={classes.archi}>
             <div className={classes.divImportModele}>
-                <p style={{textAlign : "center", fontSize : "150%"}}>Importer les images du modèle 3D pour un sujet</p>
+                <Typography variant="h1">Modèles 3D</Typography>
                 <div className={classes.divDropModele} id="divDropModele">
                     <DropFile typeFile='image/*' compressImage={false} changeFile={e => setImage1(e)}  message="Importer la PREMIERE image du modèle 3D"/>
                     <DropFile typeFile='image/*' compressImage={true} changeFile={e => setImage2(e)}  message="Importer la SECONDE image du modèle 3D"/>
