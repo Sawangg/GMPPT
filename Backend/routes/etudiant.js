@@ -45,7 +45,7 @@ router.get('/:idauth/variables', isAuthenticated, (req, res) => {
     });
 });
 
-router.get('/reponses/newest',isAuthenticated, isStudent, (req, res) => {
+router.get('/reponses/newest', isAuthenticated, isStudent, (req, res) => {
     db.promise().execute(`SELECT * FROM reponse_etudiant WHERE id_auth = ${req.user.id_auth} AND date IN (SELECT MAX(date) FROM reponse_etudiant)`).then(([rows]) => {
         if (!rows[0]) return res.sendStatus(404);
         rows[0].reponses = (rows[0].reponses == undefined ? rows[0].reponses : JSON.parse(rows[0].reponses));
@@ -53,6 +53,20 @@ router.get('/reponses/newest',isAuthenticated, isStudent, (req, res) => {
     }).catch(() => {
         return res.sendStatus(500);
     });
+});
+
+router.post('/reponses/new', isAuthenticated, isStudent, (req, res) => {
+    let insert = 'INSERT INTO reponse_etudiant VALUES ';
+    req.body.tabQuestions.forEach(question => {
+        insert += ` (${req.user.id_auth}, ${question.indexQuestion}, '${JSON.parse(question.tabReponses)}', (SELECT now()),`;
+    });
+    insert = insert.slice(0, -1);
+    try {
+        await db.promise().execute(`${insert} WHERE id_auth = ${req.user.id_auth}`);
+        return res.sendStatus(200);
+    } catch {
+        return res.sendStatus(500);
+    }
 });
 
 router.get('/:id_auth/reponses', isAuthenticated, (req, res) => {
