@@ -6,6 +6,22 @@ const ExcelJS = require('exceljs');
 const { generatePwd } = require("../utils.js");
 const tempfile = require('tempfile');
 
+router.post('/reponses/new', isAuthenticated, isStudent, async (req, res) => {
+    let insert = 'INSERT INTO reponse_etudiant VALUES';
+    req.body.tabQuestions.forEach(question => {
+        insert += ` (${req.user.id_auth}, ${question.indexQuestion}, '${JSON.stringify(question.tabReponses)}', (SELECT now())),`;
+    });
+    insert = insert.slice(0, -1);
+    try {
+        console.log(insert)
+        await db.promise().execute(`${insert}`);
+        return res.sendStatus(200);
+    } catch (err){
+        console.log(err)
+        return res.sendStatus(500);
+    }
+});
+
 router.post('/:idpromo/new', isAuthenticated, isProf, async (req, res) => {
     const { idpromo } = req.params;
     const workbook = new ExcelJS.Workbook();
@@ -53,20 +69,6 @@ router.get('/reponses/newest', isAuthenticated, isStudent, (req, res) => {
     }).catch(() => {
         return res.sendStatus(500);
     });
-});
-
-router.post('/reponses/new', isAuthenticated, isStudent, (req, res) => {
-    let insert = 'INSERT INTO reponse_etudiant VALUES ';
-    req.body.tabQuestions.forEach(question => {
-        insert += ` (${req.user.id_auth}, ${question.indexQuestion}, '${JSON.parse(question.tabReponses)}', (SELECT now()),`;
-    });
-    insert = insert.slice(0, -1);
-    try {
-        await db.promise().execute(`${insert} WHERE id_auth = ${req.user.id_auth}`);
-        return res.sendStatus(200);
-    } catch {
-        return res.sendStatus(500);
-    }
 });
 
 router.get('/:id_auth/reponses', isAuthenticated, (req, res) => {

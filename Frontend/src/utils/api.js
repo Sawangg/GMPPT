@@ -128,3 +128,11 @@ export function etudiantNewAPI(idPromo, fileUploaded) {
 export function etudiantModeleAPI() {
     return axios.get(`http://${host}:3001/promo/modele`, credentials);
 }
+
+export function etudiantReponsesNewestAPI() {
+    return axios.get(`http://${host}:3001/etudiant/reponses/newest`, credentials);
+}
+
+export function etudiantReponsesNewAPI(tabQuestions) {
+    return axios.post(`http://${host}:3001/etudiant/reponses/new`, { tabQuestions }, credentials);
+}

@@ -213,12 +213,12 @@ export default function ChoixUnite(props){
                 <div className={classes.alignementHorizontal}>
                     {/* affiche un à un les différentes parties d'unités*/}
                     {tabUnites.map((i, index) => 
-                        <>
+                        <div key={index}>
                         {partieUnite(i, index)}
                         
                         {/* interserction avec des . entre les parties d'unité */}
                         {index < tabUnites.length-1 ? <b>.</b> : null}
-                        </>
+                        </div>
                     )}
                 </div>
 
