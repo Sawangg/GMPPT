@@ -53,6 +53,7 @@ export default function Item(props) {
 
      //dès que la réponse perd le focus, s'assure que la réponse ne puisse être un '-' tout seul
      const handleBlurReponse = () =>{
+          console.log(props)
           if (props.reponse.value === '-'){
                dispatch(changeReponse({
                     indexQuestion : props.indexQuestion, 

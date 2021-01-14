@@ -132,3 +132,7 @@ export function etudiantModeleAPI() {
 export function etudiantReponsesNewestAPI() {
     return axios.get(`http://${host}:3001/etudiant/reponses/newest`, credentials);
 }
+
+export function etudiantReponsesNewAPI(tabQuestions) {
+    return axios.post(`http://${host}:3001/etudiant/reponses/new`, { tabQuestions }, credentials);
+}

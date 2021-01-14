@@ -34,7 +34,7 @@ export default function Question(props) {
 
     //fonction pour ajouter une réponse (valeur vide) à cette question
     const handleAddReponse = () => {
-        dispatch(addReponse(props.question.indexQuestion))
+        dispatch(addReponse(props.id))
     }
 
     //liste les différentes réponses
@@ -43,8 +43,8 @@ export default function Question(props) {
             <div className={classes.listeReponses}>
                 {/* affichage des réponses une par une */}
                 {props.question.tabReponses.map((i, index) => (
-                    <Reponse key={index} reponse={i} 
-                        indexQuestion={props.question.indexQuestion}/>
+                    <Reponse key={index} num={index} reponse={i} 
+                        indexQuestion={props.id}/>
                 ))}
             </div>
         );
