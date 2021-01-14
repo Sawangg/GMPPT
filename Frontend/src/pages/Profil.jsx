@@ -52,7 +52,6 @@ export default function Profile() {
             marginTop : "1%",
             position: "relative",
             right : "24px",
-            color: theme.palette.primary.main
         }
     }));
 
@@ -83,6 +82,8 @@ export default function Profile() {
                     <DropFile typeFile='image/*' compressImage={true} changeFile={e => setImage(e)}  message="Importer une nouvelle image de profil"/>
                     <Button
                         className={classes.buttonEnvoyerImageProfil}
+                        variant="contained"
+                        color="primary"
                         disabled={image === ""}
                         onClick={() => dispatch(setUserImage({name : user.name, image : image}))}
                     >
@@ -96,7 +97,7 @@ export default function Profile() {
                     <InputPassword label={"Nouveau mot de passe"} error={password.error} 
                             onChange={e => setPassword({oldPassword : password.oldPassword, newPassword : e.target.value, error : false})}
                     />
-                    <Button className={classes.buttonChangePwd} size="small" onClick={() => changePasswordAPI()}>Changer de mot de passe</Button>
+                    <Button className={classes.buttonChangePwd} variant="contained" color="primary" size="small" onClick={() => changePasswordAPI()}>Changer de mot de passe</Button>
                 </div>           
                 <PopUp severity="success" message="Changement de mot de passe réussi" open={openPopUp} handleClose={e => setOpenPopUp(false)}/>
             </div>
