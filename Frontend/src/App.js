@@ -26,8 +26,6 @@ import { Provider } from 'react-redux';
 import store from './utils/store';
 
 import CssBaseline from '@material-ui/core/CssBaseline'
-import "./styles/App.css";
-
 
 export default function App() {
 
@@ -52,14 +50,16 @@ export default function App() {
                 dark: '#244826'
             },
         },
-        overrides: {
-            MuiCssBaseline: {
-                '@global': {
-                    body: {
-                        fontFamily: "Amaranth",
-                    },
-                },
-            },
+        typography: {
+            fontFamily: "Amaranth",
+            h1: {
+                fontSize: 28,
+                fontWeight: "bold",
+                textAlign: "center",
+                textTransform: "uppercase",
+                marginBottom: "2%",
+                color: "#393939"
+            }
         },
     }, frFR);
 

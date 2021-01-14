@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Fab, makeStyles} from '@material-ui/core';
+import {Fab, makeStyles, Typography} from '@material-ui/core';
 import CircleLoader from "react-spinners/CircleLoader";
 import AddIcon from '@material-ui/icons/Add';
 
@@ -20,7 +20,6 @@ export default function VariablesAleatoires() {
     const [open, setOpen] = useState(false);
         
     const useStyles = makeStyles((theme) => ({
-        h1: {textAlign : "center"},
         fab: {marginLeft: "3%"},
         divItemvariable: {
             boxShadow: "0px 8px 20px -5px rgba(0,0,0,0.69)",
@@ -73,7 +72,7 @@ export default function VariablesAleatoires() {
     const displayVariable = () =>{
         return (
             <div>
-                <h1 className={classes.h1}>Creation des variables aléatoires</h1>
+                <Typography variant="h1">Variables aléatoires</Typography>
                 <Fab className={classes.fab}
                     size="small"
                     color="primary"

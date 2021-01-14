@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactHtmlParser from 'react-html-parser';
 import jsPDF from 'jspdf';
-import {Button, makeStyles} from '@material-ui/core';
+import {Button, makeStyles, Typography} from '@material-ui/core';
 import GetAppIcon from '@material-ui/icons/GetApp';
 
 import { useSelector } from "react-redux";
@@ -104,8 +104,8 @@ export default function RepondreQuestions(){
                 Télécharger
             </Button>
         </div>
-        <h1>Répondre aux questions</h1>
-        
+        <Typography variant="h1">Réponses aux questions</Typography>
+
         <h2>Sujet</h2>
 
         {/* affichage du sujet */ }
