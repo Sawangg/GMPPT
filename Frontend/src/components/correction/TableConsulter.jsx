@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {
+  Button, makeStyles,
   Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination,
   TableRow
 } from '@material-ui/core';
@@ -10,6 +11,14 @@ import { selectEtudiants, setEtudiantsForTests } from '../../slice/CorrectionSli
 import {Link} from 'react-router-dom'
 
 export default function StickyHeadTable() {
+
+  const useStyles = makeStyles((theme) => ({
+    linkConsulter: {
+      textDecoration: "none",
+      color: "white"
+    }
+  }));
+  const classes = useStyles();
 
   const dispatch = useDispatch()
 
@@ -95,9 +104,11 @@ export default function StickyHeadTable() {
                       :
                       //cas de la colonne consulter sujet
                       <TableCell key={'sujet'} align={columnConsulterSujet.align}>
-                        <Link to={"/prof/correction/" + row.id}>
-                          Consulter
-                        </Link>
+                        <Button variant="contained" color="primary">
+                          <Link className={classes.linkConsulter} to={"/prof/correction/" + row.id}>
+                            Consulter
+                          </Link>
+                        </Button>
                       </TableCell>
                     )
                   })}

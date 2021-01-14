@@ -45,6 +45,15 @@ export default function Enonces() {
             color: "white",
             display: "block",
             margin: "50px auto"
+        },
+        fabDelete: {
+            float : "right",
+            marginLeft : 20,
+            color: "white",
+            backgroundColor: theme.palette.error.main,
+            "&:hover": {
+                backgroundColor: theme.palette.error.dark
+            }
         }
     }));
     const classes = useStyles();
@@ -81,14 +90,14 @@ export default function Enonces() {
     const displayEnonce = () => {
         return (
             <div>
+                <Typography variant="h1">énoncé</Typography>
                 <div className={classes.enonceSujet}>
-                    <Typography variant="h1">énoncé</Typography>
                     <MyEditor value={enonce.enonceContenu} handleChange={e => dispatch(handleChangeEnonce(e))}/>
                 </div>
                 {enonce.question.map((item, id) => {
                     return (
                         <div key={id} className={classes.divQuestion}>
-                            <Fab style={{float : "right", marginLeft : 20}} size="small" aria-label="delete"
+                            <Fab className={classes.fabDelete} size="small" aria-label="delete"
                                 disabled={enonce.question.length === 1}
                                 onClick={() => dispatch(removeQuestion(id))}
                             >

@@ -58,7 +58,8 @@ export default function App() {
                 textAlign: "center",
                 textTransform: "uppercase",
                 marginBottom: "2%",
-                color: "#393939"
+                color: "#393939",
+                padding: "1%"
             }
         },
     }, frFR);

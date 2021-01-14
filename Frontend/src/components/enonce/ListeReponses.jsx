@@ -20,8 +20,21 @@ export default function ListeReponses(props) {
             maxHeight: "36px",
             display : "block",
             marginBottom : "2%",
-            color: theme.palette.primary.main,
-            borderColor: theme.palette.primary.main
+        },
+        buttonSupprimerReponse: {
+            color: "white",
+            backgroundColor: theme.palette.error.main,
+            "&:hover": {
+                backgroundColor: theme.palette.error.dark,
+            },
+            "&:disabled": {
+                backgroundColor: theme.palette.secondary.main,
+            }
+        },
+        accordionDetails: {
+            display : "flex",
+            flexDirection : "column",
+            justifyContent : "space-around"
         }
     }));
     const classes = useStyles();
@@ -39,12 +52,12 @@ export default function ListeReponses(props) {
         <div className={classes.divListeReponses}>
             <Accordion square expanded={expanded} onChange={() =>setExpanded(!expanded)}>
                     <AccordionSummary expandIcon={<ExpandMoreIcon />}>Réponses à la question {props.id+1}</AccordionSummary>
-                    <AccordionDetails style={{display : "flex", flexDirection : "column", justifyContent : "space-around"}}>
-                        <Button variant="outlined" className={classes.buttonAjouterReponse} onClick={() => dispatch(addReponse(props.id))}>Ajouter une réponse</Button>
+                    <AccordionDetails className={classes.accordionDetails}>
+                        <Button variant="contained" className={classes.buttonAjouterReponse} color="primary" onClick={() => dispatch(addReponse(props.id))}>Ajouter une réponse</Button>
                         {tab.map((elem, index) => (
                             <div>
                                 <Reponse key={index} element={elem} indexReponse={index} indexQuestion={props.id}/>
-                                <Button disabled={tab.length === 1} onClick={() => dispatch(removeReponse({indexQuestion : props.id, indexReponse : index}))}>Supprimer la réponse</Button>
+                                <Button className={classes.buttonSupprimerReponse} disabled={tab.length === 1} onClick={() => dispatch(removeReponse({indexQuestion : props.id, indexReponse : index}))}>Supprimer la réponse</Button>
                             </div>
                         ))}
                 </AccordionDetails>

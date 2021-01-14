@@ -26,14 +26,6 @@ export default function Architecture() {
         },
         button: {
             marginLeft : 20,
-            backgroundColor: theme.palette.primary.main,
-            color: "white",
-                "&:disabled": {
-                    backgroundColor: theme.palette.secondary.main
-                },
-                "&:hover": {
-                    backgroundColor: theme.palette.primary.dark
-                }
         }
     }));
     const classes = useStyles();
@@ -76,12 +68,12 @@ export default function Architecture() {
                 </div>
                 <div className={classes.divNumSujet}>
                     <TextField autoFocus size="small" label="Numéro du sujet" variant="outlined" required value={sujet} onChange={e => onChange(e)}/>
-                    <Button className={classes.button} disabled={image1 === "" || image2 === "" || sujet === ""} variant="outlined" onClick={() => envoieModele3D()}>Enregistrer</Button>
+                    <Button className={classes.button} disabled={image1 === "" || image2 === "" || sujet === ""} variant="contained" color="primary" onClick={() => envoieModele3D()}>Enregistrer</Button>
                 </div>
             </div>
             <div>
                 <DropFile typeFile='.xlsx' compressImage={false} changeFile={e => setExcel(e)}  message="Charger la liste des architectures"/>
-                <Button disabled={excel === ""} variant="outlined" style={{display : "block", margin : "20px auto"}} onClick={() => envoieArchi()}>Enregistrer</Button>
+                <Button disabled={excel === ""} variant="contained" color="primary" style={{display : "block", margin : "20px auto"}} onClick={() => envoieArchi()}>Enregistrer</Button>
             </div>
         </div>
     );

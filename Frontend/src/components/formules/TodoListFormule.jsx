@@ -17,8 +17,6 @@ export default function TodoListFormule(props) {
             maxHeight: "36px",
             display : "block",
             margin: "6% auto 0 auto",
-            color: theme.palette.primary.main,
-            borderColor: theme.palette.primary.main
         }
     }));
     const classes = useStyles();
@@ -45,7 +43,8 @@ export default function TodoListFormule(props) {
             ))}
              <Button 
                 className={classes.buttonAjouterFormule}
-                variant="outlined" 
+                variant="contained"
+                color="primary"
                 onClick={() => dispatch(addFormule(props.index))}
             >
                     Ajouter des formules
