@@ -6,7 +6,7 @@ import { Button, makeStyles, Typography } from '@material-ui/core';
 import GetAppIcon from '@material-ui/icons/GetApp';
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectAllQuestions, selectSujet, getQuestions, getReponses, enregistrerReponses
+import { selectAllQuestions, selectSujet, getSujet, enregistrerReponses
         } from "../../slice/RepondreQuestionsSlice"
 import useConstructor from '../../components/use/useContructor'
 
@@ -45,8 +45,7 @@ export default function RepondreQuestions(){
 
     useConstructor(async () => {
         etudiantModeleAPI().then(modele => {
-            dispatch(getQuestions(modele.data[0].id_modele));
-            dispatch(getReponses())
+            dispatch(getSujet(modele.data[0].id_modele));
         });
     });
 
@@ -63,12 +62,12 @@ export default function RepondreQuestions(){
         const LARGEUR_A4 = 210
 
         //met le sujet dans la bonne font family
-        var sujetForPdf = '<div style="font-family: sans-serif">' + sujet + '</div>'
+        let sujetForPdf = '<div style="font-family: sans-serif">' + sujet + '</div>'
 
         //document pdf en format a4
-        var doc = new jsPDF('p', 'mm', 'a4')
+        let doc = new jsPDF('p', 'mm', 'a4')
 
-        var options = {
+        let options = {
             pagesplit : true,
             'width' : LARGEUR_A4 - 2 * MARGE_COTE,
             'height' : HAUTEUR_A4 - MARGE_HAUT - MARGE_BAS,
@@ -81,8 +80,8 @@ export default function RepondreQuestions(){
         
         doc.addPage()
 
-        var number_of_pages = doc.internal.getNumberOfPages()
-        for (var i = 1; i <= number_of_pages; i++) {
+        let number_of_pages = doc.internal.getNumberOfPages()
+        for (let i = 1; i <= number_of_pages; i++) {
 
             doc.setPage(i)
 

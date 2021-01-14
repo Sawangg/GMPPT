@@ -13,7 +13,7 @@ import useUnload from '../../components/use/useUnload';
 
 import { useDispatch, useSelector } from "react-redux";
 import { selectModele } from "../../slice/ModeleSlice";
-import { addQuestion, removeQuestion, handleChangeEnonce, handleChangeQuestion, selectActualiseEnonce, selectEnonce, selectEnregistreEnonce, getQuestions, setQuestions } from "../../slice/EnoncesSlice";
+import { addQuestion, removeQuestion, handleChangeEnonce, handleChangeQuestion, selectActualiseEnonce, selectEnonce, selectEnregistreEnonce, getSujet, setQuestions } from "../../slice/EnoncesSlice";
 import { getCategoriesFormules, selectEnregistreFormule } from "../../slice/FormulesSlice"
 
 export default function Enonces() {
@@ -73,7 +73,7 @@ export default function Enonces() {
                 setOpen(true);
             }
             if (!isEnregistreFormule) dispatch(getCategoriesFormules(modele.idModeleSelectionne));
-            if (!isEnregistreEnonce) dispatch(getQuestions(modele.idModeleSelectionne));
+            if (!isEnregistreEnonce) dispatch(getSujet(modele.idModeleSelectionne));
         }
     });
 
