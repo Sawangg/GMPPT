@@ -137,8 +137,8 @@ export default function Accueil() {
 
     return (
         <div>
+            <Typography variant="h1">PROMOTION</Typography>
             <div className={classes.divPromo}>
-                <Typography variant="h1">PROMOTION</Typography>
                 <form className={classes.form}>
                     <FormControl className={classes.formControl}>
                         <div className={classes.divSelectPromo}>
