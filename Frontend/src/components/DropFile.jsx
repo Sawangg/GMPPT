@@ -19,7 +19,7 @@ export default function DropFile(props) {
             cursor: "pointer",
             padding: "0 2%",
             width : "40%",
-            margin : "3% auto 0 auto",
+            margin : "auto auto",
             height: "172px",
             position: "relative",
             zIndex: 10

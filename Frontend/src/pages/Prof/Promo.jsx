@@ -13,21 +13,24 @@ import '../../styles/ImportModele3D.css'
 export default function Accueil() {
 
     const useStyles = makeStyles((theme) => ({
+        hr: {
+            width: "80%",
+            marginBottom: "2%"
+        },
         divNomPromo: {
             display : "flex",
             justifyContent : "center",
-            marginTop : "3%"
+            marginTop : "3%",
         },
         button: {
             display : "block",
             margin : "20px auto"
         },
         divPromo: {
-            marginTop : 50,
             boxShadow : "0px 8px 20px -5px rgba(0,0,0,0.69)",
             padding : "1% 0.5%",
             width : "80%",
-            margin : "auto"
+            margin : "auto",
         },
         typo: {
             textAlign: "center"
@@ -114,6 +117,7 @@ export default function Accueil() {
     return (
         <div>
             <Typography variant="h1">PROMOTION</Typography>
+            <hr className={classes.hr}/>
             <div className={classes.divPromo}>
                 <form className={classes.form}>
                     <FormControl className={classes.formControl}>
@@ -134,7 +138,7 @@ export default function Accueil() {
                                 <DeleteIcon/>
                             </Fab>
                         </div>
-                        {select !== "ajoutPromo" ? null 
+                        {select !== "ajoutPromo" ? null
                             :<div className={classes.divNomPromo}>
                                 <TextField autoFocus size="small" label="Nom de la promo" variant="outlined" required value={promo} onChange={e => changePromo(e)}/>
                                 <Button className={classes.button} disabled={promo===""} variant="outlined" onClick={() => addPromo()}>Créer</Button>

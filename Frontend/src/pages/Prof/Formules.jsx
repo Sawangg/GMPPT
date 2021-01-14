@@ -16,6 +16,10 @@ import { selectModele } from "../../slice/ModeleSlice"
 export default function TodoListAccordeon() {
   
     const useStyles = makeStyles((theme) => ({
+        hr: {
+            width: "80%",
+            marginBottom: "2%"
+        },
         fab: {
             marginLeft: "3%",
         }
@@ -48,6 +52,7 @@ export default function TodoListAccordeon() {
         return (
             <div>
                 <Typography variant="h1">FORMULES</Typography>
+                <hr className={classes.hr}/>
                 <Fab className={classes.fab}
                     size="small"
                     color="primary"

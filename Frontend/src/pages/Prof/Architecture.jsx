@@ -10,6 +10,10 @@ import '../../styles/ImportModele3D.css'
 export default function Architecture() {
 
     const useStyles = makeStyles((theme) => ({
+        hr: {
+            width: "80%",
+            marginBottom: "2%"
+        },
         divImportModele: {
             boxShadow : "0px 8px 20px -5px rgba(0,0,0,0.69)",
             width : "80%",
@@ -61,6 +65,7 @@ export default function Architecture() {
     return (
         <div>
             <Typography variant="h1">Architecture</Typography>
+            <hr className={classes.hr}/>
             <div>
                 <DropFile typeFile='.xlsx' compressImage={false} changeFile={e => setExcel(e)}  message="Charger la liste des architectures"/>
                 <Button disabled={excel === ""} variant="contained" color="primary" style={{display : "block", margin : "20px auto"}} onClick={() => envoieArchi()}>Enregistrer</Button>

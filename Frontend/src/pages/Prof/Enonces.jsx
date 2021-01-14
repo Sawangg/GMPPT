@@ -21,6 +21,10 @@ export default function Enonces() {
     const [open, setOpen] = useState(false);
   
     const useStyles = makeStyles((theme) => ({
+        hr: {
+            width: "80%",
+            marginBottom: "2%"
+        },
         enonceSujet: {
             width: "70%",
             margin: 'auto'
@@ -86,6 +90,7 @@ export default function Enonces() {
         return (
             <div>
                 <Typography variant="h1">énoncé</Typography>
+                <hr className={classes.hr}/>
                 <div className={classes.enonceSujet}>
                     <MyEditor value={enonce.enonceContenu} handleChange={e => dispatch(handleChangeEnonce(e))}/>
                 </div>
