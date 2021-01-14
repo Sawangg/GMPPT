@@ -1,16 +1,10 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getQuestionsAPI, etudiantReponsesNewestAPI, getVariablesAPI, etudiantReponsesNewAPI} from "../utils/api.js";
+import { getSujetAPI, getVariablesAPI, etudiantReponsesNewAPI} from "../utils/api.js";
 import _ from "lodash"
 
-export const getQuestions = createAsyncThunk("etudiant/getQuestions", 
+export const getSujet = createAsyncThunk("etudiant/getSujet", 
 async (idModele) => {
-    const response = await getQuestionsAPI(idModele);
-    return response.data;
-});
-
-export const getReponses = createAsyncThunk("etudiant/getReponses", 
-async () => {
-    const response = await etudiantReponsesNewestAPI();
+    const response = await getSujetAPI(idModele);
     return response.data;
 });
 
@@ -105,44 +99,21 @@ export const reponseSlice = createSlice({
         }
     },
     extraReducers: {
-        [getQuestions.fulfilled]: (state, action) => {
+        [getSujet.fulfilled]: (state, action) => {
             state.sujet = action.payload.enonce;
             state.tabQuestions = []
             action.payload.questions.forEach((question) => {
+                const reponses = question.reponses === undefined ? state.tabReponses : question.reponses;
                 state.tabQuestions.push({
                     indexQuestion : question.id_question,
                     enonce : question.contenu,
                     nbMaxReponses : 5,
-                    tabReponses : [{
-                        value : "",
-                        tabUnite : [{
-                            abr : " ",
-                            puissance : 1
-                        }]
-                    }]
+                    tabReponses : reponses
                 });
             });
         },
-        [getReponses.fulfilled]: (state, action) =>{
-            console.log(action)
-            /*state.tabQuestions = []
-            action.payload.questions.forEach((question) => {
-                state.tabQuestions.push({
-                    indexQuestion : question.id_question,
-                    enonce : question.contenu,
-                    nbMaxReponses : 5,
-                    tabReponses : [{
-                        value : "",
-                        tabUnite : [{
-                            abr : " ",
-                            puissance : 1
-                        }]
-                    }]
-                });
-            });*/
-        },
         [enregistrerReponses.fulfilled] : (state, action) =>{
-            console.log("fulfill")
+
         }
     }
 })

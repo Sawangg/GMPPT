@@ -1,10 +1,10 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import { getQuestionsAPI, setQuestionsAPI } from "../utils/api.js";
+import { getSujetAPI, setQuestionsAPI } from "../utils/api.js";
 
-export const getQuestions = createAsyncThunk(
-    "enonce/getQuestions",
+export const getSujet = createAsyncThunk(
+    "enonce/getSujet",
     async (idModele) => {
-        const response = await getQuestionsAPI(idModele);
+        const response = await getSujetAPI(idModele);
         return response.data;
     }
 );
@@ -27,7 +27,10 @@ export const enoncesReducer = createSlice({
                 selectCat : "",
                 selectForm: "",
                 margeErreur : 5,
-                unite: [{abr : " ", puissance : 1 }],
+                unite: [{
+                    abr : " ", 
+                    puissance : 1 
+                }],
             }],
         }],
         actualise: false,
@@ -42,7 +45,10 @@ export const enoncesReducer = createSlice({
                     selectCat : "",
                     selectForm: "",
                     margeErreur : 5,
-                    unite: [{abr : " ", puissance : 1 }],
+                    unite: [{
+                        abr : " ", 
+                        puissance : 1 
+                    }],
                 }],
             });
         },
@@ -97,10 +103,10 @@ export const enoncesReducer = createSlice({
         }
     },
     extraReducers: {
-        [getQuestions.pending]: (state) => {
+        [getSujet.pending]: (state) => {
             state.actualise = false;
         },
-        [getQuestions.rejected]: (state) => {
+        [getSujet.rejected]: (state) => {
             state.enonceContenu = "";
             state.question = [{
                 contenu: "",
@@ -115,7 +121,7 @@ export const enoncesReducer = createSlice({
             state.enregistre = true;
             state.firstLoad = true;
         },
-        [getQuestions.fulfilled]: (state, action) => {
+        [getSujet.fulfilled]: (state, action) => {
             let question = [];
             let reponse = [];
             state.enonceContenu = action.payload.enonce;

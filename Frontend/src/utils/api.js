@@ -99,9 +99,6 @@ export function getVariablesAPI(idModele) {
 }
 
 // Enonces
-export function getQuestionsAPI(idModele) {
-    return axios.get(`http://${host}:3001/modele/${idModele}/questions`, credentials);
-}
 
 export function setQuestionsAPI(idModele, enonce, tabQuestions) {
     return axios.post(`http://${host}:3001/modele/${idModele}/questions/new`, { tabQuestions, enonce }, credentials);
@@ -129,10 +126,12 @@ export function etudiantModeleAPI() {
     return axios.get(`http://${host}:3001/promo/modele`, credentials);
 }
 
-export function etudiantReponsesNewestAPI() {
-    return axios.get(`http://${host}:3001/etudiant/reponses/newest`, credentials);
-}
-
 export function etudiantReponsesNewAPI(tabQuestions) {
     return axios.post(`http://${host}:3001/etudiant/reponses/new`, { tabQuestions }, credentials);
+}
+
+// Sujet 
+
+export function getSujetAPI(idModele) {
+    return axios.get(`http://${host}:3001/modele/${idModele}/sujet`, credentials);
 }

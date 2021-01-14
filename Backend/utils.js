@@ -24,4 +24,8 @@ function random(max, min, decimalPlaces) {
     return Math.floor(rand * power) / power;
 }
 
-module.exports = { comparePwd, encrypt, generatePwd, random };
+function dateFormat(d) {
+    return [d.getFullYear(), d.getMonth() + 1, d.getDate()].join("-") + " " + [d.getHours(), d.getMinutes(), d.getSeconds()].join(":");
+}
+
+module.exports = { comparePwd, encrypt, generatePwd, random, dateFormat };

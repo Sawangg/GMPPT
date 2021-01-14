@@ -1,4 +1,4 @@
-const { Router } = require("express");
+const { Router, response } = require("express");
 const db = require("../databases.js");
 const router = Router();
 const { isAuthenticated, isProf } = require("../middleware.js");
@@ -121,21 +121,28 @@ router.post('/:idmodele/variables/new', isAuthenticated, isProf, (req, res) => {
     });
 });
 
-router.get('/:idmodele/questions', isAuthenticated, async (req, res) => {
+router.get('/:idmodele/sujet', isAuthenticated, async (req, res) => {
     const { idmodele } = req.params;
     try {
         const enonce = (await db.promise().execute(`SELECT enonce FROM modele_sujet WHERE id_modele = ${idmodele}`))[0][0].enonce;
-        db.promise().execute(`SELECT id_question, contenu, reponses FROM question WHERE id_modele = ${idmodele}`).then(([questions]) => {
+        db.promise().execute(`SELECT id_question, contenu, reponses FROM question WHERE id_modele = ${idmodele}`).then(async ([questions]) => {
             if (!questions[0]) return res.sendStatus(404);
             if(req.user.isProf) {
                 questions.map(r => {
                     r.reponses = (r.reponses == undefined ? r.reponses : JSON.parse(r.reponses));
                 });
-            } else {
+                return res.send({ questions, enonce }).status(200);
+            }
+            const reponses = (await db.promise().execute(`SELECT reponses FROM reponse_etudiant WHERE id_auth = ${req.user.id_auth} AND date IN (SELECT MAX(date) FROM reponse_etudiant) GROUP BY id_question`))[0];
+            if (!reponses[0]) {
                 questions.map(r => {
                     delete r.reponses;
                 });
-            }
+                return res.send({ questions, enonce }).status(200);
+            } 
+            questions.map((r, index)=> {
+                r.reponses = (r.reponses == undefined ? r.reponses : JSON.parse(reponses[index].reponses));
+            });
             return res.send({ questions, enonce }).status(200);
         });
     } catch {

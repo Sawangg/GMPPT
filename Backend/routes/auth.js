@@ -5,7 +5,6 @@ const db = require("../databases.js");
 const { isAuthenticated } = require("../middleware.js");
 const { comparePwd, encrypt } = require("../utils.js");
 
-
 router.get("/", isAuthenticated, (req, res) => {
     return res.send({ username: req.user.username, isProf: req.user.isProf, idPromo: req.user.id_promo }).status(200);
 });

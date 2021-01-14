@@ -61,7 +61,7 @@ export default function Reponse (props) {
                 </Select>
                 {props.element.selectCat === "" ? null 
                 :<>
-                    <Select className={classes.select} value={props.element.selectForm} onChange={e =>dispatch(handleChangeForm({idQuestion : props.indexQuestion, idReponse : props.indexReponse, value : e.target.value}))} input={<Input/>}>
+                    <Select className={classes.select} value={props.element.selectForm} onChange={e => dispatch(handleChangeForm({idQuestion : props.indexQuestion, idReponse : props.indexReponse, value : e.target.value}))} input={<Input/>}>
                         {catForm[props.element.selectCat].tabFormule.map((item, index) => <MenuItem key={index} value={item.nomFormule}>{item.nomFormule}</MenuItem>)}
                     </Select>
                 </>

@@ -23,7 +23,7 @@ import useConstructor from './use/useContructor'
 import { useDispatch, useSelector } from "react-redux";
 import { getCategoriesFormules } from "../slice/FormulesSlice";
 import { getAllVariables } from "../slice/VariablesAleatoiresSlice"
-import { getQuestions } from "../slice/EnoncesSlice";
+import { getSujet } from "../slice/EnoncesSlice";
 import { selectionnerModele, addNewModele, removeModele, getModele, selectModele, selectActualise} from "../slice/ModeleSlice";
 
 //setClose pour fermer la PopUp (fonction)
@@ -99,7 +99,7 @@ export default function SelectionModele({setClose, open, tard}) {
             dispatch(selectionnerModele(select));
             dispatch(getCategoriesFormules(select));
             dispatch(getAllVariables(select));
-            dispatch(getQuestions(select));
+            dispatch(getSujet(select));
         }
         setClose();
     }
