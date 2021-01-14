@@ -105,15 +105,15 @@ export function setQuestionsAPI(idModele, enonce, tabQuestions) {
 
 //Unite
 export function addUniteAPI(nom, abrev){
-    return axios.post(`http://${host}:3001/unite/new`, { nom , abrev }, credentials);
+    return axios.post(`http://${host}:3001/unite/new`, {nom , abrev}, credentials);
 }
 
 export function getAllUniteAPI(){
     return axios.get(`http://${host}:3001/unite/`, credentials);
 }
 
-export function deleteUniteAPI(idUnite){
-    return axios.get(`http://${host}:3001/unite/${idUnite}/delete`, credentials);
+export function deleteUniteAPI(nomUnite){
+    return axios.get(`http://${host}:3001/unite/${nomUnite}/delete`, credentials);
 }
 
 // Etudiant 
