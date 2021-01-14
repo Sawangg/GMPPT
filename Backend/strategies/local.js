@@ -8,7 +8,7 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser(async (username, done) => {
-    return await db.promise().execute(`SELECT * FROM authentification WHERE USERNAME = '${username}'`).then(([rows]) => {
+    return await db.promise().execute(`SELECT * FROM authentification A LEFT OUTER JOIN etudiant E ON E.id_auth = A.id_auth WHERE USERNAME = '${username}'`).then(([rows]) => {
         if(!rows[0]) return done(null, null);
         return done(null, rows[0]);
     }).catch(err => {
@@ -17,7 +17,7 @@ passport.deserializeUser(async (username, done) => {
 });
 
 passport.use(new localStrat(async (username, password, done) => {
-    return await db.promise().execute(`SELECT * FROM authentification WHERE USERNAME = '${username}'`).then(([rows]) => {
+    return await db.promise().execute(`SELECT * FROM authentification A LEFT OUTER JOIN etudiant E ON E.id_auth = A.id_auth WHERE USERNAME = '${username}'`).then(([rows]) => {
         if (!rows[0]) return done(null, false);
         if (comparePwd(password, rows[0].password)) {
             return done(null, rows[0]);
