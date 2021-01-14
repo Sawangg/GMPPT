@@ -83,20 +83,14 @@ export default function NavBar() {
       divider : true
     },
     {
-      icon : <PolymerIcon/>,
-      nom : "Gérer les unités",
-      route : "/prof/unites",
-      divider : false
+      icon : <SystemUpdateAltIcon/>,
+      nom : "Architecture",
+      route : "/prof/architecture"
     },
     {
       icon : <SchoolIcon/>,
       nom : "Promotion",
       route : "/prof/promo"
-    },
-    {
-      icon : <SystemUpdateAltIcon/>,
-      nom : "Architecture",
-      route : "/prof/architecture"
     },
     {
       icon : <AllInclusiveIcon/>,
@@ -107,6 +101,11 @@ export default function NavBar() {
       icon : <FunctionsIcon/>,
       nom : "Enregistrement des formules",
       route : "/prof/formules"
+    },
+    {
+      icon : <PolymerIcon/>,
+      nom : "Gérer les unités",
+      route : "/prof/unites",
     },
     {
       icon : <PostAddIcon/>,

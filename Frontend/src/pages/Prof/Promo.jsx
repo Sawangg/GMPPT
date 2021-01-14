@@ -1,10 +1,12 @@
 import React, {useState} from 'react'
-import { TextField, Button, Select, MenuItem, Input, InputLabel, FormControl, makeStyles } from '@material-ui/core';
+import { TextField, Button, Select, MenuItem, Input, InputLabel, FormControl, makeStyles, Fab } from '@material-ui/core';
+import DeleteIcon from '@material-ui/icons/Delete';
+
+import { getAllPromoAPI, addPromoAPI, etudiantNewAPI, deletePromoAPI } from '../../utils/api'
+
+import AttributionSujet from '../../components/AttributionSujet';
 import DropFile from '../../components/DropFile';
 import useConstructor from '../../components/use/useContructor'
-import { getAllPromoAPI, addPromoAPI, etudiantNewAPI, attributionSujetAPI } from '../../utils/api'
-import { selectModele } from "../../slice/ModeleSlice";
-import { useSelector } from "react-redux";
 
 import '../../styles/ImportModele3D.css'
 
@@ -34,16 +36,6 @@ export default function Accueil() {
             width : "80%",
             margin : "auto"
         },
-        divPromoModele: {
-            marginTop : 50,
-            display : "flex",
-            justifyContent : "space-around",
-            flexWrap : "wrap",
-            width : "60%",
-            margin : "3% auto",
-            boxShadow : "0px 8px 20px -5px rgba(0,0,0,0.69)",
-            padding : "2% 1%"
-        },
         typo: {
             textAlign: "center"
         },
@@ -58,9 +50,11 @@ export default function Accueil() {
             width : "100%"
         },
         divSelectPromo: {
-            display : "block",
+            display : "grid",
+            gridTemplateColumns : "1fr 1fr",
             margin : "auto",
-            width : "18%"
+            width : "18%",
+            gridGap : 20
         },
         labelSelectPromo: {
             position : "relative"
@@ -68,9 +62,6 @@ export default function Accueil() {
         selectPromo: {
             width : 200,
             marginTop : "0 !important"
-        },
-        selectModele: {
-            width : 200
         }
     }));
     const classes = useStyles();
@@ -80,36 +71,25 @@ export default function Accueil() {
     const [select, setSelect] = useState("");
     const [tabPromo, setTabPromo] = useState([])
 
-    const [selectPromo, setSelectPromo] = useState("");
-    const [selectionModele, setSelectionModele] = useState("");
-
-    const modele = useSelector(selectModele);
-
     useConstructor(() => {
-        getAllPromoAPI().then(e => {
-            setTabPromo(e.data);
-            setSelect(e.data[0].id_promo)
-        }).catch(() => console.log("erreur"))
+        getAllPromoAPI()
+        .then(e => setTabPromo(e.data))
+        .catch(() => console.log("erreur"))
     });
 
-    const envoiePromo = () => {
+    const addPromo = () => {
         addPromoAPI(promo).then(() => {
-            setPromo("")
-            getAllPromoAPI().then(e => {
-                setTabPromo(e.data);
-                setSelect(e.data[0].id_promo)
-            }).catch(() => console.log("erreur"))
+            getAllPromoAPI()
+            .then(e => setTabPromo(e.data))
+            .catch(() => console.log("erreur"))
         }).catch(() => console.log("nop"));
+        setPromo("");
     }
 
     const envoieExcel = () => {
         const data = new FormData();
         data.append('fileUploaded', excel);
         etudiantNewAPI(select, data).then(fichier => console.log(fichier)).catch((err) => console.log(err));
-    };
-
-    const envoieAttribution = () => {
-        attributionSujetAPI(selectPromo, selectionModele);
     };
 
     const changePromo = (e) => {
@@ -120,13 +100,15 @@ export default function Accueil() {
         setSelect(event.target.value);
     };
 
-    const handleChange2 = (event) => {
-        setSelectPromo(event.target.value);
-    };
-
-    const handleChangeModele = (event) => {
-        setSelectionModele(event.target.value);
-    };
+    const removePromo = () => {
+        deletePromoAPI(select.id_promo)
+        .then(() => console.log("supp"))
+        .catch(() => console.log("erreur"))
+        let tabTemp = [...tabPromo];
+        tabTemp.splice(tabTemp.indexOf(select), 1);
+        setTabPromo(tabTemp);
+        setSelect("");
+    }
 
     return (
         <div>
@@ -135,45 +117,34 @@ export default function Accueil() {
                 <form className={classes.form}>
                     <FormControl className={classes.formControl}>
                         <div className={classes.divSelectPromo}>
-                            <InputLabel className={classes.labelSelectPromo}>Promotion selectionnée</InputLabel>
-                            <Select className={classes.selectPromo} value={select} onChange={handleChange} input={<Input/>}>
-                                <MenuItem style={{color : "#075b72"}} value={"ajoutPromo"}>Ajouter promotion</MenuItem>
-                                {tabPromo.map((element, index) => (
-                                    <MenuItem key={index} value={element.id_promo}>{element.nom_promo}</MenuItem>
-                                ))}
-                            </Select>
+                            <div>
+                                <InputLabel className={classes.labelSelectPromo}>Promotion selectionnée</InputLabel>
+                                <Select className={classes.selectPromo} value={select.id_promo} onChange={handleChange} input={<Input/>}>
+                                    <MenuItem style={{color : "#075b72"}} value={"ajoutPromo"}>Ajouter promotion</MenuItem>
+                                    {tabPromo.map((element, index) => (
+                                        <MenuItem key={index} value={element}>{element.nom_promo}</MenuItem>
+                                    ))}
+                                </Select>
+                            </div>
+                            <Fab className={classes.fabDelete} size="small" aria-label="delete"
+                                disabled={select.id_promo === "" || select.id_promo === "ajoutPromo"}
+                                onClick={() => removePromo()}
+                            >
+                                <DeleteIcon/>
+                            </Fab>
                         </div>
-                        {select !== "ajoutPromo" ? null 
+                        {select.id_promo !== "ajoutPromo" ? null 
                             :<div className={classes.divNomPromo}>
                                 <TextField autoFocus size="small" label="Nom de la promo" variant="outlined" required value={promo} onChange={e => changePromo(e)}/>
-                                <Button className={classes.button} disabled={promo==="" ? true : false} variant="outlined" onClick={() => envoiePromo()}>Créer</Button>
+                                <Button className={classes.button} disabled={promo===""} variant="outlined" onClick={() => addPromo()}>Créer</Button>
                             </div>
                         }
                         <DropFile typeFile='.xlsx' compressImage={false} changeFile={e => setExcel(e)}  message="Charger la liste des étudiants de la promotion"/>
-                        <Button style={{display : "block", margin : "20px auto"}} className={classes.button} disabled={excel==="" ? true : false} variant="outlined" onClick={() => envoieExcel()}>Enregistrer liste étudiants</Button>
+                        <Button style={{display : "block", margin : "20px auto"}} className={classes.button} disabled={excel===""} variant="outlined" onClick={() => envoieExcel()}>Enregistrer liste étudiants</Button>
                     </FormControl>
                 </form>
             </div>
-            <div className={classes.divPromoModele}>
-                <p style={{width : "100%", textAlign : "center", margin : "0px auto 60px auto", fontSize : "150%"}}>Associer un modèle à une promotion</p>
-                <div>
-                    <InputLabel className={classes.labelSelectPromo}>Promotion selectionnée</InputLabel>
-                    <Select className={classes.selectPromo} value={selectPromo} onChange={handleChange2} input={<Input/>}>
-                        {tabPromo.map((element, index) => (
-                            <MenuItem key={index} value={element.id_promo}>{element.nom_promo}</MenuItem>
-                        ))}
-                    </Select>
-                </div>
-                <div> 
-                    <InputLabel className={classes.labelSelectPromo}>Modèle selectionné</InputLabel>
-                    <Select className={classes.selectModele} value={selectionModele} onChange={handleChangeModele} input={<Input/>}>
-                        {modele.tabName.map((element, index) => (
-                            <MenuItem key={index} value={element.index}>{element.nom}</MenuItem>
-                        ))}
-                    </Select>
-                </div>
-                <Button className={classes.button} disabled={(selectionModele === "") || (selectPromo === "") ? true : false} variant="outlined" onClick={() => envoieAttribution()}>Envoyer</Button>
-            </div>
+            <AttributionSujet tabPromo={tabPromo}/>
         </div>
     );
 }

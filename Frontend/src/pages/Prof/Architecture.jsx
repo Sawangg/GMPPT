@@ -68,6 +68,10 @@ export default function Architecture() {
 
     return (
         <div className={classes.archi}>
+            <div>
+                <DropFile typeFile='.xlsx' compressImage={false} changeFile={e => setExcel(e)}  message="Charger la liste des architectures"/>
+                <Button disabled={excel === ""} variant="outlined" style={{display : "block", margin : "20px auto"}} onClick={() => envoieArchi()}>Enregistrer</Button>
+            </div>
             <div className={classes.divImportModele}>
                 <p style={{textAlign : "center", fontSize : "150%"}}>Importer les images du modèle 3D pour un sujet</p>
                 <div className={classes.divDropModele} id="divDropModele">
@@ -78,10 +82,6 @@ export default function Architecture() {
                     <TextField autoFocus size="small" label="Numéro du sujet" variant="outlined" required value={sujet} onChange={e => onChange(e)}/>
                     <Button className={classes.button} disabled={image1 === "" || image2 === "" || sujet === ""} variant="outlined" onClick={() => envoieModele3D()}>Enregistrer</Button>
                 </div>
-            </div>
-            <div>
-                <DropFile typeFile='.xlsx' compressImage={false} changeFile={e => setExcel(e)}  message="Charger la liste des architectures"/>
-                <Button disabled={excel === ""} variant="outlined" style={{display : "block", margin : "20px auto"}} onClick={() => envoieArchi()}>Enregistrer</Button>
             </div>
         </div>
     );
