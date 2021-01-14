@@ -8,6 +8,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUnites, getAllUnite, setTest } from '../../slice/UniteSlice'
+import useConstructor from '../use/useContructor';
 
 //props
 //  => open (booléen pour savoir si le dialog est ouvert ou fermé)
@@ -58,9 +59,14 @@ export default function ChoixUnite(props){
     const unitesReference = useSelector(selectUnites)
 
     if(unitesReference.length === 1){
-        dispatch(setTest())
+        
         //dispatch(getAllUnite())
     } 
+
+    useConstructor(() => {
+        dispatch(getAllUnite())
+        //dispatch(setTest())
+    });
 
     const NB_MAX_PARTIES_UNITE = 6
     const MAX_WIDTH = "lg" //taille de la boite de dialogue
