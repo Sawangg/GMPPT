@@ -101,7 +101,6 @@ export const selectReponsesJustes = state => state.consulter.tabReponsesJustes
 
 //retourne le nombre de réponses dans le tableau des réponses justes
 export const selectNbReponsesAAvoir = numQuestion => state =>{
-    console.log(state.consulter)
     let indexQ = _.findIndex(state.consulter.tabReponsesJustes, function(o) { return o.num === numQuestion; })
     return state.consulter.tabReponsesJustes[indexQ].tabReponses.length
 } 

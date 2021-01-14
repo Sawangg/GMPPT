@@ -38,12 +38,17 @@ export default function Accueil() {
             }
         },
         divPromo: {
-            marginTop : 50
+            marginTop : 50,
+            boxShadow : "0px 8px 20px -5px rgba(0,0,0,0.69)",
+            padding : "1% 0.5%",
+            width : "80%",
+            margin : "auto"
         },
         divPromoModele: {
             marginTop : 50,
             display : "flex",
             justifyContent : "space-around",
+            flexWrap : "wrap",
             width : "60%",
             margin : "3% auto",
             boxShadow : "0px 8px 20px -5px rgba(0,0,0,0.69)",
@@ -62,7 +67,7 @@ export default function Accueil() {
         divSelectPromo: {
             display : "block",
             margin : "auto",
-            width : "10%"
+            width : "18%"
         },
         labelSelectPromo: {
             position : "relative"
@@ -151,12 +156,13 @@ export default function Accueil() {
                                 <Button className={classes.button} disabled={promo==="" ? true : false} variant="outlined" onClick={() => envoiePromo()}>Créer</Button>
                             </div>
                         }
-                        <DropFile typeFile='.xlsx' compressImage={false} changeFile={e => setExcel(e)}  message="Charger la liste des étudiants"/>
-                        <Button style={{display : "block", margin : "20px auto"}} className={classes.button} disabled={excel==="" ? true : false} variant="outlined" onClick={e => envoieExcel()}>Enregistrer liste étudiants</Button>
+                        <DropFile typeFile='.xlsx' compressImage={false} changeFile={e => setExcel(e)}  message="Charger la liste des étudiants de la promotion"/>
+                        <Button style={{display : "block", margin : "20px auto"}} className={classes.button} disabled={excel==="" ? true : false} variant="outlined" onClick={() => envoieExcel()}>Enregistrer liste étudiants</Button>
                     </FormControl>
                 </form>
             </div>
             <div className={classes.divPromoModele}>
+                <p style={{width : "100%", textAlign : "center", margin : "0px auto 60px auto", fontSize : "150%"}}>Associer un modèle à une promotion</p>
                 <div>
                     <InputLabel className={classes.labelSelectPromo}>Promotion selectionnée</InputLabel>
                     <Select className={classes.selectPromo} value={selectPromo} onChange={handleChange2} input={<Input/>}>

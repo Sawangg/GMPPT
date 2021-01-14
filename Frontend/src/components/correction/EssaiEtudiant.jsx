@@ -207,7 +207,7 @@ function Question(props){
             <TableCell align="center">{note()}</TableCell>
         </TableRow>
         <TableRow>
-            <TableCell className={classes.boxReponses} colSpan={4}>
+            <TableCell className={classes.boxReponses} colSpan={5}>
                 <Collapse in={open} timeout="auto" unmountOnExit>
                     <Box margin={1}>
                         <Typography variant="h6" gutterBottom >Reponses</Typography>

@@ -6,12 +6,13 @@ import frFR from '@material-ui/core/locale';
 
 import Formules from './pages/Prof/Formules';
 import AccueilProf from './pages/Prof/AccueilProf';
-import ImportModele from './pages/Prof/ImportModele3D';
+import Architecture from './pages/Prof/Architecture';
 import Correction from './pages/Prof/Correction';
 import Enonces from "./pages/Prof/Enonces";
 import VariableAleatoires from './pages/Prof/VariablesAleatoires'
 import Consulter from './pages/Prof/ConsulterEtudiant';
 import Promo from './pages/Prof/Promo';
+import GestionUnites from './pages/Prof/GestionUnites'
 
 import RepondreQuestions from './pages/Etu/RepondreQuestions';
 import AccueilEtu from './pages/Etu/AccueilEtu';
@@ -78,9 +79,10 @@ export default function App() {
         <PrivateRoute forProf={true} exact path='/prof/home' component={AccueilProf}/>
         <PrivateRoute forProf={true} exact path='/prof/gestion-sujets' component={AccueilProf}/>
         <PrivateRoute forProf={true} exact path='/prof/promo' component={Promo}/>
+        <PrivateRoute forProf={true} exact path='/prof/unites' component={GestionUnites}/>
         <PrivateRoute forProf={true} exact path='/prof/enonces' component={Enonces}/>
         <PrivateRoute forProf={true} exact path='/prof/formules' component={Formules}/>
-        <PrivateRoute forProf={true} exact path='/prof/modeles3D' component={ImportModele}/>
+        <PrivateRoute forProf={true} exact path='/prof/architecture' component={Architecture}/>
         <PrivateRoute forProf={true} exact path='/prof/gestion-correction' component={Correction}/>
         <PrivateRoute forProf={true} exact path='/prof/variable-aleatoires' component={VariableAleatoires}/>
         <PrivateRoute forProf={true} exact path='/prof/correction/:value' component={Consulter}/>

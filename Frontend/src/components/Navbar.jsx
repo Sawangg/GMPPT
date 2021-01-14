@@ -20,6 +20,7 @@ import PostAddIcon from '@material-ui/icons/PostAdd';
 import SystemUpdateAltIcon from '@material-ui/icons/SystemUpdateAlt';
 import AllInclusiveIcon from '@material-ui/icons/AllInclusive';
 import SchoolIcon from '@material-ui/icons/School';
+import PolymerIcon from '@material-ui/icons/Polymer';
 
 import { useDispatch } from "react-redux";
 import { logoutUser } from "../slice/UserSlice";
@@ -73,8 +74,7 @@ export default function NavBar() {
     {
       icon : <HomeOutlinedIcon/>,
       nom : "Accueil",
-      route : "/prof/home",
-      divider : false
+      route : "/prof/home"
     },
     {
       icon : <AccountCircleOutlinedIcon/>,
@@ -83,33 +83,35 @@ export default function NavBar() {
       divider : true
     },
     {
+      icon : <PolymerIcon/>,
+      nom : "Gérer les unités",
+      route : "/prof/unites",
+      divider : false
+    },
+    {
       icon : <SchoolIcon/>,
       nom : "Promotion",
-      route : "/prof/promo",
-      divider : false
+      route : "/prof/promo"
+    },
+    {
+      icon : <SystemUpdateAltIcon/>,
+      nom : "Architecture",
+      route : "/prof/architecture"
     },
     {
       icon : <AllInclusiveIcon/>,
       nom : "Création variables aléatoires",
-      route : "/prof/variable-aleatoires",
-      divider : false
+      route : "/prof/variable-aleatoires"
     },
     {
       icon : <FunctionsIcon/>,
       nom : "Enregistrement des formules",
-      route : "/prof/formules",
-      divider : false
+      route : "/prof/formules"
     },
     {
       icon : <PostAddIcon/>,
       nom : "Création des énoncés",
       route : "/prof/enonces",
-      divider : false
-    },
-    {
-      icon : <SystemUpdateAltIcon/>,
-      nom : "Import des modèles 3D",
-      route : "/prof/modeles3D",
       divider : true
     },
     {
@@ -125,14 +127,12 @@ export default function NavBar() {
     {
       icon : <HomeOutlinedIcon/>,
       nom : "Accueil",
-      route : "/etu/home",
-      divider : false
+      route : "/etu/home"
     },
     {
       icon : <AccountCircleOutlinedIcon/>,
       nom : "Profil",
-      route : "/profil",
-      divider : true
+      route : "/profil"
     },
     {
       icon : <SchoolOutlinedIcon/>,
@@ -157,7 +157,7 @@ export default function NavBar() {
               </ListItemIcon>
               <ListItemText>{item.nom}</ListItemText>
             </ListItem>
-            {item.divider ? <Divider className={classes.divider}/> : null}
+            {item.divider == null ? null : <Divider className={classes.divider}/>}
           </div>
         ))}
           <ListItem className={classes.deconnexionNav} button onClick={e => dispatch(logoutUser())}>

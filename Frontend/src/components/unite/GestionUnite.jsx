@@ -19,7 +19,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import PropagateLoader from "react-spinners/PropagateLoader";
 import BounceLoader from "react-spinners/BounceLoader";
 
-import useConstructor from './use/useContructor'
+import useConstructor from '../use/useContructor'
 
 export default function DialogSelect(props) {
     const useStyles = makeStyles((theme) => ({
