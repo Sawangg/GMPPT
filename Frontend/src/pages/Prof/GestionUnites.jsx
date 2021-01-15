@@ -5,12 +5,13 @@ import _ from 'lodash'
 import DeleteIcon from '@material-ui/icons/Delete';
 import CreateIcon from '@material-ui/icons/Create';
 import CircleLoader from "react-spinners/CircleLoader";
+import SaveIcon from '@material-ui/icons/Save';
 
 import { useDispatch, useSelector } from "react-redux";
 import useConstructor from '../../components/use/useContructor';
 
-import {getAllUnite, selectUnites, enregistreUnite, selectActualise, addUnite, setIndexEnModif,
-    selectIndexEnMofid, changeNomComplet, changeAbreviation, deleteUniteBD, deleteUnite} from '../../slice/UniteSlice'
+import {getAllUnite, selectUnites, enregistreUnites, selectActualise, addUnite, setIndexEnModif,
+    selectIndexEnMofid, changeNomComplet, changeAbreviation, deleteUnite} from '../../slice/UniteSlice'
 
 export default function GestionUnites(){
 
@@ -48,8 +49,8 @@ export default function GestionUnites(){
         
         for (let i =0 ; i<tabUnites.length; i++){
             verif = (i === indexEnModif) || 
-                (tabUnites[i].nomComplet !== tabUnites[indexEnModif].nomComplet &&
-                tabUnites[i].abr !== tabUnites[indexEnModif].abr)
+                (tabUnites[i].nom !== tabUnites[indexEnModif].nom &&
+                tabUnites[i].abrev !== tabUnites[indexEnModif].abrev)
         }
 
         return verif
@@ -57,7 +58,7 @@ export default function GestionUnites(){
     }
 
     const handleClickTest = () =>{
-        dispatch(enregistreUnite( "Sans Unité", " " ))
+        dispatch(enregistreUnites( "Sans Unité", " " ))
     }
 
     //change le nom complet d'une unité au fur et à mesure de sa saisie
@@ -66,7 +67,7 @@ export default function GestionUnites(){
         dispatch(changeNomComplet({
             index : index,
             value : event.target.value
-        }))
+        }));
     }
 
     //change le nom complet d'une unité au fur et à mesure de sa saisie
@@ -75,26 +76,21 @@ export default function GestionUnites(){
         dispatch(changeAbreviation({
             index : index,
             value : event.target.value
-        }))
+        }));
     }
 
     //enregistre l'unité dans la base de données
     const enregistrer = () =>{
-        if(indexEnModif >=0 && modifIsUnique()){
-            dispatch(enregistreUnite(tabUnites[indexEnModif]))
-        }
+        dispatch(enregistreUnites(tabUnites))
     }
 
     //ajoute une unité dans le tableau (n'enregistre pas dans la BD)
     const handleAjouterUnite = () =>{
-        enregistrer()
         dispatch(addUnite())
     }
 
     const handleDeleteUnite = (index) =>{
-        if(tabUnites[index].nomComplet !== "Sans Unité"){
-            console.log(tabUnites[index].nomComplet)
-            dispatch(deleteUniteBD(tabUnites[index].nomComplet))
+        if(tabUnites[index].nom !== "Sans Unité"){
             dispatch(deleteUnite(index))
         }
     }
@@ -103,9 +99,13 @@ export default function GestionUnites(){
         dispatch(setIndexEnModif(index))
     }
 
-    const buttonDelete = (index) =>{
+    const handleSaveLocal = () =>{
+        dispatch(setIndexEnModif(-1))
+    }
+
+    const buttonsUnite = (index) =>{
         return(
-            tabUnites[index].nomComplet !== "Sans Unité" 
+            tabUnites[index].nom !== "Sans Unité" 
             ?
             <div>
             <IconButton onClick={e=>handleDeleteUnite(index)}>
@@ -125,19 +125,24 @@ export default function GestionUnites(){
         return(
             index !== indexEnModif ?
                 <>
-                <TableCell> { unite.nomComplet } </TableCell>
-                <TableCell> { unite.abr } </TableCell>
-                <TableCell> { buttonDelete(index) } </TableCell>
+                <TableCell> { unite.nom } </TableCell>
+                <TableCell> { unite.abrev } </TableCell>
+                <TableCell> { buttonsUnite(index) } </TableCell>
                 </>
             :
                 <>
                 <TableCell>
-                    <TextField value={unite.nomComplet} 
+                    <TextField value={unite.nom} 
                         onChange={e=>handleChangeNomComplet(index, e)}/>
                 </TableCell>
                 <TableCell>
-                    <TextField value={unite.abr}
+                    <TextField value={unite.abrev}
                         onChange={e=>handleChangeAbreviation(index, e)}/>
+                </TableCell>
+                <TableCell>
+                    <IconButton onClick={e=>handleSaveLocal(index)}>
+                        <SaveIcon />
+                    </IconButton>
                 </TableCell>
                 </>
         )
@@ -155,6 +160,12 @@ export default function GestionUnites(){
             <Button onClick={handleAjouterUnite}>
                 Ajouter une unité
             </Button>
+
+            <Button onClick={enregistrer}
+                disabled={indexEnModif >= 0}>
+                Enregistrer
+            </Button>
+
             <Table className={classes.tableauUnite}>
                 <TableHead>
                     <TableRow>
