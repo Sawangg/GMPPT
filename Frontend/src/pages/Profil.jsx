@@ -19,39 +19,40 @@ export default function Profile() {
         carteProfil: {
             display: "flex",
             width: "60%",
-            margin: "auto",
+            height: "max-content",
+            margin: "0 auto 2% auto",
             boxShadow: "-2px 5px 12px 4px rgba(0,0,0,0.62)",
         },
         imageProfil: {
             width : 220,
-            height : 536,
+            height : "100",
             backgroundSize: "cover",
-            backgroundPosition: "center"
+            backgroundPosition: "center",
         },
         wrapper: {
-            height : 520,
+            height : "100%",
             width : "100%",
-            marginTop : "2%"
         },
         dropPhotoProfil: {
-            width : "70%",
+            height: "40%",
+            width : "100%",
             margin : "auto"
         },
         buttonEnvoyerImageProfil: {
             display : "block",
-            margin : "2% auto"
+            margin : "3% auto"
+        },
+        hr: {
+          width: "70%"
         },
         divPasswordChange: {
+            width: "max-content",
             display : "flex",
             flexDirection : "column",
-            marginTop : "5%",
-            marginLeft : "48px"
+            margin: "2% auto",
         },
         buttonChangePwd: {
-            margin : "auto",
-            marginTop : "1%",
-            position: "relative",
-            right : "24px",
+            margin : "2% auto",
         }
     }));
 
@@ -90,11 +91,12 @@ export default function Profile() {
                         Enregistrer l'image
                     </Button>
                 </div>
+                <hr className={classes.hr}/>
                 <div className={classes.divPasswordChange} id="divPasswordChange">
                     <InputPassword label={"Mot de passe actuel"} error={password.error} 
                             onChange={e =>  setPassword({oldPassword : e.target.value, newPassword : password.newPassword, error : false})}
                     />
-                    <InputPassword label={"Nouveau mot de passe"} error={password.error} 
+                    <InputPassword label={"Nouveau mot de passe"} error={password.error}
                             onChange={e => setPassword({oldPassword : password.oldPassword, newPassword : e.target.value, error : false})}
                     />
                     <Button className={classes.buttonChangePwd} variant="contained" color="primary" size="small" onClick={() => changePasswordAPI()}>Changer de mot de passe</Button>

@@ -16,6 +16,9 @@ import { etudiantModeleAPI } from '../../utils/api';
 export default function RepondreQuestions(){
 
     const useStyles = makeStyles((theme) => ({
+        hr: {
+            marginBottom: "2%"
+        },
         contenant: {
             margin : "10%",
             textAlign: "center"
@@ -101,6 +104,7 @@ export default function RepondreQuestions(){
     return (
         <div className={classes.contenant}>
             <Typography variant="h1">Réponses aux questions</Typography>
+            <hr className={classes.hr}/>
             <div className={classes.buttonFixed} >
                 {/*bouton de téléchargement du sujet en pdf */}
                 <Button variant="contained" color="primary" onClick={downloadPdf}>
