@@ -19,22 +19,24 @@ export default function Profile() {
         carteProfil: {
             display: "flex",
             width: "60%",
-            margin: "auto",
+            height: "max-content",
+            margin: "0 auto 2% auto",
             boxShadow: "-2px 5px 12px 4px rgba(0,0,0,0.62)",
         },
         imageProfil: {
             width : 220,
-            height : 536,
+            height : "100",
             backgroundSize: "cover",
-            backgroundPosition: "center"
+            backgroundPosition: "center",
         },
         wrapper: {
-            height : 520,
+            height : "100%",
             width : "100%",
-            marginTop : "2%"
         },
         dropPhotoProfil: {
+            height: "40%",
             width : "70%",
+            minWidth: "400px",
             margin : "auto"
         },
         buttonEnvoyerImageProfil: {
@@ -42,16 +44,13 @@ export default function Profile() {
             margin : "2% auto"
         },
         divPasswordChange: {
+            width: "max-content",
             display : "flex",
             flexDirection : "column",
-            marginTop : "5%",
-            marginLeft : "48px"
+            margin: " 3% auto",
         },
         buttonChangePwd: {
-            margin : "auto",
-            marginTop : "1%",
-            position: "relative",
-            right : "24px",
+            margin : "2% auto",
         }
     }));
 
