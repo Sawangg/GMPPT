@@ -102,8 +102,15 @@ export const reponseSlice = createSlice({
         [getSujet.fulfilled]: (state, action) => {
             state.sujet = action.payload.enonce;
             state.tabQuestions = []
+            const reponsesDefault = [{
+                value : "",
+                tabUnite : [{
+                    abr : " ",
+                    puissance : 1
+                }]
+            }]
             action.payload.questions.forEach((question) => {
-                const reponses = question.reponses === undefined ? state.tabReponses : question.reponses;
+                const reponses = question.reponses === undefined ? reponsesDefault : question.reponses;
                 state.tabQuestions.push({
                     indexQuestion : question.id_question,
                     enonce : question.contenu,

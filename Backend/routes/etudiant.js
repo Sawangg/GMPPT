@@ -8,15 +8,14 @@ const tempfile = require('tempfile');
 
 router.post('/reponses/new', isAuthenticated, isStudent, async (req, res) => {
     let insert = 'INSERT INTO reponse_etudiant VALUES';
-    req.body.tabQuestions.forEach(question => {
-        insert += ` (${req.user.id_auth}, ${question.indexQuestion}, '${JSON.stringify(question.tabReponses)}', '${dateFormat(new Date)}'),`;
-    });
-    insert = insert.slice(0, -1);
     try {
-        await db.promise().execute(`${insert}`);
+        req.body.tabQuestions.forEach(question => {
+            insert += ` (${req.user.id_auth}, ${question.indexQuestion}, '${JSON.stringify(question.tabReponses)}', '${dateFormat(new Date)}'),`;
+        });
+        insert = insert.slice(0, -1);
+        await db.promise().execute(insert);
         return res.sendStatus(200);
-    } catch(err) {
-        console.log(err)
+    } catch {
         return res.sendStatus(500);
     }
 });
