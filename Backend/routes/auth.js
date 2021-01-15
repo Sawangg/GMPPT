@@ -22,6 +22,7 @@ router.get('/logout', isAuthenticated, (req, res) => {
     });
 });
 
+// change username into id_auth
 router.post('/:username/changepwd', isAuthenticated, (req, res) => {
     const { username } = req.params;
     const { oldPassword, newPassword } = req.body.passwords;
