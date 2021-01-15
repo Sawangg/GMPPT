@@ -40,7 +40,6 @@ router.get('/:idpromo', isAuthenticated, isProf, async (req, res) => {
 
 router.get('/:idpromo/delete', isAuthenticated, isProf, async (req, res) => {
     const { idpromo } = req.params;
-    console.log(req.params)
     try {
         await db.promise().execute(`DELETE FROM promo WHERE id_promo = ${idpromo}`);
         await db.promise().execute(`DELETE FROM etudiant WHERE id_promo = ${idpromo}`);
