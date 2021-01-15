@@ -57,8 +57,8 @@ export default function Reponse (props) {
     return (
         <div key={props.indexReponse} className={classes.divReponse}>
             <Select className={classes.select} value={props.element.selectCat} onChange={e => dispatch(handleChangeCat({idQuestion : props.indexQuestion, idReponse : props.indexReponse, value : e.target.value, formule1 : props.tabCatForm[e.target.value].tabFormule[0].nomFormule}))} input={<Input/>}>
-                    {actualise ? <PropagateLoader size={15} color={"rgb(7, 91, 114)"} css={{margin : "30px auto", display : "flex", justifyContent : "center"}}/> 
-                    : props.tabCatForm[props.element.selectCat] === undefined ? null : props.tabCatForm.map((item, index) => <MenuItem key={index} value={index}>{item.nom}</MenuItem>)}
+                    {!actualise ? <PropagateLoader size={15} color={"rgb(7, 91, 114)"} css={{margin : "30px auto", display : "flex", justifyContent : "center"}}/> 
+                    : props.tabCatForm.map((item, index) => <MenuItem key={index} value={index}>{item.nom}</MenuItem>)}
             </Select>
             <Select className={classes.select} value={props.element.selectForm} onChange={e => dispatch(handleChangeForm({idQuestion : props.indexQuestion, idReponse : props.indexReponse, value : e.target.value}))} input={<Input/>}>
                 {props.tabCatForm[props.element.selectCat] === undefined ? null : props.tabCatForm[props.element.selectCat].tabFormule.map((item, index) => <MenuItem key={index} value={item.nomFormule}>{item.nomFormule}</MenuItem>)} 
