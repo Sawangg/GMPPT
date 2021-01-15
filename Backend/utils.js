@@ -1,4 +1,5 @@
 const CryptoJS = require("crypto-js");
+const { exec } = require('child_process');
 
 function comparePwd(pwdClair, pwdCrypted) {
     return pwdClair === CryptoJS.AES.decrypt(pwdCrypted, process.env.CRYPT_SECRET).toString(CryptoJS.enc.Utf8);
@@ -28,4 +29,16 @@ function dateFormat(d) {
     return [d.getFullYear(), d.getMonth() + 1, d.getDate()].join("-") + " " + [d.getHours(), d.getMinutes(), d.getSeconds()].join(":");
 }
 
-module.exports = { comparePwd, encrypt, generatePwd, random, dateFormat };
+async function sh(cmd) {
+    return new Promise((resolve, reject) => {
+        exec(cmd + "; rm session.tex", (err, stdout, stderr) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve({ stdout, stderr });
+            }
+        });
+    });
+}
+
+module.exports = { comparePwd, encrypt, generatePwd, random, dateFormat, sh };

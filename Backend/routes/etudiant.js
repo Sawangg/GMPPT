@@ -71,4 +71,15 @@ router.get('/:id_auth/reponses', isAuthenticated, (req, res) => {
     });
 });
 
+//liste tout les essais
+router.get('/:id_auth/essais', isAuthenticated, (req, res) => {
+
+});
+
+//renvoie l'essais choissi
+router.post('/:id_auth/essais/date', isAuthenticated, (req, res) => {
+
+});
+
+
 module.exports = router;

@@ -1,4 +1,4 @@
-const { Router, response } = require("express");
+const { Router } = require("express");
 const db = require("../databases.js");
 const router = Router();
 const { isAuthenticated, isProf } = require("../middleware.js");
