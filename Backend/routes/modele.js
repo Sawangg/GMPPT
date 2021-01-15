@@ -8,7 +8,7 @@ router.post('/:idmodele/categories/new', isAuthenticated, isProf, async (req, re
     try {
         await db.promise().execute(`DELETE FROM categories WHERE id_modele = ${idmodele}`);
         req.body.forEach(async categorie => {
-            db.promise().execute(`INSERT INTO categories VALUES (NULL, '${categorie.nom}', ${categorie.margeErreur}, ${idmodele})`).then(([rows]) => {
+            db.promise().execute(`INSERT INTO categories VALUES (NULL, '${categorie.nom}', ${idmodele})`).then(([rows]) => {
                 categorie.tabFormule.forEach(async formule => {
                     await db.promise().execute(`INSERT INTO formules VALUES (NULL, '${formule.nomFormule}', '${formule.formule}', ${rows.insertId})`);
                 });
@@ -31,7 +31,6 @@ router.get('/:idmodele/categories', isAuthenticated, isProf, (req, res) => {
                 prevCatego = r.id_catego;
                 arr.push({
                     "nom": r.nom_catego,
-                    "margeErreur": r.marge_erreur,
                     "formules": [],
                 });
             }

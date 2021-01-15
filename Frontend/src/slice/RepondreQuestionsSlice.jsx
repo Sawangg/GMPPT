@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getSujetAPI, getVariablesAPI, etudiantReponsesNewAPI} from "../utils/api.js";
+import { getSujetAPI, etudiantVariablesAPI, etudiantReponsesNewAPI} from "../utils/api.js";
 import _ from "lodash"
 
 export const getSujet = createAsyncThunk("etudiant/getSujet", 
@@ -8,9 +8,9 @@ async (idModele) => {
     return response.data;
 });
 
-export const getVariables = createAsyncThunk("etudiant/getVariables", 
-async () => {
-    const response = await getVariablesAPI();
+export const etudiantVariables = createAsyncThunk("etudiant/etudiantVariables", 
+async (idAuth) => {
+    const response = await etudiantVariablesAPI(idAuth);
     return response.data;
 });
 
@@ -118,6 +118,7 @@ export const reponseSlice = createSlice({
                     tabReponses : reponses
                 });
             });
+            
         },
         [enregistrerReponses.fulfilled] : (state, action) =>{
 
