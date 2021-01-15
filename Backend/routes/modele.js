@@ -137,12 +137,12 @@ router.get('/:idmodele/sujet', isAuthenticated, async (req, res) => {
                 questions.map(r => {
                     delete r.reponses;
                 });
-                return res.send({ questions, enonce }).status(200);
+                return res.send({ questions, enonce, id_auth : req.user.id_auth }).status(200);
             } 
             questions.map((r, index)=> {
                 r.reponses = (r.reponses == undefined ? r.reponses : JSON.parse(reponses[index].reponses));
             });
-            return res.send({ questions, enonce }).status(200);
+            return res.send({ questions, enonce, id_auth : req.user.id_auth }).status(200);
         });
     } catch {
         return res.sendStatus(500);

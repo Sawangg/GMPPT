@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReactHtmlParser from 'react-html-parser';
 import jsPDF from 'jspdf';
 import { Button, makeStyles, Typography } from '@material-ui/core';
@@ -6,8 +6,7 @@ import { Button, makeStyles, Typography } from '@material-ui/core';
 import GetAppIcon from '@material-ui/icons/GetApp';
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectAllQuestions, selectSujet, getSujet, enregistrerReponses
-        } from "../../slice/RepondreQuestionsSlice"
+import { selectReponses , getSujet, enregistrerReponses, selectSujetEnregistre, etudiantVariables } from "../../slice/RepondreQuestionsSlice"
 import useConstructor from '../../components/use/useContructor'
 
 import Question from '../../components/reponses/ItemQuestion'
@@ -28,8 +27,8 @@ export default function RepondreQuestions(){
     }));
 
     const classes = useStyles();
-    const tabQuestions = useSelector(selectAllQuestions);
-    const sujet = useSelector(selectSujet);
+    const reponses = useSelector(selectReponses);
+    const isEnregistre = useSelector(selectSujetEnregistre);
     const dispatch = useDispatch();
 
     useConstructor(async () => {
@@ -38,12 +37,18 @@ export default function RepondreQuestions(){
         });
     });
 
-    const handleEnvoyerReponses = () =>{
-        dispatch(enregistrerReponses(tabQuestions))
+    useEffect(() => {
+        if (isEnregistre) {
+            dispatch(etudiantVariables(reponses.id_auth));
+        }
+    }, [isEnregistre, dispatch, reponses.id_auth]);
+
+    const handleEnvoyerReponses = () => {
+        dispatch(enregistrerReponses(reponses.tabQuestions))
     }
 
     //trandforme en pdf le sujet
-    const downloadPdf = () =>{
+    const downloadPdf = () => {
         const MARGE_COTE = 15
         const MARGE_HAUT = 20
         const MARGE_BAS = 20
@@ -51,7 +56,7 @@ export default function RepondreQuestions(){
         const LARGEUR_A4 = 210
 
         //met le sujet dans la bonne font family
-        let sujetForPdf = '<div style="font-family: sans-serif">' + sujet + '</div>'
+        let sujetForPdf = '<div style="font-family: sans-serif">' + reponses.sujet + '</div>'
 
         //document pdf en format a4
         let doc = new jsPDF('p', 'mm', 'a4')
@@ -92,13 +97,13 @@ export default function RepondreQuestions(){
     //affiche les différentes questions avec leurs réponses
     const displayQuestions = () => {
         //n'affiche rien si il n'y a pas de questions
-        return tabQuestions.length === 0 ? <div>Pas de questions pour l'instant</div> 
-        : tabQuestions.map((i, index) => (
+        return reponses.tabQuestions.length === 0 ? <div>Pas de questions pour l'instant</div> 
+        : reponses.tabQuestions.map((i, index) => (
             <Question key={i.indexQuestion} question={i} id={index}/>
         ));
     }
 
-    return (
+    return isEnregistre && (
         <div className={classes.contenant}>
             <Typography variant="h1">Réponses aux questions</Typography>
             <div className={classes.buttonFixed} >
@@ -112,7 +117,7 @@ export default function RepondreQuestions(){
             <h2>Sujet</h2>
 
             {/* affichage du sujet */ }
-            <div id="sujet">{ReactHtmlParser(sujet)}</div>
+            <div id="sujet">{ReactHtmlParser(reponses.sujet)}</div>
 
             {/* affichage des questions */}
             {displayQuestions()}

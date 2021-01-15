@@ -51,7 +51,7 @@ router.post('/:idpromo/new', isAuthenticated, isProf, async (req, res) => {
 
 router.get('/:idauth/variables', isAuthenticated, (req, res) => {
     const { idauth } = req.params;
-    db.promise().execute(`SELECT * FROM variables_etu WHERE id_auth = ${idauth}`).then(([rows]) => {
+    db.promise().execute(`SELECT * FROM variable_etudiant VE JOIN variable_aleatoire VA ON VE.id_variable = VA.id_variable WHERE VE.id_auth = ${idauth}`).then(([rows]) => {
         if (!rows[0]) return res.sendStatus(404);
         return res.send(rows).status(200);
     }).catch(() => {
