@@ -4,6 +4,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 
 import { getAllPromoAPI, addPromoAPI, etudiantNewAPI, deletePromoAPI } from '../../utils/api'
 
+import PopUp from '../../components/PopUp';
 import AttributionSujet from '../../components/AttributionSujet';
 import DropFile from '../../components/DropFile';
 import useConstructor from '../../components/use/useContructor'
@@ -72,7 +73,8 @@ export default function Promo() {
     const [promo, setPromo] = useState("");
     const [excel, setExcel] = useState("");
     const [select, setSelect] = useState("");
-    const [tabPromo, setTabPromo] = useState([])
+    const [tabPromo, setTabPromo] = useState([]);
+    const [openPopUp, setOpenPopUp] = useState(false);
 
     useConstructor(() => {
         getAllPromoAPI()
@@ -93,6 +95,7 @@ export default function Promo() {
         const data = new FormData();
         data.append('fileUploaded', excel);
         etudiantNewAPI(select, data).then(fichier => console.log(fichier)).catch((err) => console.log(err));
+        setOpenPopUp(true);
     };
 
     const changePromo = (e) => {
@@ -150,6 +153,7 @@ export default function Promo() {
                 </form>
             </div>
             <AttributionSujet tabPromo={tabPromo}/>
+            <PopUp severity="success" message="Etudiants ajoutés à la promotion" open={openPopUp} handleClose={() => setOpenPopUp(false)}/>
         </div>
     );
 }

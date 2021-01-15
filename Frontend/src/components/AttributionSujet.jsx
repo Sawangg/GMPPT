@@ -1,15 +1,14 @@
 import React, {useState} from 'react'
 import { Button, Select, MenuItem, Input, InputLabel, makeStyles } from '@material-ui/core';
 
+import PopUp from '../components/PopUp';
+
 import { attributionSujetAPI } from '../utils/api'
 
 import { selectModele } from "../slice/ModeleSlice";
 import { useSelector } from "react-redux";
 
 export default function AttributionSujet(props){
-
-    const [selectPromo, setSelectPromo] = useState("");
-    const [selectionModele, setSelectionModele] = useState("");
 
     const useStyles = makeStyles((theme) => ({
         divPromoModele: {
@@ -32,10 +31,17 @@ export default function AttributionSujet(props){
     }));
     const classes = useStyles();
 
+    const [selectPromo, setSelectPromo] = useState("");
+    const [selectionModele, setSelectionModele] = useState("");
+    const [openPopUp, setOpenPopUp] = useState(false);
+
     const modele = useSelector(selectModele);
 
     const envoieAttribution = () => {
         attributionSujetAPI(selectPromo, selectionModele);
+        setSelectPromo("");
+        setSelectionModele("");
+        setOpenPopUp(true);
     };
 
     const handleChange2 = (event) => {
@@ -65,6 +71,7 @@ export default function AttributionSujet(props){
                         ))}
                     </Select>
                 </div>
+                <PopUp severity="success" message="Association réussie" open={openPopUp} handleClose={() => setOpenPopUp(false)}/>
                 <Button className={classes.button} disabled={(selectionModele === "") || (selectPromo === "") ? true : false} variant="contained" color="primary" onClick={() => envoieAttribution()}>Envoyer</Button>
         </div>
     )
