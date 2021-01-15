@@ -4,7 +4,7 @@ import Alert from '@material-ui/lab/Alert';
 import CloseIcon from '@material-ui/icons/Close';
 
 //open : dire l'état du pop up (ouvert ou fermé)
-//handleclose : actiona  faire lors de la fermeture (fonction)
+//handleClose : actiona  faire lors de la fermeture (fonction)
 //actionName : nom de l'action (par exemple undo), si vide, pas d'action
 //si actionName, action = action a réaliser (fonction)
 //pos : position, si vide, à guauche par default

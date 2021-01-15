@@ -1,6 +1,7 @@
+import React , {useState} from 'react'
+
 import { Button, Table, TableCell, TableHead, TableRow, TableBody, TextField, Typography, IconButton } from '@material-ui/core';
 import {makeStyles} from '@material-ui/core';
-import React from 'react'
 import _ from 'lodash'
 import DeleteIcon from '@material-ui/icons/Delete';
 import CreateIcon from '@material-ui/icons/Create';
@@ -11,7 +12,8 @@ import { useDispatch, useSelector } from "react-redux";
 import useConstructor from '../../components/use/useContructor';
 
 import {getAllUnite, selectUnites, enregistreUnites, selectActualise, addUnite, setIndexEnModif,
-    selectIndexEnMofid, changeNomComplet, changeAbreviation, deleteUnite} from '../../slice/UniteSlice'
+    selectIndexEnMofid, changeNomComplet, changeAbreviation, deleteUnite, selectEnregistre, setEnregistre} from '../../slice/UniteSlice'
+import PopUp from '../../components/PopUp';
 
 export default function GestionUnites(){
 
@@ -36,6 +38,8 @@ export default function GestionUnites(){
 
     const indexEnModif = useSelector(selectIndexEnMofid)
 
+    const isEnregistre = useSelector(selectEnregistre)
+
     useConstructor(()=> {
         dispatch(getAllUnite())
     })
@@ -55,10 +59,6 @@ export default function GestionUnites(){
 
         return verif
         
-    }
-
-    const handleClickTest = () =>{
-        dispatch(enregistreUnites( "Sans Unité", " " ))
     }
 
     //change le nom complet d'une unité au fur et à mesure de sa saisie
@@ -82,6 +82,7 @@ export default function GestionUnites(){
     //enregistre l'unité dans la base de données
     const enregistrer = () =>{
         dispatch(enregistreUnites(tabUnites))
+        setEnregistre(true)
     }
 
     //ajoute une unité dans le tableau (n'enregistre pas dans la BD)
@@ -184,6 +185,8 @@ export default function GestionUnites(){
                     })}
                 </TableBody>
             </Table>
+            {/* <PopUp open={ indexEnModif < 0 && !isEnregistre } handleClose={ () => enregistrer() }
+                actionName="enregistrer" action={ () => enregistrer() } message="yo"/> */}
         </div>
     )
 }

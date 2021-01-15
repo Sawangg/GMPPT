@@ -1,6 +1,7 @@
 import React from 'react';
 
 //donne en html l'unité en fonction d'un tableau d'unités
+//props -> tabUnites ({abr, puissance})
 export function afficherUnites(tabUnites){
     return(
         <div>
