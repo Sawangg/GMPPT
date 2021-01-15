@@ -4,6 +4,7 @@ const router = Router();
 const { isAuthenticated, isProf } = require("../middleware.js");
 
 router.post('/new', isAuthenticated, isProf, async (req, res) => {
+    await db.promise().execute('DELETE FROM unite');
     let insert = 'INSERT INTO unite VALUES';
     try {
         req.body.tabUnites.forEach(unite => {

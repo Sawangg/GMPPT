@@ -104,16 +104,12 @@ export function setQuestionsAPI(idModele, enonce, tabQuestions) {
     return axios.post(`http://${host}:3001/modele/${idModele}/questions/new`, { tabQuestions, enonce }, credentials);
 }
 
-export function addUniteAPI(nom, abrev) {
-    return axios.post(`http://${host}:3001/unite/new`, { nom , abrev }, credentials);
+export function addUniteAPI(tabUnites) {
+    return axios.post(`http://${host}:3001/unite/new`, { tabUnites }, credentials);
 }
 
 export function getAllUniteAPI() {
     return axios.get(`http://${host}:3001/unite/`, credentials);
-}
-
-export function deleteUniteAPI(nomUnite){
-    return axios.get(`http://${host}:3001/unite/${nomUnite}/delete`, credentials);
 }
 
 // Etudiant 

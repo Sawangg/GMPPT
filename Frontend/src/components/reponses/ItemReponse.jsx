@@ -8,6 +8,7 @@ import { changeReponse, peutSupprimer, deleteReponse, setUnite} from '../../slic
 import { selectUnites } from '../../slice/UniteSlice'
 
 import ChoixUnite from '../unite/ChoixUnite';
+import { afficherUnites } from '../unite/UniteFunctions'
 
 export default function Item(props) {
 
@@ -93,7 +94,7 @@ export default function Item(props) {
           }))
      }
 
-     //affiche l'unité en entière de la réponse (en mettant les puissances)
+     /*//affiche l'unité en entière de la réponse (en mettant les puissances)
      const afficherUnite = () =>{
           return(
                props.reponse.tabUnite.map((i, index) => (
@@ -104,7 +105,7 @@ export default function Item(props) {
                     )
                )
           )
-     }
+     }*/
 
      //affiche le bouton pour supprimer cette réponse
      const buttonDelete = () =>{ return(
@@ -124,7 +125,7 @@ export default function Item(props) {
                InputProps={{ //affichage unité
                     endAdornment: (
                          <InputAdornment className={classes.inputAdornmentReponse} position="start">
-                         {afficherUnite()}                               
+                         {afficherUnites(props.reponse.tabUnite)}                               
                          </InputAdornment>
                     ),
                }} />
