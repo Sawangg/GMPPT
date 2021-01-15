@@ -51,16 +51,12 @@ export const variablesAleatoiresReducer = createSlice({
       state.enregistre = false;
     },
     changeMin: (state, action) => {
-      if (!isNaN(action.payload.event) || action.payload.event === '-') {
-        state.tab[action.payload.index].min = action.payload.event;
-        state.enregistre = false;
-      }
+      state.tab[action.payload.index].min = action.payload.event;
+      state.enregistre = false;
     },
     changeMax: (state, action) => {
-      if (!isNaN(action.payload.event) || action.payload.event === '-') {
-        state.tab[action.payload.index].max = action.payload.event;
-        state.enregistre = false;
-      }
+      state.tab[action.payload.index].max = action.payload.event;
+      state.enregistre = false;
     },
     removeVariable: (state, action) => {
       if (state.tab.length > 1) {

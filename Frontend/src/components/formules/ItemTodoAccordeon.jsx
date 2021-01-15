@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {
     Button,
     Fab,
-    TextField,
     Typography,
     Accordion,
     AccordionSummary,
@@ -18,7 +17,8 @@ import SaveIcon from '@material-ui/icons/Save';
 import CreateIcon from '@material-ui/icons/Create';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
-import TodoListFormule from './TodoListFormule'
+import DelayInput from '../InputAwait';
+import TodoListFormule from './TodoListFormule';
 
 import { useDispatch } from "react-redux";
 import { changeModifCategorie, changeNom, removeCategorie } from "../../slice/FormulesSlice";
@@ -73,14 +73,11 @@ export default function Item(props) {
     const field = () => {
         return (
             <>
-                <TextField 
-                    className={classes.fieldNomCategorie}
-                    multiline 
-                    label="Nom catégorie" 
-                    variant="outlined" 
-                    size="small" 
-                    value={props.item.nom} 
-                    onChange={e => dispatch(changeNom({index : props.index, event : e.target.value}))}
+                <DelayInput
+                    label="Nom Catégorie"
+                    delayTimeout={250}
+                    value={props.item.nom}
+                    onChange={e => dispatch(changeNom({index : props.index, event : e.target.value}))} 
                 />
                 <Fab 
                     disabled={props.item.nom === ""} 
