@@ -5,6 +5,7 @@ import SaveIcon from '@material-ui/icons/Save';
 import CreateIcon from '@material-ui/icons/Create';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 
+import DelayInput from '../InputAwait';
 import SlideBar from './SlideBarVariable'
 
 import { useDispatch } from "react-redux";
@@ -57,19 +58,27 @@ export default function ItemVariable(props){
                 >
                     <SaveIcon/>
                 </Fab>
-                <TextField multiline label="Nom variable" variant="outlined" size="small"
-                        value={props.item.nom}
-                        onChange={e => dispatch(changeNom({index : props.index, event : e.target.value}))}
-                    />
+                <DelayInput
+                    label="Nom variable"
+                    delayTimeout={300}
+                    value={props.item.nom}
+                    onChange={e => dispatch(changeNom({index : props.index, event : e.target.value}))} 
+                />
                 <ArrowRightIcon fontSize="large"/>
-                <TextField multiline label="Min" variant="outlined" size="small"
-                        value={props.item.min}
-                        onChange={e => dispatch(changeMin({index : props.index, event : e.target.value}))}
-                    />
-                <TextField multiline label="Max" variant="outlined" size="small" 
-                        value={props.item.max}
-                        onChange={e => dispatch(changeMax({index : props.index, event : e.target.value}))}
-                    />
+                <DelayInput
+                    label="Min"
+                    delayTimeout={350}
+                    value={props.item.min}
+                    number={true}
+                    onChange={e => dispatch(changeMin({index : props.index, event : e.target.value}))}
+                />
+                <DelayInput
+                    label="Max"
+                    delayTimeout={350}
+                    value={props.item.max}
+                    number={true}
+                    onChange={e => dispatch(changeMax({index : props.index, event : e.target.value}))}
+                />
                 <SlideBar index={props.index}/>
             </>
         );

@@ -14,7 +14,7 @@ import useUnload from '../../components/use/useUnload';
 import { useDispatch, useSelector } from "react-redux";
 import { selectModele } from "../../slice/ModeleSlice";
 import { addQuestion, removeQuestion, handleChangeEnonce, handleChangeQuestion, selectActualiseEnonce, selectEnonce, selectEnregistreEnonce, getSujet, setQuestions } from "../../slice/EnoncesSlice";
-import { getCategoriesFormules, selectEnregistreFormule } from "../../slice/FormulesSlice"
+import { getCategoriesFormules, selectEnregistreFormule, selectFormule} from "../../slice/FormulesSlice"
 
 export default function Enonces() {
 
@@ -65,6 +65,7 @@ export default function Enonces() {
     const actualiseEnonce = useSelector(selectActualiseEnonce);
     const isEnregistreEnonce = useSelector(selectEnregistreEnonce);
     const isEnregistreFormule = useSelector(selectEnregistreFormule);
+    const tabCatForm = useSelector(selectFormule);
 
     useConstructor(() => {
         if (!isEnregistreEnonce) {
@@ -81,10 +82,6 @@ export default function Enonces() {
     }, [isEnregistreEnonce])
 
     useUnload(!isEnregistreEnonce);
-
-    const envoyer = () =>{
-        dispatch(setQuestions({ idModele : modele.idModeleSelectionne, enonce : enonce.enonceContenu, tabQuestions : enonce.question }));
-    }
 
     const displayEnonce = () => {
         return (
@@ -110,12 +107,14 @@ export default function Enonces() {
                         </div>
                     )
                 })}
-                <Button className={classes.buttonAddQuestion} variant="contained" color="primary" onClick={() => dispatch(addQuestion())}>Ajouter une question</Button>
+                <Button className={classes.buttonAddQuestion} variant="contained" color="primary" onClick={() => dispatch(addQuestion(tabCatForm[0].tabFormule[0].nomFormule))}>Ajouter une question</Button>
                 <PopUp
                     severity={isEnregistreEnonce ? "success" : "warning"}
                     message={isEnregistreEnonce ? "Enoncé enregistré" : "Enregistrer les modifications"}
                     actionName={isEnregistreEnonce ? null : "Enregistrer"}
-                    action={() => {if (!isEnregistreEnonce) envoyer()}}
+                    action={() => {
+                        if (!isEnregistreEnonce) dispatch(setQuestions({ idModele : modele.idModeleSelectionne, enonce : enonce.enonceContenu, tabQuestions : enonce.question }));
+                    }}
                     open={openPopUp}
                     handleClose={() => {if (isEnregistreEnonce) setOpenPopUp(false)}}
                     pos="left"

@@ -6,6 +6,8 @@ import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
+import DelayInput from '../InputAwait';
+
 import '../../styles/ItemTodoFormule.css'
 
 import { changeNomFormule, changeFormule, changeModifFormule, changePositionFormule } from "../../slice/FormulesSlice"
@@ -75,22 +77,16 @@ export default function Item(props) {
         return(
             <>
                 <div className={classes.affichageFormule}>
-                    <TextField
-                        className={clsx(classes.nomForm, classes.center)}
-                        multiline
+                    <DelayInput
                         label="Nom formule"
-                        variant="outlined"
-                        size="small"
+                        delayTimeout={300}
                         value={props.item.nomFormule}
-                        onChange={e => dispatch(changeNomFormule({indexCategorie :props.indexCategorie, indexFormule : props.index, event : e.target.value}))}
+                        onChange={e => dispatch(changeNomFormule({indexCategorie :props.indexCategorie, indexFormule : props.index, event : e.target.value}))} 
                     />
                     <ArrowForwardIcon className={classes.center} />
-                    <TextField
-                        className={clsx(classes.formule, classes.center)}
-                        multiline
-                        label="formule"
-                        variant="outlined"
-                        size="small"
+                    <DelayInput
+                        label="Formule"
+                        delayTimeout={250}
                         value={props.item.formule}
                         onChange={e => dispatch(changeFormule({indexCategorie :props.indexCategorie, indexFormule : props.index, event : e.target.value}))}
                     />
@@ -99,6 +95,7 @@ export default function Item(props) {
                     className={clsx(classes.buttonSave, classes.center)}
                     variant="contained"
                     onClick={() => changeModif()}
+                    disabled={props.item.nomFormule === "" || props.item.formule === ""}
                 >
                     Enregistrer
                 </Button>
