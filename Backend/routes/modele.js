@@ -1,9 +1,9 @@
 const { Router } = require("express");
 const db = require("../databases.js");
 const router = Router();
-const { isAuthenticated, isProf } = require("../middleware.js");
+const { isAuthenticated, isProf, isAttribued } = require("../middleware.js");
 
-router.post('/:idmodele/categories/new', isAuthenticated, isProf, async (req, res) => {
+router.post('/:idmodele/categories/new', isAuthenticated, isProf, isAttribued, async (req, res) => {
     const { idmodele } = req.params;
     try {
         await db.promise().execute(`DELETE FROM categories WHERE id_modele = ${idmodele}`);
@@ -103,7 +103,7 @@ router.get('/:idmodele/variables', isAuthenticated, isProf, async (req, res) => 
     });
 });
 
-router.post('/:idmodele/variables/new', isAuthenticated, isProf, (req, res) => {
+router.post('/:idmodele/variables/new', isAuthenticated, isProf, isAttribued, (req, res) => {
     const { idmodele } = req.params;
     db.promise().execute(`DELETE FROM variable_aleatoire WHERE id_modele = ${idmodele}`).then(() => {
         let insert = 'INSERT INTO variable_aleatoire VALUES ';
@@ -150,7 +150,7 @@ router.get('/:idmodele/sujet', isAuthenticated, async (req, res) => {
     }
 });
 
-router.post('/:idmodele/questions/new', isAuthenticated, isProf, async (req, res) => {
+router.post('/:idmodele/questions/new', isAuthenticated, isProf, isAttribued, async (req, res) => {
     const { idmodele } = req.params;
     try {
         await db.promise().execute(`UPDATE modele_sujet SET enonce = '${req.body.enonce}' WHERE id_modele = ${idmodele}`);
