@@ -3,11 +3,10 @@ import {Button, makeStyles, Accordion, AccordionSummary, AccordionDetails,} from
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import PropagateLoader from "react-spinners/PropagateLoader";
 
-import useConstructor from "../use/useContructor";
 import Reponse from './Reponse';
 
 import { useSelector, useDispatch } from "react-redux";
-import { selectEnregistreFormule, getCategoriesFormules, selectFormule } from "../../slice/FormulesSlice";
+import { selectEnregistreFormule, selectFormule } from "../../slice/FormulesSlice";
 import {addReponse, selectTabReponse, removeReponse } from '../../slice/EnoncesSlice'
 
 export default function ListeReponses(props) {
@@ -44,10 +43,6 @@ export default function ListeReponses(props) {
     const tabCatForm = useSelector(selectFormule);
 
     const dispatch = useDispatch();
-
-    useConstructor(() => {
-        if (!isEnregistre) dispatch(getCategoriesFormules(props.idModele))
-    })
 
     return (
         <div className={classes.divListeReponses}>

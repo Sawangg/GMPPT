@@ -38,12 +38,12 @@ export const enoncesReducer = createSlice({
         firstLoad : false,
     },
     reducers: {
-        addQuestion: (state) => {
+        addQuestion: (state, action) => {
             state.question.push({
                 contenu: "",
                 reponse: [{
-                    selectCat : "",
-                    selectForm: "",
+                    selectCat : 0,
+                    selectForm: action.payload,
                     margeErreur : 5,
                     unite: [{
                         abr : " ", 
