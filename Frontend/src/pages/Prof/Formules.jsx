@@ -31,7 +31,7 @@ export default function TodoListAccordeon() {
     const [openPopUp, setOpenPopUp] = useState(true);
 
     const dispatch = useDispatch();
-    const tab = useSelector(selectFormule);
+    const tabCatFormule = useSelector(selectFormule);
     const actualise = useSelector(selectActualiseFormule);
     const isEnregistre = useSelector(selectEnregistreFormule);
     const modele = useSelector(selectModele);
@@ -61,17 +61,18 @@ export default function TodoListAccordeon() {
                 >
                     <AddIcon />
                 </Fab>
-                {tab.map((i, id) => (
-                <Items index={id} key={id} item={i} length={tab.length}/>
+                {tabCatFormule.map((i, id) => (
+                <Items index={id} key={id} item={i} length={tabCatFormule.length}/>
                 ))}
                 <PopUp 
                     severity={isEnregistre ? "success" : "warning"} 
                     message={isEnregistre ? "Formules enregistrées" : "Enregistrer les modifications"} 
                     actionName={isEnregistre ? null : "Enregistrer"} 
-                    action={() => {if (!isEnregistre) dispatch(enregistrerFormules({tab : tab, idModele : modele.idModeleSelectionne}))}} 
+                    action={() => {if (!isEnregistre) dispatch(enregistrerFormules({tab : tabCatFormule, idModele : modele.idModeleSelectionne}))}} 
                     open={openPopUp} 
                     handleClose={() => {if (isEnregistre) setOpenPopUp(false)}}
                     pos="left"
+                    disabled={tabCatFormule.some(cat => cat.modif) || tabCatFormule.some(cat => cat.tabFormule.some(formule => formule.modif))}
                 />
             </div>
         );

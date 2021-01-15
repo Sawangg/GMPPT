@@ -107,6 +107,7 @@ export default function VariablesAleatoires() {
                     open={openPopUpSave} 
                     handleClose={() => {if (isEnregistre) setOpenPopUpSave(false)}}
                     pos="left"
+                    disabled={tableauVariables.some(variables => variables.modif)}
                 />
             </div>
         )
