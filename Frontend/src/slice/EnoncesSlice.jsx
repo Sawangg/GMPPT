@@ -70,9 +70,9 @@ export const enoncesReducer = createSlice({
             state.enregistre = false;
         },
         addReponse : (state, action) => {
-            state.question[action.payload].reponse.push({
-                selectCat : "",
-                selectForm: "",
+            state.question[action.payload.id].reponse.push({
+                selectCat : 0,
+                selectForm: action.payload.formule1,
                 margeErreur : 5,
                 unite: [{abr : " ", puissance : 1 }],
             });
@@ -83,6 +83,7 @@ export const enoncesReducer = createSlice({
         },
         handleChangeCat: (state, action) =>{
             state.question[action.payload.idQuestion].reponse[action.payload.idReponse].selectCat = action.payload.value;
+            state.question[action.payload.idQuestion].reponse[action.payload.idReponse].selectForm = action.payload.formule1;
             state.enregistre = false;
         },
         handleChangeForm: (state, action) => {

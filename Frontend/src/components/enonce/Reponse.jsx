@@ -1,12 +1,14 @@
 import React, {useState} from "react";
 import {Button, Input, makeStyles, MenuItem, Select} from "@material-ui/core";
 import PropagateLoader from "react-spinners/PropagateLoader";
+import ReactHtmlParser from 'react-html-parser';
+
 import ChoixUnite from '../unite/ChoixUnite'
 import SlideBar from './SlideBarMarge'
 
 import { useSelector, useDispatch } from "react-redux";
 import { handleChangeCat, handleChangeForm, handleChangeUnite} from '../../slice/EnoncesSlice'
-import { selectActualiseFormule, selectFormule } from "../../slice/FormulesSlice";
+import { selectActualiseFormule } from "../../slice/FormulesSlice";
 
 export default function Reponse (props) {
 
@@ -48,24 +50,19 @@ export default function Reponse (props) {
     }));
     const classes = useStyles();
 
-    const catForm = useSelector(selectFormule);
     const actualise = useSelector(selectActualiseFormule);
     const dispatch = useDispatch();
     const [open, setOpen] = useState(false);
 
     return (
         <div key={props.indexReponse} className={classes.divReponse}>
-                <Select className={classes.select} value={props.element.selectCat} onChange={e => dispatch(handleChangeCat({idQuestion : props.indexQuestion, idReponse : props.indexReponse, value : e.target.value}))} input={<Input/>}>
-                    {!actualise ? <PropagateLoader size={15} color={"rgb(7, 91, 114)"} css={{margin : "30px auto", display : "flex", justifyContent : "center"}}/> :
-                        catForm.map((item, index) => <MenuItem key={index} value={index}>{item.nom}</MenuItem>)}
-                </Select>
-                {props.element.selectCat === "" ? null 
-                :<>
-                    <Select className={classes.select} value={props.element.selectForm} onChange={e => dispatch(handleChangeForm({idQuestion : props.indexQuestion, idReponse : props.indexReponse, value : e.target.value}))} input={<Input/>}>
-                        {catForm[props.element.selectCat].tabFormule.map((item, index) => <MenuItem key={index} value={item.nomFormule}>{item.nomFormule}</MenuItem>)}
-                    </Select>
-                </>
-            }
+            <Select className={classes.select} value={props.element.selectCat} onChange={e => dispatch(handleChangeCat({idQuestion : props.indexQuestion, idReponse : props.indexReponse, value : e.target.value, formule1 : props.tabCatForm[e.target.value].tabFormule[0].nomFormule}))} input={<Input/>}>
+                    {actualise ? <PropagateLoader size={15} color={"rgb(7, 91, 114)"} css={{margin : "30px auto", display : "flex", justifyContent : "center"}}/> 
+                    : props.tabCatForm[props.element.selectCat] === undefined ? null : props.tabCatForm.map((item, index) => <MenuItem key={index} value={index}>{item.nom}</MenuItem>)}
+            </Select>
+            <Select className={classes.select} value={props.element.selectForm} onChange={e => dispatch(handleChangeForm({idQuestion : props.indexQuestion, idReponse : props.indexReponse, value : e.target.value}))} input={<Input/>}>
+                {props.tabCatForm[props.element.selectCat] === undefined ? null : props.tabCatForm[props.element.selectCat].tabFormule.map((item, index) => <MenuItem key={index} value={item.nomFormule}>{item.nomFormule}</MenuItem>)} 
+            </Select>
             <div className={classes.divUniteMarge}>
                 <Button variant="contained" className={classes.buttonAjouterUnite} onClick={() => setOpen(true)}>Choisir les unités</Button>
                 <p className={classes.affichageUnite}>Affichage unité</p>

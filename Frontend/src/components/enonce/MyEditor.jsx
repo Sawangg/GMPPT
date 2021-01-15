@@ -15,7 +15,7 @@ const MyEditor = props => {
                     ['table', 'list'],
                     ['removeFormat'],
                     ['outdent', 'indent'],
-                    ['fullScreen', 'preview']
+                    ['fullScreen']
                 ]}}
                 lang="fr"
                 placeholder="Tapez votre énoncé ici..."

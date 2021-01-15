@@ -64,7 +64,7 @@ export default function Enonces() {
     const modele = useSelector(selectModele);
     const actualiseEnonce = useSelector(selectActualiseEnonce);
     const isEnregistreEnonce = useSelector(selectEnregistreEnonce);
-    const isEnregistreFormule = useSelector(selectEnregistreFormule)
+    const isEnregistreFormule = useSelector(selectEnregistreFormule);
 
     useConstructor(() => {
         if (!isEnregistreEnonce) {

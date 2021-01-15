@@ -3,7 +3,13 @@ import {Button, Snackbar, IconButton, makeStyles} from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import CloseIcon from '@material-ui/icons/Close';
 
-export default function PopUp(props) {
+//open : dire l'état du pop up (ouvert ou fermé)
+//handleclose : actiona  faire lors de la fermeture (fonction)
+//actionName : nom de l'action (par exemple undo), si vide, pas d'action
+//si actionName, action = action a réaliser (fonction)
+//pos : position, si vide, à guauche par default
+//message : message a afficher dans la pop up
+export default function PopUp({open, handleClose, actionName, severity, pos, action, message, disabled}) {
     const useStyles = makeStyles((theme) => ({
         snackbar: {
             zIndex : 10
@@ -15,19 +21,19 @@ export default function PopUp(props) {
     <div>
       <Snackbar
         className={classes.snackbar}
-        anchorOrigin={{vertical: 'bottom', horizontal: props.pos !== undefined ? props.pos : "left"}}
-        open={props.open}
+        anchorOrigin={{vertical: 'bottom', horizontal: pos !== undefined ? pos : "left"}}
+        open={open}
         autoHideDuration={6000}
-        onClose={props.handleClose} 
+        onClose={handleClose} 
       >
-        <Alert onClose={props.handleClose} severity={props.severity} 
-          action={(props.actionName !== null) 
-              ? <Button color="primary" onClick={() => props.action()}>{props.actionName}</Button> 
-              : <IconButton color="inherit" size="small" onClick={() => props.handleClose()}>
+        <Alert onClose={handleClose} severity={severity} 
+          action={(actionName !== null) 
+              ? <Button disabled={disabled === null ? false : disabled} color="primary" onClick={() => action()}>{actionName}</Button> 
+              : <IconButton color="inherit" size="small" onClick={() => handleClose()}>
                   <CloseIcon fontSize="inherit" />
                 </IconButton>}
         >
-          {props.message}
+          {message}
         </Alert>
       </Snackbar>
     </div>

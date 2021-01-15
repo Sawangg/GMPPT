@@ -10,7 +10,7 @@ import useConstructor from '../../components/use/useContructor'
 
 import '../../styles/ImportModele3D.css'
 
-export default function Accueil() {
+export default function Promo() {
 
     const useStyles = makeStyles((theme) => ({
         hr: {
