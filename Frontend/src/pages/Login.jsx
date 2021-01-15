@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {TextField, Button, makeStyles} from '@material-ui/core';
+import {TextField, Button, makeStyles, InputLabel, FormControl} from '@material-ui/core';
 import { Redirect } from "react-router-dom";
 import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
 import VpnKeyOutlinedIcon from '@material-ui/icons/VpnKeyOutlined';
@@ -21,7 +21,7 @@ export default function Login(){
             display : "flex",
             flexDirection : "column",
             height : "120px",
-            margin : "50px auto"
+            margin : "30px auto"
         },
         backgroundLogin: {
             display: "block",
@@ -29,13 +29,13 @@ export default function Login(){
             border : "solid  2px",
             borderColor: theme.palette.primary.main,
             borderRadius: "2%",
-            padding: "0.5% 4%",
+            padding: "2% 3%",
             backgroundColor: "rgba(255,255,255,0.6)",
             zIndex: 2
         },
         buttonConnexion: {
             display : "block",
-            margin : "50px auto 10px auto",
+            margin : "20px auto 10px auto",
             backgroundColor: theme.palette.primary.main,
                 "&:hover": {
                     backgroundColor: theme.palette.primary.dark,
@@ -45,12 +45,19 @@ export default function Login(){
         },
         fieldLogin: {
             display : "flex",
-            marginTop : "30px"
+            marginTop : "20px",
+        },
+        textField: {
+          width: 225,
         },
         iconLogin: {
-            marginRight : "25px",
+            marginRight : "29px",
             marginTop : "6px"
         },
+        iconPwd: {
+            marginRight : "25px",
+            marginTop : "6px"
+        }
     }));
 
     const classes = useStyles();
@@ -93,14 +100,17 @@ export default function Login(){
                 <div className={classes.backgroundLogin}>
                         <div className={classes.fieldLogin}>
                             <AccountCircleOutlinedIcon className={classes.iconLogin}/>
-                            <TextField autoFocus size="small" label="Login" variant="outlined" required error={error}
-                                value={user.name} 
-                                onChange={e => onChangeUserName(e)}
-                                onKeyPress={(e)=>{if (e.code === "Enter")  dispatch(loginUser({name : user.name, password : user.password}))}}
-                            />
+                            <FormControl size="small" variant="outlined">
+                                <TextField id="outlined-login" className={classes.textField} autoFocus size="small" variant="outlined" required error={error}
+                                           value={user.name}
+                                           label="Login"
+                                           onChange={e => onChangeUserName(e)}
+                                           onKeyPress={(e)=>{if (e.code === "Enter")  dispatch(loginUser({name : user.name, password : user.password}))}}
+                                />
+                            </FormControl>
                         </div>
                         <div className={classes.fieldLogin}>
-                            <VpnKeyOutlinedIcon className={classes.iconLogin}/>
+                            <VpnKeyOutlinedIcon className={classes.iconPwd}/>
                             <InputPassword label={"Mot de passe"} error={error} 
                                 onKeyPress={e => {if (e.code === "Enter")  dispatch(loginUser({name : user.name, password : user.password}))}}  
                                 value={user.password} 

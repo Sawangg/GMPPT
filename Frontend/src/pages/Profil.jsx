@@ -35,19 +35,21 @@ export default function Profile() {
         },
         dropPhotoProfil: {
             height: "40%",
-            width : "70%",
-            minWidth: "400px",
+            width : "100%",
             margin : "auto"
         },
         buttonEnvoyerImageProfil: {
             display : "block",
-            margin : "2% auto"
+            margin : "3% auto"
+        },
+        hr: {
+          width: "70%"
         },
         divPasswordChange: {
             width: "max-content",
             display : "flex",
             flexDirection : "column",
-            margin: " 3% auto",
+            margin: "2% auto",
         },
         buttonChangePwd: {
             margin : "2% auto",
@@ -89,11 +91,12 @@ export default function Profile() {
                         Enregistrer l'image
                     </Button>
                 </div>
+                <hr className={classes.hr}/>
                 <div className={classes.divPasswordChange} id="divPasswordChange">
                     <InputPassword label={"Mot de passe actuel"} error={password.error} 
                             onChange={e =>  setPassword({oldPassword : e.target.value, newPassword : password.newPassword, error : false})}
                     />
-                    <InputPassword label={"Nouveau mot de passe"} error={password.error} 
+                    <InputPassword label={"Nouveau mot de passe"} error={password.error}
                             onChange={e => setPassword({oldPassword : password.oldPassword, newPassword : e.target.value, error : false})}
                     />
                     <Button className={classes.buttonChangePwd} variant="contained" color="primary" size="small" onClick={() => changePasswordAPI()}>Changer de mot de passe</Button>

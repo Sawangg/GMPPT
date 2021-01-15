@@ -4,12 +4,10 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import {
     FormControl,
     IconButton,
-    Input,
     InputAdornment,
     InputLabel,
     makeStyles,
-    OutlinedInput,
-    TextField
+    OutlinedInput
 } from '@material-ui/core'
 import clsx from "clsx";
 
@@ -24,8 +22,7 @@ export default function InputPwd(props){
             margin: theme.spacing(0.5),
         },
         textField: {
-            width: "max-content",
-            maxWidth: "200px"
+            width: 225
         }
     }));
     const classes = useStyles();
@@ -37,9 +34,11 @@ export default function InputPwd(props){
     return (
         <div className={classes.divInputPassword}>
             <FormControl size="small" variant="outlined" className={clsx(classes.margin, classes.textField)}>
-                <InputLabel style={{fontSize: "1em"}} htmlFor="outlined-adornment-password">{props.label}*</InputLabel>
-                <OutlinedInput className={classes.input}
-                   label={props.label}
+                <InputLabel error={props.error} htmlFor="outlined-adornment-password" required>{props.label}</InputLabel>
+                <OutlinedInput
+                   required
+                   label={props.label + "*"}
+                   error={props.error}
                     id="outlined-adornment-password"
                     type={showMdp ? "text" : "password"}
                     value={props.values}
