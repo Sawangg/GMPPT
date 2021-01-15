@@ -1,13 +1,16 @@
-import { Button, Table, TableCell, TableHead, TableRow, TableBody, TextField, Typography } from '@material-ui/core';
+import { Button, Table, TableCell, TableHead, TableRow, TableBody, TextField, Typography, IconButton } from '@material-ui/core';
 import {makeStyles} from '@material-ui/core';
-import React, {useState} from 'react'
+import React from 'react'
 import _ from 'lodash'
+import DeleteIcon from '@material-ui/icons/Delete';
+import CreateIcon from '@material-ui/icons/Create';
+import CircleLoader from "react-spinners/CircleLoader";
 
 import { useDispatch, useSelector } from "react-redux";
 import useConstructor from '../../components/use/useContructor';
 
-import {getAllUnite, selectUnites, enregistreUnite, selectActualise, addUnite,
-    selectIndexEnMofid, changeNomComplet, changeAbreviation} from '../../slice/UniteSlice'
+import {getAllUnite, selectUnites, enregistreUnite, selectActualise, addUnite, setIndexEnModif,
+    selectIndexEnMofid, changeNomComplet, changeAbreviation, deleteUniteBD, deleteUnite} from '../../slice/UniteSlice'
 
 export default function GestionUnites(){
 
@@ -33,10 +36,7 @@ export default function GestionUnites(){
     const indexEnModif = useSelector(selectIndexEnMofid)
 
     useConstructor(()=> {
-        if(!actualise){
-            console.log("yo")
-            dispatch(getAllUnite()) 
-        } 
+        dispatch(getAllUnite())
     })
 
     //permet de savoir si ce nom est utilisé une seule fois dans le tabUnites
@@ -78,12 +78,46 @@ export default function GestionUnites(){
         }))
     }
 
-    //ajoute une unité dans le tableau (n'enregistre pas dans la BD)
-    const handleAjouterUnite = () =>{
+    //enregistre l'unité dans la base de données
+    const enregistrer = () =>{
         if(indexEnModif >=0 && modifIsUnique()){
             dispatch(enregistreUnite(tabUnites[indexEnModif]))
         }
+    }
+
+    //ajoute une unité dans le tableau (n'enregistre pas dans la BD)
+    const handleAjouterUnite = () =>{
+        enregistrer()
         dispatch(addUnite())
+    }
+
+    const handleDeleteUnite = (index) =>{
+        if(tabUnites[index].nomComplet !== "Sans Unité"){
+            console.log(tabUnites[index].nomComplet)
+            dispatch(deleteUniteBD(tabUnites[index].nomComplet))
+            dispatch(deleteUnite(index))
+        }
+    }
+
+    const handleModifUnite = (index) =>{
+        dispatch(setIndexEnModif(index))
+    }
+
+    const buttonDelete = (index) =>{
+        return(
+            tabUnites[index].nomComplet !== "Sans Unité" 
+            ?
+            <div>
+            <IconButton onClick={e=>handleDeleteUnite(index)}>
+                <DeleteIcon />
+            </IconButton>
+            <IconButton onClick={e=>handleModifUnite(index)}>
+                <CreateIcon />
+            </IconButton>
+            </div>
+            :
+            null
+        )
     }
 
     //affiche l'unité en fonction du fait qu'il est en train d'être modifié ou non
@@ -91,8 +125,9 @@ export default function GestionUnites(){
         return(
             index !== indexEnModif ?
                 <>
-                <TableCell> {unite.nomComplet} </TableCell>
-                <TableCell> {unite.abr} </TableCell>
+                <TableCell> { unite.nomComplet } </TableCell>
+                <TableCell> { unite.abr } </TableCell>
+                <TableCell> { buttonDelete(index) } </TableCell>
                 </>
             :
                 <>
@@ -109,6 +144,10 @@ export default function GestionUnites(){
     }
 
     return(
+        !actualise 
+        ?
+        <CircleLoader size={50} color={"rgb(7, 91, 114)"} css={{margin : "auto", display : "flex", justifyContent : "center"}} />
+        :
         <div>
             <Typography variant="h1">Gestion des unités</Typography>
             <hr className={classes.hr}/>
@@ -121,6 +160,7 @@ export default function GestionUnites(){
                     <TableRow>
                         <TableCell> Nom Complet </TableCell>
                         <TableCell> Abréviation </TableCell>
+                        <TableCell /> {/*  Pour les boutons */}
                     </TableRow>
                 </TableHead>
                 <TableBody>

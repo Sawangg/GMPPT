@@ -11,7 +11,7 @@ export const enregistreUnite = createAsyncThunk("unite/addunite", async (props) 
   return response.data;
 });
 
-export const deleteUnite = createAsyncThunk("unite/deleteUnite", async (nomUnite) => {
+export const deleteUniteBD = createAsyncThunk("unite/deleteUnite", async (nomUnite) => {
   const response = await deleteUniteAPI(nomUnite);
   return response.data;
 });
@@ -49,6 +49,15 @@ export const uniteSlice = createSlice({
       let {index, value} = action.payload
       state.tabUnites[index].abr = value
     },
+    //supprime l'unité dans le tableau
+    //paramètres : index
+    deleteUnite : (state, action) =>{
+      let {index} = action.payload
+      state.tabUnites.splice(index, 1)
+    },
+    setIndexEnModif : (state, action) =>{
+      state.indexEnModif = action.payload
+    },
     setTest : (state) =>{
       state.tabUnites = [
         {nomComplet : "Sans Unité", abr : " "},
@@ -79,19 +88,20 @@ export const uniteSlice = createSlice({
     },
     [enregistreUnite.fulfilled]: (state, action) => {
       console.log("fulfill")
+      state.indexEnModif = -1
     },
     [enregistreUnite.pending]: (state, action) => {
     },
-    [deleteUnite.rejected]: (state, action) => {
+    [deleteUniteBD.rejected]: (state, action) => {
     },
-    [deleteUnite.fulfilled]: (state, action) => {
+    [deleteUniteBD.fulfilled]: (state, action) => {
     },
-    [deleteUnite.pending]: (state, action) => {
+    [deleteUniteBD.pending]: (state, action) => {
     },
   }
 });
 
-export const { setTest, addUnite, changeNomComplet, changeAbreviation } = uniteSlice.actions;
+export const { setTest, addUnite, changeNomComplet, changeAbreviation, deleteUnite, setIndexEnModif } = uniteSlice.actions;
 
 export const selectUnites = (state) => state.unite.tabUnites;
 
