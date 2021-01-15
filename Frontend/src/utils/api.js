@@ -130,6 +130,10 @@ export function etudiantReponsesNewAPI(tabQuestions) {
     return axios.post(`http://${host}:3001/etudiant/reponses/new`, { tabQuestions }, credentials);
 }
 
+export function etudiantVariablesAPI(idAuth) {
+    return axios.get(`http://${host}:3001/etudiant/${idAuth}/variables`, credentials);
+}
+
 // Sujet 
 
 export function getSujetAPI(idModele) {
