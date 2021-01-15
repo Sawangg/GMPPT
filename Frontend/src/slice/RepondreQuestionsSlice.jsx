@@ -8,15 +8,15 @@ async (idModele) => {
     return response.data;
 });
 
-export const etudiantVariables = createAsyncThunk("etudiant/etudiantVariables", 
-async (idAuth) => {
-    const response = await etudiantVariablesAPI(idAuth);
-    return response.data;
-});
-
 export const enregistrerReponses = createAsyncThunk("etudiant/enregistrerReponses", 
 async (tabQuestions) => {
     const response = await etudiantReponsesNewAPI(tabQuestions);
+    return response.data;
+});
+
+export const etudiantVariables = createAsyncThunk("etudiant/etudiantVariables", 
+async (idAuth) => {
+    const response = await etudiantVariablesAPI(idAuth);
     return response.data;
 });
 
@@ -36,6 +36,8 @@ export const reponseSlice = createSlice({
             }]
         }],
         sujet : "",
+        sujetEnregistre : false,
+        id_auth : ""
     },
     reducers: {
 
@@ -100,7 +102,6 @@ export const reponseSlice = createSlice({
     },
     extraReducers: {
         [getSujet.fulfilled]: (state, action) => {
-            state.sujet = action.payload.enonce;
             state.tabQuestions = []
             const reponsesDefault = [{
                 value : "",
@@ -109,6 +110,7 @@ export const reponseSlice = createSlice({
                     puissance : 1
                 }]
             }]
+            state.sujet = action.payload.enonce;
             action.payload.questions.forEach((question) => {
                 const reponses = question.reponses === undefined ? reponsesDefault : question.reponses;
                 state.tabQuestions.push({
@@ -118,24 +120,41 @@ export const reponseSlice = createSlice({
                     tabReponses : reponses
                 });
             });
-            
-        },
-        [enregistrerReponses.fulfilled] : (state, action) =>{
+            state.id_auth = action.payload.id_auth;
+            state.sujetEnregistre = true;
+            // etudiantVariablesAPI(action.payload.id_auth).then(data => {
 
-        }
+
+            // // state.sujet = t; // rien mais pas undefined
+        },
+        [enregistrerReponses.fulfilled] : (state, action) => {
+
+        },
+        [etudiantVariables.fulfilled] : (state, action) => {
+            let enonce = state.sujet;
+            action.payload.forEach(variable => {
+                const regx = new RegExp("\\$\\{\\s*" + variable.nom + "\\s*\\}", 'g');
+                enonce = enonce.replaceAll(regx, variable.valeur);
+                state.tabQuestions.forEach(question => {
+                    question.enonce = question.enonce.replaceAll(regx, variable.valeur)
+                });
+            });
+            state.sujet = enonce;
+        },
+        [etudiantVariables.rejected] : (state, action) => {
+
+        },
     }
 })
 
-export const { addReponse, changeReponse, deleteReponse, changeUniteReponses, 
-    changeUniteForAllReponses, setUnite} = reponseSlice.actions
+export const { addReponse, changeReponse, deleteReponse, changeUniteReponses, changeUniteForAllReponses, setUnite } = reponseSlice.actions;
 
 //renvoie l'ensemble d'un tableau de questions
-export const selectAllQuestions = state => state.reponse.tabQuestions
-
-//renvoie le sujet en string d'html
-export const selectSujet = state => state.reponse.sujet
+export const selectReponses = state => state.reponse;
 
 //renvoie un bouleen pour dire si l'on peut supprimer une réponse pour une question
-export const peutSupprimer = indexQuestion => state => state.reponse.tabQuestions[indexQuestion].tabReponses.length > 1
+export const peutSupprimer = indexQuestion => state => state.reponse.tabQuestions[indexQuestion].tabReponses.length > 1;
+
+export const selectSujetEnregistre = state => state.reponse.sujetEnregistre;
 
 export default reponseSlice.reducer;
