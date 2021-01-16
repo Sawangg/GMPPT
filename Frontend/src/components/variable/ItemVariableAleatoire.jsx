@@ -1,5 +1,5 @@
 import React from 'react';
-import {TextField, Fab, Typography, makeStyles} from '@material-ui/core';
+import {Fab, Typography, makeStyles} from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import SaveIcon from '@material-ui/icons/Save';
 import CreateIcon from '@material-ui/icons/Create';
@@ -50,33 +50,34 @@ export default function ItemVariable(props){
     const dispatch = useDispatch();
 
     const displayModif = () =>{
+        console.log("coucou")
         return (
             <>
                 <Fab className={classes.fabSave} size="small" aria-label="add"
-                    disabled={props.item.nom === "" || props.item.min > props.item.max} 
+                    disabled={props.item.nom === "" || parseFloat(props.item.min) > parseFloat(props.item.max)} 
                     onClick={() => dispatch(changeModif(props.index))}
                 >
                     <SaveIcon/>
                 </Fab>
                 <DelayInput
-                    label="Nom variable"
-                    delayTimeout={300}
+                    label="Nom formule"
+                    delay={300}
                     value={props.item.nom}
                     onChange={e => dispatch(changeNom({index : props.index, event : e.target.value}))} 
                 />
                 <ArrowRightIcon fontSize="large"/>
                 <DelayInput
+                    typeNumber={true}
                     label="Min"
-                    delayTimeout={350}
+                    delayTimeout={300}
                     value={props.item.min}
-                    number={true}
                     onChange={e => dispatch(changeMin({index : props.index, event : e.target.value}))}
                 />
                 <DelayInput
+                    typeNumber={true}
                     label="Max"
-                    delayTimeout={350}
+                    delayTimeout={300}
                     value={props.item.max}
-                    number={true}
                     onChange={e => dispatch(changeMax({index : props.index, event : e.target.value}))}
                 />
                 <SlideBar index={props.index}/>

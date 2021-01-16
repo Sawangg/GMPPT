@@ -52,11 +52,11 @@ export default function Login(){
         },
         iconLogin: {
             marginRight : "29px",
-            marginTop : "6px"
+            marginTop : "8px"
         },
         iconPwd: {
             marginRight : "25px",
-            marginTop : "6px"
+            marginTop : "10px"
         }
     }));
 
