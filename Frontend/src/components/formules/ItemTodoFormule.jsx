@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, TextField, Typography, Fab, makeStyles} from '@material-ui/core';
+import {Button, Typography, Fab, makeStyles} from '@material-ui/core';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
@@ -79,16 +79,16 @@ export default function Item(props) {
                 <div className={classes.affichageFormule}>
                     <DelayInput
                         label="Nom formule"
-                        delayTimeout={300}
+                        delay={300}
                         value={props.item.nomFormule}
-                        onChange={e => dispatch(changeNomFormule({indexCategorie :props.indexCategorie, indexFormule : props.index, event : e.target.value}))} 
+                        onChange={e => dispatch(changeNomFormule({indexCategorie :props.indexCategorie, indexFormule : props.index, event : e}))} 
                     />
                     <ArrowForwardIcon className={classes.center} />
                     <DelayInput
                         label="Formule"
-                        delayTimeout={250}
+                        delay={250}
                         value={props.item.formule}
-                        onChange={e => dispatch(changeFormule({indexCategorie :props.indexCategorie, indexFormule : props.index, event : e.target.value}))}
+                        onChange={e => dispatch(changeFormule({indexCategorie :props.indexCategorie, indexFormule : props.index, event : e}))}
                     />
                 </div>
                 <Button

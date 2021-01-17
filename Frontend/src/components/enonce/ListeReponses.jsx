@@ -1,7 +1,8 @@
 import React, {useState} from "react";
-import {Button, makeStyles, Accordion, AccordionSummary, AccordionDetails,} from "@material-ui/core";
+import {Button, makeStyles, Accordion, AccordionSummary, AccordionDetails, Fab} from "@material-ui/core";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import PropagateLoader from "react-spinners/PropagateLoader";
+import DeleteIcon from '@material-ui/icons/Delete';
 
 import Reponse from './Reponse';
 
@@ -15,10 +16,6 @@ export default function ListeReponses(props) {
             width : "100%",
             marginTop : "1%"
         },
-        buttonAjouterReponse: {
-            display : "block",
-            marginBottom : "2%",
-        },
         buttonSupprimerReponse: {
             color: "white",
             backgroundColor: theme.palette.error.main,
@@ -27,12 +24,17 @@ export default function ListeReponses(props) {
             },
             "&:disabled": {
                 backgroundColor: theme.palette.secondary.main,
-            }
+            },
+            position : "absolute",
+            right : "2.5%",
         },
         accordionDetails: {
             display : "flex",
             flexDirection : "column",
             justifyContent : "space-around"
+        }, 
+        divReponse: {
+            marginTop : 20
         }
     }));
     const classes = useStyles();
@@ -49,12 +51,17 @@ export default function ListeReponses(props) {
             <Accordion square expanded={expanded} onChange={() =>setExpanded(!expanded)}>
                     <AccordionSummary expandIcon={<ExpandMoreIcon />}>Réponses à la question {props.id+1}</AccordionSummary>
                     <AccordionDetails className={classes.accordionDetails}>
-                        <Button variant="contained" className={classes.buttonAjouterReponse} color="primary" onClick={() => dispatch(addReponse({id : props.id, formule1 : tabCatForm[0].tabFormule[0].nomFormule}))}>Ajouter une réponse</Button>
+                        <Button variant="contained" color="primary" onClick={() => dispatch(addReponse({id : props.id, formule1 : tabCatForm[0].tabFormule[0].nomFormule}))}>Ajouter une réponse</Button>
                         {!isEnregistre ? <PropagateLoader size={15} color={"rgb(7, 91, 114)"} css={{margin : "30px auto", display : "flex", justifyContent : "center"}}/>  
                         :tabReponse.map((elem, index) => (
-                            <div>
+                            <div className={classes.divReponse}>
+                                <Fab className={classes.buttonSupprimerReponse} size="small" aria-label="delete"
+                                     disabled={tabReponse.length === 1}
+                                     onClick={() => dispatch(removeReponse({indexQuestion : props.id, indexReponse : index}))}
+                                >
+                                    <DeleteIcon/>
+                                </Fab>                                
                                 <Reponse key={index} tabCatForm={tabCatForm} element={elem} indexReponse={index} indexQuestion={props.id}/>
-                                <Button className={classes.buttonSupprimerReponse} disabled={tabReponse.length === 1} onClick={() => dispatch(removeReponse({indexQuestion : props.id, indexReponse : index}))}>Supprimer la réponse</Button>
                             </div>
                         ))}
                 </AccordionDetails>

@@ -41,8 +41,7 @@ export const variablesAleatoiresReducer = createSlice({
         min: 0,
         max: 0,
         precision: 0,
-        modif: true,
-        index: state.tab.length,
+        modif: true
       });
       state.enregistre = false;
     },

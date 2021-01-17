@@ -1,8 +1,8 @@
 import React, {useState} from "react";
 import {Button, Input, makeStyles, MenuItem, Select} from "@material-ui/core";
 import PropagateLoader from "react-spinners/PropagateLoader";
-import ReactHtmlParser from 'react-html-parser';
 
+import {afficherUnites} from '../unite/UniteFunctions';
 import ChoixUnite from '../unite/ChoixUnite'
 import SlideBar from './SlideBarMarge'
 
@@ -14,14 +14,14 @@ export default function Reponse (props) {
 
     const useStyles = makeStyles((theme) => ({
         divReponse: {
-            marginTop : 10,
+            marginTop : 20,
             display : "grid",
             gridTemplateColumns: "1fr 1fr 1fr 1fr",
             gap: "0 1%",
             border : "solid 1px",
             borderColor : theme.palette.primary.light,
             borderRadius : 3,
-            padding : "1%"
+            padding : "2% 1% 2% 2%"
         },
         select: {
             width : 200,
@@ -31,9 +31,9 @@ export default function Reponse (props) {
         divUniteMarge: {
             height : 40,
             position : "relative",
-            bottom : 10,
             margin : "auto",
-            gridColumn: 3
+            gridColumn: 3,
+            marginLeft : "15%"
         },
         affichageUnite: {
             textAlign : "center",
@@ -65,7 +65,7 @@ export default function Reponse (props) {
             </Select>
             <div className={classes.divUniteMarge}>
                 <Button variant="contained" className={classes.buttonAjouterUnite} onClick={() => setOpen(true)}>Choisir les unités</Button>
-                <p className={classes.affichageUnite}>Affichage unité</p>
+                <p style={{textAlign : "center"}}>{afficherUnites(props.element.unite)}</p>
             </div>
             <ChoixUnite open={open} handleClose={() => setOpen(false)} unite={props.element.unite} setTabUnite={e => dispatch(handleChangeUnite({idQuestion : props.indexQuestion, idReponse : props.indexReponse, tabUnite : e}))}/>
             <div className={classes.divMarge}>
