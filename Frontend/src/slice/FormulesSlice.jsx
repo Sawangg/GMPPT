@@ -31,13 +31,7 @@ export const formuleSlice = createSlice({
             modif: true,
           },
         ],
-        saveTabFormule: [
-          {
-            nomFormule: "",
-            formule: "",
-            modif: true,
-          },
-        ],
+        saveElement : {elem : null, indexCategorie : undefined, indexFormule : undefined}
       },
     ],
     actualise: false,
@@ -100,16 +94,16 @@ export const formuleSlice = createSlice({
     },
     removeFormule: (state, action) => {
       const { indexCategorie, indexFormule } = action.payload;
-      state.tab[indexCategorie].saveTabFormule = [
-        ...state.tab[indexCategorie].tabFormule,
-      ];
+      state.saveElement = {elem : state.tab[indexCategorie].tabFormule[indexFormule], indexCategorie : indexCategorie, indexFormule : indexFormule};
       state.tab[indexCategorie].tabFormule.splice(indexFormule, 1);
       state.enregistre = false;
     },
-    undoFormule: (state, action) => {
-      state.tab[action.payload].tabFormule =
-        state.tab[action.payload].saveTabFormule;
-      state.enregistre = false;
+    undoFormule: (state) => {
+      state.tab[state.saveElement.indexCategorie].tabFormule.splice(state.saveElement.indexFormule, 0, {
+        nomFormule: state.saveElement.elem.nomFormule,
+        formule: state.saveElement.elem.formule,
+        modif: state.saveElement.elem.modif,
+      });
     },
     changePositionFormule: (state, action) => {
       const { indexCategorie, indexFormule, up } = action.payload;
@@ -139,13 +133,6 @@ export const formuleSlice = createSlice({
             nom: "",
             modif: true,
             tabFormule: [
-              {
-                nomFormule: "",
-                formule: "",
-                modif: true,
-              },
-            ],
-            saveTabFormule: [
               {
                 nomFormule: "",
                 formule: "",

@@ -79,6 +79,7 @@ export default function VariablesAleatoires() {
                 <Typography variant="h1">Variables aléatoires</Typography>
                 <hr className={classes.hr}/>
                 <Fab className={classes.fab}
+                    disabled={tableauVariables.length >= 75}
                     size="small"
                     color="primary"
                     aria-label="add"

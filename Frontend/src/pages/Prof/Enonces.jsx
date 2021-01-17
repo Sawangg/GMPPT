@@ -107,7 +107,15 @@ export default function Enonces() {
                         </div>
                     )
                 })}
-                <Button className={classes.buttonAddQuestion} variant="contained" color="primary" onClick={() => dispatch(addQuestion(tabCatForm[0].tabFormule[0].nomFormule))}>Ajouter une question</Button>
+                <Button 
+                    disabled={enonce.question.length >= 20}
+                    className={classes.buttonAddQuestion} 
+                    variant="contained" 
+                    color="primary" 
+                    onClick={() => dispatch(addQuestion(tabCatForm[0].tabFormule[0].nomFormule))}
+                >
+                        Ajouter une question
+                </Button>
                 <PopUp
                     severity={isEnregistreEnonce ? "success" : "warning"}
                     message={isEnregistreEnonce ? "Enoncé enregistré" : "Enregistrer les modifications"}
