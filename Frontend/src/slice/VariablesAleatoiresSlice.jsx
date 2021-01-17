@@ -41,8 +41,7 @@ export const variablesAleatoiresReducer = createSlice({
         min: 0,
         max: 0,
         precision: 0,
-        modif: true,
-        index: state.tab.length,
+        modif: true
       });
       state.enregistre = false;
     },
@@ -53,7 +52,6 @@ export const variablesAleatoiresReducer = createSlice({
     changeMin: (state, action) => {
       state.tab[action.payload.index].min = action.payload.event;
       state.enregistre = false;
-      console.log(action.payload.event)
     },
     changeMax: (state, action) => {
       state.tab[action.payload.index].max = action.payload.event;

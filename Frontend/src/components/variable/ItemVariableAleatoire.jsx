@@ -50,7 +50,6 @@ export default function ItemVariable(props){
     const dispatch = useDispatch();
 
     const displayModif = () =>{
-        console.log("coucou")
         return (
             <>
                 <Fab className={classes.fabSave} size="small" aria-label="add"
@@ -63,7 +62,7 @@ export default function ItemVariable(props){
                     label="Nom formule"
                     delay={300}
                     value={props.item.nom}
-                    onChange={e => dispatch(changeNom({index : props.index, event : e.target.value}))} 
+                    onChange={e => dispatch(changeNom({index : props.index, event : e}))} 
                 />
                 <ArrowRightIcon fontSize="large"/>
                 <DelayInput
@@ -71,14 +70,14 @@ export default function ItemVariable(props){
                     label="Min"
                     delayTimeout={300}
                     value={props.item.min}
-                    onChange={e => dispatch(changeMin({index : props.index, event : e.target.value}))}
+                    onChange={e => dispatch(changeMin({index : props.index, event : e}))}
                 />
                 <DelayInput
                     typeNumber={true}
                     label="Max"
                     delayTimeout={300}
                     value={props.item.max}
-                    onChange={e => dispatch(changeMax({index : props.index, event : e.target.value}))}
+                    onChange={e => dispatch(changeMax({index : props.index, event : e}))}
                 />
                 <SlideBar index={props.index}/>
             </>
