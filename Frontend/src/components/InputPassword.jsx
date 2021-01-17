@@ -11,7 +11,12 @@ import {
 } from '@material-ui/core'
 import clsx from "clsx";
 
-export default function InputPwd(props){
+//label, nom du input 
+//error si erreur
+//value : valeur du input
+//onChange quand changement
+//onKeyPress quand touche préssée
+export default function InputPwd({label, error, value, onChange, onKeyPress}){
 
     const useStyles = makeStyles((theme) => ({
         divInputPassword: {
@@ -34,16 +39,16 @@ export default function InputPwd(props){
     return (
         <div className={classes.divInputPassword}>
             <FormControl size="small" variant="outlined" className={clsx(classes.margin, classes.textField)}>
-                <InputLabel error={props.error} htmlFor="outlined-adornment-password" required>{props.label}</InputLabel>
+                <InputLabel error={error} htmlFor="outlined-adornment-password" required>{label}</InputLabel>
                 <OutlinedInput
                    required
-                   label={props.label + "*"}
-                   error={props.error}
+                   label={label + "*"}
+                   error={error}
                     id="outlined-adornment-password"
                     type={showMdp ? "text" : "password"}
-                    value={props.values}
-                    onChange={e => props.onChange(e)}
-                    onKeyPress={e => props.onKeyPress !== undefined ? props.onKeyPress(e) : null}
+                    value={value}
+                    onChange={e => onChange(e)}
+                    onKeyPress={e => onKeyPress !== undefined ? onKeyPress(e) : null}
                     endAdornment={
                         <InputAdornment position="end">
                             <IconButton

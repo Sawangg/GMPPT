@@ -41,6 +41,7 @@ export default function TodoListFormule(props) {
             ))}
              <Button 
                 className={classes.buttonAjouterFormule}
+                disabled={tab.length >= 20}
                 variant="contained"
                 color="primary"
                 onClick={() => dispatch(addFormule(props.index))}

@@ -54,6 +54,7 @@ export default function TodoListAccordeon() {
                 <Typography variant="h1">FORMULES</Typography>
                 <hr className={classes.hr}/>
                 <Fab className={classes.fab}
+                    disabled={tabCatFormule.length >= 30}
                     size="small"
                     color="primary"
                     aria-label="add"

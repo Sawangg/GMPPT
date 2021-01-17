@@ -51,7 +51,14 @@ export default function ListeReponses(props) {
             <Accordion square expanded={expanded} onChange={() =>setExpanded(!expanded)}>
                     <AccordionSummary expandIcon={<ExpandMoreIcon />}>Réponses à la question {props.id+1}</AccordionSummary>
                     <AccordionDetails className={classes.accordionDetails}>
-                        <Button variant="contained" color="primary" onClick={() => dispatch(addReponse({id : props.id, formule1 : tabCatForm[0].tabFormule[0].nomFormule}))}>Ajouter une réponse</Button>
+                        <Button 
+                            disabled={tabReponse.length >= 10}
+                            variant="contained" 
+                            color="primary" 
+                            onClick={() => dispatch(addReponse({id : props.id, formule1 : tabCatForm[0].tabFormule[0].nomFormule}))}
+                            >
+                                Ajouter une réponse
+                        </Button>
                         {!isEnregistre ? <PropagateLoader size={15} color={"rgb(7, 91, 114)"} css={{margin : "30px auto", display : "flex", justifyContent : "center"}}/>  
                         :tabReponse.map((elem, index) => (
                             <div className={classes.divReponse}>
