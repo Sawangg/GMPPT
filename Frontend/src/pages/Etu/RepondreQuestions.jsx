@@ -34,10 +34,12 @@ export default function RepondreQuestions(){
     const isEnregistre = useSelector(selectSujetEnregistre);
     const dispatch = useDispatch();
 
-    useConstructor(async () => {
-        etudiantModeleAPI().then(modele => {
-            dispatch(getSujet(modele.data[0].id_modele));
-        });
+    useConstructor(async (dispatch) => {
+        if (!isEnregistre){
+            etudiantModeleAPI().then(modele => {
+                dispatch(getSujet(modele.data[0].id_modele));
+            });
+        }
     });
 
     useEffect(() => {

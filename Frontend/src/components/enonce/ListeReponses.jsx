@@ -71,7 +71,7 @@ const ListeReponses = ({index}) => {
                         {!isEnregistre ? <PropagateLoader size={15} color={"rgb(7, 91, 114)"} css={{margin : "30px auto", display : "flex", justifyContent : "center"}}/>  
                         :
                         Array(tabReponseLength).fill(0).map((_, indexReponse) => (
-                            <div className={classes.divReponse}>
+                            <div className={classes.divReponse} key={indexReponse}>
                                 <Fab className={classes.buttonSupprimerReponse} size="small" aria-label="delete"
                                      disabled={tabReponse.length === 1}
                                      onClick={() => remove(indexReponse)}

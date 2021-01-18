@@ -66,8 +66,6 @@ const ItemFomrule = ({indexCategorie, indexFormule, length, onRemove}) => {
     }));
     const classes = useStyles();
 
-    console.log(indexCategorie, indexFormule)
-
     const dispatch = useDispatch();
     const matches = useMediaQuery('(min-width:960px)');
 
