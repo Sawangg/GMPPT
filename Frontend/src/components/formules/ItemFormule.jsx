@@ -10,11 +10,11 @@ import DelayInput from '../InputAwait';
 
 import '../../styles/ItemTodoFormule.css'
 
-import { changeNomFormule, changeFormule, changeModifFormule, changePositionFormule } from "../../slice/FormulesSlice"
-import { useDispatch } from "react-redux";
+import { changeNomFormule, changeFormule, changeModifFormule, changePositionFormule, selectFormule, removeFormule } from "../../slice/FormulesSlice"
+import { useDispatch, useSelector } from "react-redux";
 import clsx from 'clsx'
 
-export default function Item(props) {
+const ItemFomrule = ({indexCategorie, indexFormule, length, onRemove}) => {
 
     const useStyles = makeStyles((theme) => ({
         affichageFormule: {
@@ -66,11 +66,15 @@ export default function Item(props) {
     }));
     const classes = useStyles();
 
+    console.log(indexCategorie, indexFormule)
+
     const dispatch = useDispatch();
     const matches = useMediaQuery('(min-width:960px)');
 
+    const item = useSelector(selectFormule(indexCategorie, indexFormule));
+
     const changeModif = () =>{
-        dispatch(changeModifFormule({indexCategorie :props.indexCategorie, indexFormule : props.index}))
+        dispatch(changeModifFormule({indexCategorie : indexCategorie, indexFormule : indexFormule}))
     }
 
     const field = () => {
@@ -80,22 +84,22 @@ export default function Item(props) {
                     <DelayInput
                         label="Nom formule"
                         delay={300}
-                        value={props.item.nomFormule}
-                        onChange={e => dispatch(changeNomFormule({indexCategorie :props.indexCategorie, indexFormule : props.index, event : e}))} 
+                        value={item.nomFormule}
+                        onChange={e => dispatch(changeNomFormule({indexCategorie :indexCategorie, indexFormule : indexFormule, event : e}))} 
                     />
                     <ArrowForwardIcon className={classes.center} />
                     <DelayInput
                         label="Formule"
                         delay={250}
-                        value={props.item.formule}
-                        onChange={e => dispatch(changeFormule({indexCategorie :props.indexCategorie, indexFormule : props.index, event : e}))}
+                        value={item.formule}
+                        onChange={e => dispatch(changeFormule({indexCategorie : indexCategorie, indexFormule : indexFormule, event : e}))}
                     />
                 </div>
                 <Button
                     className={clsx(classes.buttonSave, classes.center)}
                     variant="contained"
                     onClick={() => changeModif()}
-                    disabled={props.item.nomFormule === "" || props.item.formule === ""}
+                    disabled={item.nomFormule === "" || item.formule === ""}
                 >
                     Enregistrer
                 </Button>
@@ -107,9 +111,9 @@ export default function Item(props) {
         return (
             <>
                 <div className={classes.affichageFormule}>
-                    <Typography className={clsx(classes.typoNomFormule, classes.center)}>{props.item.nomFormule}</Typography>
+                    <Typography className={clsx(classes.typoNomFormule, classes.center)}>{item.nomFormule}</Typography>
                     <ArrowForwardIcon className={classes.center} />
-                    <Typography className={clsx(classes.typoFormule, classes.center)}>{props.item.formule}</Typography>
+                    <Typography className={clsx(classes.typoFormule, classes.center)}>{item.formule}</Typography>
                 </div>
                 <Button
                     className={clsx(classes.buttonModif, classes.center)}
@@ -127,15 +131,18 @@ export default function Item(props) {
 
             <Fab
                 className={clsx(classes.fabDelete, classes.center)}
-                disabled={props.nb === 1}
+                disabled={length === 1}
                 size="small"
                 aria-label="add"
-                onClick={() => props.remove()}
+                onClick={() => {
+                    dispatch(removeFormule({indexCategorie : indexCategorie, indexFormule : indexFormule}));
+                    onRemove();
+                }}
             >
                 <DeleteIcon className={classes.center}/>
             </Fab>
 
-            {props.item.modif ? field() : txt()}
+            {item.modif ? field() : txt()}
 
             {matches ?
                 <>
@@ -143,7 +150,7 @@ export default function Item(props) {
                         color="primary"
                         variant='extended'
                         size='small'
-                        onClick={e => dispatch(changePositionFormule({indexCategorie :props.indexCategorie, indexFormule : props.index, up : true}))}
+                        onClick={e => dispatch(changePositionFormule({indexCategorie :indexCategorie, indexFormule : indexFormule, up : true}))}
                     >
                         <ArrowUpwardIcon/>
                     </Fab>
@@ -151,7 +158,7 @@ export default function Item(props) {
                         color="primary"
                         variant='extended'
                         size='small'
-                        onClick={() => dispatch(changePositionFormule({indexCategorie :props.indexCategorie, indexFormule : props.index, up : false}))}
+                        onClick={() => dispatch(changePositionFormule({indexCategorie : indexCategorie, indexFormule : indexFormule, up : false}))}
                     >
                         <ArrowDownwardIcon/>
                     </Fab>
@@ -161,3 +168,5 @@ export default function Item(props) {
     )
 
 }
+
+export default React.memo(ItemFomrule);

@@ -160,4 +160,14 @@ export const selectEnregistreEnonce = (state) => state.enonce.enregistre;
 
 export const selectMargeErreur = (indexQuestion, indexReponse) => (state) => state.enonce.question[indexQuestion].reponse[indexReponse].margeErreur;
 
+export const selectTabQuestionLength = (state) => state.enonce.question.length;
+
+export const selectContenuEnonce = (state) => state.enonce.enonceContenu;
+
+export const selectQuestion = (index) => (state) => state.enonce.question[index].contenu;
+
+export const selectReponse = (indexQuestion, indexReponse) => (state) => state.enonce.question[indexQuestion].reponse[indexReponse];
+
+export const selectReponseLength = (index) => (state) => state.enonce.question[index].reponse.length;
+
 export default enoncesReducer.reducer;

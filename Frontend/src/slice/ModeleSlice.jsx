@@ -72,4 +72,6 @@ export const selectActualise = (state) => state.modele.actualise;
 
 export const selectChargementSupp = (state) => state.modele.chargementSuppression;
 
+export const selectIdModeleSelectionne = (state) => state.modele.idModeleSelectionne;
+
 export default modeleSlice.reducer;

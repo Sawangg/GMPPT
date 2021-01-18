@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import {Fab, Typography, makeStyles} from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import SaveIcon from '@material-ui/icons/Save';
@@ -8,12 +8,12 @@ import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import DelayInput from '../InputAwait';
 import SlideBar from './SlideBarVariable'
 
-import { useDispatch } from "react-redux";
-import { changeNom, changeMax, changeMin, changeModif } from "../../slice/VariablesAleatoiresSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { changeNom, changeMax, changeMin, changeModif, selectElement, removeVariable } from "../../slice/VariablesAleatoiresSlice";
 
 import '../../styles/itemVariablesAleatoire.css'
 
-export default function ItemVariable(props){
+const ItemVariable = ({index, length, onRemove}) => {
     const useStyles = makeStyles((theme) => ({
         typo: {
             marginTop : 8
@@ -49,37 +49,46 @@ export default function ItemVariable(props){
 
     const dispatch = useDispatch();
 
+    const item = useSelector(selectElement(index))
+
+    const remove = useCallback (() => {
+        dispatch(removeVariable(index));
+        onRemove();
+    }, [dispatch, index, onRemove])
+
+    const change = useCallback (() => dispatch(changeModif(index)), [dispatch, index])
+
     const displayModif = () =>{
         return (
             <>
                 <Fab className={classes.fabSave} size="small" aria-label="add"
-                    disabled={props.item.nom === "" || parseFloat(props.item.min) > parseFloat(props.item.max)} 
-                    onClick={() => dispatch(changeModif(props.index))}
+                    disabled={item.nom === "" || parseFloat(item.min) > parseFloat(item.max)} 
+                    onClick={() => change()}
                 >
                     <SaveIcon/>
                 </Fab>
                 <DelayInput
                     label="Nom formule"
                     delay={300}
-                    value={props.item.nom}
-                    onChange={e => dispatch(changeNom({index : props.index, event : e}))} 
+                    value={item.nom}
+                    onChange={e => dispatch(changeNom({index : index, event : e}))} 
                 />
                 <ArrowRightIcon fontSize="large"/>
                 <DelayInput
                     typeNumber={true}
                     label="Min"
                     delayTimeout={300}
-                    value={props.item.min}
-                    onChange={e => dispatch(changeMin({index : props.index, event : e}))}
+                    value={item.min}
+                    onChange={e => dispatch(changeMin({index : index, event : e}))}
                 />
                 <DelayInput
                     typeNumber={true}
                     label="Max"
                     delayTimeout={300}
-                    value={props.item.max}
-                    onChange={e => dispatch(changeMax({index : props.index, event : e}))}
+                    value={item.max}
+                    onChange={e => dispatch(changeMax({index : index, event : e}))}
                 />
-                <SlideBar index={props.index}/>
+                <SlideBar index={index}/>
             </>
         );
     }
@@ -90,30 +99,32 @@ export default function ItemVariable(props){
                 <Fab className={classes.fabModif}
                     size="small" 
                     aria-label="add"
-                    onClick={() => dispatch(changeModif(props.index))}
+                    onClick={() => change()}
                 >
                     <CreateIcon/>
                 </Fab>
-                <Typography className={classes.typo}>{props.item.nom}</Typography>
+                <Typography className={classes.typo}>{item.nom}</Typography>
                 <ArrowRightIcon fontSize="large"/>
-                <Typography align="center">Min <br/>{props.item.min}</Typography>
-                <Typography align="center">Max <br/>{props.item.max} </Typography>
-                <Typography align="center">Précision <br/>10^{props.item.precision}</Typography>
+                <Typography align="center">Min <br/>{item.min}</Typography>
+                <Typography align="center">Max <br/>{item.max} </Typography>
+                <Typography align="center">Précision <br/>10^{item.precision}</Typography>
             </>
         )
     }
 
     return (
             <div className={classes.containerVariables} id="containerVariables">
-                {props.item.modif ? displayModif() : displayTxt()}
+                {item.modif ? displayModif() : displayTxt()}
                 <Fab className={classes.fabDelete}
-                    disabled={props.length <= 1}
+                    disabled={length <= 1}
                     size="small" 
                     aria-label="add"
-                    onClick={() => props.removeVariable()}
+                    onClick={() => remove()}
                 >
                 <DeleteIcon className={classes.center}/>
                 </Fab>
             </div>
     );
 }
+
+export default React.memo(ItemVariable);

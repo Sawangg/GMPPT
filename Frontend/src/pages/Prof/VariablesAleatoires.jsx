@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState } from 'react';
 import {Fab, makeStyles, Typography} from '@material-ui/core';
 import CircleLoader from "react-spinners/CircleLoader";
 import AddIcon from '@material-ui/icons/Add';
@@ -8,17 +8,16 @@ import useConstructor from '../../components/use/useContructor'
 import PopUp from '../../components/PopUp'
 import useUnload from '../../components/use/useUnload';
 import SelectionModele from '../../components/SelectionModele'
+import EnregistrementVariableAleatoires from '../../components/variable/EnregistrementVariableAleatoires'
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectVariablesAleatoires, selectActualise, selectEnregistre, setVariables, addVariable, removeVariable, undoVariable, getAllVariables } from "../../slice/VariablesAleatoiresSlice"
-import { selectModele } from "../../slice/ModeleSlice"
+import { selectActualise, selectEnregistre, addVariable, undoVariable, getAllVariables, selectTabLength } from "../../slice/VariablesAleatoiresSlice"
+import { selectIdModeleSelectionne } from "../../slice/ModeleSlice"
 
 import '../../styles/VariablesAleatoires.css'
 
 export default function VariablesAleatoires() {
 
-    const [open, setOpen] = useState(false);
-        
     const useStyles = makeStyles((theme) => ({
         hr: {
             width: "80%",
@@ -36,37 +35,28 @@ export default function VariablesAleatoires() {
 
     //gerer pop up pour le undo lors de suppression
     const [openPopUpUndo, setOpenPopUpUndo] = useState(false);
-    //gerer pop up d'enregistrement pour la BD
-    const [openPopUpSave, setOpenPopUpSave] = useState(true);
+
+    //gere la pop up de selection de modelee
+    const [openModele, setOpenModele] = useState(false);
 
     const dispatch = useDispatch();
 
-    const tableauVariables = useSelector(selectVariablesAleatoires);
+    const lengthTab = useSelector(selectTabLength);
     //savoir si les variables sont récupérées de la BD
     const isEnregistre = useSelector(selectEnregistre);
     //savoir si la recupération les données sont conectées à la BD
     const isActualise = useSelector(selectActualise)
-    const modele = useSelector(selectModele);
+    const idModele = useSelector(selectIdModeleSelectionne);
 
     useConstructor(() => {
         //si pas encore récupérées de la BD 
         if (!isEnregistre) {
-            modele.idModeleSelectionne === null ? setOpen(true) : dispatch(getAllVariables(modele.idModeleSelectionne));
+            idModele === null ? setOpenModele(true) : dispatch(getAllVariables(idModele));
         }
     });
 
-    useEffect(() => {
-        setOpenPopUpSave(true)
-    }, [isEnregistre])
-
     //ne pas quitter la page si pas enregistré dans la BD
     useUnload(!isEnregistre);
-
-    //supprimer une ligne de variables aléatoires
-    const remove = (index) =>{
-        dispatch(removeVariable(index));
-        setOpenPopUpUndo(true);
-    }
 
     const undo = () =>{
         dispatch(undoVariable());
@@ -79,7 +69,7 @@ export default function VariablesAleatoires() {
                 <Typography variant="h1">Variables aléatoires</Typography>
                 <hr className={classes.hr}/>
                 <Fab className={classes.fab}
-                    disabled={tableauVariables.length >= 75}
+                    disabled={lengthTab >= 75}
                     size="small"
                     color="primary"
                     aria-label="add"
@@ -88,8 +78,9 @@ export default function VariablesAleatoires() {
                     <AddIcon />
                 </Fab>
                 <div className={classes.divItemvariable} id="divItemvariable">
-                    {tableauVariables.map((item, id) => (
-                        <ItemVariablesAleatoire removeVariable={() => remove(id)} length={tableauVariables.length} key={id} index={id} item={item}/>
+                    {/* EVITE DE FAIRE PASSER LE TABLEAU DE VARIABLE ET DE MODIFIER TOUTES LES VARIABLES A CHAQUE CHANGEMENT D'UNE */}
+                    {Array(lengthTab).fill(0).map((_, index) => (
+                        <ItemVariablesAleatoire onRemove={() => setOpenPopUpUndo(true)} length={lengthTab} key={index} index={index}/>
                     ))}
                 <PopUp 
                     message="Variable supprimée" 
@@ -100,23 +91,14 @@ export default function VariablesAleatoires() {
                     pos="right"
                 />
                 </div>
-                <PopUp 
-                    severity={isEnregistre ? "success" : "warning"} 
-                    message={isEnregistre ? "Variables enregistrées" : "Enregistrer les modifications"} 
-                    actionName={isEnregistre ? null : "Enregistrer"} 
-                    action={() => isEnregistre ? null : dispatch(setVariables({tab : tableauVariables, idModele : modele.idModeleSelectionne}))} 
-                    open={openPopUpSave} 
-                    handleClose={() => {if (isEnregistre) setOpenPopUpSave(false)}}
-                    pos="left"
-                    disabled={tableauVariables.some(variables => variables.modif)}
-                />
+                <EnregistrementVariableAleatoires/>
             </div>
         )
     }
 
     return (
-        modele.idModeleSelectionne === null 
-        ? <SelectionModele tard={false} setClose={() => setOpen(false)} open={open}/> 
+        idModele === null 
+        ? <SelectionModele tard={false} setClose={() => setOpenModele(false)} open={openModele}/> 
         : isActualise ? displayVariable() : <CircleLoader size={50} color={"rgb(7, 91, 114)"} css={{margin : "auto", display : "flex", justifyContent : "center"}}/>
     );
 }

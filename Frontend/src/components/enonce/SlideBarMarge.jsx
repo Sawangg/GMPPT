@@ -1,10 +1,10 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {Typography, Slider, makeStyles, ClickAwayListener } from '@material-ui/core';
 
 import { useDispatch } from "react-redux";
 import { handleChangeMargeErreur } from '../../slice/EnoncesSlice'
 
-export default function SliderBar(props) {
+export default function SliderBar({indexQuestion, indexReponse}) {
 
     const useStyles = makeStyles((theme) => ({
         divSlideBar: {
@@ -17,13 +17,13 @@ export default function SliderBar(props) {
     const dispatch = useDispatch();
     const [margeErreurState, setMargeErreurState] = useState(5)
 
-    const handleChange = (event, newValue) => {
+    const handleChange = (_, newValue) => {
       setMargeErreurState(newValue)
     };
 
-    const handleClickAway = (e) => {
-      dispatch(handleChangeMargeErreur({indexQuestion : props.indexQuestion, indexReponse : props.indexReponse, marge : margeErreurState}))
-    }
+    const handleClickAway = useCallback(() => {
+      dispatch(handleChangeMargeErreur({indexQuestion : indexQuestion, indexReponse : indexReponse, marge : margeErreurState}));
+    }, [dispatch, indexQuestion, indexReponse, margeErreurState])
 
   return (
     <ClickAwayListener mouseEvent="onMouseUp" touchEvent="onTouchStart" onClickAway={handleClickAway}>
