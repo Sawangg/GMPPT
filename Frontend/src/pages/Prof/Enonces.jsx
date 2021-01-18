@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useCallback, useState } from "react";
 import {Button, makeStyles, Fab, Typography} from "@material-ui/core";
 import CircleLoader from "react-spinners/CircleLoader";
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -6,15 +6,15 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import QuestionEnonce from "../../components/enonce/QuestionEnonce";
 import useConstructor from "../../components/use/useContructor";
 import ListeReponses from "../../components/enonce/ListeReponses";
-import PopUp from '../../components/PopUp';
 import SelectionModele from '../../components/SelectionModele'
-import MyEditor from '../../components/enonce/MyEditor'
+import MyEditor from '../../components/enonce/EnTete'
 import useUnload from '../../components/use/useUnload';
+import EnregistrementEnonce from '../../components/enonce/EnregistrementEnonce';
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectModele } from "../../slice/ModeleSlice";
-import { addQuestion, removeQuestion, handleChangeEnonce, handleChangeQuestion, selectActualiseEnonce, selectEnonce, selectEnregistreEnonce, getSujet, setQuestions } from "../../slice/EnoncesSlice";
-import { getCategoriesFormules, selectEnregistreFormule, selectFormule} from "../../slice/FormulesSlice"
+import { selectIdModeleSelectionne } from "../../slice/ModeleSlice";
+import { addQuestion, removeQuestion, handleChangeEnonce, handleChangeQuestion, selectActualiseEnonce, selectTabQuestionLength, selectEnregistreEnonce, getSujet, setQuestions, selectContenuEnonce } from "../../slice/EnoncesSlice";
+import { getCategoriesFormules, selectEnregistreFormule, selectPremiereFormule} from "../../slice/FormulesSlice"
 
 export default function Enonces() {
 
@@ -57,82 +57,70 @@ export default function Enonces() {
     }));
     const classes = useStyles();
 
-    const [openPopUp, setOpenPopUp] = useState(true);
-
-    const enonce = useSelector(selectEnonce);
     const dispatch = useDispatch();
-    const modele = useSelector(selectModele);
+    const idModele = useSelector(selectIdModeleSelectionne);
     const actualiseEnonce = useSelector(selectActualiseEnonce);
     const isEnregistreEnonce = useSelector(selectEnregistreEnonce);
     const isEnregistreFormule = useSelector(selectEnregistreFormule);
-    const tabCatForm = useSelector(selectFormule);
+    const premierFormule = useSelector(selectPremiereFormule);
+    const tabQuestionLength = useSelector(selectTabQuestionLength);
+    const enTete = useSelector(selectContenuEnonce);
 
     useConstructor(() => {
         if (!isEnregistreEnonce) {
-            if ( modele.idModeleSelectionne === null){
+            if ( idModele === null){
                 setOpen(true);
             }
-            if (!isEnregistreFormule) dispatch(getCategoriesFormules(modele.idModeleSelectionne));
-            if (!isEnregistreEnonce) dispatch(getSujet(modele.idModeleSelectionne));
+            if (!isEnregistreFormule) dispatch(getCategoriesFormules(idModele));
+            if (!isEnregistreEnonce) dispatch(getSujet(idModele));
         }
     });
 
-    useEffect(() => {
-        setOpenPopUp(true)
-    }, [isEnregistreEnonce])
-
     useUnload(!isEnregistreEnonce);
 
+    const deleteQuestion = useCallback((index) => {
+        dispatch(removeQuestion(index))
+    }, [dispatch])
+
     const displayEnonce = () => {
+
         return (
             <div>
                 <Typography variant="h1">énoncé</Typography>
                 <hr className={classes.hr}/>
                 <div className={classes.enonceSujet}>
-                    <MyEditor value={enonce.enonceContenu} handleChange={e => dispatch(handleChangeEnonce(e))}/>
+                    <MyEditor value={enTete} handleChange={e => dispatch(handleChangeEnonce(e))}/>
                 </div>
-                {enonce.question.map((item, id) => {
-                    return (
-                        <div key={id} className={classes.divQuestion}>
-                            <Fab className={classes.fabDelete} size="small" aria-label="delete"
-                                disabled={enonce.question.length === 1}
-                                onClick={() => dispatch(removeQuestion(id))}
-                            >
-                                <DeleteIcon/>
-                            </Fab>
-                            <div className={classes.divQuestionReponse}>
-                                <QuestionEnonce id={id} value={item.contenu} handleChange={e => dispatch(handleChangeQuestion({contenu:e, index:id}))}/>
-                                <ListeReponses id={id} idModele={modele.idModeleSelectionne}/>
-                            </div>
+                {Array(tabQuestionLength).fill(0).map((_, index) => (
+                    <div key={index} className={classes.divQuestion}>
+                        <Fab className={classes.fabDelete} size="small" aria-label="delete"
+                            disabled={tabQuestionLength === 1}
+                            onClick={() => deleteQuestion()}
+                        >
+                            <DeleteIcon/>
+                        </Fab>
+                        <div className={classes.divQuestionReponse}>
+                            <QuestionEnonce index={index} handleChange={e => dispatch(handleChangeQuestion({contenu:e, index: index}))}/>
+                            <ListeReponses index={index} idModele={idModele}/>
                         </div>
-                    )
-                })}
+                    </div>
+                ))}
                 <Button 
-                    disabled={enonce.question.length >= 20}
+                    disabled={tabQuestionLength >= 20}
                     className={classes.buttonAddQuestion} 
                     variant="contained" 
                     color="primary" 
-                    onClick={() => dispatch(addQuestion(tabCatForm[0].tabFormule[0].nomFormule))}
+                    onClick={() => dispatch(addQuestion(premierFormule))}
                 >
                         Ajouter une question
                 </Button>
-                <PopUp
-                    severity={isEnregistreEnonce ? "success" : "warning"}
-                    message={isEnregistreEnonce ? "Enoncé enregistré" : "Enregistrer les modifications"}
-                    actionName={isEnregistreEnonce ? null : "Enregistrer"}
-                    action={() => {
-                        if (!isEnregistreEnonce) dispatch(setQuestions({ idModele : modele.idModeleSelectionne, enonce : enonce.enonceContenu, tabQuestions : enonce.question }));
-                    }}
-                    open={openPopUp}
-                    handleClose={() => {if (isEnregistreEnonce) setOpenPopUp(false)}}
-                    pos="left"
-                />
+                <EnregistrementEnonce/>
             </div>
         );
     }
 
     return (
-        modele.idModeleSelectionne === null 
+        idModele === null 
         ? <SelectionModele tard={false} setClose={() => setOpen(false)} open={open}/> 
         : actualiseEnonce ? displayEnonce() : <CircleLoader size={50} color={"rgb(7, 91, 114)"} css={{margin : "auto", display : "flex", justifyContent : "center"}}/>
     );

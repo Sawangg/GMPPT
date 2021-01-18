@@ -175,12 +175,20 @@ export const formuleSlice = createSlice({
 
 export const { setActualise, changeNom, addCategorie, removeCategorie, changeModifCategorie, addFormule, undoFormule, changeNomFormule, changeFormule, changeModifFormule, removeFormule, changePositionFormule } = formuleSlice.actions;
 
-export const selectFormule = (state) => state.formule.tab;
+export const selectCategorieFormule = (state) => state.formule.tab;
 
-export const selectTabFormule = (index) => (state) => state.formule.tab[index].tabFormule;
+export const selectFormule = (indexCat, indexFormule) => (state) => state.formule.tab[indexCat].tabFormule[indexFormule];
 
 export const selectActualiseFormule = (state) => state.formule.actualise;
 
 export const selectEnregistreFormule = (state) => state.formule.enregistre;
+
+export const selectTabCategorieLength = (state) => state.formule.tab.length;
+
+export const selectCategorie = (index) => (state) => state.formule.tab[index];
+
+export const selectTabFormuleLength = (index) => (state) => state.formule.tab[index].tabFormule.length;
+
+export const selectPremiereFormule = (state) => state.formule.tab[0].tabFormule[0].nomFormule;
 
 export default formuleSlice.reducer;

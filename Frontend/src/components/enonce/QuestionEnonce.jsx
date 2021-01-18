@@ -3,7 +3,10 @@ import SunEditor from "suneditor-react";
 import 'suneditor/dist/css/suneditor.min.css'; // Import Sun Editor's CSS File
 import {makeStyles} from "@material-ui/core";
 
-export default function QuestionEnonce({value, handleChange}) {
+import { useSelector } from "react-redux";
+import { selectQuestion } from "../../slice/EnoncesSlice"
+
+export default function QuestionEnonce({ index, handleChange }) {
 
     const useStyles = makeStyles((theme) => ({
         divQuestion: {
@@ -14,6 +17,8 @@ export default function QuestionEnonce({value, handleChange}) {
         }
     }));
     const classes = useStyles();
+
+    const value = useSelector(selectQuestion(index))
 
     return  (
         <div className={classes.divQuestion}>

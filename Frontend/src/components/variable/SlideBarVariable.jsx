@@ -8,10 +8,10 @@ import { changePrecision } from "../../slice/VariablesAleatoiresSlice";
 import { useSelector } from "react-redux";
 import { selectPrecision } from "../../slice/VariablesAleatoiresSlice"
 
-export default function SlideBar(props){
+const SlideBar = ({ index }) => {
     
     const dispatch = useDispatch();
-    const precisionSlice = useSelector(selectPrecision(props.index));
+    const precisionSlice = useSelector(selectPrecision(index));
 
     const valueLabelFormat = (value) => {
         if (value !== 0){
@@ -30,7 +30,7 @@ export default function SlideBar(props){
       };
 
       const handleClickAway = (e) => {
-        dispatch(changePrecision({ index : props.index, precision : precision}));
+        dispatch(changePrecision({ index : index, precision : precision}));
       }
 
     return(
@@ -53,3 +53,5 @@ export default function SlideBar(props){
     )
     
 }
+
+export default React.memo(SlideBar);

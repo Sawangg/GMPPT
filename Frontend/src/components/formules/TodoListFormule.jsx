@@ -1,15 +1,15 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {Button, makeStyles} from '@material-ui/core';
 
-import Item from './ItemTodoFormule'
+import Item from './ItemFormule'
 import PopUp from '../PopUp'
 
 import { useDispatch } from "react-redux";
-import { addFormule, removeFormule, undoFormule } from "../../slice/FormulesSlice";
+import { addFormule, undoFormule } from "../../slice/FormulesSlice";
 import { useSelector } from "react-redux";
-import { selectTabFormule } from "../../slice/FormulesSlice"
+import { selectTabFormuleLength } from "../../slice/FormulesSlice"
 
-export default function TodoListFormule(props) {
+const TodoListFormule = ({ indexCategorie }) => {
 
     const useStyles = makeStyles((theme) => ({
         buttonAjouterFormule: {
@@ -22,29 +22,28 @@ export default function TodoListFormule(props) {
     const [openPopUpSave, setOpenPopUpSave] = useState(false);
 
     const dispatch = useDispatch();
-    const tab = useSelector(selectTabFormule(props.index));
-
-    const remove = (index) =>{
-        dispatch(removeFormule({indexCategorie : props.index, indexFormule : index}))
-        setOpenPopUpSave(true);
-    }
+    const tabFormuleLength = useSelector(selectTabFormuleLength(indexCategorie))
 
     const undo = () =>{
-        dispatch(undoFormule(props.index))
+        dispatch(undoFormule())
         setOpenPopUpSave(false);
      }
 
+     const ajout = useCallback(() => {
+        dispatch(addFormule(indexCategorie));
+     }, [dispatch, indexCategorie]);
+
     return (
         <div>
-            {tab.map((i, id) => (
-                <Item remove={e => remove(id)} index={id} item={i} nb={tab.length} key={id} indexCategorie={props.index}/>
-            ))}
+             {Array(tabFormuleLength).fill(0).map((_, index) => (
+                    <Item onRemove={() => setOpenPopUpSave(true)} indexFormule={index} length={tabFormuleLength} key={index} indexCategorie={indexCategorie}/>
+                ))}
              <Button 
                 className={classes.buttonAjouterFormule}
-                disabled={tab.length >= 20}
+                disabled={tabFormuleLength >= 20}
                 variant="contained"
                 color="primary"
-                onClick={() => dispatch(addFormule(props.index))}
+                onClick={() => ajout()}
             >
                     Ajouter des formules
             </Button>
@@ -59,3 +58,5 @@ export default function TodoListFormule(props) {
         </div>
     );
 } 
+
+export default React.memo(TodoListFormule);

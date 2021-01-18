@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {
     Button,
     Fab,
@@ -20,10 +20,10 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import DelayInput from '../InputAwait';
 import TodoListFormule from './TodoListFormule';
 
-import { useDispatch } from "react-redux";
-import { changeModifCategorie, changeNom, removeCategorie } from "../../slice/FormulesSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { changeModifCategorie, changeNom, removeCategorie, selectCategorie } from "../../slice/FormulesSlice";
 
-export default function Item(props) {
+const ItemCategorie = ({index, length}) => {
 
     const useStyles = makeStyles((theme) => ({
         fieldNomCategorie: {
@@ -70,21 +70,35 @@ export default function Item(props) {
 
     const dispatch = useDispatch();
 
+    console.log(index)
+
+    const item = useSelector(selectCategorie(index))
+
+    const change = useCallback(() => {
+        dispatch(changeModifCategorie(index));
+    }, [dispatch, index]);
+
+    const remove = useCallback(() => {
+        dispatch(removeCategorie(index)); 
+        setOpen(false);
+    }, [dispatch, index]);
+
+    //Quand les champs sont a remplir
     const field = () => {
         return (
             <>
                 <DelayInput
                     label="Nom Catégorie"
                     delayTimeout={250}
-                    value={props.item.nom}
-                    onChange={e => dispatch(changeNom({index : props.index, event : e.target.value}))} 
+                    value={item.nom}
+                    onChange={e => dispatch(changeNom({index : index, event : e}))} 
                 />
                 <Fab 
-                    disabled={props.item.nom === ""} 
+                    disabled={item.nom === ""} 
                     size="small" 
                     color="primary" 
                     aria-label="add" 
-                    onClick={() => dispatch(changeModifCategorie(props.index))}
+                    onClick={() => change()}
                 >
                     <SaveIcon/>
                 </Fab>
@@ -92,14 +106,15 @@ export default function Item(props) {
         )
     }
 
+    //Quand les champs sont enregistrés
     const txt = () =>{
         return (
             <>
-                <Typography className={classes.textNomCategorie}>{props.item.nom}</Typography>
+                <Typography className={classes.textNomCategorie}>{item.nom}</Typography>
                 <Fab className={classes.fabModif}
                     size="small" 
                     aria-label="add"
-                    onClick={e => dispatch(changeModifCategorie(props.index))}
+                    onClick={() => change()}
                 >
                     <CreateIcon/>
                 </Fab>
@@ -111,9 +126,9 @@ export default function Item(props) {
         <div className={classes.divItemAccordeon}>
 
             <div className={classes.enteteItemAccordeon}>
-                {props.item.modif ? field() : txt()}    
+                {item.modif ? field() : txt()}    
                 <Button className={classes.buttonDelete}
-                    disabled={props.length === 1} 
+                    disabled={length === 1} 
                     variant="contained"
                     onClick={e => setOpen(true)}
                 >
@@ -126,7 +141,7 @@ export default function Item(props) {
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={() => setOpen(false)} color="primary">Annuler</Button>
-                        <Button onClick={() => {dispatch(removeCategorie(props.index)); setOpen(false)}} color="primary" autoFocus>OK</Button>
+                        <Button onClick={() => remove()} color="primary" autoFocus>OK</Button>
                     </DialogActions>
                 </Dialog>
             </div>
@@ -134,10 +149,12 @@ export default function Item(props) {
             <Accordion className={classes.accordion} square expanded={expanded} onChange={() =>setExpanded(!expanded)}>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}/>
                 <AccordionDetails className={classes.accordionDetails}>
-                    <TodoListFormule index={props.index}/>
+                    <TodoListFormule indexCategorie={index}/>
                 </AccordionDetails>
             </Accordion>
         </div>
     )
 
 }
+
+export default React.memo(ItemCategorie);

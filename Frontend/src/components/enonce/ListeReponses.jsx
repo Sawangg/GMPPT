@@ -1,16 +1,16 @@
-import React, {useState} from "react";
+import React, {useCallback, useState} from "react";
 import {Button, makeStyles, Accordion, AccordionSummary, AccordionDetails, Fab} from "@material-ui/core";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import PropagateLoader from "react-spinners/PropagateLoader";
 import DeleteIcon from '@material-ui/icons/Delete';
 
-import Reponse from './Reponse';
+import Reponse from './ItemReponse';
 
 import { useSelector, useDispatch } from "react-redux";
-import { selectEnregistreFormule, selectFormule } from "../../slice/FormulesSlice";
-import {addReponse, selectTabReponse, removeReponse } from '../../slice/EnoncesSlice'
+import { selectEnregistreFormule, selectPremiereFormule } from "../../slice/FormulesSlice";
+import {addReponse, selectTabReponse, removeReponse, selectReponseLength } from '../../slice/EnoncesSlice'
 
-export default function ListeReponses(props) {
+const ListeReponses = ({index}) => {
     const useStyles = makeStyles((theme) => ({
         divListeReponses: {
             width : "100%",
@@ -39,36 +39,46 @@ export default function ListeReponses(props) {
     }));
     const classes = useStyles();
 
-    const isEnregistre = useSelector(selectEnregistreFormule);
-    const tabReponse = useSelector(selectTabReponse(props.id))
-    const [expanded, setExpanded] = useState(true);
-    const tabCatForm = useSelector(selectFormule);
-
     const dispatch = useDispatch();
+
+    const isEnregistre = useSelector(selectEnregistreFormule);
+    const tabReponse = useSelector(selectTabReponse(index))
+    const [expanded, setExpanded] = useState(true);
+    const tabReponseLength = useSelector(selectReponseLength(index));
+    const premierFormule = useSelector(selectPremiereFormule);
+
+    const add = useCallback (() => {
+        dispatch(addReponse({id : index, formule1 : premierFormule}));
+    }, [dispatch, index, premierFormule])
+
+    const remove = useCallback ((indexReponse) => {
+        dispatch(removeReponse({indexQuestion : index, indexReponse : indexReponse}));
+    }, [dispatch, index])
 
     return (
         <div className={classes.divListeReponses}>
             <Accordion square expanded={expanded} onChange={() =>setExpanded(!expanded)}>
-                    <AccordionSummary expandIcon={<ExpandMoreIcon />}>Réponses à la question {props.id+1}</AccordionSummary>
+                    <AccordionSummary expandIcon={<ExpandMoreIcon />}>Réponses à la question {index+1}</AccordionSummary>
                     <AccordionDetails className={classes.accordionDetails}>
                         <Button 
                             disabled={tabReponse.length >= 10}
                             variant="contained" 
                             color="primary" 
-                            onClick={() => dispatch(addReponse({id : props.id, formule1 : tabCatForm[0].tabFormule[0].nomFormule}))}
+                            onClick={() => add()}
                             >
                                 Ajouter une réponse
                         </Button>
                         {!isEnregistre ? <PropagateLoader size={15} color={"rgb(7, 91, 114)"} css={{margin : "30px auto", display : "flex", justifyContent : "center"}}/>  
-                        :tabReponse.map((elem, index) => (
+                        :
+                        Array(tabReponseLength).fill(0).map((_, indexReponse) => (
                             <div className={classes.divReponse}>
                                 <Fab className={classes.buttonSupprimerReponse} size="small" aria-label="delete"
                                      disabled={tabReponse.length === 1}
-                                     onClick={() => dispatch(removeReponse({indexQuestion : props.id, indexReponse : index}))}
+                                     onClick={() => remove(indexReponse)}
                                 >
                                     <DeleteIcon/>
                                 </Fab>                                
-                                <Reponse key={index} tabCatForm={tabCatForm} element={elem} indexReponse={index} indexQuestion={props.id}/>
+                                <Reponse key={indexReponse} indexReponse={indexReponse} indexQuestion={index}/>
                             </div>
                         ))}
                 </AccordionDetails>
@@ -76,3 +86,5 @@ export default function ListeReponses(props) {
         </div>
     )
 }
+
+export default React.memo(ListeReponses);
