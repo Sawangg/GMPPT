@@ -53,7 +53,7 @@ export default function Question(props) {
     return (
         <div className={classes.listeQuestions} >
             {/* affichage énoncé de la question */}
-            <p className={classes.enonce}>{ReactHtmlParser(props.question.enonce)}</p>
+            <div className={classes.enonce}>{ReactHtmlParser(props.question.enonce)}</div>
 
             {/* bouton ajouter réponse visible uniquement si la question attend plus d'une réponse */ }
             {props.question.nbMaxReponses > 1 ?

@@ -7,7 +7,7 @@ import useConstructor from '../../components/use/useContructor';
 import { etudiantModeleAPI } from '../../utils/api';
 
 import { useDispatch, useSelector } from "react-redux";
-import { getSujet, selectSujetEnregistre } from "../../slice/RepondreQuestionsSlice"
+import { getSujet, selectSujetEnregistre, etudiantVariables } from "../../slice/RepondreQuestionsSlice"
 
 export default function Accueil(props) {
 
@@ -22,13 +22,17 @@ export default function Accueil(props) {
     const dispatch = useDispatch();
     const isEnregistre = useSelector(selectSujetEnregistre);
 
-    useConstructor(async () => {
+    useConstructor(() => {
         if (!isEnregistre){
-            etudiantModeleAPI().then(modele => {
-                dispatch(getSujet(modele.data[0].id_modele));
-            });
+            etudiantModeleAPI()
+            .then(modele => {
+                dispatch(getSujet(modele.data[0].id_modele)).then((action) => {
+                    dispatch(etudiantVariables(action.payload.id_auth));
+                });
+            })
         }
     });
+
 
     return (
         <div>
