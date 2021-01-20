@@ -1,8 +1,8 @@
 import React, {useCallback} from 'react';
 import {Typography, Slider, makeStyles } from '@material-ui/core';
 
-import { useDispatch } from "react-redux";
-import { handleChangeMargeErreur } from '../../slice/EnoncesSlice'
+import { useDispatch, useSelector } from "react-redux";
+import { handleChangeMargeErreur, selectMargeErreur } from '../../slice/EnoncesSlice'
 
 const SliderBar = ({indexQuestion, indexReponse}) => {
 
@@ -13,8 +13,7 @@ const SliderBar = ({indexQuestion, indexReponse}) => {
         }
     }));
 
-    const margeErreur = 5;
-    //useSelector(selectMargeErreur(indexQuestion, indexReponse)); //A AJOUTER !!!!
+    const margeErreur = useSelector(selectMargeErreur(indexQuestion, indexReponse));
 
     const classes = useStyles();
 
