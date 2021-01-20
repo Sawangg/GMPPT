@@ -8,7 +8,7 @@ const MyEditor = ({handleChange, value}) => {
         <div>
             <SunEditor
                 onChange={handleChange}
-                setContents={value}
+                defaultValue={value}
                 setOptions={{buttonList: [
                     ['undo','redo'],
                     ['bold', 'underline', 'italic', 'strike', 'subscript', 'superscript'],
@@ -18,7 +18,7 @@ const MyEditor = ({handleChange, value}) => {
                     ['fullScreen']
                 ]}}
                 lang="fr"
-                placeholder="Tapez votre énoncé ici..."
+                placeholder={value === "" ? null : "Tapez votre énoncé ici..."}
                 height="300"
                 setDefaultStyle="background-color: lightgrey"
             />

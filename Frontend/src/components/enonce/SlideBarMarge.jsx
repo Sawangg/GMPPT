@@ -1,10 +1,10 @@
-import React, {useCallback, useState} from 'react';
-import {Typography, Slider, makeStyles, ClickAwayListener } from '@material-ui/core';
+import React, {useCallback} from 'react';
+import {Typography, Slider, makeStyles } from '@material-ui/core';
 
 import { useDispatch } from "react-redux";
 import { handleChangeMargeErreur } from '../../slice/EnoncesSlice'
 
-export default function SliderBar({indexQuestion, indexReponse}) {
+const SliderBar = ({indexQuestion, indexReponse}) => {
 
     const useStyles = makeStyles((theme) => ({
         divSlideBar: {
@@ -12,32 +12,33 @@ export default function SliderBar({indexQuestion, indexReponse}) {
             margin : "5% auto 0 auto"
         }
     }));
+
+    const margeErreur = 5;
+    //useSelector(selectMargeErreur(indexQuestion, indexReponse)); //A AJOUTER !!!!
+
     const classes = useStyles();
 
     const dispatch = useDispatch();
-    const [margeErreurState, setMargeErreurState] = useState(5)
 
-    const handleChange = (_, newValue) => {
-      setMargeErreurState(newValue)
-    };
-
-    const handleClickAway = useCallback(() => {
-      dispatch(handleChangeMargeErreur({indexQuestion : indexQuestion, indexReponse : indexReponse, marge : margeErreurState}));
-    }, [dispatch, indexQuestion, indexReponse, margeErreurState])
+    const handleClickAway = useCallback((value) => {
+      dispatch(handleChangeMargeErreur({indexQuestion : indexQuestion, indexReponse : indexReponse, marge : value}));
+    }, [dispatch, indexQuestion, indexReponse])
 
   return (
-    <ClickAwayListener mouseEvent="onMouseUp" touchEvent="onTouchStart" onClickAway={handleClickAway}>
       <div className={classes.divSlideBar}>
         <Typography variant="caption" gutterBottom>Marge d'erreur autorisée</Typography>
-        <Slider
-          onChange={handleChange}
-          marks={[{value: 0, label: '0%'}, {value : 100, label : "100%"}]}
-          step={5}
-          value={margeErreurState}
-          valueLabelDisplay="auto"
-          aria-labelledby="discrete-slider-always"
-        />
+          <Slider
+            defaultValue={margeErreur}
+            marks={[{value: 0, label: '0%'}, {value : 100, label : "100%"}]}
+            step={5}
+            min={0}
+            max={100}
+            onChangeCommitted={(_, value) => handleClickAway(value)}
+            valueLabelDisplay="auto"
+            aria-labelledby="discrete-slider-always"
+          />
       </div>
-    </ClickAwayListener>
   );
 }
+
+export default React.memo(SliderBar);

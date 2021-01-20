@@ -22,7 +22,7 @@ export const enoncesReducer = createSlice({
     initialState: {
         enonceContenu : "",
         question: [{
-            contenu: "",
+            contenu: undefined,
             reponse: [{
                 selectCat : "",
                 selectForm: "",
@@ -34,8 +34,7 @@ export const enoncesReducer = createSlice({
             }],
         }],
         actualise: false,
-        enregistre: false,
-        firstLoad : false,
+        enregistre: false
     },
     reducers: {
         addQuestion: (state, action) => {
@@ -58,12 +57,12 @@ export const enoncesReducer = createSlice({
         },
         handleChangeQuestion: (state, action) => {
             state.question[action.payload.index].contenu = action.payload.contenu;
-            if (state.firstLoad) state.firstLoad = false;
-            else state.enregistre = false;
+            state.enregistre = false;
         },
         handleChangeSelect: (state, action) => {
             state.question[action.payload.index].reponse = action.payload.reponse;
             state.enregistre = false;
+
         },
         handleChangeUnite: (state, action) => {
             state.question[action.payload.idQuestion].reponse[action.payload.idReponse].unite = action.payload.tabUnite;
@@ -93,11 +92,11 @@ export const enoncesReducer = createSlice({
         handleChangeMargeErreur: (state, action) =>{
             state.question[action.payload.indexQuestion].reponse[action.payload.indexReponse].margeErreur = action.payload.marge;
             state.enregistre = false;
+            console.log("ici")
         },
         handleChangeEnonce: (state, action) => {
             state.enonceContenu = action.payload;
-            if (state.firstLoad) state.firstLoad = false;
-            else state.enregistre = false;
+            state.enregistre = false;
         },
         removeReponse: (state, action) => {
             state.question[action.payload.indexQuestion].reponse.splice(action.payload.indexReponse, 1);
@@ -120,7 +119,6 @@ export const enoncesReducer = createSlice({
             }];
             state.actualise = true;
             state.enregistre = true;
-            state.firstLoad = true;
         },
         [getSujet.fulfilled]: (state, action) => {
             let question = [];
@@ -140,7 +138,6 @@ export const enoncesReducer = createSlice({
             state.question = question;
             state.actualise = true;
             state.enregistre = true;
-            state.firstLoad = true;
         },
         [setQuestions.fulfilled]: (state) => {
             state.enregistre = true;
