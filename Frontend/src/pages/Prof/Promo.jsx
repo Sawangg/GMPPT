@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import { TextField, Button, Select, MenuItem, Input, InputLabel, FormControl, makeStyles, Fab, Typography } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
+import PropagateLoader from "react-spinners/PropagateLoader";
 
 import { getAllPromoAPI, addPromoAPI, etudiantNewAPI, deletePromoAPI } from '../../utils/api'
 
@@ -73,7 +74,7 @@ export default function Promo() {
     const [promo, setPromo] = useState("");
     const [excel, setExcel] = useState("");
     const [select, setSelect] = useState("");
-    const [tabPromo, setTabPromo] = useState([]);
+    const [tabPromo, setTabPromo] = useState(undefined);
     const [openPopUp, setOpenPopUp] = useState(false);
 
     useConstructor(() => {
@@ -129,7 +130,8 @@ export default function Promo() {
                                 <InputLabel className={classes.labelSelectPromo}>Promotion selectionnée</InputLabel>
                                 <Select className={classes.selectPromo} value={select.id_promo} onChange={handleChange} input={<Input/>}>
                                     <MenuItem style={{color : "#075b72"}} value={"ajoutPromo"}>Ajouter promotion</MenuItem>
-                                    {tabPromo.map((element, index) => (
+                                    {tabPromo === undefined  ? <PropagateLoader size={15} color={"rgb(7, 91, 114)"} css={{margin : "30px auto", display : "flex", justifyContent : "center"}}/> 
+                                    : tabPromo.map((element, index) => (
                                         <MenuItem key={index} value={element}>{element.nom_promo}</MenuItem>
                                     ))}
                                 </Select>
@@ -152,7 +154,8 @@ export default function Promo() {
                     </FormControl>
                 </form>
             </div>
-            <AttributionSujet tabPromo={tabPromo}/>
+            {tabPromo === undefined  ? <PropagateLoader size={15} color={"rgb(7, 91, 114)"} css={{margin : "30px auto", display : "flex", justifyContent : "center"}}/> 
+            : <AttributionSujet tabPromo={tabPromo}/>}
             <PopUp severity="success" message="Etudiants ajoutés à la promotion" open={openPopUp} handleClose={() => setOpenPopUp(false)}/>
         </div>
     );

@@ -75,7 +75,7 @@ const Reponse = ({indexReponse, indexQuestion}) => {
             </Select>
             <div className={classes.divUniteMarge}>
                 <Button variant="contained" className={classes.buttonAjouterUnite} onClick={() => setOpen(true)}>Choisir les unités</Button>
-                <p style={{textAlign : "center"}}>{afficherUnites(element.unite)}</p>
+                <div style={{textAlign : "center"}}>{afficherUnites(element.unite)}</div>
             </div>
             <ChoixUnite open={open} handleClose={() => setOpen(false)} unite={element.unite} setTabUnite={e => dispatch(handleChangeUnite({idQuestion : indexQuestion, idReponse : indexReponse, tabUnite : e}))}/>
             <div className={classes.divMarge}>

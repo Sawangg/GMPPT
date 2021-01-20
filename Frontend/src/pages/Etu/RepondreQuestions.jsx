@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback } from 'react';
 import ReactHtmlParser from 'react-html-parser';
 import jsPDF from 'jspdf';
 import { Button, makeStyles, Typography } from '@material-ui/core';
@@ -34,21 +34,20 @@ export default function RepondreQuestions(){
     const isEnregistre = useSelector(selectSujetEnregistre);
     const dispatch = useDispatch();
 
-    useConstructor(async () => {
-        etudiantModeleAPI().then(modele => {
-            dispatch(getSujet(modele.data[0].id_modele));
-        });
+    useConstructor(() => {
+        if (!isEnregistre){
+            etudiantModeleAPI()
+            .then(modele => {
+                dispatch(getSujet(modele.data[0].id_modele)).then((action) => {
+                    dispatch(etudiantVariables(action.payload.id_auth));
+                });
+            })
+        }
     });
 
-    useEffect(() => {
-        if (isEnregistre) {
-            dispatch(etudiantVariables(reponses.id_auth));
-        }
-    }, [isEnregistre, dispatch, reponses.id_auth]);
-
-    const handleEnvoyerReponses = () => {
+    const handleEnvoyerReponses = useCallback(() => {
         dispatch(enregistrerReponses(reponses.tabQuestions))
-    }
+    }, [dispatch, reponses]);
 
     //trandforme en pdf le sujet
     const downloadPdf = () => {
@@ -59,7 +58,15 @@ export default function RepondreQuestions(){
         const LARGEUR_A4 = 210
 
         //met le sujet dans la bonne font family
-        let sujetForPdf = '<div style="font-family: sans-serif">' + reponses.sujet + '</div>'
+        let sujetForPdf = '<h1 style="font-family: sans-serif; display : block; margin : auto;">' + reponses.sujet + '</h1><br/><br/><br/><br/><hr>'
+
+        reponses.tabQuestions.forEach((elem, index) => {
+            sujetForPdf+=
+                `<p>Question ${index+1} :</p>
+                <br/>
+                ${elem.enonce}
+                <br/><br/>`;
+        });
 
         //document pdf en format a4
         let doc = new jsPDF('p', 'mm', 'a4')

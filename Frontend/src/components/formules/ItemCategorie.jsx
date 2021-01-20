@@ -70,8 +70,6 @@ const ItemCategorie = ({index, length}) => {
 
     const dispatch = useDispatch();
 
-    console.log(index)
-
     const item = useSelector(selectCategorie(index))
 
     const change = useCallback(() => {

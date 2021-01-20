@@ -14,7 +14,7 @@
     "browser-image-compression": "^1.0.14",
     "clsx": "^1.1.1",
     "html2canvas": "^1.0.0-rc.7",
-    "jspdf": "^1.4.1",
+    "jspdf": "^1.5.3",
     "lodash.debounce": "^4.0.8",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
@@ -26,8 +26,8 @@
     "react-scripts": "^4.0.1",
     "react-spinners": "^0.10.4",
     "redux": "^4.0.5",
-    "suneditor-react": "^2.14.10",
-    "web-vitals": "^1.0.1"
+    "suneditor-react": "^2.15.0",
+    "web-vitals": "^1.1.0"
   },
   "scripts": {
     "start": "react-scripts start",
