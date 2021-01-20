@@ -23,8 +23,7 @@ export default function QuestionEnonce({ index, handleChange }) {
     return  (
         <div className={classes.divQuestion}>
             <SunEditor
-                id={"cocou"}
-                setContents={value}
+                defaultValue={value}
                 onChange={handleChange}
                 setOptions={{
                     buttonList: [
