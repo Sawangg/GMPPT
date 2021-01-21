@@ -46,15 +46,12 @@ export const variablesAleatoiresReducer = createSlice({
     },
     changeNom: (state, action) => {
       state.tab[action.payload.index].nom = action.payload.event;
-      state.enregistre = false;
     },
     changeMin: (state, action) => {
       state.tab[action.payload.index].min = action.payload.event;
-      state.enregistre = false;
     },
     changeMax: (state, action) => {
       state.tab[action.payload.index].max = action.payload.event;
-      state.enregistre = false;
     },
     removeVariable: (state, action) => {
       if (state.tab.length > 1) {
@@ -69,10 +66,6 @@ export const variablesAleatoiresReducer = createSlice({
     },
     changePrecision: (state, action) => {
       state.tab[action.payload.index].precision = action.payload.precision;
-      state.enregistre = false;
-    },
-    enregistre: (state) => {
-      state.enregistre = true;
     },
     undoVariable: (state) =>{
       state.tab.splice(state.saveElement.index, 0, {
@@ -130,7 +123,6 @@ export const {
   removeVariable,
   changeModif,
   changePrecision,
-  enregistre,
   changeMin,
   changeMax,
   undoVariable,

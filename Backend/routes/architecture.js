@@ -18,7 +18,7 @@ router.post('/:id_architecture/modeles/new', isAuthenticated, isProf, async (req
     });
 });
 
-router.get('/:id_architecture/modeles', isAuthenticated, isProf, (req, res) => {
+router.get('/:id_architecture/modeles', isAuthenticated, (req, res) => {
     const { id_architecture } = req.params;
     db.promise().execute(`SELECT * FROM modeles3D WHERE id_architecture=${id_architecture}`).then(([rows]) => {
         if (!rows[0]) return res.sendStatus(404);

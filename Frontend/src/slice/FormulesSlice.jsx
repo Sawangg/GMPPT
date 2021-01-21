@@ -78,12 +78,10 @@ export const formuleSlice = createSlice({
     changeNomFormule: (state, action) => {
       const { indexCategorie, indexFormule, event } = action.payload;
       state.tab[indexCategorie].tabFormule[indexFormule].nomFormule = event;
-      state.enregistre = false;
     },
     changeFormule: (state, action) => {
       const { indexCategorie, indexFormule, event } = action.payload;
       state.tab[indexCategorie].tabFormule[indexFormule].formule = event;
-      state.enregistre = false;
     },
     changeModifFormule: (state, action) => {
       const { indexCategorie, indexFormule } = action.payload;

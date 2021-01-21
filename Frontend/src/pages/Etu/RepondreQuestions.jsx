@@ -6,11 +6,11 @@ import { Button, makeStyles, Typography } from '@material-ui/core';
 import GetAppIcon from '@material-ui/icons/GetApp';
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectReponses , getSujet, enregistrerReponses, selectSujetEnregistre, etudiantVariables } from "../../slice/RepondreQuestionsSlice"
+import { selectReponses , getSujet, enregistrerReponses, selectSujetEnregistre, etudiantVariables, getModele3D, getEtudiantModele } from "../../slice/RepondreQuestionsSlice"
+
 import useConstructor from '../../components/use/useContructor'
 
 import Question from '../../components/reponses/ItemQuestion'
-import { etudiantModeleAPI } from '../../utils/api';
 
 export default function RepondreQuestions(){
 
@@ -20,10 +20,9 @@ export default function RepondreQuestions(){
         },
         contenant: {
             margin : "10%",
-            textAlign: "center"
         },
         buttonFixed: {
-            position: "fixed",
+            position: "absolute",
             top : "30px",
             right : "120px"
         }
@@ -36,14 +35,17 @@ export default function RepondreQuestions(){
 
     useConstructor(() => {
         if (!isEnregistre){
-            etudiantModeleAPI()
+            dispatch(getEtudiantModele())
             .then(modele => {
-                dispatch(getSujet(modele.data[0].id_modele)).then((action) => {
-                    dispatch(etudiantVariables(action.payload.id_auth));
+                dispatch(getSujet(modele.payload[0].id_modele))
+                .then((sujet) => {
+                    dispatch(etudiantVariables(sujet.payload.id_auth));
+                    dispatch(getModele3D(sujet.payload.id_auth));
                 });
             })
         }
     });
+
 
     const handleEnvoyerReponses = useCallback(() => {
         dispatch(enregistrerReponses(reponses.tabQuestions))
@@ -83,6 +85,11 @@ export default function RepondreQuestions(){
         doc.fromHTML(sujetForPdf,MARGE_COTE,MARGE_HAUT + 10,options)
         
         doc.addPage()
+
+        //ajout image
+        const img = new Image()
+        img.src = reponses.image1;
+        doc.addImage(img, 'jpg', 10, 78, 50, 15);
 
         let number_of_pages = doc.internal.getNumberOfPages()
         for (let i = 1; i <= number_of_pages; i++) {
@@ -125,10 +132,25 @@ export default function RepondreQuestions(){
                 </Button>
             </div>
 
-            <h2>Sujet</h2>
-
             {/* affichage du sujet */ }
-            <div id="sujet">{ReactHtmlParser(reponses.sujet)}</div>
+            <div style={{boxShadow: "0px 8px 20px -5px rgba(0,0,0,0.69)", padding: "1% 2% 4% 2%", margin : "4%"}}>
+                <h2 style={{textAlign : "center"}}>Sujet</h2>
+                <div id="sujet">{ReactHtmlParser(reponses.sujet)}</div>
+            </div>
+           
+
+            <div style={{display : "flex", justifyContent : "space-around"}}>
+                <div>
+                    <img style={{width : 200}} src={reponses.image1} alt="img modele1"/>
+                    <p style={{textAlign : "center"}}>modèle 1</p>
+                </div>
+
+                <div>
+                    <img style={{width : 200}} src={reponses.image2} alt="img modele2"/>
+                    <p style={{textAlign : "center"}}>modèle 2</p>
+                </div>
+            </div>
+            
 
             {/* affichage des questions */}
             {displayQuestions()}

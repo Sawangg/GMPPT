@@ -4,10 +4,9 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import MenuProfil from '../../components/MenuProfil'
 import {makeStyles} from "@material-ui/core";
 import useConstructor from '../../components/use/useContructor';
-import { etudiantModeleAPI } from '../../utils/api';
 
 import { useDispatch, useSelector } from "react-redux";
-import { getSujet, selectSujetEnregistre, etudiantVariables } from "../../slice/RepondreQuestionsSlice"
+import { getSujet, selectSujetEnregistre, etudiantVariables, getModele3D, getEtudiantModele } from "../../slice/RepondreQuestionsSlice"
 
 export default function Accueil(props) {
 
@@ -24,10 +23,12 @@ export default function Accueil(props) {
 
     useConstructor(() => {
         if (!isEnregistre){
-            etudiantModeleAPI()
+            dispatch(getEtudiantModele())
             .then(modele => {
-                dispatch(getSujet(modele.data[0].id_modele)).then((action) => {
-                    dispatch(etudiantVariables(action.payload.id_auth));
+                dispatch(getSujet(modele.payload[0].id_modele))
+                .then((sujet) => {
+                    dispatch(etudiantVariables(sujet.payload.id_auth));
+                    dispatch(getModele3D(sujet.payload.id_auth));
                 });
             })
         }

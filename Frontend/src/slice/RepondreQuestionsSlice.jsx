@@ -1,6 +1,12 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getSujetAPI, etudiantVariablesAPI, etudiantReponsesNewAPI} from "../utils/api.js";
+import { getSujetAPI, etudiantVariablesAPI, etudiantReponsesNewAPI, getModele3DAPI, etudiantModeleAPI } from "../utils/api.js";
 import _ from "lodash"
+
+export const getEtudiantModele = createAsyncThunk("etudiant/getEtudiantModele", 
+async () => {
+    const response = await etudiantModeleAPI();
+    return response.data;
+});
 
 export const getSujet = createAsyncThunk("etudiant/getSujet", 
 async (idModele) => {
@@ -17,6 +23,12 @@ async (tabQuestions) => {
 export const etudiantVariables = createAsyncThunk("etudiant/etudiantVariables", 
 async (idAuth) => {
     const response = await etudiantVariablesAPI(idAuth);
+    return response.data;
+});
+
+export const getModele3D = createAsyncThunk("etudiant/getModele3D", 
+async (idArchi) => {
+    const response = await getModele3DAPI(idArchi);
     return response.data;
 });
 
@@ -37,7 +49,9 @@ export const reponseSlice = createSlice({
         }],
         sujet : "",
         sujetEnregistre : false,
-        id_auth : ""
+        id_auth : "",
+        image1 : "",
+        image2 : ""
     },
     reducers: {
 
@@ -122,10 +136,6 @@ export const reponseSlice = createSlice({
             });
             state.id_auth = action.payload.id_auth;
             state.sujetEnregistre = true;
-            // etudiantVariablesAPI(action.payload.id_auth).then(data => {
-
-
-            // // state.sujet = t; // rien mais pas undefined
         },
         [enregistrerReponses.fulfilled] : (state, action) => {
 
@@ -143,6 +153,13 @@ export const reponseSlice = createSlice({
         },
         [etudiantVariables.rejected] : (state, action) => {
 
+        },
+        [getModele3D.rejected] : (state, action) => {
+            //console.log(action.payload)
+        },
+        [getModele3D.fulfilled] : (state, action) => {
+            state.image1 = "data:image/jpeg;base64," + Buffer.from(action.payload.image1).toString("base64");
+            state.image2 = "data:image/jpeg;base64," + Buffer.from(action.payload.image2).toString("base64");
         },
     }
 })
