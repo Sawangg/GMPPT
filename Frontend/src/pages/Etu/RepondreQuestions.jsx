@@ -6,7 +6,7 @@ import { Button, makeStyles, Typography } from '@material-ui/core';
 import GetAppIcon from '@material-ui/icons/GetApp';
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectReponses , getSujet, enregistrerReponses, selectSujetEnregistre, etudiantVariables, getModele3D, getEtudiantModele, getNumArchi } from "../../slice/RepondreQuestionsSlice"
+import { selectReponses , getSujet, enregistrerReponses, selectSujetEnregistre, etudiantVariables, getModele3D, getEtudiantModele } from "../../slice/RepondreQuestionsSlice"
 
 import useConstructor from '../../components/use/useContructor'
 
@@ -20,10 +20,9 @@ export default function RepondreQuestions(){
         },
         contenant: {
             margin : "10%",
-            textAlign: "center"
         },
         buttonFixed: {
-            position: "fixed",
+            position: "absolute",
             top : "30px",
             right : "120px"
         }
@@ -41,10 +40,7 @@ export default function RepondreQuestions(){
                 dispatch(getSujet(modele.payload[0].id_modele))
                 .then((sujet) => {
                     dispatch(etudiantVariables(sujet.payload.id_auth));
-                    dispatch(getNumArchi(sujet.payload.id_auth))
-                    .then((numArchi) => {
-                        dispatch(getModele3D(numArchi.payload.id_architecture));
-                    });
+                    dispatch(getModele3D(sujet.payload.id_auth));
                 });
             })
         }
@@ -136,20 +132,22 @@ export default function RepondreQuestions(){
                 </Button>
             </div>
 
-            <h2>Sujet</h2>
-
             {/* affichage du sujet */ }
-            <div id="sujet">{ReactHtmlParser(reponses.sujet)}</div>
+            <div style={{boxShadow: "0px 8px 20px -5px rgba(0,0,0,0.69)", padding: "1% 2% 4% 2%", margin : "4%"}}>
+                <h2 style={{textAlign : "center"}}>Sujet</h2>
+                <div id="sujet">{ReactHtmlParser(reponses.sujet)}</div>
+            </div>
+           
 
-            <div>
+            <div style={{display : "flex", justifyContent : "space-around"}}>
                 <div>
-                    <img style={{width : 100}} src={reponses.image1} alt="modele1"/>
-                    <p>modèle 1</p>
+                    <img style={{width : 200}} src={reponses.image1} alt="img modele1"/>
+                    <p style={{textAlign : "center"}}>modèle 1</p>
                 </div>
 
                 <div>
-                    <img style={{width : 100}} src={reponses.image2} alt="modele1"/>
-                    <p>modèle 2</p>
+                    <img style={{width : 200}} src={reponses.image2} alt="img modele2"/>
+                    <p style={{textAlign : "center"}}>modèle 2</p>
                 </div>
             </div>
             

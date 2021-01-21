@@ -59,15 +59,17 @@ export function addModeleAPI(nomModele) {
     return axios.post(`http://${host}:3001/modele/new`, { "nommodele" : nomModele }, credentials)
 }
 
-// Architectures
+// Modeles 3D
 
-export function getModele3DAPI(archi) {
-    return axios.get(`http://${host}:3001/architecture/${archi}/modeles`, credentials)
+export function getModele3DAPI(idAuth) {
+    return axios.get(`http://${host}:3001/etudiant/${idAuth}/modeles`, credentials)
 }
 
 export function addModele3DAPI(archi) {
     return axios.post(`http://${host}:3001/architecture/${archi.sujet}/modeles/new`, archi.images, credentials)
 }
+
+// Architectures
 
 export function addArchiAPI(excel) {
     return axios.post(`http://${host}:3001/architecture/new`, excel, credentials)
@@ -135,10 +137,6 @@ export function etudiantReponsesNewAPI(tabQuestions) {
 
 export function etudiantVariablesAPI(idAuth) {
     return axios.get(`http://${host}:3001/etudiant/${idAuth}/variables`, credentials);
-}
-
-export function getNumArchiAPI(idAuth){
-    return axios.get(`http://${host}:3001/etudiant/${idAuth}/architecture`, credentials);
 }
 
 // Sujet 

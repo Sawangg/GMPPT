@@ -15,17 +15,20 @@ export default function Question(props) {
             flexDirection: "column",
             flexWrap : "wrap",
             rowGap : "30px",
-            alignItems: "center"
+            alignItems: "center",
         },
         listeQuestions: {
-            marginBottom: "30px"
+            boxShadow: "0px 8px 20px -5px rgba(0,0,0,0.69)",
+            padding: "2% 3% 4% 3%",
         },
         enonce: {
-            margin : "20px 0px",
-            fontSize : "18px"
+            margin : "4% 0 0 8%",
+            fontSize : "18px",
+
         },
         buttonAjouterReponse: {
-            margin : "20px 0px"
+            display : "block",
+            margin : "20px auto"
         }
     }));
     const classes = useStyles();
@@ -51,25 +54,30 @@ export default function Question(props) {
     }
 
     return (
-        <div className={classes.listeQuestions} >
-            {/* affichage énoncé de la question */}
-            <div className={classes.enonce}>{ReactHtmlParser(props.question.enonce)}</div>
+        <>
+            <hr style={{border: "1px dashed", width : "50%", margin : "50px auto"}}/>
+            <div className={classes.listeQuestions} >
+                <h2 style={{textAlign : "left", margin : "1%"}}>Question {props.id+1} :</h2>
+                {/* affichage énoncé de la question */}
+                <div className={classes.enonce}>{ReactHtmlParser(props.question.enonce)}</div>
 
-            {/* bouton ajouter réponse visible uniquement si la question attend plus d'une réponse */ }
-            {props.question.nbMaxReponses > 1 ?
-                <Button variant="contained" 
-                        className={classes.buttonAjouterReponse}
-                        color="primary"
-                        onClick={handleAddReponse} 
-                        //est disabled dès que la limte de réponses possibles est atteinte
-                        disabled={props.question.tabReponses.length >= props.question.nbMaxReponses}
-                        >
-                    Ajouter Réponse
-                </Button>
-            : null
-            }
-            {listeReponses()}
-        </div>
+                {listeReponses()}
+
+                {/* bouton ajouter réponse visible uniquement si la question attend plus d'une réponse */ }
+                {props.question.nbMaxReponses > 1 ?
+                    <Button variant="contained" 
+                            className={classes.buttonAjouterReponse}
+                            color="primary"
+                            onClick={handleAddReponse} 
+                            //est disabled dès que la limte de réponses possibles est atteinte
+                            disabled={props.question.tabReponses.length >= props.question.nbMaxReponses}
+                            >
+                        Ajouter Réponse
+                    </Button>
+                : null
+                }
+            </div>
+        </>
     )
     
 }

@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getSujetAPI, etudiantVariablesAPI, etudiantReponsesNewAPI, getModele3DAPI, etudiantModeleAPI, getNumArchiAPI} from "../utils/api.js";
+import { getSujetAPI, etudiantVariablesAPI, etudiantReponsesNewAPI, getModele3DAPI, etudiantModeleAPI } from "../utils/api.js";
 import _ from "lodash"
 
 export const getEtudiantModele = createAsyncThunk("etudiant/getEtudiantModele", 
@@ -23,12 +23,6 @@ async (tabQuestions) => {
 export const etudiantVariables = createAsyncThunk("etudiant/etudiantVariables", 
 async (idAuth) => {
     const response = await etudiantVariablesAPI(idAuth);
-    return response.data;
-});
-
-export const getNumArchi = createAsyncThunk("etudiant/getNumArchi", 
-async (idAuth) => {
-    const response = await getNumArchiAPI(idAuth);
     return response.data;
 });
 
@@ -160,19 +154,12 @@ export const reponseSlice = createSlice({
         [etudiantVariables.rejected] : (state, action) => {
 
         },
-        [getNumArchi.rejected] : (state, action) => {
-            //console.log(action.payload)
-        },
-        [getNumArchi.fulfilled] : (state, action) => {
-            //console.log(action.payload)
-        },
         [getModele3D.rejected] : (state, action) => {
             //console.log(action.payload)
         },
         [getModele3D.fulfilled] : (state, action) => {
-            console.log("data:image/jpeg;base64," + Buffer.from(action.payload[0].image1).toString("base64"))
-            state.image1 = "data:image/jpeg;base64," + Buffer.from(action.payload[0].image1).toString("base64");
-            state.image2 = "data:image/jpeg;base64," + Buffer.from(action.payload[0].image2).toString("base64");
+            state.image1 = "data:image/jpeg;base64," + Buffer.from(action.payload.image1).toString("base64");
+            state.image2 = "data:image/jpeg;base64," + Buffer.from(action.payload.image2).toString("base64");
         },
     }
 })

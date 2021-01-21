@@ -6,7 +6,7 @@ import {makeStyles} from "@material-ui/core";
 import useConstructor from '../../components/use/useContructor';
 
 import { useDispatch, useSelector } from "react-redux";
-import { getSujet, selectSujetEnregistre, etudiantVariables, getModele3D, getEtudiantModele, getNumArchi } from "../../slice/RepondreQuestionsSlice"
+import { getSujet, selectSujetEnregistre, etudiantVariables, getModele3D, getEtudiantModele } from "../../slice/RepondreQuestionsSlice"
 
 export default function Accueil(props) {
 
@@ -28,10 +28,7 @@ export default function Accueil(props) {
                 dispatch(getSujet(modele.payload[0].id_modele))
                 .then((sujet) => {
                     dispatch(etudiantVariables(sujet.payload.id_auth));
-                    dispatch(getNumArchi(sujet.payload.id_auth))
-                    .then((numArchi) => {
-                        dispatch(getModele3D(numArchi.payload.id_architecture));
-                    });
+                    dispatch(getModele3D(sujet.payload.id_auth));
                 });
             })
         }
