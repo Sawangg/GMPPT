@@ -71,13 +71,26 @@ router.get('/:id_auth/reponses', isAuthenticated, (req, res) => {
     });
 });
 
-router.get(':id_auth/architecture', isAuthenticated, (req, res) => {
+router.get('/:id_auth/architecture', isAuthenticated, (req, res) => {
     db.promise().execute(`SELECT * FROM archi_etudiant WHERE id_auth = ${req.params.id_auth}`).then(([rows]) => {
         if (!rows[0]) return res.sendStatus(404);
         return res.send(rows[0]).status(200);
     }).catch(() => {
         return res.sendStatus(500);
     });
+});
+
+router.get('/:id_auth/modeles', isAuthenticated, async (req, res) => {
+    try {
+        const [archi_etudiant] = await db.promise().execute(`SELECT * FROM archi_etudiant WHERE id_auth = ${req.params.id_auth}`);
+        if (!archi_etudiant[0]) return res.sendStatus(404);
+        db.promise().execute(`SELECT * FROM modeles3D WHERE id_architecture=${archi_etudiant[0].id_architecture}`).then(([rows]) => {
+            if (!rows[0]) return res.sendStatus(404);
+            return res.status(200).send(rows[0]);
+        });
+    } catch {
+        return res.sendStatus(500);
+    }
 });
 
 //liste tout les essais
