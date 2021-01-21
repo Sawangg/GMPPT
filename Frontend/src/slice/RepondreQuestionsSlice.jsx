@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getSujetAPI, etudiantVariablesAPI, etudiantReponsesNewAPI} from "../utils/api.js";
+import { getSujetAPI, etudiantVariablesAPI, etudiantReponsesNewAPI, getModele3DAPI} from "../utils/api.js";
 import _ from "lodash"
 
 export const getSujet = createAsyncThunk("etudiant/getSujet", 
@@ -17,6 +17,12 @@ async (tabQuestions) => {
 export const etudiantVariables = createAsyncThunk("etudiant/etudiantVariables", 
 async (idAuth) => {
     const response = await etudiantVariablesAPI(idAuth);
+    return response.data;
+});
+
+export const getModele3D = createAsyncThunk("etudiant/getModele3D", 
+async (idArchi) => {
+    const response = await getModele3DAPI(idArchi);
     return response.data;
 });
 
@@ -102,6 +108,7 @@ export const reponseSlice = createSlice({
     },
     extraReducers: {
         [getSujet.fulfilled]: (state, action) => {
+            console.log(action.payload)
             state.tabQuestions = []
             const reponsesDefault = [{
                 value : "",
@@ -122,10 +129,6 @@ export const reponseSlice = createSlice({
             });
             state.id_auth = action.payload.id_auth;
             state.sujetEnregistre = true;
-            // etudiantVariablesAPI(action.payload.id_auth).then(data => {
-
-
-            // // state.sujet = t; // rien mais pas undefined
         },
         [enregistrerReponses.fulfilled] : (state, action) => {
 
@@ -143,6 +146,12 @@ export const reponseSlice = createSlice({
         },
         [etudiantVariables.rejected] : (state, action) => {
 
+        },
+        [getModele3D.rejected] : (state, action) => {
+            console.log(action.payload)
+        },
+        [getModele3D.fulfilled] : (state, action) => {
+            console.log(action.payload)
         },
     }
 })

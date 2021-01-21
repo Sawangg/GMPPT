@@ -4,6 +4,7 @@ const credentials = { withCredentials: true }
 const host = 'localhost';
 
 // User 
+
 export function getInfoUserAPI() {
     return axios.get(`http://${host}:3001/auth`, credentials);
 }
@@ -29,6 +30,7 @@ export function setPwdUserAPI(username, passwords) {
 }
 
 // Formules
+
 export function getCategoriesFormulesAPI(idModele) {
     return axios.get(`http://${host}:3001/modele/${idModele}/categories`, credentials)
 }
@@ -38,6 +40,7 @@ export function addCategorieFormuleAPI(idModele, tabFormules) {
 }
 
 // Modele
+
 export function getInfoModeleAPI(idModele) {
     return axios.get(`http://${host}:3001/modele/${idModele}`, credentials)
 }
@@ -51,12 +54,14 @@ export function getAllModeleAPI() {
 }
 
 // renvoie ausi le numéro modele
+
 export function addModeleAPI(nomModele) {
     return axios.post(`http://${host}:3001/modele/new`, { "nommodele" : nomModele }, credentials)
 }
 
 // Architectures
-export function getInfoArchiAPI(archi) {
+
+export function getModele3DAPI(archi) {
     return axios.get(`http://${host}:3001/architecture/${archi}/modeles`, credentials)
 }
 
@@ -69,6 +74,7 @@ export function addArchiAPI(excel) {
 }
 
 // Promotion
+
 export function addPromoAPI(nomPromo) {
     return axios.post(`http://${host}:3001/promo/new`, { nomPromo : nomPromo }, credentials)
 }
@@ -90,6 +96,7 @@ export function deletePromoAPI(idPromo){
 }
 
 // Variables aléatoires
+
 export function addVariableAPI(idModele, tabVariables) {
     return axios.post(`http://${host}:3001/modele/${idModele}/variables/new`, tabVariables, credentials)
 }
@@ -128,6 +135,10 @@ export function etudiantReponsesNewAPI(tabQuestions) {
 
 export function etudiantVariablesAPI(idAuth) {
     return axios.get(`http://${host}:3001/etudiant/${idAuth}/variables`, credentials);
+}
+
+export function getNumArchiAPI(idAuth){
+    return axios.get(`http://${host}:3001/etudiant/${idAuth}/architecture`, credentials);
 }
 
 // Sujet 

@@ -7,7 +7,7 @@ import useConstructor from '../../components/use/useContructor';
 import { etudiantModeleAPI } from '../../utils/api';
 
 import { useDispatch, useSelector } from "react-redux";
-import { getSujet, selectSujetEnregistre, etudiantVariables } from "../../slice/RepondreQuestionsSlice"
+import { getSujet, selectSujetEnregistre, etudiantVariables, getModele3D } from "../../slice/RepondreQuestionsSlice"
 
 export default function Accueil(props) {
 
@@ -23,6 +23,7 @@ export default function Accueil(props) {
     const isEnregistre = useSelector(selectSujetEnregistre);
 
     useConstructor(() => {
+        dispatch(getModele3D(0)); //A CHANGER AVEC LE BON ID ARCHI
         if (!isEnregistre){
             etudiantModeleAPI()
             .then(modele => {
