@@ -6,11 +6,11 @@ import { Button, makeStyles, Typography } from '@material-ui/core';
 import GetAppIcon from '@material-ui/icons/GetApp';
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectReponses , getSujet, enregistrerReponses, selectSujetEnregistre, etudiantVariables } from "../../slice/RepondreQuestionsSlice"
+import { selectReponses , getSujet, enregistrerReponses, selectSujetEnregistre, etudiantVariables, getModele3D, getEtudiantModele, getNumArchi } from "../../slice/RepondreQuestionsSlice"
+
 import useConstructor from '../../components/use/useContructor'
 
 import Question from '../../components/reponses/ItemQuestion'
-import { etudiantModeleAPI } from '../../utils/api';
 
 export default function RepondreQuestions(){
 
@@ -36,14 +36,20 @@ export default function RepondreQuestions(){
 
     useConstructor(() => {
         if (!isEnregistre){
-            etudiantModeleAPI()
+            dispatch(getEtudiantModele())
             .then(modele => {
-                dispatch(getSujet(modele.data[0].id_modele)).then((action) => {
-                    dispatch(etudiantVariables(action.payload.id_auth));
+                dispatch(getSujet(modele.payload[0].id_modele))
+                .then((sujet) => {
+                    dispatch(etudiantVariables(sujet.payload.id_auth));
+                    dispatch(getNumArchi(sujet.payload.id_auth))
+                    .then((numArchi) => {
+                        dispatch(getModele3D(numArchi.payload.id_architecture));
+                    });
                 });
             })
         }
     });
+
 
     const handleEnvoyerReponses = useCallback(() => {
         dispatch(enregistrerReponses(reponses.tabQuestions))
@@ -83,6 +89,11 @@ export default function RepondreQuestions(){
         doc.fromHTML(sujetForPdf,MARGE_COTE,MARGE_HAUT + 10,options)
         
         doc.addPage()
+
+        //ajout image
+        const img = new Image()
+        img.src = reponses.image1;
+        doc.addImage(img, 'jpg', 10, 78, 50, 15);
 
         let number_of_pages = doc.internal.getNumberOfPages()
         for (let i = 1; i <= number_of_pages; i++) {
@@ -129,6 +140,19 @@ export default function RepondreQuestions(){
 
             {/* affichage du sujet */ }
             <div id="sujet">{ReactHtmlParser(reponses.sujet)}</div>
+
+            <div>
+                <div>
+                    <img style={{width : 100}} src={reponses.image1} alt="modele1"/>
+                    <p>modèle 1</p>
+                </div>
+
+                <div>
+                    <img style={{width : 100}} src={reponses.image2} alt="modele1"/>
+                    <p>modèle 2</p>
+                </div>
+            </div>
+            
 
             {/* affichage des questions */}
             {displayQuestions()}

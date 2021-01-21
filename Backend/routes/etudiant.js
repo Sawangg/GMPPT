@@ -71,7 +71,7 @@ router.get('/:id_auth/reponses', isAuthenticated, (req, res) => {
     });
 });
 
-router.get(':id_auth/architecture', isAuthenticated, (req, res) => {
+router.get('/:id_auth/architecture', isAuthenticated, (req, res) => {
     db.promise().execute(`SELECT * FROM archi_etudiant WHERE id_auth = ${req.params.id_auth}`).then(([rows]) => {
         if (!rows[0]) return res.sendStatus(404);
         return res.send(rows[0]).status(200);
