@@ -107,7 +107,9 @@ router.post('/:idmodele/variables/new', isAuthenticated, isProf, isAttribued, (r
     db.promise().execute(`DELETE FROM variable_aleatoire WHERE id_modele = ${idmodele}`).then(() => {
         let insert = 'INSERT INTO variable_aleatoire VALUES ';
         req.body.forEach(async variable => {
-            insert += `(NULL, ${idmodele}, '${variable.nom}', ${variable.min}, ${variable.max}, ${variable.precision}),`;
+            variable.min = variable.min.replace(",", ".");
+            variable.max = variable.max.replace(",", ".");
+            insert += `(NULL, ${idmodele}, '${variable.nom}', '${variable.min}', '${variable.max}', ${variable.precision}),`;
         });
         insert = insert.slice(0, -1);
         db.promise().execute(insert).then(() => {
