@@ -7,6 +7,7 @@ import {
 
 import { useDispatch, useSelector } from 'react-redux';
 import { selectEtudiants } from '../../slice/CorrectionSlice';
+import { setEtudiantConsulter } from '../../slice/ConsulterSlice'
 
 import {Link} from 'react-router-dom'
 
@@ -56,7 +57,15 @@ export default function StickyHeadTable() {
 
   //gère le changement de page
   const handleChangePage = (event, newPage) => {
-    setPage(newPage);
+      setPage(newPage);
+  };
+
+  const handleClickConsulter = ( etudiant ) =>{
+      dispatch(setEtudiantConsulter({
+        id : etudiant.id,
+        prenom : etudiant.prenom,
+        nom : etudiant.nom
+      }))
   };
 
 
@@ -98,7 +107,7 @@ export default function StickyHeadTable() {
                       :
                       //cas de la colonne consulter sujet
                       <TableCell key={'sujet'} align={columnConsulterSujet.align}>
-                        <Button variant="contained" color="primary">
+                        <Button variant="contained" color="primary" onClick={e=>handleClickConsulter(row)}>
                           <Link className={classes.linkConsulter} to={"/prof/correction/" + row.id}>
                             Consulter
                           </Link>

@@ -7,7 +7,7 @@ export const consulterSlice = createSlice({
         etudiant : {
             nom : "",
             prenom : "",
-            id_auth : undefined,
+            id_etudiant : undefined,
         },
         tabEssais : [{
             corrige : false,
@@ -88,6 +88,16 @@ export const consulterSlice = createSlice({
         setCorrigeTrue : (state, action) =>{
             let indexE = action.payload
             state.tabEssais[indexE].corrige = true;
+        },
+        //met les infos des étudiants
+        //paramètres : id, nom et prénom de l'étudiant
+        setEtudiantConsulter : (state, action) =>{
+            let {id, prenom, nom} = action.payload
+            state.etudiant = {
+                id_etudiant : id,
+                prenom : prenom,
+                nom : nom,
+            };
         }
         
 
@@ -97,7 +107,7 @@ export const consulterSlice = createSlice({
 
 
 export const {setEssaisForTest, changeReponseJuste, changeMessage, changeCommentaire, 
-    changeNote, setCorrigeTrue } = consulterSlice.actions
+    changeNote, setCorrigeTrue, setEtudiantConsulter } = consulterSlice.actions
 
 //retourne tous le tableau des essais
 export const selectEssais = state => state.consulter.tabEssais
@@ -110,6 +120,9 @@ export const selectEssaisWithID = index => state => state.consulter.tabEssais[in
 
 //retourne tous le tableau des reponses justes
 export const selectReponsesJustes = state => state.consulter.tabReponsesJustes
+
+//retourne l'objet étudiant
+export const selectEtudiantConsulter = state => state.consulter.etudiant
 
 //retourne le nombre de réponses dans le tableau des réponses justes
 export const selectNbReponsesAAvoir = numQuestion => state =>{
