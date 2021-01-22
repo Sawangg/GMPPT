@@ -74,4 +74,6 @@ export const selectChargementSupp = (state) => state.modele.chargementSuppressio
 
 export const selectIdModeleSelectionne = (state) => state.modele.idModeleSelectionne;
 
+export const selectModeleActuel = (state) => state.modele.tabName[state.modele.idModeleSelectionne];
+
 export default modeleSlice.reducer;

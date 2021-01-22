@@ -22,7 +22,7 @@ const Enregistrement = () => {
     //EVITE LE RENDU DES COMPOSANTS ITEMS VARIABLES ALEATOIRES QUAND ON ECRIT
     const envoyer = useCallback (() => {
         dispatch(setVariables({tab : tableauVariables, idModele : idModele}))
-    }, [dispatch, idModele, tableauVariables])
+    }, [dispatch, idModele, tableauVariables]);
 
     return (
         <PopUp 

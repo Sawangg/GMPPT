@@ -6,6 +6,7 @@ import {
     DialogContent,
     DialogTitle,
     InputLabel,
+    DialogContentText,
     Input,
     MenuItem,
     FormControl,
@@ -18,18 +19,16 @@ import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 import PropagateLoader from "react-spinners/PropagateLoader";
 
-import useConstructor from './use/useContructor'
-
 import { useDispatch, useSelector } from "react-redux";
 import { getCategoriesFormules } from "../slice/FormulesSlice";
 import { getAllVariables } from "../slice/VariablesAleatoiresSlice"
 import { getSujet } from "../slice/EnoncesSlice";
-import { selectionnerModele, addNewModele, removeModele, getModele, selectModele, selectActualise} from "../slice/ModeleSlice";
+import { selectionnerModele, addNewModele, removeModele, selectModele, selectActualise} from "../slice/ModeleSlice";
 
 //setClose pour fermer la PopUp (fonction)
 //open pour connaitre l'état de la pop u (ouvert ou fermé)
 //tard pour savoir si on autorise a selectionner plus tard le modèle
-export default function SelectionModele({setClose, open, tard}) {
+const SelectionModele = ({setClose, open, tard}) => {
 
     const useStyles = makeStyles((theme) => ({
         divNouveauModele: {
@@ -76,16 +75,13 @@ export default function SelectionModele({setClose, open, tard}) {
     }));
     const classes = useStyles();
 
-    const [select, setSelect] = useState("");
-    const [nouveauModele, setNouveauModele] = useState({etat : false, nom : "", error : false});
-
     const dispatch = useDispatch();
     const modele = useSelector(selectModele);
     const actualise = useSelector(selectActualise);
 
-    useConstructor(() => {
-        if (!actualise) dispatch(getModele())
-    });
+    const [select, setSelect] = useState(modele.idModeleSelectionne);
+    const [nouveauModele, setNouveauModele] = useState({etat : false, nom : "", error : false});
+    const [openConfirm, setOpenConfirm] = useState(false);
 
     const handleChange = (event) => {
         setSelect(event.target.value);
@@ -152,7 +148,7 @@ export default function SelectionModele({setClose, open, tard}) {
                     </Select>
                     <Fab className={classes.fabDelete} size="small" aria-label="delete"
                         disabled={select === "" || nouveauModele.etat}
-                        onClick={() => dispatch(removeModele(select))}
+                        onClick={() => setOpenConfirm(true)}
                     >
                         <DeleteIcon/>
                     </Fab>
@@ -166,7 +162,18 @@ export default function SelectionModele({setClose, open, tard}) {
             <Button disabled={select === "" || select === "Créer nouveau modèle" ? true : false} onClick={e => choisirModele()} variant="contained" color="primary">Ok</Button>
             </DialogActions>
         </Dialog>
+        <Dialog open={openConfirm} onClose={() => setOpenConfirm(false)}>
+            <DialogTitle>Suppression</DialogTitle>
+            <DialogContent>
+                <DialogContentText>Voulez-vous vraiment supprimer ce modèle ?</DialogContentText>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={() => setOpenConfirm(false)} color="primary">Annuler</Button>
+                <Button onClick={() => dispatch(removeModele(select))} color="primary" autoFocus>OK</Button>
+            </DialogActions>
+        </Dialog>
         </div>
     );
 }
 
+export default React.memo(SelectionModele);

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Avatar, IconButton, Menu, MenuItem, ListItemIcon, Typography, makeStyles} from '@material-ui/core';
+import {Avatar, IconButton, Menu, MenuItem, ListItemIcon, Typography, makeStyles, Tooltip} from '@material-ui/core';
 import { Redirect, Link } from "react-router-dom";
 import AccountBoxOutlinedIcon from '@material-ui/icons/AccountBoxOutlined';
 import ExitToAppOutlinedIcon from '@material-ui/icons/ExitToAppOutlined';
@@ -9,9 +9,9 @@ import useConstructor from './use/useContructor';
 import SelectionModele from './SelectionModele'
 
 import { useDispatch } from "react-redux";
-import { logoutUser } from "../slice/UserSlice";
 import { useSelector } from "react-redux";
-import { selectUserName, getUserImage } from "../slice/UserSlice"
+import { selectUserName, getUserImage, logoutUser } from "../slice/UserSlice"
+import { selectModeleActuel, selectActualise, getModele } from '../slice/ModeleSlice';
 
 export default function MenuProfil() {
     const useStyles = makeStyles((theme) => ({
@@ -34,22 +34,29 @@ export default function MenuProfil() {
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
   const user = useSelector(selectUserName);
+  const actualiseModele = useSelector(selectActualise);
+  const modele = useSelector(selectModeleActuel);
   
   useConstructor(() => {
         //gerer le stockage local
         let myStorage = window.localStorage;
         //si le nom de l'utilisateur est vide et que l'image est vide et que le stockage local de l'image est vide 
-        if (user.name !== "" && user.image === undefined && myStorage.getItem(user.name) === null) dispatch(getUserImage(user.name))
+        if (user.name !== "" && user.image === undefined && myStorage.getItem(user.name) === null) dispatch(getUserImage(user.name));
+
+        //recupere les modeles
+        if (!actualiseModele) dispatch(getModele())
     });
 
   return (
     <div className={classes.divMenuProfil}>
+        <Tooltip disableHoverListener={modele === undefined ? true : false} title={modele === undefined ? "" : modele.nom}>
         <IconButton aria-controls="simple-menu" aria-haspopup="true" onClick={e => setOpenLocation(e.currentTarget)}>
-            {user.image === undefined
-                ?<Avatar className={classes.avatar}>{user.name.substring(0, 1).toUpperCase()}</Avatar>
-                :<Avatar src={user.image}/>
-            }
-        </IconButton>
+                {user.image === undefined
+                    ?<Avatar className={classes.avatar}>{user.name.substring(0, 1).toUpperCase()}</Avatar>
+                    :<Avatar src={user.image}/>
+                }
+            </IconButton>
+        </Tooltip>
         <Menu
             transformOrigin={{ vertical: "bottom", horizontal: "center" }}
             disableScrollLock={true}

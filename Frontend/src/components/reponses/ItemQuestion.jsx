@@ -2,6 +2,8 @@ import React from 'react';
 import ReactHtmlParser from 'react-html-parser';
 import { Button, makeStyles } from '@material-ui/core';
 
+import DelayInput from '../InputAwait';
+
 import { useDispatch } from 'react-redux';
 import { addReponse } from '../../slice/RepondreQuestionsSlice'
 
@@ -40,6 +42,8 @@ export default function Question(props) {
         dispatch(addReponse(props.id))
     }
 
+    const [just, setJust] = React.useState("")
+
     //liste les différentes réponses
     const listeReponses = () => {
         return (
@@ -60,6 +64,15 @@ export default function Question(props) {
                 <h2 style={{textAlign : "left", margin : "1%"}}>Question {props.id+1} :</h2>
                 {/* affichage énoncé de la question */}
                 <div className={classes.enonce}>{ReactHtmlParser(props.question.enonce)}</div>
+
+                <DelayInput
+                    style = {{width : "60%", margin : "4% 0"}}
+                    rows = {4}
+                    label="Justification"
+                    delayTimeout={300}
+                    value={just}
+                    onChange={e => setJust(e)}
+                />
 
                 {listeReponses()}
 
