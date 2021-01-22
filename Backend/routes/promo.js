@@ -62,11 +62,13 @@ router.get('/:idpromo/:idmodele/attribution', isAuthenticated, isProf, async (re
         let insertVariables = 'INSERT INTO variable_etudiant VALUES';
         let insertArchi = 'INSERT INTO archi_etudiant VALUES';
         promo.forEach(etudiant => {
+            variable_aleatoire.max = parseFloat(variable_aleatoire.max);
+            variable_aleatoire.min = parseFloat(variable_aleatoire.min);
             const id_architecture = Math.floor(random(architectures.length - 1, 1, 0));
             insertArchi += ` (${etudiant.id_auth}, ${id_architecture}),`;
             variable_aleatoires.forEach(variable_aleatoire => {
                 const valeur = random(variable_aleatoire.max, variable_aleatoire.min, -variable_aleatoire.precision);
-                insertVariables += ` (${variable_aleatoire.id_variable}, ${etudiant.id_auth}, ${valeur}),`;
+                insertVariables += ` (${variable_aleatoire.id_variable}, ${etudiant.id_auth}, '${valeur}'),`;
             });
         });
         insertVariables = insertVariables.slice(0, -1);
