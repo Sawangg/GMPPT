@@ -82,7 +82,7 @@ export default function RepondreQuestions(){
         doc.setFontSize(12)
 
         //transmet le sujet au document pdf
-        doc.fromHTML(sujetForPdf,MARGE_COTE,MARGE_HAUT + 10,options)
+        doc.addHTML(sujetForPdf,MARGE_COTE,MARGE_HAUT + 10,options)
         
         doc.addPage()
 
