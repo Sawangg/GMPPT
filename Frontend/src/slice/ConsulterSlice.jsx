@@ -4,7 +4,13 @@ import _ from 'lodash'
 export const consulterSlice = createSlice({
     name: 'consulter',
     initialState: {
+        etudiant : {
+            nom : "",
+            prenom : "",
+            id_auth : undefined,
+        },
         tabEssais : [{
+            corrige : false,
             dateEssai : "01/01/2020",
             tabQuestions : [{
                 justif : "",
@@ -42,14 +48,14 @@ export const consulterSlice = createSlice({
         //importe un jeu d'essai pour faire des tests sur liste d'essais
         setEssaisForTest : (state) =>{
             state.tabEssais = [
-                {dateEssai : "05/01/2020", tabQuestions : 
+                {dateEssai : "05/01/2020", corrige : false, tabQuestions : 
                     [{num : 1, justif : "Scotland Forever󠁧󠁢", commentProf : "", note : "",
                      tabReponses : 
                         [ {justeApp : true, justeProf : false, value : 12, 
                         unite : "N^12", ecart : "0.3"} ] 
                     }] 
                 },
-                {dateEssai : "05/01/2020", tabQuestions : 
+                {dateEssai : "05/01/2020", corrige : false, tabQuestions : 
                     [{num : 1, justif : "", commentProf : "", note : "",
                     tabReponses : 
                         [ {justeApp : false, justeProf : false, value : 11, 
@@ -76,6 +82,12 @@ export const consulterSlice = createSlice({
             if((!isNaN(note) && note<=100 && note>=0)|| note === ""){
                 state.tabEssais[indexE].tabQuestions[indexQ].note = note
             }
+        },
+        //applique la correction en changeant le booléen revu
+        //paramètres : indexEssai
+        setCorrigeTrue : (state, action) =>{
+            let indexE = action.payload
+            state.tabEssais[indexE].corrige = true;
         }
         
 
@@ -85,7 +97,7 @@ export const consulterSlice = createSlice({
 
 
 export const {setEssaisForTest, changeReponseJuste, changeMessage, changeCommentaire, 
-    changeNote } = consulterSlice.actions
+    changeNote, setCorrigeTrue } = consulterSlice.actions
 
 //retourne tous le tableau des essais
 export const selectEssais = state => state.consulter.tabEssais

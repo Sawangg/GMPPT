@@ -6,7 +6,7 @@ import {
 } from '@material-ui/core';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { selectEtudiants, setEtudiantsForTests } from '../../slice/CorrectionSlice';
+import { selectEtudiants } from '../../slice/CorrectionSlice';
 
 import {Link} from 'react-router-dom'
 
@@ -28,15 +28,9 @@ export default function StickyHeadTable() {
 
   const tabEtudiants = useSelector(selectEtudiants)
 
-  //met en place le test
-  if(tabEtudiants.length <= 1){
-    dispatch(setEtudiantsForTests())
-  }
-
   const columns = [
     {id: 'nom', label: 'Nom', minWidth: 170 },
     {id: 'prenom', label: 'Prénom', minWidth: 170 },
-    {id: 'promo', label: 'Promo', minWidth: 170},
     {id: 'avancement', label: 'Avancement', minWidth: 170, align: 'right'},
     {id: 'note', label: 'Note actuelle', minWidth: 170, align: 'right'},
     {id: 'sujet', label: "Sujet de l'éleve", minWidth: 170, align: 'right'},
