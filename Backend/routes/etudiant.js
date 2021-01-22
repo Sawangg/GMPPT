@@ -93,15 +93,27 @@ router.get('/:id_auth/modeles', isAuthenticated, async (req, res) => {
     }
 });
 
-//liste tout les essais
-router.get('/:id_auth/essais', isAuthenticated, (req, res) => {
-
+router.get('/:id_auth/essais', (req, res) => {
+    db.promise().execute(`SELECT * FROM reponse_etudiant WHERE id_auth = ${req.params.id_auth} ORDER BY date DESC`).then(([rows]) => {
+        if (!rows[0]) return res.sendStatus(404);
+        let essais = [];
+        let date = 0;
+        let essai = {};
+        rows.map(r => {
+            if(r.date.toString() != date.toString()) {
+                essai = { questions : [], date: r.date };
+                essais.push(essai);
+                date = r.date ;
+            }
+            delete r.date;
+            delete r.id_auth;
+            r.reponses = (r.reponses == undefined ? r.reponses : JSON.parse(r.reponses));
+            essai.questions.push(r);
+        });
+        return res.status(200).send(essais);
+    }).catch(() => {
+        return res.sendStatus(500);
+    });
 });
-
-//renvoie l'essais choissi
-router.post('/:id_auth/essais/date', isAuthenticated, (req, res) => {
-
-});
-
 
 module.exports = router;

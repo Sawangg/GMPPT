@@ -4,10 +4,6 @@ const router = Router();
 const { isAuthenticated, isProf } = require("../middleware.js");
 const { sh } = require("../utils.js");
 
-router.get("/", isAuthenticated, (req, res) => {
-
-});
-
 router.get("/:idpromo/:idauth", isAuthenticated, isProf, async (req, res) => {
     try {
         const [variables_etu] = await db.promise().execute(`SELECT * FROM variable_etudiant VE JOIN variable_aleatoire VA ON VE.id_variable = VA.id_variable WHERE VE.id_auth=${req.params.idauth}`);
