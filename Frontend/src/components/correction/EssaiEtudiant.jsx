@@ -12,7 +12,7 @@ import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 
 import { useDispatch, useSelector } from 'react-redux'
 import { changeReponseJuste, selectEssaisWithID, changeCommentaire, changeNote,
-    selectNbReponsesAAvoir } from '../../slice/ConsulterSlice'
+    selectNbReponsesAAvoir, setCorrigeTrue } from '../../slice/ConsulterSlice'
 
 const useStyles = makeStyles((theme) => ({
     boxReponses: {
@@ -35,8 +35,15 @@ const useStyles = makeStyles((theme) => ({
 export default function EssaiEtudiant(props){
     const essai = useSelector(selectEssaisWithID(props.indexEssai))
 
+    const dispatch = useDispatch()
+
     const handleClose = () =>{
         props.setOpen(false)
+    }
+
+    const appliquerCorrection = () =>{
+        dispatch(setCorrigeTrue(props.indexEssai))
+        handleClose();
     }
 
     return(
@@ -74,6 +81,7 @@ export default function EssaiEtudiant(props){
             </DialogContent>
 
             <DialogActions>
+                <Button onClick={appliquerCorrection}>Appliquer la correction</Button>
                 <Button onClick={handleClose}>Fermer</Button>
             </DialogActions>
 

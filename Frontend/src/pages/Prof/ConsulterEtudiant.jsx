@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
 import _ from 'lodash'
 
-import {ListItemText, ListItem, List, Divider, Button, makeStyles} from '@material-ui/core'
+import {ListItemText, ListItem, List, Divider, Button, ListItemAvatar,Avatar, makeStyles} from '@material-ui/core'
 import SendIcon from '@material-ui/icons/Send';
+import CheckIcon from '@material-ui/icons/Check';
+import CloseIcon from '@material-ui/icons/Close';
 
 import { useDispatch, useSelector } from 'react-redux'
 import { selectEssais, selectMessage, selectReponsesJustes } from '../../slice/ConsulterSlice'
@@ -10,6 +12,7 @@ import { setEssaisForTest, changeMessage } from '../../slice/ConsulterSlice'
 
 import EssaiEtudiant from '../../components/correction/EssaiEtudiant'
 import Message from '../../components/correction/Message';
+import useConstructor from '../../components/use/useContructor';
 
 export default function Consulter(props){
 
@@ -47,6 +50,10 @@ export default function Consulter(props){
     if(tabEssais.length === 1){
         dispatch(setEssaisForTest())
     }
+
+    useConstructor(() => {
+        //dispatch()
+    })
 
     //affiche un dialog lors d'un clic sur un essai pour avoir plus de détail
     //Paramètres : l'index de l'essai
@@ -100,6 +107,23 @@ export default function Consulter(props){
         return tabReponsesJustes.length
     }
 
+    //s'occupe de l'icone qui indique si l'essai a été revu par le professeur
+    const corrigeIcon = (revu) =>{
+        if (revu) {
+            return(
+                <Avatar color="primary">
+                    <CheckIcon />
+                </Avatar>
+            )
+        }else{
+            return(
+                <Avatar color="error">
+                    <CloseIcon />
+                </Avatar>
+            )
+        }
+    }
+
     return(
         <div>
             <Button className={classes.messageBouton} variant="contained" color="primary" onClick={hancleClickMessage}>
@@ -118,6 +142,9 @@ export default function Consulter(props){
                                 primary={"Essai du " + item.dateEssai}
                                 secondary={"Questions justes : " + nbQuestionsJustes(index)
                                     +  "/" + nbQuestions()}/>
+                            <ListItemAvatar>
+                                {corrigeIcon(item.corrige)}
+                            </ListItemAvatar>
                         </ListItem>
 
                         <Divider />
