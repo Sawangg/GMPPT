@@ -8,6 +8,8 @@ import { getAllPromoAPI, addPromoAPI, etudiantNewAPI, deletePromoAPI } from '../
 import PopUp from '../../components/PopUp';
 import AttributionSujet from '../../components/AttributionSujet';
 import DropFile from '../../components/DropFile';
+import AssociationModele from '../../components/promo/DialogAssociationModele';
+import AjoutListeEtu from '../../components/promo/AjoutListeEtu';
 import useConstructor from '../../components/use/useContructor'
 
 import '../../styles/ImportModele3D.css'
@@ -71,15 +73,18 @@ export default function Promo() {
     }));
     const classes = useStyles();
 
-    const [promo, setPromo] = useState("");
-    const [excel, setExcel] = useState("");
+    const [promo, setPromo] = useState([]);
     const [select, setSelect] = useState("");
     const [tabPromo, setTabPromo] = useState(undefined);
-    const [openPopUp, setOpenPopUp] = useState(false);
+    const [assoModele, setAssoModele] = useState(false);
+    const [listEtu, setListEtu] = useState(false);
 
     useConstructor(() => {
         getAllPromoAPI()
-        .then(e => setTabPromo(e.data))
+        .then(e => {
+            setTabPromo(e.data);
+            setSelect(e.data[0]);
+        })
         .catch(() => console.log("erreur"))
     });
 
@@ -92,22 +97,6 @@ export default function Promo() {
         setPromo("");
     }
 
-    const envoieExcel = () => {
-        const data = new FormData();
-        data.append('fileUploaded', excel);
-        etudiantNewAPI(select, data).then(fichier => console.log(fichier)).catch((err) => console.log(err));
-        setOpenPopUp(true);
-    };
-
-    const changePromo = (e) => {
-        setPromo(e.target.value);
-    };
-
-    const handleChange = (event) => {
-        setSelect(event.target.value);
-        console.log(event.target.value)
-    };
-
     const removePromo = () => {
         deletePromoAPI(select.id_promo)
         .then(() => console.log("supp"))
@@ -116,6 +105,15 @@ export default function Promo() {
         tabTemp.splice(tabTemp.indexOf(select), 1);
         setTabPromo(tabTemp);
         setSelect("");
+    }
+
+    const displayEtu = () => {
+        return (
+            <div>
+                <p>Liste étudiants prenom / nom / mdp</p>
+                <p>Flo Toto test</p>
+            </div>
+        )
     }
 
     return (
@@ -128,7 +126,7 @@ export default function Promo() {
                         <div className={classes.divSelectPromo}>
                             <div>
                                 <InputLabel className={classes.labelSelectPromo}>Promotion selectionnée</InputLabel>
-                                <Select className={classes.selectPromo} value={select.id_promo} onChange={handleChange} input={<Input/>}>
+                                <Select className={classes.selectPromo} value={select} onChange={(e) => setSelect(e.target.value)} input={<Input/>}>
                                     <MenuItem style={{color : "#075b72"}} value={"ajoutPromo"}>Ajouter promotion</MenuItem>
                                     {tabPromo === undefined  ? <PropagateLoader size={15} color={"rgb(7, 91, 114)"} css={{margin : "30px auto", display : "flex", justifyContent : "center"}}/> 
                                     : tabPromo.map((element, index) => (
@@ -143,20 +141,22 @@ export default function Promo() {
                                 <DeleteIcon/>
                             </Fab>
                         </div>
-                        {select !== "ajoutPromo" ? null
+                        {select !== "ajoutPromo" 
+                            ? <>
+                                <Button className={classes.button} disabled={select===""} variant="contained" color="primary" onClick={() => setListEtu(true)}>Ajouter une liste d'étudiants</Button>
+                                <Button className={classes.button} disabled={select===""} variant="contained" color="primary" onClick={() => setAssoModele(true)}>Associer à un modèle</Button>
+                                <AssociationModele selectPromo={select.id_promo} open={assoModele} setClose={() => setAssoModele(false)} />
+                                <AjoutListeEtu selectPromo={select.id_promo} open={listEtu} setClose={() => setListEtu(false)}/>
+                                {select !== "" ? displayEtu() : null}
+                            </>
                             :<div className={classes.divNomPromo}>
-                                <TextField autoFocus size="small" label="Nom de la promo" variant="outlined" required value={promo} onChange={e => changePromo(e)}/>
+                                <TextField autoFocus size="small" label="Nom de la promo" variant="outlined" required value={promo} onChange={e => setPromo(e.target.value)}/>
                                 <Button className={classes.button} disabled={promo===""} variant="outlined" onClick={() => addPromo()}>Créer</Button>
                             </div>
                         }
-                        <DropFile typeFile='.xlsx' compressImage={false} changeFile={e => setExcel(e)}  message="Charger la liste des étudiants de la promotion"/>
-                        <Button className={classes.button} disabled={excel===""} variant="contained" color="primary" onClick={() => envoieExcel()}>Enregistrer liste étudiants</Button>
                     </FormControl>
                 </form>
             </div>
-            {tabPromo === undefined  ? <PropagateLoader size={15} color={"rgb(7, 91, 114)"} css={{margin : "30px auto", display : "flex", justifyContent : "center"}}/> 
-            : <AttributionSujet tabPromo={tabPromo}/>}
-            <PopUp severity="success" message="Etudiants ajoutés à la promotion" open={openPopUp} handleClose={() => setOpenPopUp(false)}/>
         </div>
     );
 }
