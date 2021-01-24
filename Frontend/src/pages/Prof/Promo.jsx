@@ -3,14 +3,12 @@ import { TextField, Button, Select, MenuItem, Input, InputLabel, FormControl, ma
 import DeleteIcon from '@material-ui/icons/Delete';
 import PropagateLoader from "react-spinners/PropagateLoader";
 
-import { getAllPromoAPI, addPromoAPI, etudiantNewAPI, deletePromoAPI } from '../../utils/api'
-
-import PopUp from '../../components/PopUp';
-import AttributionSujet from '../../components/AttributionSujet';
-import DropFile from '../../components/DropFile';
 import AssociationModele from '../../components/promo/DialogAssociationModele';
 import AjoutListeEtu from '../../components/promo/AjoutListeEtu';
 import useConstructor from '../../components/use/useContructor'
+
+import { getAllPromo, selectPromo, selectEnregistrePromo, addPromo, removePromo, getEtudiantsPromo, selectEtudiants } from "../../slice/PromoSlice";
+import { useSelector, useDispatch } from "react-redux";
 
 import '../../styles/ImportModele3D.css'
 
@@ -73,46 +71,52 @@ export default function Promo() {
     }));
     const classes = useStyles();
 
-    const [promo, setPromo] = useState([]);
+    
+    const dispatch = useDispatch();
+
+    const [nouvellePromo, setNouvellePromo] = useState([]);
     const [select, setSelect] = useState("");
-    const [tabPromo, setTabPromo] = useState(undefined);
     const [assoModele, setAssoModele] = useState(false);
     const [listEtu, setListEtu] = useState(false);
 
+    const isEnregistre = useSelector(selectEnregistrePromo);
+    const tabPromo = useSelector(selectPromo);
+    const tabEtudiants = useSelector(selectEtudiants)
+
+
     useConstructor(() => {
-        getAllPromoAPI()
-        .then(e => {
-            setTabPromo(e.data);
-            setSelect(e.data[0]);
-        })
-        .catch(() => console.log("erreur"))
+        if (!isEnregistre) dispatch(getAllPromo());
     });
 
-    const addPromo = () => {
-        addPromoAPI(promo).then(() => {
-            getAllPromoAPI()
-            .then(e => setTabPromo(e.data))
-            .catch(() => console.log("erreur"))
-        }).catch(() => console.log("nop"));
-        setPromo("");
+    const ajouterPromo = () => {
+        dispatch(addPromo(nouvellePromo)).then(() => dispatch(getAllPromo()));
+        setNouvellePromo("");
     }
 
-    const removePromo = () => {
-        deletePromoAPI(select.id_promo)
-        .then(() => console.log("supp"))
-        .catch(() => console.log("erreur"))
-        let tabTemp = [...tabPromo];
-        tabTemp.splice(tabTemp.indexOf(select), 1);
-        setTabPromo(tabTemp);
+    const remove = () => {
+        dispatch(removePromo(select));
         setSelect("");
+    }
+
+    const changePromo = (e) => {
+        setSelect(e.target.value)
+        dispatch(getEtudiantsPromo(e.target.value.idPromo))
     }
 
     const displayEtu = () => {
         return (
             <div>
-                <p>Liste étudiants prenom / nom / mdp</p>
-                <p>Flo Toto test</p>
+                {tabEtudiants.map((e) => (
+                    <div style={{display : "flex", justifyContent : "space-around"}}>
+                        <p>{e.prenom}</p>
+                        <p>{e.nom}</p>
+                        <p>mot de passe</p>
+                        <Button>Modifier</Button>
+                    </div>
+                ))}
+                <Button variant="contained" color="primary">Ajouter un étudiant</Button>
             </div>
+            
         )
     }
 
@@ -126,32 +130,32 @@ export default function Promo() {
                         <div className={classes.divSelectPromo}>
                             <div>
                                 <InputLabel className={classes.labelSelectPromo}>Promotion selectionnée</InputLabel>
-                                <Select className={classes.selectPromo} value={select} onChange={(e) => setSelect(e.target.value)} input={<Input/>}>
+                                <Select className={classes.selectPromo} value={select} onChange={(e) => changePromo(e)} input={<Input/>}>
                                     <MenuItem style={{color : "#075b72"}} value={"ajoutPromo"}>Ajouter promotion</MenuItem>
                                     {tabPromo === undefined  ? <PropagateLoader size={15} color={"rgb(7, 91, 114)"} css={{margin : "30px auto", display : "flex", justifyContent : "center"}}/> 
                                     : tabPromo.map((element, index) => (
-                                        <MenuItem key={index} value={element}>{element.nom_promo}</MenuItem>
+                                        <MenuItem key={index} value={element}>{element.nom}</MenuItem>
                                     ))}
                                 </Select>
                             </div>
                             <Fab className={classes.fabDelete} size="small" aria-label="delete"
-                                disabled={select.id_promo === "" || select === "ajoutPromo"}
-                                onClick={() => removePromo()}
+                                disabled={select.idPromo === "" || select === "ajoutPromo"}
+                                onClick={() => remove()}
                             >
                                 <DeleteIcon/>
                             </Fab>
                         </div>
                         {select !== "ajoutPromo" 
                             ? <>
-                                <Button className={classes.button} disabled={select===""} variant="contained" color="primary" onClick={() => setListEtu(true)}>Ajouter une liste d'étudiants</Button>
                                 <Button className={classes.button} disabled={select===""} variant="contained" color="primary" onClick={() => setAssoModele(true)}>Associer à un modèle</Button>
-                                <AssociationModele selectPromo={select.id_promo} open={assoModele} setClose={() => setAssoModele(false)} />
-                                <AjoutListeEtu selectPromo={select.id_promo} open={listEtu} setClose={() => setListEtu(false)}/>
+                                <Button className={classes.button} disabled={select===""} variant="contained" color="primary" onClick={() => setListEtu(true)}>Ajouter une liste d'étudiants</Button>
+                                <AssociationModele selectPromo={select.idPromo} open={assoModele} setClose={() => setAssoModele(false)} />
+                                <AjoutListeEtu selectPromo={select.idPromo} open={listEtu} setClose={() => setListEtu(false)}/>
                                 {select !== "" ? displayEtu() : null}
                             </>
                             :<div className={classes.divNomPromo}>
-                                <TextField autoFocus size="small" label="Nom de la promo" variant="outlined" required value={promo} onChange={e => setPromo(e.target.value)}/>
-                                <Button className={classes.button} disabled={promo===""} variant="outlined" onClick={() => addPromo()}>Créer</Button>
+                                <TextField autoFocus size="small" label="Nom de la promo" variant="outlined" required value={nouvellePromo} onChange={e => setNouvellePromo(e.target.value)}/>
+                                <Button className={classes.button} disabled={nouvellePromo === ""} variant="outlined" onClick={() => ajouterPromo()}>Créer</Button>
                             </div>
                         }
                     </FormControl>

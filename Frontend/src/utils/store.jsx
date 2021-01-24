@@ -5,7 +5,7 @@ import modeleReducer from '../slice/ModeleSlice';
 import variablesAleatoiresReducer from '../slice/VariablesAleatoiresSlice'
 import reponseReducer from '../slice/RepondreQuestionsSlice'
 import enoncesReducer from '../slice/EnoncesSlice'
-import correctionReducer from '../slice/CorrectionSlice'
+import promoReducer from '../slice/PromoSlice'
 import consulterReducer from '../slice/ConsulterSlice'
 import uniteReducer from '../slice/UniteSlice'
 
@@ -17,7 +17,7 @@ export default configureStore({
     variableAleatoire : variablesAleatoiresReducer,
     reponse : reponseReducer,
     enonce : enoncesReducer,
-    correction : correctionReducer,
+    promo : promoReducer,
     consulter : consulterReducer,
     unite : uniteReducer,
   },

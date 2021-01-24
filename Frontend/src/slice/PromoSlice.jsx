@@ -1,17 +1,37 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getInfoPromoAPI} from "../utils/api.js";
+import { getInfoPromoAPI, getAllPromoAPI, addPromoAPI, deletePromoAPI } from "../utils/api.js";
 
-export const getEtudiantsDB = createAsyncThunk("promo/getEtudiants", 
+export const getEtudiantsPromo = createAsyncThunk("promo/getEtudiants", 
 async (idPromo) => {
     const response = await getInfoPromoAPI(idPromo);
     return response.data;
 });
 
-export const correctionSlice = createSlice({
-    name: 'correction',
+export const getAllPromo = createAsyncThunk("promo/getAllPromo", 
+async () => {
+    const response = await getAllPromoAPI();
+    return response.data;
+});
+
+export const addPromo = createAsyncThunk("promo/addPromo", 
+async (nomPromo) => {
+    const response = await addPromoAPI(nomPromo);
+    return response.data;
+});
+
+export const removePromo = createAsyncThunk("promo/remove", 
+async (select) => {
+    const response = await deletePromoAPI(select.idPromo);
+    return response.data;
+});
+
+export const PromoSlice = createSlice({
+    name: 'promo',
     initialState: {
+        tabPromo : [],
         tabEtudiants : [],
         idPromo : undefined,
+        enregistre : false
         // tabEtudiants : [{
         //     id : 0,
         //     nom : 'undefined',
@@ -40,7 +60,7 @@ export const correctionSlice = createSlice({
 
     },
     extraReducers: {
-        [getEtudiantsDB.fulfilled] : (state, action) => {
+        [getEtudiantsPromo.fulfilled] : (state, action) => {
             state.tabEtudiants = [];
             action.payload.forEach(etudiant => {
                 state.tabEtudiants.push({
@@ -51,17 +71,33 @@ export const correctionSlice = createSlice({
                     note : 16
                 })
             });
-        }
+        },
+        [getAllPromo.fulfilled] : (state, action) => {
+            let promo = [];
+            action.payload.forEach(elem => promo.push({idPromo : elem.id_promo, nom : elem.nom_promo}))
+            state.tabPromo = promo;
+            state.enregistre = true;
+        },
+        [removePromo.pending] : (state, action) => {
+            let tabTemp = [...state.tabPromo];
+            tabTemp.splice(tabTemp.indexOf(action.meta.arg), 1);
+            state.tabPromo = tabTemp;
+            console.log(action.meta.arg);
+        },
     }
 })
 
 
-export const { setEtudiantsForTests, setIdPromo } = correctionSlice.actions
+export const { setEtudiantsForTests, setIdPromo } = PromoSlice.actions
 
 //retourne tous le tableau d'étudiants
-export const selectEtudiants = state => state.correction.tabEtudiants
+export const selectEtudiants = state => state.promo.tabEtudiants
 
 //retourne l'id de promo qui est en train de se faire corriger
-export const selectIdPromo = state => state.correction.idPromo
+export const selectIdPromo = state => state.promo.idPromo
 
-export default correctionSlice.reducer;
+export const selectPromo = state => state.promo.tabPromo;
+
+export const selectEnregistrePromo = state => state.promo.enregistre;
+
+export default PromoSlice.reducer;
