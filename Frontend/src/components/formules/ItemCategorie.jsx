@@ -40,6 +40,7 @@ const ItemCategorie = ({index, length}) => {
             display: "block",
             margin: "0 auto 2% auto",
             width: "70%",
+            minWidth: "420px",
             borderRadius: "3px",
             padding: "2% 3%",
             boxShadow: "0px 8px 20px -5px rgba(0,0,0,0.69)"

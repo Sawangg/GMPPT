@@ -1,6 +1,0 @@
-@media screen and (max-width: 960px) {
-    .containerFormules {
-        grid-template-columns: 0.5fr 3.5fr 2fr;
-        gap: 0px 10px;
-    }
-}

@@ -5,11 +5,12 @@ import DropFile from '../../components/DropFile'
 
 import {addModele3DAPI, addArchiAPI} from '../../utils/api'
 
-import '../../styles/ImportModele3D.css'
-
 export default function Architecture() {
 
     const useStyles = makeStyles((theme) => ({
+        root: {
+            paddingBottom: "2%"
+        },
         hr: {
             width: "80%",
             marginBottom: "2%"
@@ -18,10 +19,14 @@ export default function Architecture() {
             boxShadow : "0px 8px 20px -5px rgba(0,0,0,0.69)",
             width : "80%",
             margin : "auto",
-            padding : "1% 2% 2% 2%"
+            padding : "2%"
         },
         divDropModele: {
-            display: "flex"
+            display: "flex",
+            justifyContent: "space-around",
+            [theme.breakpoints.down('sm')]: {
+                flexWrap: "wrap"
+            }
         },
         divNumSujet: {
             display : "flex",
@@ -63,7 +68,7 @@ export default function Architecture() {
     }
 
     return (
-        <div>
+        <div className={classes.root}>
             <Typography variant="h1">Architecture</Typography>
             <hr className={classes.hr}/>
             <div>
@@ -71,7 +76,7 @@ export default function Architecture() {
                 <Button disabled={excel === ""} variant="contained" color="primary" style={{display : "block", margin : "20px auto"}} onClick={() => envoieArchi()}>Enregistrer</Button>
             </div>
             <div className={classes.divImportModele}>
-                <div className={classes.divDropModele} id="divDropModele">
+                <div className={classes.divDropModele}>
                     <DropFile typeFile='image/*' compressImage={false} changeFile={e => setImage1(e)}  message="Importer la PREMIERE image du modèle 3D"/>
                     <DropFile typeFile='image/*' compressImage={true} changeFile={e => setImage2(e)}  message="Importer la SECONDE image du modèle 3D"/>
                 </div>

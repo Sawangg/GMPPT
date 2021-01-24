@@ -8,8 +8,6 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 import DelayInput from '../InputAwait';
 
-import '../../styles/ItemTodoFormule.css'
-
 import { changeNomFormule, changeFormule, changeModifFormule, changePositionFormule, selectFormule, removeFormule } from "../../slice/FormulesSlice"
 import { useDispatch, useSelector } from "react-redux";
 import clsx from 'clsx'
@@ -51,7 +49,11 @@ const ItemFomrule = ({indexCategorie, indexFormule, length, onRemove}) => {
             gridTemplateColumns: "0.5fr 3.5fr 2fr 0.75fr 0.75fr",
             gridTemplateRows: "1fr",
             gap: "0px 15px",
-            margin: "0px 1% 3%"
+            margin: "0px 1% 3%",
+            [theme.breakpoints.down('sm')]: {
+                gridTemplateColumns: "0.5fr 3.5fr 2fr",
+                gap: "0, 10px"
+            }
         },
         fabDelete: {
             color: "white",
@@ -59,9 +61,6 @@ const ItemFomrule = ({indexCategorie, indexFormule, length, onRemove}) => {
                 "&:hover": {
                     backgroundColor: theme.palette.error.dark
                 },
-        },
-        fabDownward: {
-            marginLeft : "10%"
         }
     }));
     const classes = useStyles();
@@ -125,7 +124,7 @@ const ItemFomrule = ({indexCategorie, indexFormule, length, onRemove}) => {
     }
 
     return (
-        <div className={classes.containerFormules} id="containerFormules">
+        <div className={classes.containerFormules}>
 
             <Fab
                 className={clsx(classes.fabDelete, classes.center)}
@@ -152,8 +151,7 @@ const ItemFomrule = ({indexCategorie, indexFormule, length, onRemove}) => {
                     >
                         <ArrowUpwardIcon/>
                     </Fab>
-                    <Fab className={classes.fabDownward}
-                        color="primary"
+                    <Fab color="primary"
                         variant='extended'
                         size='small'
                         onClick={() => dispatch(changePositionFormule({indexCategorie : indexCategorie, indexFormule : indexFormule, up : false}))}

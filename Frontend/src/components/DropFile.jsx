@@ -3,7 +3,6 @@ import {useDropzone} from 'react-dropzone';
 import CloudUploadOutlinedIcon from '@material-ui/icons/CloudUploadOutlined';
 import imageCompression from 'browser-image-compression';
 
-import '../styles/DropFile.css'
 import {makeStyles} from "@material-ui/core";
 
 export default function DropFile(props) {
@@ -20,10 +19,14 @@ export default function DropFile(props) {
             padding: "0 2%",
             width : "40%",
             minWidth: "250px",
-            margin : "auto auto",
-            height: "172px",
+            margin: "auto",
+            height: 175,
             position: "relative",
-            zIndex: 10
+            zIndex: 10,
+            [theme.breakpoints.down('sm')]: {
+                width : "90%",
+                marginBottom: "2%"
+            }
         },
         cloudIcon: {
             fontSize : "400%"
@@ -56,7 +59,7 @@ export default function DropFile(props) {
     ));
 
   return (
-      <div {...getRootProps()} className={classes.divDrop} id="divDrop">
+      <div {...getRootProps()} className={classes.divDrop}>
         <input {...getInputProps()} />
         <p>{props.message}</p>
         <CloudUploadOutlinedIcon className={classes.cloudIcon}/>
