@@ -33,8 +33,12 @@ export default function Architecture() {
             justifyContent : "center",
             marginTop : "3%"
         },
-        button: {
-            marginLeft : 20,
+        saveButton1: {
+            display : "block",
+            margin : "20px auto"
+        },
+        saveButton2: {
+            marginLeft : 20
         }
     }));
     const classes = useStyles();
@@ -73,7 +77,7 @@ export default function Architecture() {
             <hr className={classes.hr}/>
             <div>
                 <DropFile typeFile='.xlsx' compressImage={false} changeFile={e => setExcel(e)}  message="Charger la liste des architectures"/>
-                <Button disabled={excel === ""} variant="contained" color="primary" style={{display : "block", margin : "20px auto"}} onClick={() => envoieArchi()}>Enregistrer</Button>
+                <Button className={classes.saveButton1} disabled={excel === ""} variant="contained" color="primary" onClick={() => envoieArchi()}>Enregistrer</Button>
             </div>
             <div className={classes.divImportModele}>
                 <div className={classes.divDropModele}>
@@ -82,7 +86,7 @@ export default function Architecture() {
                 </div>
                 <div className={classes.divNumSujet}>
                     <TextField autoFocus size="small" label="Numéro du sujet" variant="outlined" required value={sujet} onChange={e => onChange(e)}/>
-                    <Button className={classes.button} disabled={image1 === "" || image2 === "" || sujet === ""} variant="contained" color="primary" onClick={() => envoieModele3D()}>Enregistrer</Button>
+                    <Button className={classes.saveButton2} disabled={image1 === "" || image2 === "" || sujet === ""} variant="contained" color="primary" onClick={() => envoieModele3D()}>Enregistrer</Button>
                 </div>
             </div>
         </div>
