@@ -5,8 +5,6 @@ import DropFile from '../../components/DropFile'
 
 import {addModele3DAPI, addArchiAPI} from '../../utils/api'
 
-import '../../styles/ImportModele3D.css'
-
 export default function Architecture() {
 
     const useStyles = makeStyles((theme) => ({
@@ -25,7 +23,10 @@ export default function Architecture() {
         },
         divDropModele: {
             display: "flex",
-            justifyContent: "space-around"
+            justifyContent: "space-around",
+            [theme.breakpoints.down('sm')]: {
+                flexWrap: "wrap"
+            }
         },
         divNumSujet: {
             display : "flex",
@@ -75,7 +76,7 @@ export default function Architecture() {
                 <Button disabled={excel === ""} variant="contained" color="primary" style={{display : "block", margin : "20px auto"}} onClick={() => envoieArchi()}>Enregistrer</Button>
             </div>
             <div className={classes.divImportModele}>
-                <div className={classes.divDropModele} id="divDropModele">
+                <div className={classes.divDropModele}>
                     <DropFile typeFile='image/*' compressImage={false} changeFile={e => setImage1(e)}  message="Importer la PREMIERE image du modèle 3D"/>
                     <DropFile typeFile='image/*' compressImage={true} changeFile={e => setImage2(e)}  message="Importer la SECONDE image du modèle 3D"/>
                 </div>

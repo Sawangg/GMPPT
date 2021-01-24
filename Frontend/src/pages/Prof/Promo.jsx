@@ -10,8 +10,6 @@ import useConstructor from '../../components/use/useContructor'
 import { getAllPromo, selectPromo, selectEnregistrePromo, addPromo, removePromo, getEtudiantsPromo, selectEtudiants } from "../../slice/PromoSlice";
 import { useSelector, useDispatch } from "react-redux";
 
-import '../../styles/ImportModele3D.css'
-
 export default function Promo() {
 
     const useStyles = makeStyles((theme) => ({

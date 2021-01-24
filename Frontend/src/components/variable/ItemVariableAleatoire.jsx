@@ -11,8 +11,6 @@ import SlideBar from './SlideBarVariable'
 import { useDispatch, useSelector } from "react-redux";
 import { changeNom, changeMax, changeMin, changeModif, selectElement, removeVariable } from "../../slice/VariablesAleatoiresSlice";
 
-import '../../styles/itemVariablesAleatoire.css'
-
 const ItemVariable = ({index, length, onRemove}) => {
     const useStyles = makeStyles((theme) => ({
         typo: {
@@ -25,7 +23,12 @@ const ItemVariable = ({index, length, onRemove}) => {
             gap: "0px 30px",
             margin: "auto",
             width: "90%",
-            marginTop: "3%"
+            marginTop: "3%",
+            [theme.breakpoints.down('sm')]: {
+                gap: "0px 12px",
+                width: "95%",
+                marginTop: "5%"
+            }
         },
         center: {
             margin: "auto",
@@ -113,7 +116,7 @@ const ItemVariable = ({index, length, onRemove}) => {
     }
 
     return (
-            <div className={classes.containerVariables} id="containerVariables">
+            <div className={classes.containerVariables}>
                 {item.modif ? displayModif() : displayTxt()}
                 <Fab className={classes.fabDelete}
                     disabled={length <= 1}
