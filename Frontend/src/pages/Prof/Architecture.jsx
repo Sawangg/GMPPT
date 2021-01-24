@@ -3,7 +3,7 @@ import {TextField, Button, makeStyles, Typography} from '@material-ui/core';
 
 import DropFile from '../../components/DropFile'
 
-import {addModele3DAPI, addArchiAPI} from '../../utils/api'
+import {addModele3DAPI, addArchiAPI, getVariablesArchiAPI} from '../../utils/api'
 
 export default function Architecture() {
 
@@ -67,10 +67,19 @@ export default function Architecture() {
         .catch(() => console.log("nop"));
     }
 
+    const getVariables = () => {
+        getVariablesArchiAPI()
+        .then((e) => {
+            console.log(e)
+        })
+        .catch((erreur) => console.log(erreur))
+    }
+
     return (
         <div className={classes.root}>
             <Typography variant="h1">Architecture</Typography>
             <hr className={classes.hr}/>
+            <Button variant="contained" color="primary" onClick={() => getVariables()}>Récupere la liste des variables d'architecture</Button>
             <div>
                 <DropFile typeFile='.xlsx' compressImage={false} changeFile={e => setExcel(e)}  message="Charger la liste des architectures"/>
                 <Button disabled={excel === ""} variant="contained" color="primary" style={{display : "block", margin : "20px auto"}} onClick={() => envoieArchi()}>Enregistrer</Button>
