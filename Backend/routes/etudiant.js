@@ -72,9 +72,37 @@ router.get('/:id_auth/reponses', isAuthenticated, (req, res) => {
 });
 
 router.get('/:id_auth/architecture', isAuthenticated, (req, res) => {
-    db.promise().execute(`SELECT * FROM archi_etudiant WHERE id_auth = ${req.params.id_auth}`).then(([rows]) => {
+    db.promise().execute(`SELECT * FROM archi_etudiant AE JOIN architecture A ON AE.id_architecture = A.id_architecture  WHERE id_auth = ${req.params.id_auth}`).then(([rows]) => {
         if (!rows[0]) return res.sendStatus(404);
-        return res.send(rows[0]).status(200);
+        let obj = { id_architecture: rows[0].id_architecture, variables: [] };
+        delete rows[0].id_auth;
+        delete rows[0].id_architecture;
+        for (const nom in rows[0]) {
+            obj.variables.push({ nom, valeur: rows[0][nom] });
+        }
+        return res.send(obj).status(200);
+    }).catch(() => {
+        return res.sendStatus(500);
+    });
+});
+
+router.get('/:id_auth/architecture/excel', (req, res) => {
+    db.promise().execute(`SELECT * FROM archi_etudiant AE JOIN architecture A ON AE.id_architecture = A.id_architecture  WHERE id_auth = ${req.params.id_auth}`).then(([rows]) => {
+        if (!rows[0]) return res.sendStatus(404);
+        const workbook = new ExcelJS.Workbook();
+        const worksheet = workbook.addWorksheet("My Sheet");
+        delete rows[0].id_auth;
+        let index = 1;
+        for (const nom in rows[0]) {
+            worksheet.getRow(1).getCell(index).value = nom;
+            worksheet.getRow(2).getCell(index).value = rows[0][nom];
+            ++index;
+        }
+        let tempFilePath = tempfile('.xlsx');
+        workbook.xlsx.writeFile(tempFilePath).then(() => {
+            res.sendFile(tempFilePath);
+            res.status(200);
+        });
     }).catch(() => {
         return res.sendStatus(500);
     });
@@ -100,10 +128,10 @@ router.get('/:id_auth/essais', (req, res) => {
         let date = 0;
         let essai = {};
         rows.map(r => {
-            if(r.date.toString() != date.toString()) {
-                essai = { questions : [], date: r.date };
+            if (r.date.toString() != date.toString()) {
+                essai = { questions: [], date: r.date };
                 essais.push(essai);
-                date = r.date ;
+                date = r.date;
             }
             delete r.date;
             delete r.id_auth;
