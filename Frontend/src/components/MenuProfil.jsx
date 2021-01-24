@@ -12,6 +12,7 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { selectUserName, getUserImage, logoutUser } from "../slice/UserSlice"
 import { selectModeleActuel, selectActualise, getModele } from '../slice/ModeleSlice';
+import { getAllPromo, selectEnregistrePromo } from '../slice/PromoSlice';
 
 export default function MenuProfil() {
     const useStyles = makeStyles((theme) => ({
@@ -36,6 +37,7 @@ export default function MenuProfil() {
   const user = useSelector(selectUserName);
   const actualiseModele = useSelector(selectActualise);
   const modele = useSelector(selectModeleActuel);
+  const isEnregistrePromo = useSelector(selectEnregistrePromo);
   
   useConstructor(() => {
         //gerer le stockage local
@@ -45,6 +47,9 @@ export default function MenuProfil() {
 
         //recupere les modeles
         if (!actualiseModele) dispatch(getModele())
+
+        //recupère les promo
+        if (!isEnregistrePromo) dispatch(getAllPromo());
     });
 
   return (

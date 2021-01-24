@@ -5,7 +5,7 @@ import { Button, makeStyles } from '@material-ui/core';
 import DelayInput from '../InputAwait';
 
 import { useDispatch } from 'react-redux';
-import { addReponse } from '../../slice/RepondreQuestionsSlice'
+import { addReponse, changeJustification } from '../../slice/RepondreQuestionsSlice'
 
 import Reponse from './ItemReponse';
 
@@ -42,8 +42,6 @@ export default function Question(props) {
         dispatch(addReponse(props.id))
     }
 
-    const [just, setJust] = React.useState("")
-
     //liste les différentes réponses
     const listeReponses = () => {
         return (
@@ -70,8 +68,8 @@ export default function Question(props) {
                     rows = {4}
                     label="Justification"
                     delayTimeout={300}
-                    value={just}
-                    onChange={e => setJust(e)}
+                    value={props.question.justification}
+                    onChange={e => dispatch(changeJustification({indexQuestion : props.id, justif : e}))}
                 />
 
                 {listeReponses()}

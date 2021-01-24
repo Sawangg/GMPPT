@@ -1,13 +1,11 @@
-import React, {useState} from 'react'
+import React from 'react'
 import Table from '../../components/correction/TableConsulter'
 import {makeStyles, MenuItem, Typography, TextField} from "@material-ui/core";
 import useConstructor from '../../components/use/useContructor';
 
-import { getAllPromoAPI, getInfoPromoAPI} from '../../utils/api'
-
 import { useDispatch, useSelector } from 'react-redux';
 
-import { getEtudiantsDB, selectIdPromo, setIdPromo } from '../../slice/CorrectionSlice'
+import { getEtudiantsPromo, selectIdPromo, setIdPromo, getAllPromo, selectEnregistrePromo, selectPromo } from '../../slice/PromoSlice'
 
 export default function Correction(){
     const useStyles = makeStyles((theme) => ({
@@ -30,28 +28,19 @@ export default function Correction(){
     }));
     const classes = useStyles();
 
-    const [tabPromos, setPromos] = useState( [{ id_promo : 0, nom_promo : "" }] )
-
     const idPromo = useSelector(selectIdPromo)
+    const isEnregistrePromo = useSelector(selectEnregistrePromo);
+    const tabPromos = useSelector(selectPromo)
 
     const dispatch = useDispatch()
 
-    useConstructor(() =>{
-        getAllPromoAPI()
-        .then(e => setPromos(e.data))
-        .catch(() => console.log("erreur"))
-    });
+    useConstructor(() => {if (!isEnregistrePromo) dispatch(getAllPromo())});
 
 
     //change l'id de promo qui est corrigée et importe les étudiants de cette promo
     const handleChangePromo = (e) => {
         dispatch(setIdPromo(e.target.value))
-
-        dispatch(getEtudiantsDB(e.target.value))
-        
-        getInfoPromoAPI(e.target.value)
-        .then(e => console.log(e))
-        .catch(() => console.log("erreur"))
+        dispatch(getEtudiantsPromo(e.target.value))
     }
 
     return(
@@ -65,8 +54,8 @@ export default function Correction(){
                     helperText="Choisissez la promotion" >
                     {tabPromos.map((element)=>{
                         return(
-                        <MenuItem key={element.id_promo} value={element.id_promo} >
-                            {element.nom_promo}
+                        <MenuItem key={element.idPromo} value={element.idPromo} >
+                            {element.nom}
                         </MenuItem>)
                     })}
                 </TextField>

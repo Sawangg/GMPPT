@@ -38,6 +38,7 @@ export const reponseSlice = createSlice({
         tabQuestions : [{
             indexQuestion : 0,
             enonce : "",
+            justification : "",
             nbMaxReponses : 5,
             tabReponses : [{
                 value : "",
@@ -107,6 +108,10 @@ export const reponseSlice = createSlice({
             state.tabQuestions[indexQuestion].tabReponses[indexReponse].tabUnite = tab
         },
 
+        changeJustification: (state, action) => {
+            state.tabQuestions[action.payload.indexQuestion].justification = action.payload.justif;
+        },
+
         //change le tableau d'unités d'une réponse
         //paramètres : indexQuestion, indexReponse, tabUnité
         setUnite : (state, action) =>{
@@ -117,28 +122,30 @@ export const reponseSlice = createSlice({
     extraReducers: {
         [getSujet.fulfilled]: (state, action) => {
             state.tabQuestions = []
-            const reponsesDefault = [{
-                value : "",
-                tabUnite : [{
-                    abr : " ",
-                    puissance : 1
-                }]
-            }]
             state.sujet = action.payload.enonce;
             action.payload.questions.forEach((question) => {
-                const reponses = question.reponses === undefined ? reponsesDefault : question.reponses;
+
+                const reponsesTab = []
+                question.reponses.forEach(element => {
+                    reponsesTab.push({
+                        value : element.value,
+                        tabUnite : element.tabUnite
+                    })   
+                });
+
                 state.tabQuestions.push({
                     indexQuestion : question.id_question,
                     enonce : question.contenu,
                     nbMaxReponses : 5,
-                    tabReponses : reponses
+                    justification : "coucou", //question.justification A AJOUTER !!!!
+                    tabReponses : reponsesTab
                 });
             });
             state.id_auth = action.payload.id_auth;
             state.sujetEnregistre = true;
         },
-        [enregistrerReponses.fulfilled] : (state, action) => {
-
+        [enregistrerReponses.fulfilled] : (state) => {
+            state.sujetEnregistre = true;
         },
         [etudiantVariables.fulfilled] : (state, action) => {
             let enonce = state.sujet;
@@ -151,9 +158,6 @@ export const reponseSlice = createSlice({
             });
             state.sujet = enonce;
         },
-        [etudiantVariables.rejected] : (state, action) => {
-
-        },
         [getModele3D.rejected] : (state, action) => {
             //console.log(action.payload)
         },
@@ -164,7 +168,7 @@ export const reponseSlice = createSlice({
     }
 })
 
-export const { addReponse, changeReponse, deleteReponse, changeUniteReponses, changeUniteForAllReponses, setUnite } = reponseSlice.actions;
+export const { addReponse, changeReponse, deleteReponse, changeUniteReponses, changeUniteForAllReponses, setUnite, changeJustification } = reponseSlice.actions;
 
 //renvoie l'ensemble d'un tableau de questions
 export const selectReponses = state => state.reponse;

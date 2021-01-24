@@ -6,7 +6,7 @@ import {
 } from '@material-ui/core';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { selectEtudiants } from '../../slice/CorrectionSlice';
+import { selectEtudiants } from '../../slice/PromoSlice';
 
 import {Link} from 'react-router-dom'
 
