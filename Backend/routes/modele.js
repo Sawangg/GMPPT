@@ -10,7 +10,7 @@ router.post('/:idmodele/categories/new', isAuthenticated, isProf, isAttribued, a
         req.body.forEach(async categorie => {
             db.promise().execute(`INSERT INTO categories VALUES (NULL, '${categorie.nom}', ${idmodele})`).then(([rows]) => {
                 categorie.tabFormule.forEach(async formule => {
-                    await db.promise().execute(`INSERT INTO formules VALUES (NULL, '${formule.nomFormule}', '${formule.formule}', ${rows.insertId})`);
+                    await db.promise().execute(`INSERT INTO formules VALUES (NULL, '${formule.nomFormule}', '${formule.formule}', ${rows[0].insertId})`);
                 });
             });
         });
