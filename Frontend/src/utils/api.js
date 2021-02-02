@@ -75,6 +75,10 @@ export function addArchiAPI(excel) {
     return axios.post(`http://${host}:3001/architecture/new`, excel, credentials)
 }
 
+export function getVariablesArchiAPI() {
+    return axios.get(`http://${host}:3001/architecture/attribued_without_modeles/excel`, credentials)
+}
+
 // Promotion
 
 export function addPromoAPI(nomPromo) {
