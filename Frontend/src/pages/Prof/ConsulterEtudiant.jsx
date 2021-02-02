@@ -10,7 +10,7 @@ import CloseIcon from '@material-ui/icons/Close';
 
 import { useDispatch, useSelector } from 'react-redux'
 import { selectEssais, selectMessage, selectReponsesJustes, selectEtudiantConsulter } from '../../slice/ConsulterSlice'
-import { setEssaisForTest, changeMessage } from '../../slice/ConsulterSlice'
+import { setEssaisForTest, changeMessage, getEssaisDB } from '../../slice/ConsulterSlice'
 
 import EssaiEtudiant from '../../components/correction/EssaiEtudiant'
 import Message from '../../components/correction/Message';
@@ -48,14 +48,12 @@ export default function Consulter(props){
     //numéro de l'étudiant
     const etudiant = useSelector(selectEtudiantConsulter)
 
-    //test
-    if(tabEssais.length === 1){
-        dispatch(setEssaisForTest())
-    }
-
     useConstructor(() => {
-        //dispatch()
-    })
+        dispatch(getEssaisDB({
+            idPromo : etudiant.id_promo,
+            idEtudiant : etudiant.id_etudiant
+        }))
+    });
 
     //affiche un dialog lors d'un clic sur un essai pour avoir plus de détail
     //Paramètres : l'index de l'essai

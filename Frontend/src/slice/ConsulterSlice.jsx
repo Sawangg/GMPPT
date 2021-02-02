@@ -1,10 +1,18 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { getEssaisAPI } from "../utils/api.js";
 import _ from 'lodash'
+
+export const getEssaisDB = createAsyncThunk("correction/getEssaisDB", 
+async (props) => {
+    const response = await getEssaisAPI(props.idPromo, props.idEtudiant);
+    return response.data;
+}) 
 
 export const consulterSlice = createSlice({
     name: 'consulter',
     initialState: {
         etudiant : {
+            id_promo : undefined,
             nom : "",
             prenom : "",
             id_etudiant : undefined,
@@ -92,9 +100,10 @@ export const consulterSlice = createSlice({
         //met les infos des étudiants
         //paramètres : id, nom et prénom de l'étudiant
         setEtudiantConsulter : (state, action) =>{
-            let {id, prenom, nom} = action.payload
+            let {id_promo, id_etudiant, prenom, nom} = action.payload
             state.etudiant = {
-                id_etudiant : id,
+                id_promo : id_promo,
+                id_etudiant : id_etudiant,
                 prenom : prenom,
                 nom : nom,
             };
@@ -102,7 +111,14 @@ export const consulterSlice = createSlice({
         
 
     },
-    extraReducers: {}
+    extraReducers: {
+        [getEssaisDB.fulfilled] : (state, action) => {
+            console.log(action)
+        },
+        [getEssaisDB.rejected] : (state, action) => {
+            console.log("reject")
+        }
+    }
 })
 
 

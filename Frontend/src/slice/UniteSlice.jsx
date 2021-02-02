@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { addUniteAPI, getAllUniteAPI, deleteUniteAPI } from "../utils/api.js";
+import _ from "lodash"
 
 export const getAllUnite = createAsyncThunk("unite/getAllUnite", async () => {
   const response = await getAllUniteAPI();
@@ -74,6 +75,12 @@ export const uniteSlice = createSlice({
     },
     [getAllUnite.fulfilled]: (state, action) => {
       state.tabUnites = []
+      const sansUnite = _.remove(action.payload, function(o) {
+        return o.nom === "Sans Unité"
+      });
+
+      state.tabUnites.push(sansUnite[0])
+
       action.payload.forEach(unite => {
         state.tabUnites.push({
           nom : unite.nom,
@@ -91,6 +98,7 @@ export const uniteSlice = createSlice({
     [enregistreUnites.fulfilled]: (state, action) => {
       console.log("fulfill")
       state.indexEnModif = -1
+      state.enregistre = true
     },
     [enregistreUnites.pending]: (state, action) => {
     }

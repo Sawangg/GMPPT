@@ -6,7 +6,7 @@ import {
 } from '@material-ui/core';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { selectEtudiants } from '../../slice/CorrectionSlice';
+import { selectEtudiants, selectIdPromo } from '../../slice/CorrectionSlice';
 import { setEtudiantConsulter } from '../../slice/ConsulterSlice'
 
 import {Link} from 'react-router-dom'
@@ -28,6 +28,8 @@ export default function StickyHeadTable() {
   const rowsPerPage = 10;
 
   const tabEtudiants = useSelector(selectEtudiants)
+
+  const idPromo = useSelector(selectIdPromo)
 
   const columns = [
     {id: 'nom', label: 'Nom', minWidth: 170 },
@@ -62,12 +64,12 @@ export default function StickyHeadTable() {
 
   const handleClickConsulter = ( etudiant ) =>{
       dispatch(setEtudiantConsulter({
-        id : etudiant.id,
+        id_promo : idPromo,
+        id_etudiant : etudiant.id,
         prenom : etudiant.prenom,
         nom : etudiant.nom
       }))
   };
-
 
   return (
     <Paper>
@@ -131,9 +133,6 @@ export default function StickyHeadTable() {
         page={page}
         onChangePage={handleChangePage}
       />
-
-      
-      
     </Paper>
 
     

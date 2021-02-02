@@ -41,7 +41,9 @@ export default function GestionUnites(){
     const isEnregistre = useSelector(selectEnregistre)
 
     useConstructor(()=> {
-        dispatch(getAllUnite())
+        if (!actualise){
+            dispatch(getAllUnite())
+        };
     })
 
     //permet de savoir si ce nom est utilisé une seule fois dans le tabUnites
@@ -162,11 +164,6 @@ export default function GestionUnites(){
                 Ajouter une unité
             </Button>
 
-            <Button onClick={enregistrer}
-                disabled={indexEnModif >= 0}>
-                Enregistrer
-            </Button>
-
             <Table className={classes.tableauUnite}>
                 <TableHead>
                     <TableRow>
@@ -185,8 +182,14 @@ export default function GestionUnites(){
                     })}
                 </TableBody>
             </Table>
-            {/* <PopUp open={ indexEnModif < 0 && !isEnregistre } handleClose={ () => enregistrer() }
-                actionName="enregistrer" action={ () => enregistrer() } message="yo"/> */}
+            {console.log(isEnregistre)}
+            <PopUp 
+                open={ indexEnModif < 0 && !isEnregistre } 
+                handleClose={ () => enregistrer() }
+                actionName="enregistrer" 
+                action={ () => enregistrer() } 
+                message="Cliquez ici pour enregistrer les unités" 
+                severity="warning"/>
         </div>
     )
 }
