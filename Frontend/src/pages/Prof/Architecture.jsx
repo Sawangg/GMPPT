@@ -9,7 +9,7 @@ export default function Architecture() {
 
     const useStyles = makeStyles((theme) => ({
         root: {
-            paddingBottom: "2%"
+            paddingBottom: "2%",
         },
         hr: {
             width: "80%",
@@ -35,6 +35,10 @@ export default function Architecture() {
         },
         button: {
             marginLeft : 20,
+        },
+        buttonVariable: {
+            display: "block",
+            margin: "0 auto 2%",
         }
     }));
     const classes = useStyles();
@@ -79,7 +83,7 @@ export default function Architecture() {
         <div className={classes.root}>
             <Typography variant="h1">Architecture</Typography>
             <hr className={classes.hr}/>
-            <Button variant="contained" color="primary" onClick={() => getVariables()}>Récupere la liste des variables d'architecture</Button>
+            <Button className={classes.buttonVariable} variant="contained" color="primary" onClick={() => getVariables()}>Récupere la liste des variables d'architecture</Button>
             <div>
                 <DropFile typeFile='.xlsx' compressImage={false} changeFile={e => setExcel(e)}  message="Charger la liste des architectures"/>
                 <Button disabled={excel === ""} variant="contained" color="primary" style={{display : "block", margin : "20px auto"}} onClick={() => envoieArchi()}>Enregistrer</Button>
