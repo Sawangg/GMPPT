@@ -105,7 +105,7 @@ export function desatributionSujetAPI(idPromo) {
     return axios.get(`http://${host}:3001/promo/${idPromo}/desatribution`, credentials)
 }
 
-export function gettModelPromoeAPI() {
+export function getModelPromoAPI() {
     return axios.get(`http://${host}:3001/promo/modele`, credentials);
 }
 

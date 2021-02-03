@@ -1,10 +1,10 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getSujetAPI, etudiantVariablesAPI, etudiantReponsesNewAPI, getModele3DAPI, gettModelPromoeAPI } from "../utils/api.js";
+import { getSujetAPI, etudiantVariablesAPI, etudiantReponsesNewAPI, getModele3DAPI, getModelPromoAPI } from "../utils/api.js";
 import _ from "lodash"
 
 export const getEtudiantModele = createAsyncThunk("etudiant/getEtudiantModele", 
 async () => {
-    const response = await gettModelPromoeAPI();
+    const response = await getModelPromoAPI();
     return response.data;
 });
 
