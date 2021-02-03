@@ -24,7 +24,7 @@ router.get('/', isAuthenticated, isProf, async (_req, res) => {
 router.get('/modele', isAuthenticated, (req, res) => {
     try {
         if(req.user.isProf){
-            db.promise().execute(`SELECT * FROM modele_promo`).then(([rows]) => {
+            db.promise().execute(`SELECT * FROM modele_promo m, promo p WHERE p.id_promo=m.id_promo`).then(([rows]) => {
                 return res.send(rows).status(200);
             });
         }else {

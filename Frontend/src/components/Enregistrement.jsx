@@ -1,6 +1,8 @@
 import React, {useState, useCallback, useEffect} from 'react';
 import {Dialog, DialogTitle, DialogContentText, DialogActions, DialogContent, Button } from '@material-ui/core';
 
+import { getModelPromoAPI, desatributionSujetAPI } from "../utils/api";
+
 import PopUp from './PopUp';
 import useKeyPress from './use/useKeyPressCtrlS';
 import useUnload from './use/useUnload';
@@ -11,6 +13,7 @@ const Enregistrement = ({isEnregistre, action, disabled}) => {
 
     const [openPopUp, setOpenPopUp] = useState(true);
     const [openDialog, setOpenDialog] = useState(false);
+    const [listePromo, setListePromo] = useState([])
 
     const dispatch = useDispatch();
     const touche = useKeyPress();
@@ -25,17 +28,35 @@ const Enregistrement = ({isEnregistre, action, disabled}) => {
             dispatch(action)
             .then((e) => {
                 if (e.meta.requestStatus === "rejected"){
-                     if (e.error.message === "Request failed with status code 405") setOpenDialog(true);
+                     if (e.error.message === "Request failed with status code 405"){
+                        if (listePromo.length === 0){
+                            getModelPromoAPI()
+                            .then((e) => {
+                                setListePromo(e.data);
+                            })
+                        }
+                        setOpenDialog(true);
+                     } 
                 } 
             })
         }
-    }, [dispatch, action, isEnregistre, disabled]);
+    }, [dispatch, action, isEnregistre, disabled, listePromo]);
+
+    const suppAsso = (e) => {
+        desatributionSujetAPI(e.id_promo).then((e) => {
+            console.log("reussi !");
+        });
+        let tempTab = [...listePromo];
+        tempTab.splice(listePromo.indexOf(e), 1);
+        setListePromo(tempTab);
+    }
         
     useEffect(() => {
         if (touche){
             envoyer();
+            console.log("cocoucouc")
         }
-    }, [touche]); //ne pas ajouter envoyer ! sinon ca ne marche plus
+    }, [touche, envoyer]); //ne pas ajouter envoyer ! sinon ca ne marche plus
 
      return (
          <>
@@ -53,10 +74,16 @@ const Enregistrement = ({isEnregistre, action, disabled}) => {
                 <DialogTitle>Attention</DialogTitle>
                 <DialogContent>
                       <DialogContentText>Après vérification, le sujet que vous voulez modifier est déja associé à une architecture, que voulez-vous faire ?</DialogContentText>
+                     {listePromo.map((e, index) => (
+                        <div key={index} style={{display : "flex"}}>
+                            <p style={{margin : "auto 0"}}>{e.nom_promo}</p>
+                            <Button onClick={() => suppAsso(e)} size="small" variant="contained" style={{marginLeft : 20}}>Supprimer l'association</Button>
+                        </div>
+                     ))}
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => setOpenDialog(false)} color="primary">Abandonner</Button>
-                    <Button onClick={() => console.log("liaision supp à faire")} color="primary" autoFocus>Enregistrer et supprimer l'association</Button>
+                    <Button onClick={() => envoyer()} disabled={listePromo.length > 0} color="primary" autoFocus>Enregistrer</Button>
                 </DialogActions>
             </Dialog>
          </>
