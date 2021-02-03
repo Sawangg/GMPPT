@@ -22,6 +22,7 @@ export default function TodoListAccordeon() {
         },
         fab: {
             marginLeft: "3%",
+            marginBottom: "2%"
         }
     }));
 

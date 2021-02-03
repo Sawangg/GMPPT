@@ -3,32 +3,38 @@ import {Fab, makeStyles, Typography} from '@material-ui/core';
 import CircleLoader from "react-spinners/CircleLoader";
 import AddIcon from '@material-ui/icons/Add';
 
-import ItemVariablesAleatoire from '../../components/variable/ItemVariableAleatoire'
-import useConstructor from '../../components/use/useContructor'
-import PopUp from '../../components/PopUp'
-import useUnload from '../../components/use/useUnload';
-import SelectionModele from '../../components/SelectionModele'
-import EnregistrementVariableAleatoires from '../../components/variable/EnregistrementVariableAleatoires'
+import ItemVariablesAleatoire from '../../components/variable/ItemVariableAleatoire';
+import useConstructor from '../../components/use/useContructor';
+import PopUp from '../../components/PopUp';
+import SelectionModele from '../../components/SelectionModele';
+import EnregistrementVariableAleatoires from '../../components/variable/EnregistrementVariableAleatoires';
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectActualise, selectEnregistre, addVariable, undoVariable, getAllVariables, selectTabLength } from "../../slice/VariablesAleatoiresSlice"
+import { selectActualise, selectEnregistreVariable, addVariable, undoVariable, getAllVariables, selectTabLength } from "../../slice/VariablesAleatoiresSlice"
 import { selectIdModeleSelectionne } from "../../slice/ModeleSlice"
-
-import '../../styles/VariablesAleatoires.css'
 
 export default function VariablesAleatoires() {
 
     const useStyles = makeStyles((theme) => ({
+        root: {
+            paddingBottom: "2%"
+        },
         hr: {
             width: "80%",
             marginBottom: "2%"
         },
-        fab: {marginLeft: "3%"},
+        fab: {
+            marginLeft: "3%",
+            marginBottom: "2%"
+        },
         divItemvariable: {
             boxShadow: "0px 8px 20px -5px rgba(0,0,0,0.69)",
             padding: "2% 3% 4% 3%",
             width: "80%",
-            margin: "auto"
+            margin: "auto",
+            [theme.breakpoints.down('sm')]: {
+                width: "90%"
+            }
         }
     }));
     const classes = useStyles();
@@ -43,7 +49,7 @@ export default function VariablesAleatoires() {
 
     const lengthTab = useSelector(selectTabLength);
     //savoir si les variables sont récupérées de la BD
-    const isEnregistre = useSelector(selectEnregistre);
+    const isEnregistre = useSelector(selectEnregistreVariable);
     //savoir si la recupération les données sont conectées à la BD
     const isActualise = useSelector(selectActualise)
     const idModele = useSelector(selectIdModeleSelectionne);
@@ -55,9 +61,6 @@ export default function VariablesAleatoires() {
         }
     });
 
-    //ne pas quitter la page si pas enregistré dans la BD
-    useUnload(!isEnregistre);
-
     const undo = () =>{
         dispatch(undoVariable());
         setOpenPopUpUndo(false);
@@ -65,7 +68,7 @@ export default function VariablesAleatoires() {
 
     const displayVariable = () =>{
         return (
-            <div>
+            <div className={classes.root}>
                 <Typography variant="h1">Variables aléatoires</Typography>
                 <hr className={classes.hr}/>
                 <Fab className={classes.fab}
@@ -77,7 +80,7 @@ export default function VariablesAleatoires() {
                 >
                     <AddIcon />
                 </Fab>
-                <div className={classes.divItemvariable} id="divItemvariable">
+                <div className={classes.divItemvariable}>
                     {/* EVITE DE FAIRE PASSER LE TABLEAU DE VARIABLE ET DE MODIFIER TOUTES LES VARIABLES A CHAQUE CHANGEMENT D'UNE */}
                     {Array(lengthTab).fill(0).map((_, index) => (
                         <ItemVariablesAleatoire onRemove={() => setOpenPopUpUndo(true)} length={lengthTab} key={index} index={index}/>

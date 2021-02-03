@@ -2,8 +2,10 @@ import React from 'react';
 import ReactHtmlParser from 'react-html-parser';
 import { Button, makeStyles } from '@material-ui/core';
 
+import DelayInput from '../InputAwait';
+
 import { useDispatch } from 'react-redux';
-import { addReponse } from '../../slice/RepondreQuestionsSlice'
+import { addReponse, changeJustification } from '../../slice/RepondreQuestionsSlice'
 
 import Reponse from './ItemReponse';
 
@@ -19,7 +21,7 @@ export default function Question(props) {
         },
         listeQuestions: {
             boxShadow: "0px 8px 20px -5px rgba(0,0,0,0.69)",
-            padding: "2% 3% 4% 3%",
+            padding: "2% 3% 2% 3%",
         },
         enonce: {
             margin : "4% 0 0 8%",
@@ -29,7 +31,16 @@ export default function Question(props) {
         buttonAjouterReponse: {
             display : "block",
             margin : "20px auto"
-        }
+        },
+        hr: {
+            border: "1px dashed",
+            width : "50%",
+            margin : "50px auto"
+        },
+        h2: {
+            textAlign : "left",
+            margin : "1%"
+        },
     }));
     const classes = useStyles();
 
@@ -55,11 +66,20 @@ export default function Question(props) {
 
     return (
         <>
-            <hr style={{border: "1px dashed", width : "50%", margin : "50px auto"}}/>
+            <hr className={classes.hr}/>
             <div className={classes.listeQuestions} >
-                <h2 style={{textAlign : "left", margin : "1%"}}>Question {props.id+1} :</h2>
+                <h2 className={classes.h2}>Question {props.id+1} :</h2>
                 {/* affichage énoncé de la question */}
                 <div className={classes.enonce}>{ReactHtmlParser(props.question.enonce)}</div>
+
+                <DelayInput
+                    style = {{width : "100%", margin : "4% 0"}}
+                    rows = {4}
+                    label="Justification"
+                    delayTimeout={300}
+                    value={props.question.justification}
+                    onChange={e => dispatch(changeJustification({indexQuestion : props.id, justif : e}))}
+                />
 
                 {listeReponses()}
 

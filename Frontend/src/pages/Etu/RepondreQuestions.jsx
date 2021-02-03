@@ -19,13 +19,32 @@ export default function RepondreQuestions(){
             marginBottom: "2%"
         },
         contenant: {
-            margin : "10%",
+            width:"80%",
+            margin : "auto",
         },
         buttonFixed: {
             position: "absolute",
             top : "30px",
             right : "120px"
+        },
+        sujet: {
+            boxShadow: "0px 8px 20px -5px rgba(0,0,0,0.69)",
+            padding: "1% 2% 4% 2%",
+            margin : "4%"
+        },
+        center: {
+            textAlign: "center",
+            display: "block",
+            margin: "2% auto"
+        },
+        modeles: {
+            display : "flex",
+            justifyContent : "space-around"
+        },
+        image: {
+            width: 200
         }
+
     }));
 
     const classes = useStyles();
@@ -133,21 +152,21 @@ export default function RepondreQuestions(){
             </div>
 
             {/* affichage du sujet */ }
-            <div style={{boxShadow: "0px 8px 20px -5px rgba(0,0,0,0.69)", padding: "1% 2% 4% 2%", margin : "4%"}}>
-                <h2 style={{textAlign : "center"}}>Sujet</h2>
+            <div className={classes.sujet}>
+                <h2 className={classes.center}>Sujet</h2>
                 <div id="sujet">{ReactHtmlParser(reponses.sujet)}</div>
             </div>
            
 
-            <div style={{display : "flex", justifyContent : "space-around"}}>
+            <div className={classes.modeles}>
                 <div>
-                    <img style={{width : 200}} src={reponses.image1} alt="img modele1"/>
-                    <p style={{textAlign : "center"}}>modèle 1</p>
+                    <img className={classes.image} src={reponses.image1} alt="img modele1"/>
+                    <p className={classes.center}>modèle 1</p>
                 </div>
 
                 <div>
-                    <img style={{width : 200}} src={reponses.image2} alt="img modele2"/>
-                    <p style={{textAlign : "center"}}>modèle 2</p>
+                    <img className={classes.image} src={reponses.image2} alt="img modele2"/>
+                    <p className={classes.center}>modèle 2</p>
                 </div>
             </div>
             
@@ -157,8 +176,8 @@ export default function RepondreQuestions(){
 
 
             <Button variant="contained" color="primary"
-                onClick={handleEnvoyerReponses}>
-              
+                onClick={handleEnvoyerReponses}
+                className={classes.center}>
                 Envoyer les réponses
             </Button>
         </div>

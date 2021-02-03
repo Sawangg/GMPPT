@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {Button, TextField, Fab, InputAdornment, makeStyles} from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
-import _ from "lodash"
 
 import { useDispatch, useSelector } from "react-redux";
 import { changeReponse, peutSupprimer, deleteReponse, setUnite} from '../../slice/RepondreQuestionsSlice'
@@ -32,7 +31,7 @@ export default function Item(props) {
      }));
      const classes = useStyles();
 
-     const unitesReference = useSelector(selectUnites)
+     //const unitesReference = useSelector(selectUnites)
 
      //indique si la boite de dialogue choix unité est ouverte ou fermée
      const [choixUniteOpen, setOpen] = useState(false);

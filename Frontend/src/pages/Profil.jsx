@@ -9,8 +9,6 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { selectUserName, changePassword, setUserImage } from "../slice/UserSlice";
 
-import '../styles/Profil.css'
-
 import { setPwdUserAPI } from '../utils/api.js';
 
 export default function Profile() {
@@ -28,6 +26,9 @@ export default function Profile() {
             height : "100",
             backgroundSize: "cover",
             backgroundPosition: "center",
+            [theme.breakpoints.down('sm')]: {
+                display: "none"
+            }
         },
         wrapper: {
             height : "100%",
@@ -75,8 +76,8 @@ export default function Profile() {
     }
     
     return (
-        <div className={classes.carteProfil} id="carteProfil">
-            {(user.image === undefined || user.image === "") ? null : <div className={classes.imageProfil} style={{backgroundImage : "url('"+user.image+"')"}} id="image"/>}
+        <div className={classes.carteProfil}>
+            {(user.image === undefined || user.image === "") ? null : <div className={classes.imageProfil} style={{backgroundImage : "url('"+user.image+"')"}}/>}
             <div className={classes.wrapper}>
                 <Typography align="center" gutterBottom variant="h2" component="h2">{user.name.charAt(0).toUpperCase() + user.name.slice(1)}</Typography>
                 <div className={classes.dropPhotoProfil}>
