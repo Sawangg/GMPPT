@@ -50,6 +50,16 @@ router.get('/:idpromo/delete', isAuthenticated, isProf, async (req, res) => {
     }
 });
 
+router.get('/:idpromo/desatribution', isAuthenticated, isProf, async (req, res) => {
+    try {
+        await db.promise().execute(`DELETE FROM archi_etudiant WHERE id_auth IN (SELECT id_auth FROM etudiant WHERE id_promo = ${req.params.idpromo})`);
+        await db.promise().execute(`DELETE FROM modele_promo WHERE id_promo = ${req.params.idpromo}`);
+        return res.sendStatus(200);
+    } catch {
+        return res.sendStatus(500);
+    }
+});
+
 router.get('/:idpromo/:idmodele/attribution', isAuthenticated, isProf, async (req, res) => {
     const { idpromo, idmodele } = req.params;
     try {
