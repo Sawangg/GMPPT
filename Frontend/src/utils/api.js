@@ -101,6 +101,14 @@ export function deletePromoAPI(idPromo){
     return axios.get(`http://${host}:3001/promo/${idPromo}/delete`, credentials)
 }
 
+export function desatributionSujetAPI(idPromo) {
+    return axios.get(`http://${host}:3001/promo/${idPromo}/desatribution`, credentials)
+}
+
+export function gettModelPromoeAPI() {
+    return axios.get(`http://${host}:3001/promo/modele`, credentials);
+}
+
 // Variables aléatoires
 
 export function addVariableAPI(idModele, tabVariables) {
@@ -129,10 +137,6 @@ export function getAllUniteAPI() {
 
 export function etudiantNewAPI(idPromo, fileUploaded) {
     return axios.post(`http://${host}:3001/etudiant/${idPromo}/new`, fileUploaded, credentials);
-}
-
-export function etudiantModeleAPI() {
-    return axios.get(`http://${host}:3001/promo/modele`, credentials);
 }
 
 export function etudiantReponsesNewAPI(tabQuestions) {

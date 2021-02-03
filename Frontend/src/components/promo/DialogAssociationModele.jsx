@@ -38,7 +38,10 @@ export default function DialogAssociationModele({open, setClose, selectPromo}){
             </DialogContent>
             <DialogActions>
                 <Button onClick={() => setClose()} color="primary">Abandonner</Button>
-                <Button disabled={selectionModele === ""} onClick={() => envoieAttribution()} color="primary" autoFocus>Ok</Button>
+                <Button disabled={selectionModele === ""} onClick={() => {
+                    envoieAttribution();
+                    setClose();
+                }} color="primary" autoFocus>Ok</Button>
             </DialogActions>
         </Dialog>
     )

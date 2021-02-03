@@ -1,10 +1,10 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getSujetAPI, etudiantVariablesAPI, etudiantReponsesNewAPI, getModele3DAPI, etudiantModeleAPI } from "../utils/api.js";
+import { getSujetAPI, etudiantVariablesAPI, etudiantReponsesNewAPI, getModele3DAPI, gettModelPromoeAPI } from "../utils/api.js";
 import _ from "lodash"
 
 export const getEtudiantModele = createAsyncThunk("etudiant/getEtudiantModele", 
 async () => {
-    const response = await etudiantModeleAPI();
+    const response = await gettModelPromoeAPI();
     return response.data;
 });
 
@@ -125,13 +125,15 @@ export const reponseSlice = createSlice({
             state.sujet = action.payload.enonce;
             action.payload.questions.forEach((question) => {
 
-                const reponsesTab = []
-                question.reponses.forEach(element => {
-                    reponsesTab.push({
-                        value : element.value,
-                        tabUnite : element.tabUnite
-                    })   
-                });
+                const reponsesTab = [];
+                if (question.reponse !== undefined){
+                    question.reponses.forEach(element => {
+                        reponsesTab.push({
+                            value : element.value,
+                            tabUnite : element.tabUnite
+                        })   
+                    });
+                } else reponsesTab.push({value : "", tabUnite : []});   
 
                 state.tabQuestions.push({
                     indexQuestion : question.id_question,
