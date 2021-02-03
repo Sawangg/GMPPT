@@ -20,7 +20,7 @@ export default function Accueil() {
     const isEnregistreEnonce = useSelector(selectEnregistreEnonce);
 
     useConstructor(() => {
-        if (idModele !== undefined){
+        if (idModele !== null){
             if (!isEnregistreFormule) dispatch(getCategoriesFormules(idModele));
             if (!isEnregistreVariable) dispatch(getAllVariables(idModele));
             if (!isEnregistreEnonce) dispatch(getSujet(idModele));

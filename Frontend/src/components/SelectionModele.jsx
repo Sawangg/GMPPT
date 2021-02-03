@@ -79,7 +79,7 @@ const SelectionModele = ({setClose, open, tard}) => {
     const modele = useSelector(selectModele);
     const actualise = useSelector(selectActualise);
 
-    const [select, setSelect] = useState(modele.idModeleSelectionne);
+    const [select, setSelect] = useState(modele.idModeleSelectionne === null ? "" : modele.idModeleSelectionne);
     const [nouveauModele, setNouveauModele] = useState({etat : false, nom : "", error : false});
     const [openConfirm, setOpenConfirm] = useState(false);
 
@@ -169,7 +169,7 @@ const SelectionModele = ({setClose, open, tard}) => {
             </DialogContent>
             <DialogActions>
                 <Button onClick={() => setOpenConfirm(false)} color="primary">Annuler</Button>
-                <Button onClick={() => dispatch(removeModele(select))} color="primary" autoFocus>OK</Button>
+                <Button onClick={() => dispatch(removeModele(select))} disabled={select === ""} color="primary" autoFocus>OK</Button>
             </DialogActions>
         </Dialog>
         </div>

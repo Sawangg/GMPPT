@@ -26,7 +26,7 @@ export const modeleSlice = createSlice({
   name: "modele",
   initialState: {
     tabName: [],
-    idModeleSelectionne: myStorage.getItem("modele") == null ? null : myStorage.getItem("modele"),
+    idModeleSelectionne: myStorage.getItem("modele"),
     actualise: false
   },
   reducers: {
