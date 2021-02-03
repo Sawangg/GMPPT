@@ -148,3 +148,9 @@ export function etudiantVariablesAPI(idAuth) {
 export function getSujetAPI(idModele) {
     return axios.get(`http://${host}:3001/modele/${idModele}/sujet`, credentials);
 }
+
+//Correction
+
+export function getEssaisAPI(idPromo, idAuth) {
+    return axios.get(`http://${host}:3001/correction/${idPromo}/${idAuth}`, credentials);
+}
