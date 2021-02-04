@@ -13,7 +13,7 @@ import EnregistrementEnonce from '../../components/enonce/EnregistrementEnonce';
 
 import { useDispatch, useSelector } from "react-redux";
 import { selectIdModeleSelectionne } from "../../slice/ModeleSlice";
-import { addQuestion, removeQuestion, handleChangeEnonce, handleChangeQuestion, selectActualiseEnonce, selectTabQuestionLength, selectEnregistreEnonce, getSujet, setQuestions, selectContenuEnonce } from "../../slice/EnoncesSlice";
+import { addQuestion, removeQuestion, handleChangeEnonce, handleChangeQuestion, selectActualiseEnonce, selectTabQuestionLength, selectEnregistreEnonce, getSujet, selectContenuEnonce } from "../../slice/EnoncesSlice";
 import { getCategoriesFormules, selectEnregistreFormule, selectPremiereFormule} from "../../slice/FormulesSlice"
 
 export default function Enonces() {
@@ -36,7 +36,7 @@ export default function Enonces() {
             padding : "1% 2% 2% 2%"
         },
         divQuestionReponse: {
-            marginTop : 60,
+            marginTop : 40,
             display: "flex",
             justifyContent : "space-around",
             flexWrap : "wrap",
@@ -93,12 +93,15 @@ export default function Enonces() {
                 </div>
                 {Array(tabQuestionLength).fill(0).map((_, index) => (
                     <div key={index} className={classes.divQuestion}>
-                        <Fab className={classes.fabDelete} size="small" aria-label="delete"
-                            disabled={tabQuestionLength === 1}
-                            onClick={() => deleteQuestion()}
-                        >
-                            <DeleteIcon/>
-                        </Fab>
+                        <div style={{display : "flex", justifyContent : "space-between"}}>
+                            <p style={{fontSize : "200%", margin : "auto 0"}}>Question {index+1}</p>
+                            <Fab className={classes.fabDelete} size="small" aria-label="delete"
+                                disabled={tabQuestionLength === 1}
+                                onClick={() => deleteQuestion()}
+                            >
+                                <DeleteIcon/>
+                            </Fab>
+                        </div>
                         <div className={classes.divQuestionReponse}>
                             <QuestionEnonce index={index} handleChange={e => dispatch(handleChangeQuestion({contenu:e, index: index}))}/>
                             <ListeReponses index={index} idModele={idModele}/>

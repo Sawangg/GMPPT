@@ -3,7 +3,6 @@ import {
   Button, 
   Toolbar,
   Typography,
-  makeStyles, 
   Tooltip,
   IconButton,
   Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination,
@@ -13,21 +12,17 @@ import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
 import FilterListIcon from '@material-ui/icons/FilterList';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { selectEtudiants } from '../../slice/PromoSlice';
 
 export default function StickyHeadTable() {
 
-  const useStyles = makeStyles((theme) => ({
-    linkConsulter: {
-      textDecoration: "none",
-      color: "white"
-    }
-  }));
-
-  const classes = useStyles();
-
-  const dispatch = useDispatch()
+  // const useStyles = makeStyles((theme) => ({
+  //   linkConsulter: {
+  //     textDecoration: "none",
+  //     color: "white"
+  //   }
+  // }));
 
   const [page, setPage] = useState(0);
 
@@ -59,7 +54,7 @@ export default function StickyHeadTable() {
     }
     else if (column.id === 'modele'){
         return (
-            <Button startIcon={row.id%2 === 0 ? <CheckIcon/> : <CloseIcon/>} variant="outlined" color={row.id%2 === 0 ? "primary" : "warning"}>
+            <Button startIcon={row.id%2 === 0 ? <CheckIcon/> : <CloseIcon/>} variant="outlined" color={row.id%2 === 0 ? "primary" : "default"}>
                 Ajouter les modèles 3D pour ce sujet
             </Button>
         )
@@ -92,7 +87,7 @@ export default function StickyHeadTable() {
   return (
     <Paper>
     <EnhancedTableToolbar/>
-      <TableContainer showToolbar >
+      <TableContainer >
         <Table stickyHeader aria-label="sticky table">
 
           <TableHead>
@@ -109,7 +104,7 @@ export default function StickyHeadTable() {
           {/* affiche les lignes de rowd une par une dans le tableau */}
           <TableBody>
             {/* affiche les lignes 10 par 10 */}
-            {tabEtudiants.filter(elem => filtre ? elem.nom.length > 6 : true).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+            {tabEtudiants.filter(elem => filtre ? elem.id === 87 : true).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
               return (
                 <TableRow hover tabIndex={-1} key={row.nom}>
                   {/* affiche les infos pour chaque colonne d'élément de rows */}

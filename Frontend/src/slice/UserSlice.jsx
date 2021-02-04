@@ -61,12 +61,6 @@ export const userSlice = createSlice({
       state.password = password;
       state.isProf = isProf;
     },
-    changeUserName: (state, action) => {
-      state.name = action.payload;
-    },
-    changePassword: (state, action) => {
-      state.password = action.payload;
-    },
     setError: (state, action) => {
       state.error = action.payload;
     },
@@ -143,9 +137,11 @@ export const {
 
 export const selectUserName = (state) => state.user;
 
-export const selectIsLogin = (state) => state.user.selectIsLogin;
+export const selectIsLogin = (state) => state.user.isLogin;
 
 export const selectError = (state) => state.user.error;
+
+export const selectIsProf = (state) => state.user.isProf;
 
 export const selectJustLogin = (state) => state.user.justLogin;
 
