@@ -82,7 +82,6 @@ export const PromoSlice = createSlice({
             let tabTemp = [...state.tabPromo];
             tabTemp.splice(tabTemp.indexOf(action.meta.arg), 1);
             state.tabPromo = tabTemp;
-            console.log(action.meta.arg);
         },
     }
 })

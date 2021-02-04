@@ -54,7 +54,6 @@ const Enregistrement = ({isEnregistre, action, disabled}) => {
     useEffect(() => {
         if (touche){
             envoyer();
-            console.log("cocoucouc")
         }
     }, [touche, envoyer]); //ne pas ajouter envoyer ! sinon ca ne marche plus
 
@@ -83,7 +82,10 @@ const Enregistrement = ({isEnregistre, action, disabled}) => {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => setOpenDialog(false)} color="primary">Abandonner</Button>
-                    <Button onClick={() => envoyer()} disabled={listePromo.length > 0} color="primary" autoFocus>Enregistrer</Button>
+                    <Button onClick={() => {
+                        envoyer(); 
+                        setOpenDialog(false);
+                    }} disabled={listePromo.length > 0} color="primary" autoFocus>Enregistrer</Button>
                 </DialogActions>
             </Dialog>
          </>
