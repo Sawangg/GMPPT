@@ -23,6 +23,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getCategoriesFormules } from "../slice/FormulesSlice";
 import { getAllVariables } from "../slice/VariablesAleatoiresSlice"
 import { getSujet } from "../slice/EnoncesSlice";
+import { getAllUnite } from '../slice/UniteSlice';
 import { selectionnerModele, addNewModele, removeModele, selectModele, selectActualise} from "../slice/ModeleSlice";
 
 //setClose pour fermer la PopUp (fonction)
@@ -96,6 +97,7 @@ const SelectionModele = ({setClose, open, tard}) => {
             dispatch(getCategoriesFormules(select));
             dispatch(getAllVariables(select));
             dispatch(getSujet(select));
+            dispatch(getAllUnite());
         }
         setClose();
     }

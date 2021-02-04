@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {TextField, Button, makeStyles, InputLabel, FormControl} from '@material-ui/core';
+import {TextField, Button, makeStyles, FormControl} from '@material-ui/core';
 import { Redirect } from "react-router-dom";
 import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
 import VpnKeyOutlinedIcon from '@material-ui/icons/VpnKeyOutlined';
@@ -10,9 +10,8 @@ import useConstructor from '../components/use/useContructor';
 import InputPassword from '../components/InputPassword';
 
 import { useDispatch } from "react-redux";
-import { userDetails, changeUserName, changePassword, loginUser, selectError, setError } from "../slice/UserSlice";
+import { userDetails, loginUser, selectError, setError, selectIsProf, selectIsLogin } from "../slice/UserSlice";
 import { useSelector } from "react-redux";
-import { selectUserName } from "../slice/UserSlice";
 
 export default function Login(){
 
@@ -63,10 +62,12 @@ export default function Login(){
     const classes = useStyles();
 
     const dispatch = useDispatch();
-    const user = useSelector(selectUserName);
     const error = useSelector(selectError);
+    const isProf = useSelector(selectIsProf);
+    const isLogin = useSelector(selectIsLogin);
 
     const [openPopUp, setOpenPopUp] = useState(false);
+    const [loginConnect, setLoginConnect] = useState({user : "", pwd : ""});
 
     useConstructor(() => {
         dispatch(userDetails())
@@ -77,24 +78,24 @@ export default function Login(){
     }, [error])
 
     const connexionRedirection = () => {
-        if (user.isLogin){
-            return user.isProf ? <Redirect push to='/prof/home'/> : <Redirect push to='/etu/home'/>
+        if (isLogin){
+            return isProf ? <Redirect push to='/prof/home'/> : <Redirect push to='/etu/home'/>
         } 
         return null;
     }
 
     const onChangeUserName = (e) => {
         dispatch(setError(false));
-        dispatch(changeUserName(e.target.value));
+        setLoginConnect({user : e.target.value, pwd : loginConnect.pwd})
     }
 
     const onChangePassword = (e) => {
         dispatch(setError(false));
-        dispatch(changePassword(e.target.value));
+        setLoginConnect({user : loginConnect.user, pwd : e.target.value})
     }
 
     return (
-        (user.isLogin === undefined) ? null : 
+        (isLogin === undefined) ? null : 
             <div className={classes.divLogin}>
                 <Particules/>
                 <div className={classes.backgroundLogin}>
@@ -102,22 +103,22 @@ export default function Login(){
                             <AccountCircleOutlinedIcon className={classes.iconLogin}/>
                             <FormControl size="small" variant="outlined">
                                 <TextField id="outlined-login" className={classes.textField} autoFocus size="small" variant="outlined" required error={error}
-                                           value={user.name}
+                                           value={loginConnect.user}
                                            label="Login"
                                            onChange={e => onChangeUserName(e)}
-                                           onKeyPress={(e)=>{if (e.code === "Enter")  dispatch(loginUser({name : user.name, password : user.password}))}}
+                                           onKeyPress={(e)=>{if (e.code === "Enter")  dispatch(loginUser({name : loginConnect.user, password : loginConnect.pwd}))}}
                                 />
                             </FormControl>
                         </div>
                         <div className={classes.fieldLogin}>
                             <VpnKeyOutlinedIcon className={classes.iconPwd}/>
                             <InputPassword label={"Mot de passe"} error={error} 
-                                onKeyPress={e => {if (e.code === "Enter")  dispatch(loginUser({name : user.name, password : user.password}))}}  
-                                value={user.password} 
+                                onKeyPress={e => {if (e.code === "Enter")  dispatch(loginUser({name : loginConnect.user, password : loginConnect.pwd}))}}  
+                                value={loginConnect.pwd} 
                                 onChange={e => onChangePassword(e)}
                             />
                         </div>
-                    <Button type="submit" className={classes.buttonConnexion} variant="outlined" onClick={() =>  dispatch(loginUser({name : user.name, password : user.password}))}>Connexion</Button>
+                    <Button type="submit" className={classes.buttonConnexion} variant="outlined" onClick={() =>  dispatch(loginUser({name : loginConnect.user, password : loginConnect.pwd}))}>Connexion</Button>
                     <PopUp severity="error" message="Identification invalide" open={openPopUp} handleClose={e => setOpenPopUp(false)}/>
                 </div>
                 {connexionRedirection()}

@@ -54,8 +54,6 @@ export default function VariablesAleatoires() {
     const isActualise = useSelector(selectActualise)
     const idModele = useSelector(selectIdModeleSelectionne);
 
-    console.log(isEnregistre, idModele);
-    
     useConstructor(() => {
         //si pas encore récupérées de la BD 
         if (!isEnregistre) {

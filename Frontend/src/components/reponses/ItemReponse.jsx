@@ -4,7 +4,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 
 import { useDispatch, useSelector } from "react-redux";
 import { changeReponse, peutSupprimer, deleteReponse, setUnite} from '../../slice/RepondreQuestionsSlice'
-import { selectUnites } from '../../slice/UniteSlice'
+// import { selectUnites } from '../../slice/UniteSlice'
 
 import ChoixUnite from '../unite/ChoixUnite';
 import { afficherUnites } from '../unite/UniteFunctions'

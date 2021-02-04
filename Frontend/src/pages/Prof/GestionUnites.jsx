@@ -1,4 +1,4 @@
-import React , {useState} from 'react'
+import React from 'react'
 
 import { Button, Table, TableCell, TableHead, TableRow, TableBody, TextField, Typography, IconButton } from '@material-ui/core';
 import {makeStyles} from '@material-ui/core';
@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import useConstructor from '../../components/use/useContructor';
 
 import {getAllUnite, selectUnites, enregistreUnites, selectActualise, addUnite, setIndexEnModif,
-    selectIndexEnMofid, changeNomComplet, changeAbreviation, deleteUnite, selectEnregistre, setEnregistre} from '../../slice/UniteSlice'
+    selectIndexEnMofid, changeNomComplet, changeAbreviation, deleteUnite, selectEnregistreUnite, setEnregistre} from '../../slice/UniteSlice'
 import PopUp from '../../components/PopUp';
 
 export default function GestionUnites(){
@@ -30,18 +30,18 @@ export default function GestionUnites(){
 
     const classes = useStyles();
 
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
 
-    const tabUnites = useSelector(selectUnites)
+    const tabUnites = useSelector(selectUnites);
 
-    const actualise = useSelector(selectActualise)
+    const actualise = useSelector(selectActualise);
 
-    const indexEnModif = useSelector(selectIndexEnMofid)
+    const indexEnModif = useSelector(selectIndexEnMofid);
 
-    const isEnregistre = useSelector(selectEnregistre)
+    const isEnregistre = useSelector(selectEnregistreUnite);
 
     useConstructor(()=> {
-        if (!actualise){
+        if (!isEnregistre){
             dispatch(getAllUnite())
         };
     })
@@ -160,7 +160,7 @@ export default function GestionUnites(){
             <Typography variant="h1">Gestion des unités</Typography>
             <hr className={classes.hr}/>
         
-            <Button onClick={handleAjouterUnite}>
+            <Button variant="outlined" onClick={handleAjouterUnite} style={{marginLeft : 80}}>
                 Ajouter une unité
             </Button>
 
@@ -175,14 +175,13 @@ export default function GestionUnites(){
                 <TableBody>
                     {tabUnites.map((unite, index) =>{
                         return(
-                            <TableRow>
+                            <TableRow key={index}>
                                 {afficherUnite(unite, index)}
                             </TableRow>
                         )
                     })}
                 </TableBody>
             </Table>
-            {console.log(isEnregistre)}
             <PopUp 
                 open={ indexEnModif < 0 && !isEnregistre } 
                 handleClose={ () => enregistrer() }

@@ -56,11 +56,13 @@ export default function RepondreQuestions(){
         if (!isEnregistre){
             dispatch(getEtudiantModele())
             .then(modele => {
-                dispatch(getSujet(modele.payload[0].id_modele))
-                .then((sujet) => {
-                    dispatch(etudiantVariables(sujet.payload.id_auth));
-                    dispatch(getModele3D(sujet.payload.id_auth));
-                });
+                if (modele.payload[0] !== undefined){
+                    dispatch(getSujet(modele.payload[0].id_modele))
+                    .then((sujet) => {
+                        dispatch(etudiantVariables(sujet.payload.id_auth));
+                        dispatch(getModele3D(sujet.payload.id_auth));
+                    });
+                } else alert("erreur, pas de sujet asoscié")
             })
         }
     });

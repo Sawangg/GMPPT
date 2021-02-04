@@ -10,7 +10,7 @@ import CloseIcon from '@material-ui/icons/Close';
 
 import { useDispatch, useSelector } from 'react-redux'
 import { selectEssais, selectMessage, selectReponsesJustes, selectEtudiantConsulter } from '../../slice/ConsulterSlice'
-import { setEssaisForTest, changeMessage, getEssaisDB } from '../../slice/ConsulterSlice'
+import { changeMessage, getEssaisDB } from '../../slice/ConsulterSlice'
 
 import EssaiEtudiant from '../../components/correction/EssaiEtudiant'
 import Message from '../../components/correction/Message';
