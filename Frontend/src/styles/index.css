@@ -1,10 +1,9 @@
-@font-face{
+@font-face {
   font-family: "Amaranth";
   src: url('./font/Amaranth Regular 400.ttf');
 }
 
 body {
-  margin: 0;
   font-family: 'Amaranth';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -15,7 +14,17 @@ body {
   margin: auto !important;
 }
 
-.linkNone{
+.linkNone {
   text-decoration: none;
   color : black;
+}
+
+#sujet table {
+  border-collapse: collapse;
+}
+
+#sujet td {
+  border: 1px solid black;
+  padding: 3px 10px;
+  text-align: center;
 }

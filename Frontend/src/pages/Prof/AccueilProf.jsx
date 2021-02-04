@@ -33,7 +33,6 @@ export default function Accueil() {
     return (
         <div>
             <ParticulesFond/>
-            <Etapes/>
         </div>
     );
 }

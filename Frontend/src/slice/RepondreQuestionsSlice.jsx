@@ -139,7 +139,7 @@ export const reponseSlice = createSlice({
                     indexQuestion : question.id_question,
                     enonce : question.contenu,
                     nbMaxReponses : 5,
-                    justification : "coucou", //question.justification A AJOUTER !!!!
+                    justification : "", //question.justification A AJOUTER !!!!
                     tabReponses : reponsesTab
                 });
             });
