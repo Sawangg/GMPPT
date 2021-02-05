@@ -104,7 +104,7 @@ export default function RepondreQuestions(){
         //ajout image
         const img = new Image();
         img.src = reponses.image1;
-        doc.addImage(img, 'jpg', 10, 78, 50, 15);
+        //doc.addImage(img, 'JPEG', 10, 78, 50, 15); //PROBLEME, NE RECONNAIS PAS QUE C'EST UNE IMAGE
 
         const number_of_pages = doc.internal.getNumberOfPages();
         for (let i = 1; i <= number_of_pages; ++i) {

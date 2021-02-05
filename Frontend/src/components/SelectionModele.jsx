@@ -92,7 +92,7 @@ const SelectionModele = ({setClose, open, tard}) => {
     };
 
     const choisirModele = () => {
-        if (select !== modele.idModeleSelectionne) {
+        if (select.toString() !== modele.idModeleSelectionne.toString()) { //to string car pas même type quand recupere depuis le cache
             dispatch(selectionnerModele(select));
             dispatch(getCategoriesFormules(select));
             dispatch(getAllVariables(select));
