@@ -94,6 +94,10 @@ export default function Login(){
         setLoginConnect({user : loginConnect.user, pwd : e.target.value})
     }
 
+    const connectClick = () => {
+        dispatch(loginUser({name : loginConnect.user, password : loginConnect.pwd}));
+    }
+
     return (
         (isLogin === undefined) ? null : 
             <div className={classes.divLogin}>
@@ -106,20 +110,20 @@ export default function Login(){
                                            value={loginConnect.user}
                                            label="Login"
                                            onChange={e => onChangeUserName(e)}
-                                           onKeyPress={(e)=>{if (e.code === "Enter")  dispatch(loginUser({name : loginConnect.user, password : loginConnect.pwd}))}}
+                                           onKeyPress={(e)=>{if (e.code === "Enter") connectClick()}}
                                 />
                             </FormControl>
                         </div>
                         <div className={classes.fieldLogin}>
                             <VpnKeyOutlinedIcon className={classes.iconPwd}/>
                             <InputPassword label={"Mot de passe"} error={error} 
-                                onKeyPress={e => {if (e.code === "Enter")  dispatch(loginUser({name : loginConnect.user, password : loginConnect.pwd}))}}  
+                                onKeyPress={e => {if (e.code === "Enter") connectClick()}}  
                                 value={loginConnect.pwd} 
                                 onChange={e => onChangePassword(e)}
                             />
                         </div>
-                    <Button type="submit" className={classes.buttonConnexion} variant="outlined" onClick={() =>  dispatch(loginUser({name : loginConnect.user, password : loginConnect.pwd}))}>Connexion</Button>
-                    <PopUp severity="error" message="Identification invalide" open={openPopUp} handleClose={e => setOpenPopUp(false)}/>
+                    <Button type="submit" className={classes.buttonConnexion} variant="outlined" onClick={() => connectClick()}>Connexion</Button>
+                    <PopUp severity="error" message="Identification invalide" open={openPopUp} handleClose={() => setOpenPopUp(false)}/>
                 </div>
                 {connexionRedirection()}
             </div>

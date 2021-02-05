@@ -46,7 +46,7 @@ export default function MenuProfil() {
         if (user.name !== "" && user.image === undefined && myStorage.getItem(user.name) === null) dispatch(getUserImage(user.name));
 
         //recupere les modeles
-        if (!actualiseModele) dispatch(getModele())
+        if (!actualiseModele && user.isProf) dispatch(getModele())
 
         //recupère les promo
         if (!isEnregistrePromo) dispatch(getAllPromo());
@@ -54,7 +54,7 @@ export default function MenuProfil() {
 
   return (
     <div className={classes.divMenuProfil}>
-        <Tooltip disableHoverListener={modele === undefined ? true : false} title={modele === undefined ? "" : modele.nom}>
+        <Tooltip disableHoverListener={modele === undefined ? true : false} title={modele === undefined || !user.isProf ? "" : modele.nom}>
         <IconButton aria-controls="simple-menu" aria-haspopup="true" onClick={e => setOpenLocation(e.currentTarget)}>
                 {user.image === undefined
                     ?<Avatar className={classes.avatar}>{user.name.substring(0, 1).toUpperCase()}</Avatar>
