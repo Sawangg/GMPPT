@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { addUniteAPI, getAllUniteAPI, deleteUniteAPI } from "../utils/api.js";
+import { addUniteAPI, getAllUniteAPI } from "../utils/api.js";
 import _ from "lodash"
 
 export const getAllUnite = createAsyncThunk("unite/getAllUnite", async () => {
@@ -51,7 +51,8 @@ export const uniteSlice = createSlice({
     //supprime l'unité dans le tableau
     //paramètres : index
     deleteUnite : (state, action) =>{
-      let {index} = action.payload
+      let index = action.payload
+      console.log(action.payload)
       state.tabUnites.splice(index, 1)
       state.enregistre = false
     },

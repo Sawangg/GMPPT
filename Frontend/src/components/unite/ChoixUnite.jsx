@@ -7,7 +7,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 
 
 import { useDispatch, useSelector } from 'react-redux';
-import { selectUnites, getAllUnite, setTest } from '../../slice/UniteSlice'
+import { selectUnites, getAllUnite } from '../../slice/UniteSlice'
 import useConstructor from '../use/useContructor';
 
 //props

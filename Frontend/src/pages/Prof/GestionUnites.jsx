@@ -2,7 +2,6 @@ import React from 'react'
 
 import { Button, Table, TableCell, TableHead, TableRow, TableBody, TextField, Typography, IconButton } from '@material-ui/core';
 import {makeStyles} from '@material-ui/core';
-import _ from 'lodash'
 import DeleteIcon from '@material-ui/icons/Delete';
 import CreateIcon from '@material-ui/icons/Create';
 import CircleLoader from "react-spinners/CircleLoader";
