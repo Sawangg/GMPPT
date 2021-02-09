@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import {Button, makeStyles, Fab, Typography} from "@material-ui/core";
 import CircleLoader from "react-spinners/CircleLoader";
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -14,7 +14,7 @@ import EnregistrementEnonce from '../../components/enonce/EnregistrementEnonce';
 import { useDispatch, useSelector } from "react-redux";
 import { selectIdModeleSelectionne } from "../../slice/ModeleSlice";
 import { addQuestion, removeQuestion, handleChangeEnonce, handleChangeQuestion, selectActualiseEnonce, selectTabQuestionLength, selectEnregistreEnonce, getSujet, selectContenuEnonce } from "../../slice/EnoncesSlice";
-import { getCategoriesFormules, selectEnregistreFormule, selectPremiereFormule} from "../../slice/FormulesSlice"
+import { getCategoriesFormules, selectEnregistreFormule, selectPremiereFormule, selectChangement} from "../../slice/FormulesSlice"
 
 export default function Enonces() {
 
@@ -65,6 +65,7 @@ export default function Enonces() {
     const premierFormule = useSelector(selectPremiereFormule);
     const tabQuestionLength = useSelector(selectTabQuestionLength);
     const enTete = useSelector(selectContenuEnonce);
+    const changementFormule = useSelector(selectChangement);
 
     useConstructor(() => {
         if (!isEnregistreEnonce) {
@@ -75,6 +76,12 @@ export default function Enonces() {
             if (!isEnregistreEnonce) dispatch(getSujet(idModele));
         }
     });
+
+    useEffect(() => {
+        if (changementFormule) {
+            dispatch(getCategoriesFormules(idModele));
+        }
+    }, [changementFormule, dispatch, idModele]);
 
     useUnload(!isEnregistreEnonce);
 

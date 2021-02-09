@@ -36,6 +36,7 @@ export const formuleSlice = createSlice({
     ],
     actualise: false,
     enregistre: false,
+    changement: false
   },
   reducers: {
     addCategorie: (state) => {
@@ -59,6 +60,7 @@ export const formuleSlice = createSlice({
     removeCategorie: (state, action) => {
       state.tab.splice(action.payload, 1);
       state.enregistre = false;
+      state.changement = true;
     },
     changeModifCategorie: (state, action) => {
       state.tab[action.payload].modif = !state.tab[action.payload].modif;
@@ -95,6 +97,7 @@ export const formuleSlice = createSlice({
       state.saveElement = {elem : state.tab[indexCategorie].tabFormule[indexFormule], indexCategorie : indexCategorie, indexFormule : indexFormule};
       state.tab[indexCategorie].tabFormule.splice(indexFormule, 1);
       state.enregistre = false;
+      state.changement = true;
     },
     undoFormule: (state) => {
       state.tab[state.saveElement.indexCategorie].tabFormule.splice(state.saveElement.indexFormule, 0, {
@@ -102,6 +105,7 @@ export const formuleSlice = createSlice({
         formule: state.saveElement.elem.formule,
         modif: state.saveElement.elem.modif,
       });
+      state.changement = true;
     },
     changePositionFormule: (state, action) => {
       const { indexCategorie, indexFormule, up } = action.payload;
@@ -115,6 +119,7 @@ export const formuleSlice = createSlice({
         state.tab[indexCategorie].tabFormule[indexFormule] = save;
       }
       state.enregistre = false;
+      state.changement = true;
     },
     enregistre: (state) => {
       state.enregistre = true;
@@ -141,6 +146,7 @@ export const formuleSlice = createSlice({
         ];
         state.actualise = true;
         state.enregistre = true;
+        state.changement = false;
       }
     },
     [getCategoriesFormules.fulfilled]: (state, action) => {
@@ -163,6 +169,7 @@ export const formuleSlice = createSlice({
         });
         state.actualise = true;
         state.enregistre = true;
+        state.changement = false;
         state.tab = array;
     },
     [enregistrerFormules.fulfilled]: (state) => {
@@ -188,5 +195,7 @@ export const selectCategorie = (index) => (state) => state.formule.tab[index];
 export const selectTabFormuleLength = (index) => (state) => state.formule.tab[index].tabFormule.length;
 
 export const selectPremiereFormule = (state) => state.formule.tab[0].tabFormule[0].nomFormule;
+
+export const selectChangement = (state) => state.formule.changement;
 
 export default formuleSlice.reducer;
