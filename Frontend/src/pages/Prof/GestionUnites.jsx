@@ -46,22 +46,26 @@ export default function GestionUnites(){
     })
 
     //permet de savoir si ce nom est utilisé une seule fois dans le tabUnites
-    //reste l'abreviation à faire
-    //oui cette méthode est déguelasse et j'en suis fier !
-    const modifIsNotUnique = () =>{
-        let verif = true
-        
-        if (indexEnModif >=0 ){
-            for (let i =0 ; i<tabUnites.length; i++){
-                verif = (i === indexEnModif) || 
-                    (tabUnites[i].nom !== tabUnites[indexEnModif].nom &&
-                    tabUnites[i].abrev !== tabUnites[indexEnModif].abrev)
-            }
-        }
+    //renvoie aussi une valeur fausse si les chaines sont vides
+    const modifIsUnique = () =>{
 
-        console.log(verif)
+        if (indexEnModif < 0){ // si il n'y pas de champ qui est en train d'être modifié
+            return true
+        }else if (tabUnites[indexEnModif].abrev.length === 0 ||
+            tabUnites[indexEnModif].nom.length === 0){ // si l'un des champ est vide
+            return false
+        };
 
-        return !verif
+
+        for (let i =0 ; i<tabUnites.length; i++){ 
+            let verif = (i === indexEnModif) || 
+                (tabUnites[i].nom !== tabUnites[indexEnModif].nom &&
+                tabUnites[i].abrev !== tabUnites[indexEnModif].abrev)
+
+            if (!verif) return false // renvoie faux si le nom ou l'abreviation est retrouvée autre part
+        };
+
+        return true // retourne vrai par défaut
         
     }
 
@@ -108,17 +112,17 @@ export default function GestionUnites(){
         dispatch(setIndexEnModif(-1))
     }
 
-    const buttonsUnite = (index) =>{
+    const buttonsUniteSansModif = (index) =>{
         return(
             tabUnites[index].nom !== "Sans Unité" 
             ?
             <div>
-            <IconButton onClick={e=>handleDeleteUnite(index)}>
-                <DeleteIcon />
-            </IconButton>
-            <IconButton onClick={e=>handleModifUnite(index)} disabled={modifIsNotUnique()}>
-                <CreateIcon />
-            </IconButton>
+                <IconButton onClick={e=>handleModifUnite(index)} disabled={!modifIsUnique()}>
+                    <CreateIcon />
+                </IconButton>
+                <IconButton onClick={e=>handleDeleteUnite(index)} disabled={!modifIsUnique()}>
+                    <DeleteIcon />
+                </IconButton>
             </div>
             :
             null
@@ -132,7 +136,7 @@ export default function GestionUnites(){
                 <>
                 <TableCell> { unite.nom } </TableCell>
                 <TableCell> { unite.abrev } </TableCell>
-                <TableCell> { buttonsUnite(index) } </TableCell>
+                <TableCell> { buttonsUniteSansModif(index) } </TableCell>
                 </>
             :
                 <>
@@ -145,8 +149,11 @@ export default function GestionUnites(){
                         onChange={e=>handleChangeAbreviation(index, e)}/>
                 </TableCell>
                 <TableCell>
-                    <IconButton onClick={e=>handleSaveLocal(index)} disabled={modifIsNotUnique()}>
+                    <IconButton onClick={e=>handleSaveLocal(index)} disabled={!modifIsUnique()}>
                         <SaveIcon />
+                    </IconButton>
+                    <IconButton onClick={e=>handleDeleteUnite(index)}>
+                        <DeleteIcon />
                     </IconButton>
                 </TableCell>
                 </>
@@ -161,8 +168,6 @@ export default function GestionUnites(){
         <div>
             <Typography variant="h1">Gestion des unités</Typography>
             <hr className={classes.hr}/>
-
-            {console.log(modifIsNotUnique())}
         
             <Button variant="outlined" onClick={handleAjouterUnite} style={{marginLeft : 80}}>
                 Ajouter une unité
