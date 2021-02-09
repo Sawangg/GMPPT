@@ -9,7 +9,7 @@ import {
   IconButton,
   makeStyles
 } from "@material-ui/core";
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import HomeOutlinedIcon from "@material-ui/icons/HomeOutlined";
 import FunctionsIcon from '@material-ui/icons/Functions';
 import SchoolOutlinedIcon from "@material-ui/icons/SchoolOutlined";

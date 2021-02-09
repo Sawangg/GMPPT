@@ -71,15 +71,15 @@ const ItemCategorie = ({index, length}) => {
 
     const dispatch = useDispatch();
 
-    const item = useSelector(selectCategorie(index))
+    const item = useSelector(selectCategorie(index));
 
     const change = useCallback(() => {
         dispatch(changeModifCategorie(index));
     }, [dispatch, index]);
 
     const remove = useCallback(() => {
-        dispatch(removeCategorie(index)); 
         setOpen(false);
+        dispatch(removeCategorie(index)); 
     }, [dispatch, index]);
 
     //Quand les champs sont a remplir

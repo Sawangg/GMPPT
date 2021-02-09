@@ -122,24 +122,22 @@ export const enoncesReducer = createSlice({
         },
         [getSujet.fulfilled]: (state, action) => {
             let question = [];
-            if (!state.enregistre){
-                state.enonceContenu = action.payload.enonce;
-                action.payload.questions.forEach(element => {
-                    let reponse = [];
-                    element.reponses.forEach(elem => {
-                        reponse.push({ 
-                            selectCat : elem.selectCat,
-                            selectForm: elem.selectForm,
-                            margeErreur : elem.margeErreur,
-                            unite: elem.unite
-                        });
+            state.enonceContenu = action.payload.enonce;
+            action.payload.questions.forEach(element => {
+                let reponse = [];
+                element.reponses.forEach(elem => {
+                    reponse.push({ 
+                        selectCat : elem.selectCat,
+                        selectForm: elem.selectForm,
+                        margeErreur : elem.margeErreur,
+                        unite: elem.unite
                     });
-                    question.push({contenu : element.contenu, reponse : reponse});
                 });
-                state.question = question;
-                state.actualise = true;
-                state.enregistre = true;
-            }
+                question.push({contenu : element.contenu, reponse : reponse});
+            });
+            state.question = question;
+            state.actualise = true;
+            state.enregistre = true;
         },
         [setQuestions.fulfilled]: (state) => {
             state.enregistre = true;
