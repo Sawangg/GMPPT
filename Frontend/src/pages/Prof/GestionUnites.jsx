@@ -48,17 +48,20 @@ export default function GestionUnites(){
     //permet de savoir si ce nom est utilisé une seule fois dans le tabUnites
     //reste l'abreviation à faire
     //oui cette méthode est déguelasse et j'en suis fier !
-    const modifIsUnique = () =>{
-
+    const modifIsNotUnique = () =>{
         let verif = true
         
-        for (let i =0 ; i<tabUnites.length; i++){
-            verif = (i === indexEnModif) || 
-                (tabUnites[i].nom !== tabUnites[indexEnModif].nom &&
-                tabUnites[i].abrev !== tabUnites[indexEnModif].abrev)
+        if (indexEnModif >=0 ){
+            for (let i =0 ; i<tabUnites.length; i++){
+                verif = (i === indexEnModif) || 
+                    (tabUnites[i].nom !== tabUnites[indexEnModif].nom &&
+                    tabUnites[i].abrev !== tabUnites[indexEnModif].abrev)
+            }
         }
 
-        return verif
+        console.log(verif)
+
+        return !verif
         
     }
 
@@ -113,7 +116,7 @@ export default function GestionUnites(){
             <IconButton onClick={e=>handleDeleteUnite(index)}>
                 <DeleteIcon />
             </IconButton>
-            <IconButton onClick={e=>handleModifUnite(index)}>
+            <IconButton onClick={e=>handleModifUnite(index)} disabled={modifIsNotUnique()}>
                 <CreateIcon />
             </IconButton>
             </div>
@@ -142,7 +145,7 @@ export default function GestionUnites(){
                         onChange={e=>handleChangeAbreviation(index, e)}/>
                 </TableCell>
                 <TableCell>
-                    <IconButton onClick={e=>handleSaveLocal(index)}>
+                    <IconButton onClick={e=>handleSaveLocal(index)} disabled={modifIsNotUnique()}>
                         <SaveIcon />
                     </IconButton>
                 </TableCell>
@@ -158,6 +161,8 @@ export default function GestionUnites(){
         <div>
             <Typography variant="h1">Gestion des unités</Typography>
             <hr className={classes.hr}/>
+
+            {console.log(modifIsNotUnique())}
         
             <Button variant="outlined" onClick={handleAjouterUnite} style={{marginLeft : 80}}>
                 Ajouter une unité
