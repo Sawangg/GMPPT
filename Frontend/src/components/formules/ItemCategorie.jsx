@@ -79,8 +79,8 @@ const ItemCategorie = ({index, length}) => {
 
     const remove = useCallback(() => {
         setOpen(false);
-        dispatch(removeCategorie(index)); 
-    }, [dispatch, index]);
+        if (open) dispatch(removeCategorie(index)); 
+    }, [dispatch, index, open]);
 
     //Quand les champs sont a remplir
     const field = () => {
