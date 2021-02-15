@@ -106,23 +106,6 @@ export default function Promo() {
         setSelect(e.target.value)
         dispatch(getEtudiantsPromo(e.target.value.idPromo))
     }
-    
-    const displayEtu = () => {
-        return (
-            <div>
-                {tabEtudiants.map((e) => (
-                    <div className={classes.mapDisplayEtu}>
-                        <p>{e.prenom}</p>
-                        <p>{e.nom}</p>
-                        <p>mot de passe</p>
-                        <Button>Modifier</Button>
-                    </div>
-                ))}
-                <Button variant="contained" color="primary">Ajouter un étudiant</Button>
-            </div>
-            
-        )
-    }
 
     return (
         <div>
