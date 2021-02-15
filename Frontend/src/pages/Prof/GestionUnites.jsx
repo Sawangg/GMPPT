@@ -22,8 +22,36 @@ export default function GestionUnites(){
             marginBottom: "2%"
         },
         tableauUnite : {
-            width : "40%",
-            margin : "auto"
+            width : "80%",
+            margin : "auto",
+            boxShadow: "0px 8px 20px -5px rgba(0,0,0,0.69)",
+        },
+        addButton: {
+            marginLeft: "3%",
+            marginBottom: "2%"
+        },
+        deleteButton : {
+            backgroundColor: theme.palette.error.main,
+            "&:hover": {
+                backgroundColor: theme.palette.error.dark
+            },
+            color: "white",
+            boxShadow: "0px 8px 20px -5px rgba(0,0,0,0.69)",
+        },
+        modifButton : {
+            backgroundColor: theme.palette.primary.light,
+            "&:hover": {
+                backgroundColor: theme.palette.secondary.main
+            },
+            color: "black",
+            boxShadow: "0px 8px 20px -5px rgba(0,0,0,0.69)",
+            marginRight: "10%"
+        },
+        tableCell: {
+            textAlign: "center"
+        },
+        tableRow: {
+            backgroundColor: theme.palette.secondary.light
         }
     }));
 
@@ -113,12 +141,12 @@ export default function GestionUnites(){
             tabUnites[index].nom !== "Sans Unité" 
             ?
             <div>
-            <IconButton onClick={e=>handleDeleteUnite(index)}>
-                <DeleteIcon />
-            </IconButton>
-            <IconButton onClick={e=>handleModifUnite(index)} disabled={modifIsNotUnique()}>
-                <CreateIcon />
-            </IconButton>
+                <IconButton className={classes.modifButton} onClick={e=>handleModifUnite(index)} disabled={modifIsNotUnique()}>
+                    <CreateIcon />
+                </IconButton>
+                <IconButton className={classes.deleteButton} onClick={e=>handleDeleteUnite(index)}>
+                    <DeleteIcon />
+                </IconButton>
             </div>
             :
             null
@@ -130,9 +158,9 @@ export default function GestionUnites(){
         return(
             index !== indexEnModif ?
                 <>
-                <TableCell> { unite.nom } </TableCell>
-                <TableCell> { unite.abrev } </TableCell>
-                <TableCell> { buttonsUnite(index) } </TableCell>
+                <TableCell className={classes.tableCell}> { unite.nom } </TableCell>
+                <TableCell className={classes.tableCell}> { unite.abrev } </TableCell>
+                <TableCell className={classes.tableCell}> { buttonsUnite(index) } </TableCell>
                 </>
             :
                 <>
@@ -164,15 +192,15 @@ export default function GestionUnites(){
 
             {console.log(modifIsNotUnique())}
         
-            <Button variant="outlined" onClick={handleAjouterUnite} style={{marginLeft : 80}}>
+            <Button className={classes.addButton} variant="contained" color="primary" onClick={handleAjouterUnite}>
                 Ajouter une unité
             </Button>
 
             <Table className={classes.tableauUnite}>
                 <TableHead>
-                    <TableRow>
-                        <TableCell> Nom Complet </TableCell>
-                        <TableCell> Abréviation </TableCell>
+                    <TableRow className={classes.tableRow}>
+                        <TableCell className={classes.tableCell}> Nom Complet </TableCell>
+                        <TableCell className={classes.tableCell}> Abréviation </TableCell>
                         <TableCell /> {/*  Pour les boutons */}
                     </TableRow>
                 </TableHead>
