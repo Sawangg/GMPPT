@@ -92,7 +92,8 @@ const SelectionModele = ({setClose, open, tard}) => {
     };
 
     const choisirModele = () => {
-        if (select.toString() !== modele.idModeleSelectionne.toString()) { //to string car pas même type quand recupere depuis le cache
+        console.log(select)
+        if (select != modele.idModeleSelectionne) { // Le toString ne fonctionne pas ici (voir si cela pose probleme mais fix l'erreur fatal temporairement)
             dispatch(selectionnerModele(select));
             dispatch(getCategoriesFormules(select));
             dispatch(getAllVariables(select));
