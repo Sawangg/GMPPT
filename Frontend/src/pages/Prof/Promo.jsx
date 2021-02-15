@@ -5,9 +5,10 @@ import PropagateLoader from "react-spinners/PropagateLoader";
 
 import AssociationModele from '../../components/promo/DialogAssociationModele';
 import AjoutListeEtu from '../../components/promo/AjoutListeEtu';
+import Table from '../../components/promo/TableEtudiant';
 import useConstructor from '../../components/use/useContructor'
 
-import { getAllPromo, selectPromo, selectEnregistrePromo, addPromo, removePromo, getEtudiantsPromo, selectEtudiants } from "../../slice/PromoSlice";
+import { getAllPromo, selectPromo, selectEnregistrePromo, addPromo, removePromo, getEtudiantsPromo } from "../../slice/PromoSlice";
 import { useSelector, useDispatch } from "react-redux";
 
 export default function Promo() {
@@ -86,8 +87,6 @@ export default function Promo() {
 
     const isEnregistre = useSelector(selectEnregistrePromo);
     const tabPromo = useSelector(selectPromo);
-    const tabEtudiants = useSelector(selectEtudiants)
-
 
     useConstructor(() => {
         if (!isEnregistre) dispatch(getAllPromo());
@@ -107,7 +106,7 @@ export default function Promo() {
         setSelect(e.target.value)
         dispatch(getEtudiantsPromo(e.target.value.idPromo))
     }
-
+    
     const displayEtu = () => {
         return (
             <div>
@@ -156,7 +155,7 @@ export default function Promo() {
                                 <Button className={classes.button} disabled={select===""} variant="contained" color="primary" onClick={() => setListEtu(true)}>Ajouter une liste d'étudiants</Button>
                                 <AssociationModele selectPromo={select.idPromo} open={assoModele} setClose={() => setAssoModele(false)} />
                                 <AjoutListeEtu selectPromo={select.idPromo} open={listEtu} setClose={() => setListEtu(false)}/>
-                                {select !== "" ? displayEtu() : null}
+                                {select !== "" ? <Table/> : null}
                             </>
                             :<div className={classes.divNomPromo}>
                                 <TextField autoFocus size="small" label="Nom de la promo" variant="outlined" required value={nouvellePromo} onChange={e => setNouvellePromo(e.target.value)}/>

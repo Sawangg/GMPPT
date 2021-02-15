@@ -1,13 +1,21 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { getEssaisAPI } from "../utils/api.js";
 import _ from 'lodash'
+
+export const getEssaisDB = createAsyncThunk("correction/getEssaisDB", 
+async (props) => {
+    const response = await getEssaisAPI(props.idPromo, props.idEtudiant);
+    return response.data;
+}) 
 
 export const consulterSlice = createSlice({
     name: 'consulter',
     initialState: {
         etudiant : {
+            id_promo : undefined,
             nom : "",
             prenom : "",
-            id_auth : undefined,
+            id_etudiant : undefined,
         },
         tabEssais : [{
             corrige : false,
@@ -88,16 +96,34 @@ export const consulterSlice = createSlice({
         setCorrigeTrue : (state, action) =>{
             let indexE = action.payload
             state.tabEssais[indexE].corrige = true;
+        },
+        //met les infos des étudiants
+        //paramètres : id, nom et prénom de l'étudiant
+        setEtudiantConsulter : (state, action) =>{
+            let {id_promo, id_etudiant, prenom, nom} = action.payload
+            state.etudiant = {
+                id_promo : id_promo,
+                id_etudiant : id_etudiant,
+                prenom : prenom,
+                nom : nom,
+            };
         }
         
 
     },
-    extraReducers: {}
+    extraReducers: {
+        [getEssaisDB.fulfilled] : (state, action) => {
+            console.log(action)
+        },
+        [getEssaisDB.rejected] : (state, action) => {
+            console.log("reject")
+        }
+    }
 })
 
 
 export const {setEssaisForTest, changeReponseJuste, changeMessage, changeCommentaire, 
-    changeNote, setCorrigeTrue } = consulterSlice.actions
+    changeNote, setCorrigeTrue, setEtudiantConsulter } = consulterSlice.actions
 
 //retourne tous le tableau des essais
 export const selectEssais = state => state.consulter.tabEssais
@@ -110,6 +136,9 @@ export const selectEssaisWithID = index => state => state.consulter.tabEssais[in
 
 //retourne tous le tableau des reponses justes
 export const selectReponsesJustes = state => state.consulter.tabReponsesJustes
+
+//retourne l'objet étudiant
+export const selectEtudiantConsulter = state => state.consulter.etudiant
 
 //retourne le nombre de réponses dans le tableau des réponses justes
 export const selectNbReponsesAAvoir = numQuestion => state =>{

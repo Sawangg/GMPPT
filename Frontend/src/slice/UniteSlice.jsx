@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { addUniteAPI, getAllUniteAPI, deleteUniteAPI } from "../utils/api.js";
+import { addUniteAPI, getAllUniteAPI } from "../utils/api.js";
+import _ from "lodash"
 
 export const getAllUnite = createAsyncThunk("unite/getAllUnite", async () => {
   const response = await getAllUniteAPI();
@@ -20,7 +21,7 @@ export const uniteSlice = createSlice({
     }],
     indexEnModif : -1, //l'index de l'unité qui est en modif (-1 coorespond à aucune unité en modif)
     actualise : false, //indique si l'importation des données est terminée
-    enregistre : true
+    enregistre : false
   },
   reducers: {
     //ajoute une unité dans le tableau Unité (ATTENTION : n'enregistre pas dans la BD)
@@ -50,7 +51,8 @@ export const uniteSlice = createSlice({
     //supprime l'unité dans le tableau
     //paramètres : index
     deleteUnite : (state, action) =>{
-      let {index} = action.payload
+      let index = action.payload
+      console.log(action.payload)
       state.tabUnites.splice(index, 1)
       state.enregistre = false
     },
@@ -69,11 +71,14 @@ export const uniteSlice = createSlice({
     }
   },
   extraReducers: {
-    [getAllUnite.rejected]: (state, action) => {
-      console.log("reject get")
-    },
     [getAllUnite.fulfilled]: (state, action) => {
       state.tabUnites = []
+      const sansUnite = _.remove(action.payload, function(o) {
+        return o.nom === "Sans Unité"
+      });
+
+      state.tabUnites.push(sansUnite[0])
+
       action.payload.forEach(unite => {
         state.tabUnites.push({
           nom : unite.nom,
@@ -81,16 +86,14 @@ export const uniteSlice = createSlice({
         })
       });
       state.actualise = true
+      state.enregistre = true;
     },
     [getAllUnite.pending]: (state, action) => {
       state.actualise = false
     },
-    [enregistreUnites.rejected]: (state, action) => {
-      console.log("reject")
-    },
     [enregistreUnites.fulfilled]: (state, action) => {
-      console.log("fulfill")
       state.indexEnModif = -1
+      state.enregistre = true
     },
     [enregistreUnites.pending]: (state, action) => {
     }
@@ -103,8 +106,8 @@ export const selectUnites = (state) => state.unite.tabUnites;
 
 export const selectActualise = (state) => state.unite.actualise;
 
-export const selectIndexEnMofid = (state) => state.unite.indexEnModif
+export const selectIndexEnMofid = (state) => state.unite.indexEnModif;
 
-export const selectEnregistre = (state) => state.unite.enregistre
+export const selectEnregistreUnite = (state) => state.unite.enregistre;
 
 export default uniteSlice.reducer;

@@ -23,6 +23,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getCategoriesFormules } from "../slice/FormulesSlice";
 import { getAllVariables } from "../slice/VariablesAleatoiresSlice"
 import { getSujet } from "../slice/EnoncesSlice";
+import { getAllUnite } from '../slice/UniteSlice';
 import { selectionnerModele, addNewModele, removeModele, selectModele, selectActualise} from "../slice/ModeleSlice";
 
 //setClose pour fermer la PopUp (fonction)
@@ -79,7 +80,7 @@ const SelectionModele = ({setClose, open, tard}) => {
     const modele = useSelector(selectModele);
     const actualise = useSelector(selectActualise);
 
-    const [select, setSelect] = useState(modele.idModeleSelectionne);
+    const [select, setSelect] = useState(modele.idModeleSelectionne === null ? "" : modele.idModeleSelectionne);
     const [nouveauModele, setNouveauModele] = useState({etat : false, nom : "", error : false});
     const [openConfirm, setOpenConfirm] = useState(false);
 
@@ -91,11 +92,12 @@ const SelectionModele = ({setClose, open, tard}) => {
     };
 
     const choisirModele = () => {
-        if (select !== modele.idModeleSelectionne) {
+        if (select.toString() !== modele.idModeleSelectionne.toString()) { //to string car pas même type quand recupere depuis le cache
             dispatch(selectionnerModele(select));
             dispatch(getCategoriesFormules(select));
             dispatch(getAllVariables(select));
             dispatch(getSujet(select));
+            dispatch(getAllUnite());
         }
         setClose();
     }
@@ -169,7 +171,7 @@ const SelectionModele = ({setClose, open, tard}) => {
             </DialogContent>
             <DialogActions>
                 <Button onClick={() => setOpenConfirm(false)} color="primary">Annuler</Button>
-                <Button onClick={() => dispatch(removeModele(select))} color="primary" autoFocus>OK</Button>
+                <Button onClick={() => dispatch(removeModele(select))} disabled={select === ""} color="primary" autoFocus>OK</Button>
             </DialogActions>
         </Dialog>
         </div>

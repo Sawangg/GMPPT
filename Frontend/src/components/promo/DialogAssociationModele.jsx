@@ -41,25 +41,30 @@ export default function DialogAssociationModele({open, setClose, selectPromo}){
     };
 
     return (
-        <Dialog open={open} onClose={() => setClose()}>
-            <DialogTitle>Association à un modèle</DialogTitle>
-            <DialogContent>
-                    <DialogContentText>Associer une promotion à un modéle (empechera par la suite de modifier le modèle) ?</DialogContentText>
-                    <FormControl className={classes.formControl}>
-                        <InputLabel>Modèle selectionné</InputLabel>
-                        <Select value={selectionModele} onChange={e => setSelectionModele(e.target.value)} input={<Input/>}>
-                            {modele.tabName.map((element, index) => (
-                                <MenuItem key={index} value={element.index}>{element.nom}</MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
-                    <PopUp severity="success" message="Association réussie" open={openPopUp} handleClose={() => setOpenPopUp(false)}/>
-            </DialogContent>
-            <DialogActions>
-                <Button onClick={() => setClose()} color="primary">Abandonner</Button>
-                <Button disabled={selectionModele === ""} onClick={() => envoieAttribution()} color="primary" autoFocus>Ok</Button>
-            </DialogActions>
-        </Dialog>
+        <>
+            <Dialog open={open} onClose={() => setClose()}>
+                <DialogTitle>Association à un modèle</DialogTitle>
+                <DialogContent>
+                        <DialogContentText>Associer une promotion à un modéle (empechera par la suite de modifier le modèle) ?</DialogContentText>
+                        <FormControl style={{width : 200}}> 
+                            <InputLabel>Modèle selectionné</InputLabel>
+                            <Select value={selectionModele} onChange={e => setSelectionModele(e.target.value)} input={<Input/>}>
+                                {modele.tabName.map((element, index) => (
+                                    <MenuItem key={index} value={element.index}>{element.nom}</MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setClose()} color="primary">Abandonner</Button>
+                    <Button disabled={selectionModele === ""} onClick={() => {
+                        envoieAttribution();
+                        setClose();
+                    }} color="primary" autoFocus>Ok</Button>
+                </DialogActions>
+            </Dialog>
+            <PopUp severity="success" message="Association réussie" open={openPopUp} handleClose={() => setOpenPopUp(false)}/>
+        </>
     )
 
 }

@@ -92,7 +92,6 @@ export const enoncesReducer = createSlice({
         handleChangeMargeErreur: (state, action) =>{
             state.question[action.payload.indexQuestion].reponse[action.payload.indexReponse].margeErreur = action.payload.marge;
             state.enregistre = false;
-            console.log("ici")
         },
         handleChangeEnonce: (state, action) => {
             state.enonceContenu = action.payload;
@@ -100,6 +99,7 @@ export const enoncesReducer = createSlice({
         },
         removeReponse: (state, action) => {
             state.question[action.payload.indexQuestion].reponse.splice(action.payload.indexReponse, 1);
+            state.enregistre = false;
         }
     },
     extraReducers: {
@@ -122,9 +122,9 @@ export const enoncesReducer = createSlice({
         },
         [getSujet.fulfilled]: (state, action) => {
             let question = [];
-            let reponse = [];
             state.enonceContenu = action.payload.enonce;
             action.payload.questions.forEach(element => {
+                let reponse = [];
                 element.reponses.forEach(elem => {
                     reponse.push({ 
                         selectCat : elem.selectCat,

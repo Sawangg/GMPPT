@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Redirect } from "react-router-dom";
+import { Route } from "react-router-dom";
 
 import Navbar from "./Navbar";
 import MenuProfil from "./MenuProfil";
@@ -32,8 +32,13 @@ export default function PrivateRoute({forProf, component: Component, ...rest}) {
           <Component {...props} />
         </div>
       ) : (
-        //si ce n'est pas un prof et qu'il veut acceder a une page prof, redirection
-        <Redirect to="/" />
+        //si ce n'est pas un prof et qu'il veut acceder a une page prof, redirection 
+        //le window location recharge la page ! 
+        <>
+          {window.location.href = '/'} 
+          {/* <Redirect to="/" /> */}
+        </>
+
       );
     }
   };

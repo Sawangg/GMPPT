@@ -11,7 +11,6 @@ import {
     makeStyles
 } from '@material-ui/core'
 
-
 export default function Message(props){
   
   const useStyles = makeStyles((theme) => ({
@@ -46,7 +45,7 @@ export default function Message(props){
             rows={4}
             >
             <DialogTitle>
-                <Typography variant="h6">Message adressé à </Typography>
+                <Typography variant="h6">Message adressé à {props.destinataire}</Typography>
             </DialogTitle>
             <DialogContent>
                 <TextField className={classes.messageField} autoFocus multiline rows={4}

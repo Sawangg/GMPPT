@@ -134,7 +134,7 @@ export const selectActualise = (state) => state.variableAleatoire.actualise;
 
 export const selectPrecision = (index) => (state) => state.variableAleatoire.tab[index].precision;
 
-export const selectEnregistre = (state) => state.variableAleatoire.enregistre;
+export const selectEnregistreVariable = (state) => state.variableAleatoire.enregistre;
 
 export const selectTabLength = (state) => state.variableAleatoire.tab.length;
 

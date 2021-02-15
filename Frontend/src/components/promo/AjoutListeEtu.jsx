@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import { Dialog, Button, DialogTitle, DialogContent, DialogActions, DialogContentText, Select, InputLabel, Input, MenuItem, FormControl } from '@material-ui/core';
+import { Dialog, Button, DialogTitle, DialogContent, DialogActions, DialogContentText } from '@material-ui/core';
 
 import PopUp from '../PopUp';
 import DropFile from '../DropFile';

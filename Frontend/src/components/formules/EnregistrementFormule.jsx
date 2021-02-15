@@ -13,7 +13,7 @@ const EnregistrementFormule = () => {
     const tabCatFormule = useSelector(selectCategorieFormule)
 
     return (
-        <Enregistre isEnregistre={isEnregistre} action={enregistrerFormules({tab : tabCatFormule, idModele : idModele})} />
+        <Enregistre isEnregistre={isEnregistre} action={enregistrerFormules({tab : tabCatFormule, idModele : idModele})} disabled={tabCatFormule.some(cat => cat.modif) || tabCatFormule.some(cat => cat.tabFormule.some(formule => formule.modif))}/>
     )
 
 }

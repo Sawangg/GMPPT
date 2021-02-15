@@ -9,7 +9,7 @@ import {
   IconButton,
   makeStyles
 } from "@material-ui/core";
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import HomeOutlinedIcon from "@material-ui/icons/HomeOutlined";
 import FunctionsIcon from '@material-ui/icons/Functions';
 import SchoolOutlinedIcon from "@material-ui/icons/SchoolOutlined";
@@ -159,7 +159,7 @@ export default function NavBar() {
             {item.divider == null ? null : <Divider className={classes.divider}/>}
           </div>
         ))}
-          <ListItem className={classes.deconnexionNav} button onClick={e => dispatch(logoutUser())}>
+          <ListItem className={classes.deconnexionNav} button onClick={() => dispatch(logoutUser())}>
             <ListItemIcon>
               <ExitToAppIcon className={classes.deconnexionIcon}/>
             </ListItemIcon>
@@ -176,7 +176,6 @@ export default function NavBar() {
         <MenuRoundedIcon fontSize="large" />
       </IconButton>
       {navigation()}
-      {user.isLogin ? null : <Redirect to='/'/>}
     </div>
   );
 }

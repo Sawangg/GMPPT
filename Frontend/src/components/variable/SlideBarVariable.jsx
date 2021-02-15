@@ -1,8 +1,6 @@
 import React, {useCallback, useState} from 'react';
 import {Typography, Slider, makeStyles} from '@material-ui/core';
 
-import useConstructor from '../use/useContructor';
-
 import { useDispatch } from "react-redux";
 import { changePrecision } from "../../slice/VariablesAleatoiresSlice";
 import { useSelector } from "react-redux";

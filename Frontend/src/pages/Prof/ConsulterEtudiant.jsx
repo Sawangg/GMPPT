@@ -1,14 +1,16 @@
 import React, { useState } from 'react'
 import _ from 'lodash'
 
+import { Redirect } from "react-router-dom";
+
 import {ListItemText, ListItem, List, Divider, Button, ListItemAvatar,Avatar, makeStyles} from '@material-ui/core'
 import SendIcon from '@material-ui/icons/Send';
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
 
 import { useDispatch, useSelector } from 'react-redux'
-import { selectEssais, selectMessage, selectReponsesJustes } from '../../slice/ConsulterSlice'
-import { setEssaisForTest, changeMessage } from '../../slice/ConsulterSlice'
+import { selectEssais, selectMessage, selectReponsesJustes, selectEtudiantConsulter } from '../../slice/ConsulterSlice'
+import { changeMessage, getEssaisDB } from '../../slice/ConsulterSlice'
 
 import EssaiEtudiant from '../../components/correction/EssaiEtudiant'
 import Message from '../../components/correction/Message';
@@ -44,16 +46,14 @@ export default function Consulter(props){
     const [openMessage, setOpenMessage] = useState(false)
 
     //numéro de l'étudiant
-    const etu = props.match.params.value
-
-    //test
-    if(tabEssais.length === 1){
-        dispatch(setEssaisForTest())
-    }
+    const etudiant = useSelector(selectEtudiantConsulter)
 
     useConstructor(() => {
-        //dispatch()
-    })
+        dispatch(getEssaisDB({
+            idPromo : etudiant.id_promo,
+            idEtudiant : etudiant.id_etudiant
+        }))
+    });
 
     //affiche un dialog lors d'un clic sur un essai pour avoir plus de détail
     //Paramètres : l'index de l'essai
@@ -125,12 +125,15 @@ export default function Consulter(props){
     }
 
     return(
+        etudiant.id_etudiant === undefined ?
+        <Redirect to="/prof/gestion-correction"/>
+        :
         <div>
             <Button className={classes.messageBouton} variant="contained" color="primary" onClick={hancleClickMessage}>
                 <SendIcon/>Envoyer un message à l'étudiant
             </Button>
             <h1>
-                Etudiant : pas encore fait le lien avec l'API ;) {/*etu.prenom + ' ' + etu.nom*/}
+                Etudiant : {etudiant.prenom + ' ' + etudiant.nom}
             </h1>   
 
             <List>
@@ -155,8 +158,8 @@ export default function Consulter(props){
             <EssaiEtudiant indexEssai={indexEssaiDialog} open={openDetails}
                 setOpen={setOpenDetails}/>
 
-            <Message open={openMessage} setOpen={setOpenMessage} message={message}
-            handleChangeMessage={handleChangeMessage} handleSend={handleSend}/>
+            <Message open={openMessage} destinataire={etudiant.prenom + " " + etudiant.nom} setOpen={setOpenMessage} 
+            message={message} handleChangeMessage={handleChangeMessage} handleSend={handleSend}/>
         </div>
     )
 }
