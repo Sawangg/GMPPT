@@ -46,6 +46,9 @@ const Reponse = ({indexReponse, indexQuestion}) => {
         buttonAjouterUnite: {
             display : "block",
             backgroundColor: theme.palette.primary.light
+        },
+        center: {
+            textAlign: "center"
         }
     }));
     const classes = useStyles();
@@ -75,7 +78,7 @@ const Reponse = ({indexReponse, indexQuestion}) => {
             </Select>
             <div className={classes.divUniteMarge}>
                 <Button variant="contained" className={classes.buttonAjouterUnite} onClick={() => setOpen(true)}>Choisir les unités</Button>
-                <div style={{textAlign : "center"}}>{afficherUnites(element.unite)}</div>
+                <div className={classes.center}>{afficherUnites(element.unite)}</div>
             </div>
             <ChoixUnite open={open} handleClose={() => setOpen(false)} unite={element.unite} setTabUnite={e => dispatch(handleChangeUnite({idQuestion : indexQuestion, idReponse : indexReponse, tabUnite : e}))}/>
             <div className={classes.divMarge}>

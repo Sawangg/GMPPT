@@ -1,5 +1,5 @@
-import React, {useCallback} from 'react';
-import { Typography, Slider } from '@material-ui/core';
+import React, {useCallback, useState} from 'react';
+import {Typography, Slider, makeStyles} from '@material-ui/core';
 
 import { useDispatch } from "react-redux";
 import { changePrecision } from "../../slice/VariablesAleatoiresSlice";
@@ -7,6 +7,12 @@ import { useSelector } from "react-redux";
 import { selectPrecision } from "../../slice/VariablesAleatoiresSlice"
 
 const SlideBar = ({ index }) => {
+    const useStyles = makeStyles((theme) => ({
+        root: {
+            width: 120
+        }
+    }));
+    const classes = useStyles();
     
     const dispatch = useDispatch();
     const precisionSlice = useSelector(selectPrecision(index));
@@ -24,7 +30,7 @@ const SlideBar = ({ index }) => {
     }, [dispatch, index]);
 
     return(
-        <div style={{width : 120}}>
+        <div className={classes.root}>
             <Slider
                 defaultValue={precisionSlice}
                 min={-6}

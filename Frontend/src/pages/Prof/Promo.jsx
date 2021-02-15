@@ -14,6 +14,10 @@ import { useSelector, useDispatch } from "react-redux";
 export default function Promo() {
 
     const useStyles = makeStyles((theme) => ({
+        mapDisplayEtu: {
+            display : "flex",
+            justifyContent : "space-around"
+        },
         hr: {
             width: "80%",
             marginBottom: "2%"
@@ -60,6 +64,9 @@ export default function Promo() {
             width : 200,
             marginTop : "0 !important"
         },
+        menuItem: {
+            color: theme.palette.primary.main
+        },
         fabDelete: {
             color: "white",
             backgroundColor: theme.palette.error.main,
@@ -99,6 +106,23 @@ export default function Promo() {
         setSelect(e.target.value)
         dispatch(getEtudiantsPromo(e.target.value.idPromo))
     }
+    
+    const displayEtu = () => {
+        return (
+            <div>
+                {tabEtudiants.map((e) => (
+                    <div className={classes.mapDisplayEtu}>
+                        <p>{e.prenom}</p>
+                        <p>{e.nom}</p>
+                        <p>mot de passe</p>
+                        <Button>Modifier</Button>
+                    </div>
+                ))}
+                <Button variant="contained" color="primary">Ajouter un étudiant</Button>
+            </div>
+            
+        )
+    }
 
     return (
         <div>
@@ -111,7 +135,7 @@ export default function Promo() {
                             <div>
                                 <InputLabel className={classes.labelSelectPromo}>Promotion selectionnée</InputLabel>
                                 <Select className={classes.selectPromo} value={select} onChange={(e) => changePromo(e)} input={<Input/>}>
-                                    <MenuItem style={{color : "#075b72"}} value={"ajoutPromo"}>Ajouter promotion</MenuItem>
+                                    <MenuItem className={classes.menuItem} value={"ajoutPromo"}>Ajouter promotion</MenuItem>
                                     {tabPromo === undefined  ? <PropagateLoader size={15} color={"rgb(7, 91, 114)"} css={{margin : "30px auto", display : "flex", justifyContent : "center"}}/> 
                                     : tabPromo.map((element, index) => (
                                         <MenuItem key={index} value={element}>{element.nom}</MenuItem>
