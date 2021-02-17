@@ -52,9 +52,9 @@ export const uniteSlice = createSlice({
     //paramètres : index
     deleteUnite : (state, action) =>{
       let index = action.payload
-      console.log(action.payload)
+      state.indexEnModif = -1
+      state.enregistre = false     
       state.tabUnites.splice(index, 1)
-      state.enregistre = false
     },
     setIndexEnModif : (state, action) =>{
       state.indexEnModif = action.payload

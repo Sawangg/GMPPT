@@ -1,10 +1,16 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getEssaisAPI } from "../utils/api.js";
+import { getReponsesCorrigees, getEssaisEtudiant } from "../utils/api.js";
 import _ from 'lodash'
+
+export const getReponsesCorDB = createAsyncThunk("correction/getReponsesCorDB", 
+async (props) => {
+    const response = await getReponsesCorrigees(props.idPromo, props.idEtudiant);
+    return response.data;
+}) 
 
 export const getEssaisDB = createAsyncThunk("correction/getEssaisDB", 
 async (props) => {
-    const response = await getEssaisAPI(props.idPromo, props.idEtudiant);
+    const response = await getEssaisEtudiant(props.idEtudiant);
     return response.data;
 }) 
 
@@ -17,7 +23,8 @@ export const consulterSlice = createSlice({
             prenom : "",
             id_etudiant : undefined,
         },
-        tabEssais : [{
+        tabEssais : undefined
+        /*[{
             corrige : false,
             dateEssai : "01/01/2020",
             tabQuestions : [{
@@ -33,17 +40,19 @@ export const consulterSlice = createSlice({
                     unite : "",
                 }]
             }]
-        }],
-        tabReponsesJustes : [{
+        }]*/,
+        tabReponsesJustes : undefined
+        /*[{
+            contenu : "",
             num : 1,
             tabReponses : [{
-                num : 1,
+                value : "0",
                 tabUnites : [{
-                    value : "0",
-                    unite : "",
+                    abr : '',
+                    puissance : '',
                 }]
             }]
-        }],
+        }]*/,
         message : ""
     },
     reducers: {
@@ -112,11 +121,74 @@ export const consulterSlice = createSlice({
 
     },
     extraReducers: {
+        [getReponsesCorDB.fulfilled] : (state, action) => {
+            state.tabReponsesJustes = []
+
+            action.payload.forEach(question => {
+                let index = state.tabReponsesJustes.push({
+                    contenu : question.contenu,
+                    num : question.id_question,
+                    tabReponses : [],
+                }) - 1
+
+                question.reponses.forEach(reponse =>{
+                    state.tabReponsesJustes[index].tabReponses.push({
+                        value : reponse.value,
+                        tabUnites : reponse.tabUnites
+                    })
+                })
+
+            });
+        },
+        [getReponsesCorDB.rejected] : (state, action) => {
+            console.log("reject")
+        },
         [getEssaisDB.fulfilled] : (state, action) => {
-            console.log(action)
+            let essaisDB = action.payload;
+            state.tabEssais = []
+
+            //on regarde par rapport aux lignes données
+            essaisDB.forEach(essaiQuestionDB => {
+                //on recherche si un essai à cette date existe déjà
+                let essai = _.find(state.tabEssais, (o) => { return o.dateEssai === essaiQuestionDB.date } )
+
+                //si l'essai n'existe pas, on le crée
+                if (essai === undefined){
+                    let taille = state.tabEssais.push({
+                        corrige : false,
+                        dateEssai : essaiQuestionDB.date,
+                        tabQuestions : []
+                    });
+                    essai = state.tabEssais[taille - 1];
+                }
+
+                //on push la question
+                let indexQ = essai.tabQuestions.push({
+                    justif : "",
+                    commentProf : "",
+                    note : "",
+                    num : essaiQuestionDB.id_question,
+                    tabReponses : []
+                }) - 1
+
+                let question = essai.tabQuestions[indexQ]
+
+                //on push les réponses données par l'étudiant pour cette question
+                essaiQuestionDB.reponses.forEach(reponseDB => {
+                    question.tabReponses.push({
+                        justeApp : true, 
+                        justeProf : false,
+                        ecart : "",
+                        value : reponseDB.value,
+                        unite : reponseDB.tabUnites,
+                    })
+                });
+
+            });
+
         },
         [getEssaisDB.rejected] : (state, action) => {
-            console.log("reject")
+            console.log("rejectEssais")
         }
     }
 })
@@ -145,5 +217,10 @@ export const selectNbReponsesAAvoir = numQuestion => state =>{
     let indexQ = _.findIndex(state.consulter.tabReponsesJustes, function(o) { return o.num === numQuestion; })
     return state.consulter.tabReponsesJustes[indexQ].tabReponses.length
 } 
+
+
+export const selectUneQuestionJuste = numQuestion => state => _.find(state.consulter.tabReponsesJustes, (o) => {
+    return o.num === numQuestion
+})
 
 export default consulterSlice.reducer;
