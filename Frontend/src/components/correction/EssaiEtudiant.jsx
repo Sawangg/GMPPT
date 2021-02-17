@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
-
+import moment from 'moment';
+import ReactHtmlParser from 'react-html-parser';
 
 import { Table, TableContainer, TableHead, TableRow, Paper, TableCell, TableBody, 
     Typography,Collapse, Box, IconButton, DialogActions, Button, TextField, makeStyles } from '@material-ui/core'
@@ -12,7 +13,7 @@ import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 
 import { useDispatch, useSelector } from 'react-redux'
 import { changeReponseJuste, selectEssaisWithID, changeCommentaire, changeNote,
-    selectNbReponsesAAvoir, setCorrigeTrue } from '../../slice/ConsulterSlice'
+    setCorrigeTrue, selectUneQuestionJuste } from '../../slice/ConsulterSlice'
 
 const useStyles = makeStyles((theme) => ({
     boxReponses: {
@@ -47,13 +48,15 @@ export default function EssaiEtudiant(props){
     }
 
     return(
+        essai == undefined ?
+        null :
         <Dialog 
             open={props.open} 
             maxWidth="md"
             fullWidth={true}
             onClose={handleClose}>
             <DialogTitle>
-                Essai du {essai.dateEssai}
+                Essai du {moment(essai.dateEssai).format("DD/MM/YYYY")}
             </DialogTitle>
 
             <DialogContent>
@@ -62,8 +65,9 @@ export default function EssaiEtudiant(props){
                         <TableHead>
                             <TableRow>
                                 <TableCell align="center"/>
-                                <TableCell align="center">Numero</TableCell>
-                                <TableCell align="center">Reponses Justes</TableCell>
+                                <TableCell align="center">Numéro Question</TableCell>
+                                <TableCell align="center">Réponses Justes</TableCell>
+                                <TableCell align="center">Réponses Attendues</TableCell>
                                 <TableCell align="center">Question Juste?</TableCell>
                                 <TableCell align="center"  
                                 title="Attention, cette note est à titre indicatif et ne concerne que cet essai"
@@ -89,6 +93,10 @@ export default function EssaiEtudiant(props){
     )
 }
 
+
+
+
+
 function IconeJuste(props){
     return(
         props.juste
@@ -100,6 +108,10 @@ function IconeJuste(props){
 }
 
 
+
+
+
+
 function Question(props){
 
     const classes = useStyles();
@@ -108,7 +120,7 @@ function Question(props){
 
     const dispatch = useDispatch()
 
-    const nbReponsesAAvoir = useSelector(selectNbReponsesAAvoir(props.question.num))
+    const questionCorrigee = useSelector(selectUneQuestionJuste(props.question.num))
 
     //s'occupe de changer le bouléen disant qu'une réponse est juste ou non d'après le prof
     const handleClickJuste = (indexQ, indexR) =>{
@@ -164,7 +176,9 @@ function Question(props){
     }
 
     const questionJuste = () =>{
-        return(<IconeJuste juste={nbReponsesJuste() === nbReponsesAAvoir}/>)
+        return(<IconeJuste juste={
+            props.question.tabReponses.length === questionCorrigee.tabReponses.length &&
+            nbReponsesJuste() === questionCorrigee.tabReponses.length }/>)
     }
 
     //bouton du prof pour dire si une réponse est juste ou non
@@ -209,15 +223,19 @@ function Question(props){
             <TableCell align="center">{props.indexQuestion + 1}</TableCell>
             {/* nombre de réponses justes dans la question */}
             <TableCell align="center">{nbReponsesJuste()}</TableCell>
+            {/* nombre de réponses attendues */}
+            <TableCell align="center">{questionCorrigee.tabReponses.length}</TableCell>
             {/* voit si la question est juste */}
             <TableCell align="center">{questionJuste()}</TableCell>
             {/* note */}
             <TableCell align="center">{note()}</TableCell>
         </TableRow>
         <TableRow>
-            <TableCell className={classes.boxReponses} colSpan={5}>
+            <TableCell className={classes.boxReponses} colSpan={6}>
                 <Collapse in={open} timeout="auto" unmountOnExit>
                     <Box margin={1}>
+                        <Typography variant="h6" gutterBottom >Contenu de la question</Typography>
+                        {ReactHtmlParser(questionCorrigee.contenu)}
                         <Typography variant="h6" gutterBottom >Reponses</Typography>
                         <Table size="small">
                             <TableHead>

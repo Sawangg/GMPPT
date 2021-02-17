@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import _ from 'lodash'
+import moment from 'moment';
 
 import { Redirect } from "react-router-dom";
 
@@ -10,7 +11,7 @@ import CloseIcon from '@material-ui/icons/Close';
 
 import { useDispatch, useSelector } from 'react-redux'
 import { selectEssais, selectMessage, selectReponsesJustes, selectEtudiantConsulter } from '../../slice/ConsulterSlice'
-import { changeMessage, getEssaisDB } from '../../slice/ConsulterSlice'
+import { changeMessage, getReponsesCorDB, getEssaisDB } from '../../slice/ConsulterSlice'
 
 import EssaiEtudiant from '../../components/correction/EssaiEtudiant'
 import Message from '../../components/correction/Message';
@@ -49,8 +50,11 @@ export default function Consulter(props){
     const etudiant = useSelector(selectEtudiantConsulter)
 
     useConstructor(() => {
-        dispatch(getEssaisDB({
+        dispatch(getReponsesCorDB({
             idPromo : etudiant.id_promo,
+            idEtudiant : etudiant.id_etudiant
+        }));
+        dispatch(getEssaisDB({
             idEtudiant : etudiant.id_etudiant
         }))
     });
@@ -88,6 +92,7 @@ export default function Consulter(props){
         tabEssais[index].tabQuestions.forEach(question => {
             //on regarde si il y a le bon nombre de réponses justes
             let indexQ = _.findIndex(tabReponsesJustes, function(o) { return o.num === question.num; })
+
             let questionJuste = question.tabReponses.length === tabReponsesJustes[indexQ].tabReponses.length
             let i = 0
             //on regarde si toutes les réponses sont justes
@@ -125,9 +130,11 @@ export default function Consulter(props){
     }
 
     return(
-        etudiant.id_etudiant === undefined ?
+        //on redirige vers la page de correction si il n'y a pas d'id étudiant donné
+        etudiant.id_etudiant === undefined  ?
         <Redirect to="/prof/gestion-correction"/>
         :
+        
         <div>
             <Button className={classes.messageBouton} variant="contained" color="primary" onClick={hancleClickMessage}>
                 <SendIcon/>Envoyer un message à l'étudiant
@@ -136,13 +143,16 @@ export default function Consulter(props){
                 Etudiant : {etudiant.prenom + ' ' + etudiant.nom}
             </h1>   
 
+            {tabEssais === undefined || tabReponsesJustes === undefined ?
+            null :
+            <>
             <List>
                 <Divider />
                 {tabEssais.map((item, index) => (
                     <>
                         <ListItem button onClick={e => handleClickDetails(index)}>
                             <ListItemText
-                                primary={"Essai du " + item.dateEssai}
+                                primary={"Essai du " + moment(item.dateEssai).format("DD/MM/YYYY")}
                                 secondary={"Questions justes : " + nbQuestionsJustes(index)
                                     +  "/" + nbQuestions()}/>
                             <ListItemAvatar>
@@ -157,9 +167,13 @@ export default function Consulter(props){
 
             <EssaiEtudiant indexEssai={indexEssaiDialog} open={openDetails}
                 setOpen={setOpenDetails}/>
+            </>
+            }
+            
 
             <Message open={openMessage} destinataire={etudiant.prenom + " " + etudiant.nom} setOpen={setOpenMessage} 
             message={message} handleChangeMessage={handleChangeMessage} handleSend={handleSend}/>
+               
         </div>
     )
 }

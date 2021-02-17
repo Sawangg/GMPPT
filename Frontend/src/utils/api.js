@@ -155,6 +155,10 @@ export function getSujetAPI(idModele) {
 
 //Correction
 
-export function getEssaisAPI(idPromo, idAuth) {
+export function getReponsesCorrigees(idPromo, idAuth) {
     return axios.get(`http://${host}:3001/correction/${idPromo}/${idAuth}`, credentials);
+}
+
+export function getEssaisEtudiant(idAuth){
+    return axios.get(`http://${host}:3001/etudiant/${idAuth}/reponses`, credentials)
 }
