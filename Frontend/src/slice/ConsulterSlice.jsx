@@ -141,6 +141,7 @@ export const consulterSlice = createSlice({
             });
         },
         [getReponsesCorDB.rejected] : (state, action) => {
+            state.tabReponsesJustes = undefined
             console.log("reject")
         },
         [getEssaisDB.fulfilled] : (state, action) => {
@@ -188,6 +189,7 @@ export const consulterSlice = createSlice({
 
         },
         [getEssaisDB.rejected] : (state, action) => {
+            state.tabEssais = undefined
             console.log("rejectEssais")
         }
     }
