@@ -171,7 +171,6 @@ export default function ChoixUnite(props){
       
               {/* Select de l'unité */}
               <TextField select value={partieUnite.abr} onChange={e=>handleChangeUnite(index, e)}>
-                  {console.log(unitesReference)}
                   {unitesReference.map((i) => 
                   <MenuItem key={i.abrev} value={i.abrev} >
                       {i.nom}

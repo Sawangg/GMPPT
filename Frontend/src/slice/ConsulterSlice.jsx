@@ -12,7 +12,7 @@ export const getEssaisDB = createAsyncThunk("correction/getEssaisDB",
 async (props) => {
     const response = await getEssaisEtudiant(props.idEtudiant);
     return response.data;
-}) 
+})
 
 export const consulterSlice = createSlice({
     name: 'consulter',
@@ -116,12 +116,67 @@ export const consulterSlice = createSlice({
                 prenom : prenom,
                 nom : nom,
             };
+        },
+        //Met l'avis de l'application sur l'essai
+        setAvisApplication : (state) => {
+
+            //operation faite pour chaque essai présent
+            state.tabEssais.forEach(essai => {
+
+                //on regarde pour chaque question présente dans l'essai
+                essai.tabQuestions.forEach(question => {
+                    //on regarde la question corrigée lié à la question de l'essai
+                    const questionJuste = _.find( state.tabReponsesJustes, (o) => { return o.num === question.num } )
+
+                    //on regarde pour chaque réponse de la question corrigée
+                    questionJuste.tabReponses.forEach(repCor => {
+
+                        //on essai de trouver une réponse juste dans l'essai pour cette réponse corrigée
+                        const reponse = _.find(question.tabReponses, (o)=> { 
+                            return  !o.justeApp &&
+                                    o.value >= repCor.value * (1 - repCor.margeErreur / 100) &&
+                                    o.value <= repCor.value * (1 + repCor.margeErreur / 100)
+
+                        })
+
+                        //si il y en a une, on met qu'elle est juste
+                        if (reponse != undefined) {
+                            reponse.justeApp = true
+                            reponse.ecart = Math.abs(reponse.value - repCor.value)
+                        }
+                    });
+
+                    //on s'interesse aux reponses fausses
+                    const repFausses = _.filter(question.tabReponses, (o) => { return !o.justeApp })
+
+                    //on regarde chacune des réponses fausses
+                    repFausses.forEach(rep => {
+                        let min = undefined
+
+                        questionJuste.tabReponses.forEach(repCor => {
+                            if (min == undefined){
+                                min = Math.abs(rep.value - repCor.value)
+                            }else{
+                                min = Math.min(min, Math.abs(rep.value - repCor.value))
+                            }
+                        });
+
+                        rep.ecart = min;                        
+                    });
+
+                });
+            });
+
+
+            
         }
+
         
 
     },
     extraReducers: {
         [getReponsesCorDB.fulfilled] : (state, action) => {
+
             state.tabReponsesJustes = []
 
             action.payload.forEach(question => {
@@ -134,13 +189,17 @@ export const consulterSlice = createSlice({
                 question.reponses.forEach(reponse =>{
                     state.tabReponsesJustes[index].tabReponses.push({
                         value : reponse.value,
+                        margeErreur : reponse.margeErreur,
                         tabUnites : reponse.tabUnites
                     })
                 })
 
             });
+
+            //console.log(state.tabReponsesJustes)
         },
         [getReponsesCorDB.rejected] : (state, action) => {
+            state.tabReponsesJustes = undefined
             console.log("reject")
         },
         [getEssaisDB.fulfilled] : (state, action) => {
@@ -176,7 +235,7 @@ export const consulterSlice = createSlice({
                 //on push les réponses données par l'étudiant pour cette question
                 essaiQuestionDB.reponses.forEach(reponseDB => {
                     question.tabReponses.push({
-                        justeApp : true, 
+                        justeApp : false, 
                         justeProf : false,
                         ecart : "",
                         value : reponseDB.value,
@@ -188,6 +247,7 @@ export const consulterSlice = createSlice({
 
         },
         [getEssaisDB.rejected] : (state, action) => {
+            state.tabEssais = undefined
             console.log("rejectEssais")
         }
     }
@@ -195,7 +255,7 @@ export const consulterSlice = createSlice({
 
 
 export const {setEssaisForTest, changeReponseJuste, changeMessage, changeCommentaire, 
-    changeNote, setCorrigeTrue, setEtudiantConsulter } = consulterSlice.actions
+    changeNote, setCorrigeTrue, setEtudiantConsulter, setAvisApplication } = consulterSlice.actions
 
 //retourne tous le tableau des essais
 export const selectEssais = state => state.consulter.tabEssais

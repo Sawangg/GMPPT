@@ -13,7 +13,8 @@ import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 
 import { useDispatch, useSelector } from 'react-redux'
 import { changeReponseJuste, selectEssaisWithID, changeCommentaire, changeNote,
-    setCorrigeTrue, selectUneQuestionJuste } from '../../slice/ConsulterSlice'
+    setCorrigeTrue, selectUneQuestionJuste, setAvisApplication } from '../../slice/ConsulterSlice'
+import useConstructor from '../use/useContructor';
 
 const useStyles = makeStyles((theme) => ({
     boxReponses: {
@@ -37,6 +38,11 @@ export default function EssaiEtudiant(props){
     const essai = useSelector(selectEssaisWithID(props.indexEssai))
 
     const dispatch = useDispatch()
+
+    useConstructor(() => {
+        dispatch(setAvisApplication())
+    });
+    
 
     const handleClose = () =>{
         props.setOpen(false)
