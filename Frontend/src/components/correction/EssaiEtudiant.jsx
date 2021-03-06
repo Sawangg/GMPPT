@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import moment from 'moment';
 import ReactHtmlParser from 'react-html-parser';
 
@@ -14,7 +14,6 @@ import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import { useDispatch, useSelector } from 'react-redux'
 import { changeReponseJuste, selectEssaisWithID, changeCommentaire, changeNote,
     setCorrigeTrue, selectUneQuestionJuste, setAvisApplication } from '../../slice/ConsulterSlice'
-import useConstructor from '../use/useContructor';
 
 const useStyles = makeStyles((theme) => ({
     boxReponses: {
@@ -39,12 +38,21 @@ export default function EssaiEtudiant(props){
 
     const dispatch = useDispatch()
 
-    useConstructor(() => {
-        dispatch(setAvisApplication())
+    const [actualise, setActu] = useState(false);
+
+    useEffect(() => {
+        if (props.open) {
+            if (!actualise){
+                dispatch(setAvisApplication())
+                setActu(true)
+            }
+        }
+        
     });
     
 
     const handleClose = () =>{
+        setActu(false)
         props.setOpen(false)
     }
 
