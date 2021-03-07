@@ -145,7 +145,7 @@ export default function GestionUnites(){
             tabUnites[index].nom !== "Sans Unité" 
             ?
             <div>
-                <IconButton className={classes.modifButton} onClick={e=>handleModifUnite(index)} disabled={modifIsNotUnique()}>
+                <IconButton className={classes.modifButton} onClick={e=>handleModifUnite(index)} disabled={modifIsUnique()}>
                     <CreateIcon />
                 </IconButton>
                 <IconButton className={classes.deleteButton} onClick={e=>handleDeleteUnite(index)}>
@@ -165,7 +165,7 @@ export default function GestionUnites(){
 
                 <TableCell className={classes.tableCell}> { unite.nom } </TableCell>
                 <TableCell className={classes.tableCell}> { unite.abrev } </TableCell>
-                <TableCell className={classes.tableCell}> { buttonsUnite(index) } </TableCell>
+                <TableCell className={classes.tableCell}> { buttonsUniteSansModif(index) } </TableCell>
 
                 </>
             :
