@@ -96,7 +96,6 @@ router.get('/:idpromo/:idmodele/attribution', isAuthenticated, isProf, async (re
         await db.promise().execute(insertVariables);
         return res.sendStatus(200);
     } catch(err) {
-        console.log(err)
         return res.sendStatus(500);
     }
 });

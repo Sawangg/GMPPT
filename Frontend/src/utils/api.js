@@ -1,164 +1,166 @@
 import axios from 'axios';
 
-const credentials = { withCredentials: true }
-const host = 'localhost';
+const { host } = window;
+const { port } = window;
+const credentials = { withCredentials: true };
+const protocol = window.location.href.split("/")[0];
 
-// User 
+// User
 
 export function getInfoUserAPI() {
-    return axios.get(`http://${host}:3001/auth`, credentials);
+    return axios.get(`${protocol}//${host}:${port}/auth`, credentials);
 }
 
 export function logoutAPI() {
-    return axios.get(`http://${host}:3001/auth/logout`, credentials);
+    return axios.get(`${protocol}//${host}:${port}/auth/logout`, credentials);
 }
 
 export function getImageUserAPI(username) {
-    return axios.get(`http://${host}:3001/auth/${username}/profilepic`, credentials)
+    return axios.get(`${protocol}//${host}:${port}/auth/${username}/profilepic`, credentials);
 }
 
 export function loginAPI(username, password) {
-    return axios.post(`http://${host}:3001/auth/login`, { username, password }, credentials)
+    return axios.post(`${protocol}//${host}:${port}/auth/login`, { username, password }, credentials);
 }
 
 export function setImageUserAPI(username, image) {
-    return axios.post(`http://${host}:3001/auth/${username}/profilepic/new`, image, credentials)
+    return axios.post(`${protocol}//${host}:${port}/auth/${username}/profilepic/new`, image, credentials);
 }
 
 export function setPwdUserAPI(username, passwords) {
-    return axios.post(`http://${host}:3001/auth/${username}/changepwd`, { passwords }, credentials)
+    return axios.post(`${protocol}//${host}:${port}/auth/${username}/changepwd`, { passwords }, credentials);
 }
 
 // Formules
 
 export function getCategoriesFormulesAPI(idModele) {
-    return axios.get(`http://${host}:3001/modele/${idModele}/categories`, credentials)
+    return axios.get(`${protocol}//${host}:${port}/modele/${idModele}/categories`, credentials);
 }
 
 export function addCategorieFormuleAPI(idModele, tabFormules) {
-    return axios.post(`http://${host}:3001/modele/${idModele}/categories/new`, tabFormules, credentials)
+    return axios.post(`${protocol}//${host}:${port}/modele/${idModele}/categories/new`, tabFormules, credentials);
 }
 
 // Modele
 
 export function getInfoModeleAPI(idModele) {
-    return axios.get(`http://${host}:3001/modele/${idModele}`, credentials)
+    return axios.get(`${protocol}//${host}:${port}/modele/${idModele}`, credentials);
 }
 
 export function deleteModeleAPI(idModele) {
-    return axios.get(`http://${host}:3001/modele/${idModele}/delete`, credentials)
+    return axios.get(`${protocol}//${host}:${port}/modele/${idModele}/delete`, credentials);
 }
 
 export function getAllModeleAPI() {
-    return axios.get(`http://${host}:3001/modele`, credentials)
+    return axios.get(`${protocol}//${host}:${port}/modele`, credentials);
 }
 
 // renvoie ausi le numéro modele
 
 export function addModeleAPI(nomModele) {
-    return axios.post(`http://${host}:3001/modele/new`, { "nommodele" : nomModele }, credentials)
+    return axios.post(`${protocol}//${host}:${port}/modele/new`, { "nommodele" : nomModele }, credentials);
 }
 
 // Modeles 3D
 
 export function getModele3DAPI(idAuth) {
-    return axios.get(`http://${host}:3001/etudiant/${idAuth}/modeles`, credentials)
+    return axios.get(`${protocol}//${host}:${port}/etudiant/${idAuth}/modeles`, credentials);
 }
 
 export function addModele3DAPI(archi) {
-    return axios.post(`http://${host}:3001/architecture/${archi.sujet}/modeles/new`, archi.images, credentials)
+    return axios.post(`${protocol}//${host}:${port}/architecture/${archi.sujet}/modeles/new`, archi.images, credentials);
 }
 
 // Architectures
 
 export function addArchiAPI(excel) {
-    return axios.post(`http://${host}:3001/architecture/new`, excel, credentials)
+    return axios.post(`${protocol}//${host}:${port}/architecture/new`, excel, credentials);
 }
 
 export function getVariablesArchiAPI() {
-    return axios.get(`http://${host}:3001/architecture/attribued_without_modeles/excel`, credentials)
+    return axios.get(`${protocol}//${host}:${port}/architecture/attribued_without_modeles/excel`, credentials);
 }
 
 // Promotion
 
 export function addPromoAPI(nomPromo) {
-    return axios.post(`http://${host}:3001/promo/new`, { nomPromo : nomPromo }, credentials)
+    return axios.post(`${protocol}//${host}:${port}/promo/new`, { nomPromo : nomPromo }, credentials);
 }
 
 export function getAllPromoAPI() {
-    return axios.get(`http://${host}:3001/promo/`, credentials)
+    return axios.get(`${protocol}//${host}:${port}/promo/`, credentials);
 }
 
 export function getInfoPromoAPI(idPromo) {
-    return axios.get(`http://${host}:3001/promo/${idPromo}`, credentials)
+    return axios.get(`${protocol}//${host}:${port}/promo/${idPromo}`, credentials);
 }
 
 export function attributionSujetAPI(idPromo, idModele) {
-    return axios.get(`http://${host}:3001/promo/${idPromo}/${idModele}/attribution`, credentials)
+    return axios.get(`${protocol}//${host}:${port}/promo/${idPromo}/${idModele}/attribution`, credentials);
 }
 
 export function deletePromoAPI(idPromo){
-    return axios.get(`http://${host}:3001/promo/${idPromo}/delete`, credentials)
+    return axios.get(`${protocol}//${host}:${port}/promo/${idPromo}/delete`, credentials);
 }
 
 export function desatributionSujetAPI(idPromo) {
-    return axios.get(`http://${host}:3001/promo/${idPromo}/desatribution`, credentials)
+    return axios.get(`${protocol}//${host}:${port}/promo/${idPromo}/desatribution`, credentials);
 }
 
 export function getModelPromoAPI() {
-    return axios.get(`http://${host}:3001/promo/modele`, credentials);
+    return axios.get(`${protocol}//${host}:${port}/promo/modele`, credentials);
 }
 
 // Variables aléatoires
 
 export function addVariableAPI(idModele, tabVariables) {
-    return axios.post(`http://${host}:3001/modele/${idModele}/variables/new`, tabVariables, credentials)
+    return axios.post(`${protocol}//${host}:${port}/modele/${idModele}/variables/new`, tabVariables, credentials);
 }
 
 export function getVariablesAPI(idModele) {
-    return axios.get(`http://${host}:3001/modele/${idModele}/variables`, credentials)
+    return axios.get(`${protocol}//${host}:${port}/modele/${idModele}/variables`, credentials);
 }
 
 // Enonces
 
 export function setQuestionsAPI(idModele, enonce, tabQuestions) {
-    return axios.post(`http://${host}:3001/modele/${idModele}/questions/new`, { tabQuestions, enonce }, credentials);
+    return axios.post(`${protocol}//${host}:${port}/modele/${idModele}/questions/new`, { tabQuestions, enonce }, credentials);
 }
 
 export function addUniteAPI(tabUnites) {
-    return axios.post(`http://${host}:3001/unite/new`, { tabUnites }, credentials);
+    return axios.post(`${protocol}//${host}:${port}/unite/new`, { tabUnites }, credentials);
 }
 
 export function getAllUniteAPI() {
-    return axios.get(`http://${host}:3001/unite/`, credentials);
+    return axios.get(`${protocol}//${host}:${port}/unite/`, credentials);
 }
 
 // Etudiant 
 
 export function etudiantNewAPI(idPromo, fileUploaded) {
-    return axios.post(`http://${host}:3001/etudiant/${idPromo}/new`, fileUploaded, credentials);
+    return axios.post(`${protocol}//${host}:${port}/etudiant/${idPromo}/new`, fileUploaded, credentials);
 }
 
 export function etudiantReponsesNewAPI(tabQuestions) {
-    return axios.post(`http://${host}:3001/etudiant/reponses/new`, { tabQuestions }, credentials);
+    return axios.post(`${protocol}//${host}:${port}/etudiant/reponses/new`, { tabQuestions }, credentials);
 }
 
 export function etudiantVariablesAPI(idAuth) {
-    return axios.get(`http://${host}:3001/etudiant/${idAuth}/variables`, credentials);
+    return axios.get(`${protocol}//${host}:${port}/etudiant/${idAuth}/variables`, credentials);
 }
 
 // Sujet 
 
 export function getSujetAPI(idModele) {
-    return axios.get(`http://${host}:3001/modele/${idModele}/sujet`, credentials);
+    return axios.get(`${protocol}//${host}:${port}/modele/${idModele}/sujet`, credentials);
 }
 
 //Correction
 
 export function getReponsesCorrigees(idPromo, idAuth) {
-    return axios.get(`http://${host}:3001/correction/${idPromo}/${idAuth}`, credentials);
+    return axios.get(`${protocol}//${host}:${port}/correction/${idPromo}/${idAuth}`, credentials);
 }
 
 export function getEssaisEtudiant(idAuth){
-    return axios.get(`http://${host}:3001/etudiant/${idAuth}/reponses`, credentials)
+    return axios.get(`${protocol}//${host}:${port}/etudiant/${idAuth}/reponses`, credentials);
 }

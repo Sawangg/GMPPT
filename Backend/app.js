@@ -32,7 +32,7 @@ app.use(session({
 }));
 
 app.use(cors({
-    origin: process.env.ORIGIN,
+    origin: [process.env.ORIGINHTTP, process.env.ORIGINHTTPS],
     credentials: true,
 }));
 
@@ -53,6 +53,7 @@ app.use('/promo', promoRouter);
 app.use('/unite', uniteRouter);
 app.use('/correction', correctionRouter);
 
-app.listen(3001, () => {
-    console.log("Le serveur fonctionne sur le port 3001");
+app.listen(process.env.PORT, () => {
+    console.clear();
+    console.log(`Le serveur fonctionne sur le port ${process.env.PORT}`);
 });
