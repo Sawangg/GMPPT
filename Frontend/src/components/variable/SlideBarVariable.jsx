@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, { useCallback } from 'react';
 import {Typography, Slider, makeStyles} from '@material-ui/core';
 
 import { useDispatch } from "react-redux";

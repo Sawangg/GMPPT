@@ -52,19 +52,16 @@ export default function ChoixUnite(props){
 
     const [actualise, setActualise] = useState(false)
 
-    const [tabUnites, setUnites] = useState([{abr : " ", puissance : 1}])
+    const [tabUnites, setUnites] = useState([{abr : "", puissance : 1}])
 
     const dispatch = useDispatch();  
 
     const unitesReference = useSelector(selectUnites)
 
-    if(unitesReference.length === 1){
-        
-        //dispatch(getAllUnite())
-    } 
-
     useConstructor(() => {
-        dispatch(getAllUnite())
+        if (unitesReference.length === 0){ 
+            dispatch(getAllUnite())
+        }
         //dispatch(setTest())
     });
 
@@ -73,13 +70,13 @@ export default function ChoixUnite(props){
 
     //gère l'ajout d'une partie d'unité dans l'unité de la réponse
     const handleAjouterUnite = () =>{
-        let newTab =[...tabUnites, {abr : " ", puissance : 1}]
+        let newTab =[...tabUnites, {abr : "", puissance : 1}]
         setUnites(newTab)
     }
 
     //remete l'unité à [{id : 0, puissance : 1}], soit sans unité
-    const handleRemettreAZero = () =>{
-        setUnites([{abr : " ", puissance : 1}])
+    const handleRemettreAZero = () => {
+        setUnites([{abr : "", puissance : 1}])
     }
 
     const actualiseOpen = () =>{
@@ -146,11 +143,11 @@ export default function ChoixUnite(props){
     //si le tableau ne contient que des Sans unité, il n'en restera qu'un
     const supprimerIterationsSansUnite = () =>{
         _.remove(tabUnites, function(o){
-            return o.abr === " "
+            return o.abr === ""
         })
 
         if (tabUnites.length === 0){
-            tabUnites.push({abr : " ", puissance : 1})
+            tabUnites.push({abr : "", puissance : 1})
         }
 
     }
@@ -170,8 +167,9 @@ export default function ChoixUnite(props){
               </div>
       
               {/* Select de l'unité */}
+              {console.log(partieUnite)}
+              {console.log(unitesReference)}
               <TextField select value={partieUnite.abr} onChange={e=>handleChangeUnite(index, e)}>
-                  {console.log(unitesReference)}
                   {unitesReference.map((i) => 
                   <MenuItem key={i.abrev} value={i.abrev} >
                       {i.nom}
@@ -179,7 +177,7 @@ export default function ChoixUnite(props){
               </TextField>
       
               {/* affiche la modif de puissance que si n'est pas Sans unité */}
-              {partieUnite.abr !== " " ? 
+              {partieUnite.abr !== "" ? 
               <>
               {/* modif puissance */}
               <TextField value={partieUnite.puissance} className={classes.puissance}
@@ -218,7 +216,7 @@ export default function ChoixUnite(props){
                         {partieUnite(i, index)}
                         
                         {/* interserction avec des . entre les parties d'unité */}
-                        {index < tabUnites.length-1 ? <b>.</b> : null}
+                        {/*index < tabUnites.length-1 ? <b>.</b> : null*/}
                         </div>
                     )}
                 </div>

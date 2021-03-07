@@ -11,7 +11,7 @@ import {
     Input,
     MenuItem,
     FormControl,
-    makeStyles
+    //makeStyles
 } from '@material-ui/core';
 
 import PopUp from '../PopUp';
@@ -22,12 +22,12 @@ import { useSelector } from "react-redux";
 import { attributionSujetAPI } from '../../utils/api'
 
 export default function DialogAssociationModele({open, setClose, selectPromo}){
-    const useStyles = makeStyles((theme) => ({
-        formControl: {
-            width: 200
-        }
-    }));
-    const classes = useStyles();
+    // const useStyles = makeStyles((theme) => ({
+    //     formControl: {
+    //         width: 200
+    //     }
+    // }));
+    //const classes = useStyles();
 
     const modele = useSelector(selectModele);
 

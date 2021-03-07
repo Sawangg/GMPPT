@@ -15,10 +15,12 @@ export const enregistreUnites = createAsyncThunk("unite/addunite", async (tabUni
 export const uniteSlice = createSlice({
   name: "unite",
   initialState: {
-    tabUnites: [{
-      nom : undefined,
-      abrev : undefined,
-    }],
+    tabUnites: []
+    // [{
+    //   nom : undefined,
+    //   abrev : undefined,
+    // }]
+    ,
     indexEnModif : -1, //l'index de l'unité qui est en modif (-1 coorespond à aucune unité en modif)
     actualise : false, //indique si l'importation des données est terminée
     enregistre : false
@@ -52,9 +54,9 @@ export const uniteSlice = createSlice({
     //paramètres : index
     deleteUnite : (state, action) =>{
       let index = action.payload
-      console.log(action.payload)
+      state.indexEnModif = -1
+      state.enregistre = false     
       state.tabUnites.splice(index, 1)
-      state.enregistre = false
     },
     setIndexEnModif : (state, action) =>{
       state.indexEnModif = action.payload

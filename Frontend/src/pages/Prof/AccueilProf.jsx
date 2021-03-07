@@ -1,7 +1,5 @@
 import React from 'react'
-import {makeStyles} from "@material-ui/core";
 
-import Etapes from '../../components/Etapes';
 import ParticulesFond from '../../components/ParticulesFond';
 import useConstructor from '../../components/use/useContructor';
 
