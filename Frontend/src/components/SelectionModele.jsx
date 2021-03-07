@@ -93,7 +93,7 @@ const SelectionModele = ({setClose, open, tard}) => {
 
     const choisirModele = () => {
         console.log(select)
-        if (select != modele.idModeleSelectionne) { // Le toString ne fonctionne pas ici (voir si cela pose probleme mais fix l'erreur fatal temporairement)
+        if (select !== modele.idModeleSelectionne) { // Le toString ne fonctionne pas ici (voir si cela pose probleme mais fix l'erreur fatal temporairement)
             dispatch(selectionnerModele(select));
             dispatch(getCategoriesFormules(select));
             dispatch(getAllVariables(select));

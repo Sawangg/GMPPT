@@ -140,7 +140,7 @@ export const consulterSlice = createSlice({
                         })
 
                         //si il y en a une, on met qu'elle est juste
-                        if (reponse != undefined) {
+                        if (reponse !== undefined) {
                             reponse.justeApp = true
                             reponse.ecart = Math.abs(reponse.value - repCor.value)
                         }
@@ -154,7 +154,7 @@ export const consulterSlice = createSlice({
                         let min = undefined
 
                         questionJuste.tabReponses.forEach(repCor => {
-                            if (min == undefined){
+                            if (min === undefined){
                                 min = Math.abs(rep.value - repCor.value)
                             }else{
                                 min = Math.min(min, Math.abs(rep.value - repCor.value))

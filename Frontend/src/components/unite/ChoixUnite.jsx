@@ -59,7 +59,7 @@ export default function ChoixUnite(props){
     const unitesReference = useSelector(selectUnites)
 
     useConstructor(() => {
-        if (unitesReference.length == 0){ 
+        if (unitesReference.length === 0){ 
             dispatch(getAllUnite())
         }
         //dispatch(setTest())

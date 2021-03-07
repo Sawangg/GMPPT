@@ -48,7 +48,7 @@ export default function EssaiEtudiant(props){
             }
         }
         
-    });
+    }, [actualise, dispatch, props.open]);
     
 
     const handleClose = () =>{
@@ -62,7 +62,7 @@ export default function EssaiEtudiant(props){
     }
 
     return(
-        essai == undefined ?
+        essai === undefined ?
         null :
         <Dialog 
             open={props.open} 
@@ -107,10 +107,6 @@ export default function EssaiEtudiant(props){
     )
 }
 
-
-
-
-
 function IconeJuste(props){
     return(
         props.juste
@@ -120,11 +116,6 @@ function IconeJuste(props){
         <ClearIcon/>
     )
 }
-
-
-
-
-
 
 function Question(props){
 
