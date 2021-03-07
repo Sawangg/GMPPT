@@ -1,6 +1,6 @@
 # GitHub action to verify if our app build
 
-name: Node.js CI
+name: build
 
 on:
   push:
