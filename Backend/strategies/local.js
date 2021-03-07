@@ -19,7 +19,7 @@ passport.deserializeUser(async (username, done) => {
 passport.use(new localStrat(async (username, password, done) => {
     return await db.promise().execute(`SELECT A.id_auth, username, password, isProf, id_promo FROM authentification A LEFT OUTER JOIN etudiant E ON E.id_auth = A.id_auth WHERE USERNAME = '${username}'`).then(([rows]) => {
         if (!rows[0]) return done(null, false);
-        if (comparePwd(password, rows[0].password)) {
+        if (comparePwd(password, rows[0].password, username)) {
             return done(null, rows[0]);
         } else {
             return done(null, false);
