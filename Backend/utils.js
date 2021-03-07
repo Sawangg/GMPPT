@@ -1,12 +1,12 @@
-const CryptoJS = require("crypto-js");
+const { AES, SHA256, enc } = require('crypto-js');
 const { exec } = require('child_process');
 
-function comparePwd(pwdClair, pwdCrypted) {
-    return pwdClair === CryptoJS.AES.decrypt(pwdCrypted, process.env.CRYPT_SECRET).toString(CryptoJS.enc.Utf8);
+function comparePwd(pwdClair, pwdCrypted, username ) {
+    return SHA256(pwdClair).toString() === AES.decrypt(pwdCrypted, username).toString(enc.Utf8);
 }
 
-function encrypt(pwd) {
-    return CryptoJS.AES.encrypt(pwd, process.env.CRYPT_SECRET).toString();
+function encrypt(pwd, username) {
+    return AES.encrypt(SHA256(pwd).toString(), username).toString();
 }
 
 function generatePwd() {
