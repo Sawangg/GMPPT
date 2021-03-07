@@ -98,7 +98,7 @@ export default function Promo() {
     }
 
     const remove = () => {
-        dispatch(removePromo(select));
+        dispatch(removePromo(select)).then(() => dispatch(getAllPromo()));
         setSelect("");
     }
 

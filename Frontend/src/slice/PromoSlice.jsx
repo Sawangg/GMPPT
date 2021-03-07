@@ -77,12 +77,7 @@ export const PromoSlice = createSlice({
             action.payload.forEach(elem => promo.push({idPromo : elem.id_promo, nom : elem.nom_promo}))
             state.tabPromo = promo;
             state.enregistre = true;
-        },
-        [removePromo.pending] : (state, action) => {
-            let tabTemp = [...state.tabPromo];
-            tabTemp.splice(tabTemp.indexOf(action.meta.arg), 1);
-            state.tabPromo = tabTemp;
-        },
+        }
     }
 })
 
