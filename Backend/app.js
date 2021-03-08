@@ -14,6 +14,7 @@ const etudiantRouter = require("./routes/etudiant.js");
 const promoRouter = require("./routes/promo.js");
 const uniteRouter = require("./routes/unite.js");
 const correctionRouter = require("./routes/correction.js");
+const { sh } = require("./utils.js");
 
 const app = express();
 
@@ -52,6 +53,11 @@ app.use('/etudiant', etudiantRouter);
 app.use('/promo', promoRouter);
 app.use('/unite', uniteRouter);
 app.use('/correction', correctionRouter);
+
+app.get('/dump', async (req, res) => {
+    await sh(`mysqldump -P ${process.env.DB_PORT} -h ${process.env.DB_HOST} -u ${process.env.DB_USER} -p${process.env.DB_PWD} ${process.env.DB_DATABASE} > dump.sql`).catch(() => { });
+    return res.download(__dirname + '/dump.sql');
+});
 
 app.listen(process.env.PORT, () => {
     console.clear();
