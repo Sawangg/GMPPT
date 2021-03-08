@@ -97,4 +97,4 @@ Il est aussi possible d'obtenir une erreur npm lors de l’exécution de `npm i`
 Pour tout autre problème d'installation ou de bug dans l'application, merci d'ouvrir une issue <a href="https://github.com/Sawangg/GMPPT/issues" target="_blank" rel="noreferrer">ici</a>.
 <br/>
 <br/>
-Documentation écrit avec ❤️ par <a href ="https://github.com/Sawangg" target="_blank"  rel="noreferrer">@Sawangg</a>
+Documentation écrite avec ❤️ par <a href ="https://github.com/Sawangg" target="_blank"  rel="noreferrer">@Sawangg</a>
