@@ -26,8 +26,8 @@ router.get('/logout', isAuthenticated, (req, res) => {
 router.post('/:username/changepwd', isAuthenticated, (req, res) => {
     const { username } = req.params;
     const { oldPassword, newPassword } = req.body.passwords;
-    if (comparePwd(oldPassword, req.user.password)) {
-        db.promise().execute(`UPDATE authentification SET password = '${encrypt(newPassword)}' WHERE username = '${username}'`).then(() => {
+    if (comparePwd(oldPassword, req.user.password, username)) {
+        db.promise().execute(`UPDATE authentification SET password = '${encrypt(newPassword, username)}' WHERE username = '${username}'`).then(() => {
             return res.sendStatus(200);
         }).catch(() => {
             return res.sendStatus(500);

@@ -129,7 +129,6 @@ const connect = (state, action) => {
 
 export const {
   setUser,
-  changePassword,
   changeUserName,
   setError,
   setJustLogin,
