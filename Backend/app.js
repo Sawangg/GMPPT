@@ -6,6 +6,7 @@ const fileUpload = require('express-fileupload');
 const passport = require("passport");
 const cors = require("cors");
 const MySQLStore = require('express-mysql-session')(session);
+const { isAuthenticated, isProf } = require("./middleware.js");
 
 const authRouter = require("./routes/auth.js");
 const modeleRouter = require("./routes/modele.js");
@@ -54,7 +55,7 @@ app.use('/promo', promoRouter);
 app.use('/unite', uniteRouter);
 app.use('/correction', correctionRouter);
 
-app.get('/dump', async (req, res) => {
+app.get('/dump', isAuthenticated, isProf, async (_req, res) => {
     await sh(`mysqldump -P ${process.env.DB_PORT} -h ${process.env.DB_HOST} -u ${process.env.DB_USER} -p${process.env.DB_PWD} ${process.env.DB_DATABASE} > dump.sql`).catch(() => { });
     return res.download(__dirname + '/dump.sql');
 });
