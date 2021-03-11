@@ -28,7 +28,7 @@ router.post('/:idpromo/new', isAuthenticated, isProf, async (req, res) => {
     let insertAuth = 'INSERT INTO authentification VALUES ';
     let [{ AUTO_INCREMENT }] = (await db.promise().execute(`SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA ='GMP' AND TABLE_NAME = 'authentification';`))[0];
     feuille.eachRow((row) => {
-        row.getCell(4).value = encrypt(generatePwd(), row.getCell(3));
+        row.getCell(4).value = encrypt(generatePwd(), row.getCell(3).value);
         // nom, prenom, username, password
         insertEtu += ` (${AUTO_INCREMENT}, '${row.getCell(1).value}', '${row.getCell(2).value}', ${idpromo}),`;
         insertAuth += ` ('${row.getCell(3).value}', '${row.getCell(4).value}', false, NULL, NULL),`;
@@ -41,9 +41,10 @@ router.post('/:idpromo/new', isAuthenticated, isProf, async (req, res) => {
         await db.promise().execute(insertEtu);
         let tempFilePath = tempfile('.xlsx');
         await workbook.xlsx.writeFile(tempFilePath).then(() => {
-            return res.sendFile(tempFilePath).status(200);
+            return res.status(200).download(tempFilePath);
         });
-    } catch {
+    } catch (r) {
+        console.log(r);
         return res.sendStatus(500);
     }
 });
