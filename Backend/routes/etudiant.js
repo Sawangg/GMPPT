@@ -3,7 +3,7 @@ const db = require("../databases.js");
 const router = Router();
 const { isAuthenticated, isProf, isStudent } = require("../middleware.js");
 const ExcelJS = require('exceljs');
-const { generatePwd, dateFormat } = require("../utils.js");
+const { generatePwd, dateFormat, encrypt } = require("../utils.js");
 const tempfile = require('tempfile');
 
 router.post('/reponses/new', isAuthenticated, isStudent, async (req, res) => {
@@ -28,7 +28,7 @@ router.post('/:idpromo/new', isAuthenticated, isProf, async (req, res) => {
     let insertAuth = 'INSERT INTO authentification VALUES ';
     let [{ AUTO_INCREMENT }] = (await db.promise().execute(`SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA ='GMP' AND TABLE_NAME = 'authentification';`))[0];
     feuille.eachRow((row) => {
-        row.getCell(4).value = generatePwd();
+        row.getCell(4).value = encrypyt(generatePwd(), row.getCell(3));
         // nom, prenom, username, password
         insertEtu += ` (${AUTO_INCREMENT}, '${row.getCell(1).value}', '${row.getCell(2).value}', ${idpromo}),`;
         insertAuth += ` ('${row.getCell(3).value}', '${row.getCell(4).value}', false, NULL, NULL),`;
@@ -41,9 +41,8 @@ router.post('/:idpromo/new', isAuthenticated, isProf, async (req, res) => {
         await db.promise().execute(insertEtu);
         let tempFilePath = tempfile('.xlsx');
         await workbook.xlsx.writeFile(tempFilePath).then(() => {
-            res.sendFile(tempFilePath);
+            return res.sendFile(tempFilePath).status(200);
         });
-        return res.status(200);
     } catch {
         return res.sendStatus(500);
     }
