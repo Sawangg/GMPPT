@@ -41,7 +41,7 @@ router.post('/:idpromo/new', isAuthenticated, isProf, async (req, res) => {
         await db.promise().execute(insertEtu);
         let tempFilePath = tempfile('.xlsx');
         await workbook.xlsx.writeFile(tempFilePath).then(() => {
-            res.sendFile(tempFilePath).status(200);
+            return res.sendFile(tempFilePath).status(200);
         });
     } catch {
         return res.sendStatus(500);
