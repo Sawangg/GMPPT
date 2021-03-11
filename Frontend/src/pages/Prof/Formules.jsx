@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {Fab, makeStyles, Typography} from '@material-ui/core';
+import React, { useState } from 'react';
+import { Fab, makeStyles, Typography } from '@material-ui/core';
 import CircleLoader from "react-spinners/CircleLoader";
 import AddIcon from '@material-ui/icons/Add';
 
@@ -10,12 +10,12 @@ import SelectionModele from '../../components/SelectionModele';
 import EnregistrementFormule from '../../components/formules/EnregistrementFormule';
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectTabCategorieLength, selectActualiseFormule, selectEnregistreFormule, addCategorie, getCategoriesFormules } from "../../slice/FormulesSlice"
-import { selectIdModeleSelectionne } from "../../slice/ModeleSlice"
+import { selectTabCategorieLength, selectActualiseFormule, selectEnregistreFormule, addCategorie, getCategoriesFormules } from "../../slice/FormulesSlice";
+import { selectIdModeleSelectionne } from "../../slice/ModeleSlice";
 
 export default function TodoListAccordeon() {
-  
-    const useStyles = makeStyles((theme) => ({
+
+    const useStyles = makeStyles(() => ({
         hr: {
             width: "80%",
             marginBottom: "2%"
@@ -48,7 +48,7 @@ export default function TodoListAccordeon() {
         return (
             <div>
                 <Typography variant="h1">FORMULES</Typography>
-                <hr className={classes.hr}/>
+                <hr className={classes.hr} />
                 <Fab className={classes.fab}
                     disabled={tabCatLength >= 30}
                     size="small"
@@ -59,16 +59,16 @@ export default function TodoListAccordeon() {
                     <AddIcon />
                 </Fab>
                 {Array(tabCatLength).fill(0).map((_, index) => (
-                    <Items index={index} key={index} length={tabCatLength}/>
+                    <Items index={index} key={index} length={tabCatLength} />
                 ))}
-                <EnregistrementFormule/>
+                <EnregistrementFormule />
             </div>
         );
     }
 
     return (
-        idModele === null 
-        ? <SelectionModele tard={false} setClose={() => setOpen(false)} open={open}/> 
-        : actualise ? displayFormule() : <CircleLoader size={50} color={"rgb(7, 91, 114)"} css={{margin : "auto", display : "flex", justifyContent : "center"}}/>
+        idModele === null
+            ? <SelectionModele tard={false} setClose={() => setOpen(false)} open={open} />
+            : actualise ? displayFormule() : <CircleLoader size={50} color={"rgb(7, 91, 114)"} css={{ margin: "auto", display: "flex", justifyContent: "center" }} />
     );
 }

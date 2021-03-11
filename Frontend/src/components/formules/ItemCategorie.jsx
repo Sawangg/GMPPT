@@ -1,18 +1,6 @@
-import React, {useCallback, useState} from 'react';
-import {
-    Button,
-    Fab,
-    Typography,
-    Accordion,
-    AccordionSummary,
-    AccordionDetails,
-    makeStyles,
-    Dialog, 
-    DialogActions, 
-    DialogContent, 
-    DialogContentText,
-    DialogTitle
-} from '@material-ui/core';
+import React, { useCallback, useState } from 'react';
+
+import { Button, Fab, Typography, Accordion, AccordionSummary, AccordionDetails, makeStyles, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
 import SaveIcon from '@material-ui/icons/Save';
 import CreateIcon from '@material-ui/icons/Create';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -23,15 +11,15 @@ import TodoListFormule from './TodoListFormule';
 import { useDispatch, useSelector } from "react-redux";
 import { changeModifCategorie, changeNom, removeCategorie, selectCategorie } from "../../slice/FormulesSlice";
 
-const ItemCategorie = ({index, length}) => {
+const ItemCategorie = ({ index, length }) => {
 
     const useStyles = makeStyles((theme) => ({
         fieldNomCategorie: {
-            width : "30%",
+            width: "30%",
         },
         textNomCategorie: {
-            width : "30%",
-            marginTop : "8px"
+            width: "30%",
+            marginTop: "8px"
         },
         fabModif: {
             backgroundColor: theme.palette.primary.light,
@@ -46,8 +34,8 @@ const ItemCategorie = ({index, length}) => {
             boxShadow: "0px 8px 20px -5px rgba(0,0,0,0.69)"
         },
         enteteItemAccordeon: {
-            display : "flex",
-            justifyContent : "space-between"
+            display: "flex",
+            justifyContent: "space-between"
         },
         buttonDelete: {
             color: "white",
@@ -57,13 +45,14 @@ const ItemCategorie = ({index, length}) => {
             }
         },
         accordion: {
-            marginTop : 15
+            marginTop: 15
         },
         accordionDetails: {
-            display : "flex",
-            flexDirection : "column"
+            display: "flex",
+            flexDirection: "column"
         }
     }));
+    
     const classes = useStyles();
 
     const [expanded, setExpanded] = useState(true);
@@ -79,7 +68,7 @@ const ItemCategorie = ({index, length}) => {
 
     const remove = useCallback(() => {
         setOpen(false);
-        if (open) dispatch(removeCategorie(index)); 
+        if (open) dispatch(removeCategorie(index));
     }, [dispatch, index, open]);
 
     //Quand les champs sont a remplir
@@ -90,32 +79,32 @@ const ItemCategorie = ({index, length}) => {
                     label="Nom Catégorie"
                     delayTimeout={250}
                     value={item.nom}
-                    onChange={e => dispatch(changeNom({index : index, event : e}))} 
+                    onChange={e => dispatch(changeNom({ index: index, event: e }))}
                 />
-                <Fab 
-                    disabled={item.nom === ""} 
-                    size="small" 
-                    color="primary" 
-                    aria-label="add" 
+                <Fab
+                    disabled={item.nom === ""}
+                    size="small"
+                    color="primary"
+                    aria-label="add"
                     onClick={() => change()}
                 >
-                    <SaveIcon/>
+                    <SaveIcon />
                 </Fab>
             </>
         )
     }
 
     //Quand les champs sont enregistrés
-    const txt = () =>{
+    const txt = () => {
         return (
             <>
                 <Typography className={classes.textNomCategorie}>{item.nom}</Typography>
                 <Fab className={classes.fabModif}
-                    size="small" 
+                    size="small"
                     aria-label="add"
                     onClick={() => change()}
                 >
-                    <CreateIcon/>
+                    <CreateIcon />
                 </Fab>
             </>
         )
@@ -125,9 +114,9 @@ const ItemCategorie = ({index, length}) => {
         <div className={classes.divItemAccordeon}>
 
             <div className={classes.enteteItemAccordeon}>
-                {item.modif ? field() : txt()}    
+                {item.modif ? field() : txt()}
                 <Button className={classes.buttonDelete}
-                    disabled={length === 1} 
+                    disabled={length === 1}
                     variant="contained"
                     onClick={e => setOpen(true)}
                 >
@@ -145,15 +134,14 @@ const ItemCategorie = ({index, length}) => {
                 </Dialog>
             </div>
 
-            <Accordion className={classes.accordion} square expanded={expanded} onChange={() =>setExpanded(!expanded)}>
-                <AccordionSummary expandIcon={<ExpandMoreIcon />}/>
+            <Accordion className={classes.accordion} square expanded={expanded} onChange={() => setExpanded(!expanded)}>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />} />
                 <AccordionDetails className={classes.accordionDetails}>
-                    <TodoListFormule indexCategorie={index}/>
+                    <TodoListFormule indexCategorie={index} />
                 </AccordionDetails>
             </Accordion>
         </div>
-    )
-
+    );
 }
 
 export default React.memo(ItemCategorie);

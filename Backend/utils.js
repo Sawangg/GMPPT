@@ -1,7 +1,7 @@
 const { AES, SHA256, enc } = require('crypto-js');
 const { exec } = require('child_process');
 
-function comparePwd(pwdClair, pwdCrypted, username ) {
+function comparePwd(pwdClair, pwdCrypted, username) {
     return SHA256(pwdClair).toString() === AES.decrypt(pwdCrypted, username).toString(enc.Utf8);
 }
 

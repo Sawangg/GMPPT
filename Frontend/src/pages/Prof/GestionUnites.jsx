@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 import { Button, Table, TableCell, TableHead, TableRow, TableBody, TextField, Typography, IconButton } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core';
@@ -10,7 +10,7 @@ import SaveIcon from '@material-ui/icons/Save';
 import { useDispatch, useSelector } from "react-redux";
 import useConstructor from '../../components/use/useContructor';
 
-import { getAllUnite, selectUnites, enregistreUnites, selectActualise, addUnite, setIndexEnModif, selectIndexEnMofid, changeNomComplet, changeAbreviation, deleteUnite, selectEnregistreUnite, setEnregistre } from '../../slice/UniteSlice'
+import { getAllUnite, selectUnites, enregistreUnites, selectActualise, addUnite, setIndexEnModif, selectIndexEnMofid, changeNomComplet, changeAbreviation, deleteUnite, selectEnregistreUnite, setEnregistre } from '../../slice/UniteSlice';
 import PopUp from '../../components/PopUp';
 
 export default function GestionUnites() {
@@ -49,7 +49,6 @@ export default function GestionUnites() {
         tableCell: {
             textAlign: "center"
         },
-
         tableRow: {
             backgroundColor: theme.palette.secondary.light
         }
@@ -58,43 +57,34 @@ export default function GestionUnites() {
     const classes = useStyles();
 
     const dispatch = useDispatch();
-
     const tabUnites = useSelector(selectUnites);
-
     const actualise = useSelector(selectActualise);
-
     const indexEnModif = useSelector(selectIndexEnMofid);
-
     const isEnregistre = useSelector(selectEnregistreUnite);
 
     useConstructor(() => {
         if (!isEnregistre) {
-            dispatch(getAllUnite())
+            dispatch(getAllUnite());
         }
-    })
+    });
 
     //permet de savoir si ce nom est utilisé une seule fois dans le tabUnites
     //renvoie aussi une valeur fausse si les chaines sont vides
     const modifIsUnique = () => {
 
         if (indexEnModif < 0) { // si il n'y pas de champ qui est en train d'être modifié
-            return true
+            return true;
         } else if (tabUnites[indexEnModif].abrev.length === 0 ||
             tabUnites[indexEnModif].nom.length === 0) { // si l'un des champ est vide
-            return false
+            return false;
         }
 
-
         for (let i = 0; i < tabUnites.length; i++) {
-            let verif = (i === indexEnModif) ||
-                (tabUnites[i].nom !== tabUnites[indexEnModif].nom &&
-                    tabUnites[i].abrev !== tabUnites[indexEnModif].abrev)
-
-            if (!verif) return false // renvoie faux si le nom ou l'abreviation est retrouvée autre part
+            let verif = (i === indexEnModif) || (tabUnites[i].nom !== tabUnites[indexEnModif].nom && tabUnites[i].abrev !== tabUnites[indexEnModif].abrev);
+            if (!verif) return false; // renvoie faux si le nom ou l'abreviation est retrouvée autre part
         }
 
         return true // retourne vrai par défaut
-
     }
 
     //change le nom complet d'une unité au fur et à mesure de sa saisie
@@ -117,27 +107,27 @@ export default function GestionUnites() {
 
     //enregistre l'unité dans la base de données
     const enregistrer = () => {
-        dispatch(enregistreUnites(tabUnites))
-        setEnregistre(true)
+        dispatch(enregistreUnites(tabUnites));
+        setEnregistre(true);
     }
 
     //ajoute une unité dans le tableau (n'enregistre pas dans la BD)
     const handleAjouterUnite = () => {
-        dispatch(addUnite())
+        dispatch(addUnite());
     }
 
     const handleDeleteUnite = (index) => {
         if (tabUnites[index].nom !== "Sans Unité") {
-            dispatch(deleteUnite(index))
+            dispatch(deleteUnite(index));
         }
     }
 
     const handleModifUnite = (index) => {
-        dispatch(setIndexEnModif(index))
+        dispatch(setIndexEnModif(index));
     }
 
     const handleSaveLocal = () => {
-        dispatch(setIndexEnModif(-1))
+        dispatch(setIndexEnModif(-1));
     }
 
     const buttonsUniteSansModif = (index) => {
@@ -160,16 +150,14 @@ export default function GestionUnites() {
     //affiche l'unité en fonction du fait qu'il est en train d'être modifié ou non
     const afficherUnite = (unite, index) => {
         return (
-            index !== indexEnModif ?
-                <>
-
+            index !== indexEnModif 
+                ? <>
                     <TableCell className={classes.tableCell}> {unite.nom} </TableCell>
                     <TableCell className={classes.tableCell}> {unite.abrev} </TableCell>
                     <TableCell className={classes.tableCell}> {buttonsUniteSansModif(index)} </TableCell>
-
                 </>
-                :
-                <>
+
+                : <>
                     <TableCell className={classes.tableCell}>
                         <TextField value={unite.nom}
                             onChange={e => handleChangeNomComplet(index, e)} />
@@ -192,10 +180,8 @@ export default function GestionUnites() {
 
     return (
         !actualise
-            ?
-            <CircleLoader size={50} color={"rgb(7, 91, 114)"} css={{ margin: "auto", display: "flex", justifyContent: "center" }} />
-            :
-            <div>
+            ? <CircleLoader size={50} color={"rgb(7, 91, 114)"} css={{ margin: "auto", display: "flex", justifyContent: "center" }} />
+            : <div>
                 <Typography variant="h1">Gestion des unités</Typography>
                 <hr className={classes.hr} />
 
@@ -215,7 +201,7 @@ export default function GestionUnites() {
                                 <TableRow key={index}>
                                     {afficherUnite(unite, index)}
                                 </TableRow>
-                            )
+                            );
                         })}
                     </TableBody>
                 </Table>
@@ -225,7 +211,7 @@ export default function GestionUnites() {
                     actionName="enregistrer"
                     action={() => enregistrer()}
                     message="Cliquez ici pour enregistrer les unités"
-                    severity="warning" 
+                    severity="warning"
                 />
             </div>
     )

@@ -58,7 +58,7 @@ export function getAllModeleAPI() {
 // renvoie ausi le numéro modele
 
 export function addModeleAPI(nomModele) {
-    return axios.post(`${protocol}//${host}:${port}/modele/new`, { "nommodele" : nomModele }, credentials);
+    return axios.post(`${protocol}//${host}:${port}/modele/new`, { "nommodele": nomModele }, credentials);
 }
 
 // Modeles 3D
@@ -84,7 +84,7 @@ export function getVariablesArchiAPI() {
 // Promotion
 
 export function addPromoAPI(nomPromo) {
-    return axios.post(`${protocol}//${host}:${port}/promo/new`, { nomPromo : nomPromo }, credentials);
+    return axios.post(`${protocol}//${host}:${port}/promo/new`, { nomPromo: nomPromo }, credentials);
 }
 
 export function getAllPromoAPI() {
@@ -99,7 +99,7 @@ export function attributionSujetAPI(idPromo, idModele) {
     return axios.get(`${protocol}//${host}:${port}/promo/${idPromo}/${idModele}/attribution`, credentials);
 }
 
-export function deletePromoAPI(idPromo){
+export function deletePromoAPI(idPromo) {
     return axios.get(`${protocol}//${host}:${port}/promo/${idPromo}/delete`, credentials);
 }
 
@@ -161,6 +161,6 @@ export function getReponsesCorrigees(idPromo, idAuth) {
     return axios.get(`${protocol}//${host}:${port}/correction/${idPromo}/${idAuth}`, credentials);
 }
 
-export function getEssaisEtudiant(idAuth){
+export function getEssaisEtudiant(idAuth) {
     return axios.get(`${protocol}//${host}:${port}/etudiant/${idAuth}/reponses`, credentials);
 }

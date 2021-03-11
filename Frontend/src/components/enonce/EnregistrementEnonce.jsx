@@ -13,9 +13,8 @@ const EnregistrementEnonce = () => {
     const enonce = useSelector(selectEnonce);
 
     return (
-        <Enregistre isEnregistre={isEnregistreEnonce} action={setQuestions({ idModele : idModele, enonce : enonce.enonceContenu, tabQuestions : enonce.question })} />
-    )
-
+        <Enregistre isEnregistre={isEnregistreEnonce} action={setQuestions({ idModele: idModele, enonce: enonce.enonceContenu, tabQuestions: enonce.question })} />
+    );
 }
 
 export default React.memo(EnregistrementEnonce);

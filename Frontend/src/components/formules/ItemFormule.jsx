@@ -1,5 +1,6 @@
 import React from 'react';
-import {Button, Typography, Fab, makeStyles} from '@material-ui/core';
+
+import { Button, Typography, Fab, makeStyles } from '@material-ui/core';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
@@ -8,11 +9,11 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 import DelayInput from '../InputAwait';
 
-import { changeNomFormule, changeFormule, changeModifFormule, changePositionFormule, selectFormule, removeFormule } from "../../slice/FormulesSlice"
+import { changeNomFormule, changeFormule, changeModifFormule, changePositionFormule, selectFormule, removeFormule } from "../../slice/FormulesSlice";
 import { useDispatch, useSelector } from "react-redux";
 import clsx from 'clsx'
 
-const ItemFomrule = ({indexCategorie, indexFormule, length, onRemove}) => {
+const ItemFomrule = ({ indexCategorie, indexFormule, length, onRemove }) => {
 
     const useStyles = makeStyles((theme) => ({
         affichageFormule: {
@@ -26,11 +27,11 @@ const ItemFomrule = ({indexCategorie, indexFormule, length, onRemove}) => {
             margin: "auto"
         },
         formule: {
-            width : "40%",
-            marginLeft : "2%"
+            width: "40%",
+            marginLeft: "2%"
         },
         buttonSave: {
-            backgroundColor : theme.palette.primary.light,
+            backgroundColor: theme.palette.primary.light,
         },
         typoNomFormule: {
             overflowWrap: "break-word",
@@ -38,8 +39,8 @@ const ItemFomrule = ({indexCategorie, indexFormule, length, onRemove}) => {
         },
         typoFormule: {
             overflowWrap: "break-word",
-            width : "40%",
-            marginLeft : "2%"
+            width: "40%",
+            marginLeft: "2%"
         },
         buttonModif: {
             backgroundColor: theme.palette.primary.light
@@ -58,11 +59,12 @@ const ItemFomrule = ({indexCategorie, indexFormule, length, onRemove}) => {
         fabDelete: {
             color: "white",
             backgroundColor: theme.palette.error.main,
-                "&:hover": {
-                    backgroundColor: theme.palette.error.dark
-                },
+            "&:hover": {
+                backgroundColor: theme.palette.error.dark
+            },
         }
     }));
+    
     const classes = useStyles();
 
     const dispatch = useDispatch();
@@ -70,26 +72,26 @@ const ItemFomrule = ({indexCategorie, indexFormule, length, onRemove}) => {
 
     const item = useSelector(selectFormule(indexCategorie, indexFormule));
 
-    const changeModif = () =>{
-        dispatch(changeModifFormule({indexCategorie : indexCategorie, indexFormule : indexFormule}))
+    const changeModif = () => {
+        dispatch(changeModifFormule({ indexCategorie: indexCategorie, indexFormule: indexFormule }));
     }
 
     const field = () => {
-        return(
+        return (
             <>
                 <div className={classes.affichageFormule}>
                     <DelayInput
                         label="Nom formule"
                         delay={300}
                         value={item.nomFormule}
-                        onChange={e => dispatch(changeNomFormule({indexCategorie :indexCategorie, indexFormule : indexFormule, event : e}))} 
+                        onChange={e => dispatch(changeNomFormule({ indexCategorie: indexCategorie, indexFormule: indexFormule, event: e }))}
                     />
                     <ArrowForwardIcon className={classes.center} />
                     <DelayInput
                         label="Formule"
                         delay={250}
                         value={item.formule}
-                        onChange={e => dispatch(changeFormule({indexCategorie : indexCategorie, indexFormule : indexFormule, event : e}))}
+                        onChange={e => dispatch(changeFormule({ indexCategorie: indexCategorie, indexFormule: indexFormule, event: e }))}
                     />
                 </div>
                 <Button
@@ -104,7 +106,7 @@ const ItemFomrule = ({indexCategorie, indexFormule, length, onRemove}) => {
         )
     }
 
-    const txt = () =>{
+    const txt = () => {
         return (
             <>
                 <div className={classes.affichageFormule}>
@@ -132,11 +134,11 @@ const ItemFomrule = ({indexCategorie, indexFormule, length, onRemove}) => {
                 size="small"
                 aria-label="add"
                 onClick={() => {
-                    dispatch(removeFormule({indexCategorie : indexCategorie, indexFormule : indexFormule}));
+                    dispatch(removeFormule({ indexCategorie: indexCategorie, indexFormule: indexFormule }));
                     onRemove();
                 }}
             >
-                <DeleteIcon className={classes.center}/>
+                <DeleteIcon className={classes.center} />
             </Fab>
 
             {item.modif ? field() : txt()}
@@ -147,22 +149,21 @@ const ItemFomrule = ({indexCategorie, indexFormule, length, onRemove}) => {
                         color="primary"
                         variant='extended'
                         size='small'
-                        onClick={e => dispatch(changePositionFormule({indexCategorie :indexCategorie, indexFormule : indexFormule, up : true}))}
+                        onClick={e => dispatch(changePositionFormule({ indexCategorie: indexCategorie, indexFormule: indexFormule, up: true }))}
                     >
-                        <ArrowUpwardIcon/>
+                        <ArrowUpwardIcon />
                     </Fab>
                     <Fab color="primary"
                         variant='extended'
                         size='small'
-                        onClick={() => dispatch(changePositionFormule({indexCategorie : indexCategorie, indexFormule : indexFormule, up : false}))}
+                        onClick={() => dispatch(changePositionFormule({ indexCategorie: indexCategorie, indexFormule: indexFormule, up: false }))}
                     >
-                        <ArrowDownwardIcon/>
+                        <ArrowDownwardIcon />
                     </Fab>
                 </>
                 : null}
         </div>
-    )
-
+    );
 }
 
 export default React.memo(ItemFomrule);

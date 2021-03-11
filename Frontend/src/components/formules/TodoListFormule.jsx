@@ -1,62 +1,61 @@
-import React, {useCallback, useState} from 'react';
-import {Button, makeStyles} from '@material-ui/core';
+import React, { useCallback, useState } from 'react';
+import { Button, makeStyles } from '@material-ui/core';
 
-import Item from './ItemFormule'
-import PopUp from '../PopUp'
+import Item from './ItemFormule';
+import PopUp from '../PopUp';
 
-import { useDispatch } from "react-redux";
-import { addFormule, undoFormule } from "../../slice/FormulesSlice";
-import { useSelector } from "react-redux";
-import { selectTabFormuleLength } from "../../slice/FormulesSlice"
+import { useDispatch, useSelector } from "react-redux";
+import { addFormule, undoFormule, selectTabFormuleLength } from "../../slice/FormulesSlice";
 
 const TodoListFormule = ({ indexCategorie }) => {
 
-    const useStyles = makeStyles((theme) => ({
+    const useStyles = makeStyles(() => ({
         buttonAjouterFormule: {
-            display : "block",
+            display: "block",
             margin: "6% auto 0 auto",
         }
     }));
+
     const classes = useStyles();
 
     const [openPopUpSave, setOpenPopUpSave] = useState(false);
 
     const dispatch = useDispatch();
-    const tabFormuleLength = useSelector(selectTabFormuleLength(indexCategorie))
+    const tabFormuleLength = useSelector(selectTabFormuleLength(indexCategorie));
 
-    const undo = () =>{
+    const undo = () => {
         dispatch(undoFormule())
         setOpenPopUpSave(false);
-     }
+    }
 
-     const ajout = useCallback(() => {
+    const ajout = useCallback(() => {
         dispatch(addFormule(indexCategorie));
-     }, [dispatch, indexCategorie]);
+    }, [dispatch, indexCategorie]);
 
     return (
         <div>
-             {Array(tabFormuleLength).fill(0).map((_, index) => (
-                    <Item onRemove={() => setOpenPopUpSave(true)} indexFormule={index} length={tabFormuleLength} key={index} indexCategorie={indexCategorie}/>
-                ))}
-             <Button 
+            {Array(tabFormuleLength).fill(0).map((_, index) => (
+                <Item onRemove={() => setOpenPopUpSave(true)} indexFormule={index} length={tabFormuleLength} key={index} indexCategorie={indexCategorie} />
+            ))}
+            <Button
                 className={classes.buttonAjouterFormule}
                 disabled={tabFormuleLength >= 20}
                 variant="contained"
                 color="primary"
                 onClick={() => ajout()}
             >
-                    Ajouter des formules
+                Ajouter des formules
             </Button>
-             <PopUp 
-                message="Formule supprimée" 
-                actionName="RETOUR" 
-                action={() => undo()} 
-                open={openPopUpSave} 
+            <PopUp
+                message="Formule supprimée"
+                actionName="RETOUR"
+                action={() => undo()}
+                open={openPopUpSave}
                 handleClose={() => setOpenPopUpSave(false)}
                 pos="right"
             />
         </div>
     );
-} 
+}
 
 export default React.memo(TodoListFormule);
