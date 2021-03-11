@@ -1,30 +1,32 @@
 @font-face {
-  font-family: "Amaranth";
-  src: url('./font/Amaranth Regular 400.ttf');
+	font-family: "Amaranth";
+	font-display: swap;
+	src : url('./fonts/Amaranth Regular 400.woff2') format('woff2'),
+		url('./fonts/Amaranth Regular 400.woff') format('woff');
 }
 
 body {
-  font-family: 'Amaranth';
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+	font-family: 'Amaranth';
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 }
 
 .center {
-  display: block !important;
-  margin: auto !important;
+	display: block !important;
+	margin: auto !important;
 }
 
 .linkNone {
-  text-decoration: none;
-  color : black;
+	text-decoration: none;
+	color: black;
 }
 
 #sujet table {
-  border-collapse: collapse;
+	border-collapse: collapse;
 }
 
 #sujet td {
-  border: 1px solid black;
-  padding: 3px 10px;
-  text-align: center;
+	border: 1px solid black;
+	padding: 3px 10px;
+	text-align: center;
 }

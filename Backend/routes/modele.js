@@ -85,9 +85,9 @@ router.post('/new', isAuthenticated, isProf, (req, res) => {
 
 router.get('/:idmodele/delete', isAuthenticated, isProf, async (req, res) => {
     const { idmodele } = req.params;
-    db.promise().execute(`DELETE FROM modele_sujet WHERE id_modele = ${idmodele}`).then(()=>{
+    db.promise().execute(`DELETE FROM modele_sujet WHERE id_modele = ${idmodele}`).then(() => {
         return res.sendStatus(200);
-    }).catch(()=> {
+    }).catch(() => {
         return res.sendStatus(500);
     });
 });
@@ -128,7 +128,7 @@ router.get('/:idmodele/sujet', isAuthenticated, async (req, res) => {
         const enonce = (await db.promise().execute(`SELECT enonce FROM modele_sujet WHERE id_modele = ${idmodele}`))[0][0].enonce;
         db.promise().execute(`SELECT id_question, contenu, reponses FROM question WHERE id_modele = ${idmodele}`).then(async ([questions]) => {
             if (!questions[0]) return res.sendStatus(404);
-            if(req.user.isProf) {
+            if (req.user.isProf) {
                 questions.map(r => {
                     r.reponses = (r.reponses == undefined ? r.reponses : JSON.parse(r.reponses));
                 });
@@ -139,12 +139,12 @@ router.get('/:idmodele/sujet', isAuthenticated, async (req, res) => {
                 questions.map(r => {
                     delete r.reponses;
                 });
-                return res.send({ questions, enonce, id_auth : req.user.id_auth }).status(200);
-            } 
-            questions.map((r, index)=> {
+                return res.send({ questions, enonce, id_auth: req.user.id_auth }).status(200);
+            }
+            questions.map((r, index) => {
                 r.reponses = (r.reponses == undefined ? r.reponses : JSON.parse(reponses[index].reponses));
             });
-            return res.send({ questions, enonce, id_auth : req.user.id_auth }).status(200);
+            return res.send({ questions, enonce, id_auth: req.user.id_auth }).status(200);
         });
     } catch {
         return res.sendStatus(500);

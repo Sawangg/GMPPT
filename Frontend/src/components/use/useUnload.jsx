@@ -1,15 +1,15 @@
-import { useEffect} from 'react'
+import { useEffect } from 'react';
 
 export default function useUnload(active) {
-    
+
+    const handleBeforeUnload = event => {
+        if (active) event.preventDefault();
+    }
+
     useEffect(() => {
-
-        const handleBeforeUnload = event => {
-            if (active) event.preventDefault(); 
-        }
-
         window.addEventListener("beforeunload", handleBeforeUnload);
-        return () =>  window.removeEventListener("beforeunload", handleBeforeUnload);
-    }, [active]);
-
+        return () => {
+            window.removeEventListener("beforeunload", handleBeforeUnload);
+        }
+    });
 }

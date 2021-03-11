@@ -9,7 +9,7 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser(async (username, done) => {
     return await db.promise().execute(`SELECT A.id_auth, username, password, isProf, id_promo FROM authentification A LEFT OUTER JOIN etudiant E ON E.id_auth = A.id_auth WHERE USERNAME = '${username}'`).then(([rows]) => {
-        if(!rows[0]) return done(null, null);
+        if (!rows[0]) return done(null, null);
         return done(null, rows[0]);
     }).catch(err => {
         return done(err, false);

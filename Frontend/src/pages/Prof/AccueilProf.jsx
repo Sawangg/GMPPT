@@ -1,12 +1,12 @@
-import React from 'react'
+import React from 'react';
 
 import ParticulesFond from '../../components/ParticulesFond';
 import useConstructor from '../../components/use/useContructor';
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectIdModeleSelectionne } from "../../slice/ModeleSlice"
+import { selectIdModeleSelectionne } from "../../slice/ModeleSlice";
 import { getCategoriesFormules, selectEnregistreFormule } from "../../slice/FormulesSlice";
-import { getAllVariables, selectEnregistreVariable } from "../../slice/VariablesAleatoiresSlice"
+import { getAllVariables, selectEnregistreVariable } from "../../slice/VariablesAleatoiresSlice";
 import { getSujet, selectEnregistreEnonce } from "../../slice/EnoncesSlice";
 import { selectEnregistreUnite, getAllUnite } from '../../slice/UniteSlice';
 
@@ -20,7 +20,7 @@ export default function Accueil() {
     const isEnregistreUnite = useSelector(selectEnregistreUnite);
 
     useConstructor(() => {
-        if (idModele !== null){
+        if (idModele !== null) {
             if (!isEnregistreFormule) dispatch(getCategoriesFormules(idModele));
             if (!isEnregistreVariable) dispatch(getAllVariables(idModele));
             if (!isEnregistreEnonce) dispatch(getSujet(idModele));
@@ -30,7 +30,7 @@ export default function Accueil() {
 
     return (
         <div>
-            <ParticulesFond/>
+            <ParticulesFond />
         </div>
     );
 }

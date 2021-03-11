@@ -16,7 +16,7 @@ function isStudent(req, res, next) {
 
 function isAttribued(req, res, next) {
     db.promise().execute(`SELECT id_modele FROM  modele_promo WHERE id_modele = ${req.params.idmodele}`).then(([rows]) => {
-        if(!rows[0]) return next();
+        if (!rows[0]) return next();
         return res.sendStatus(405);
     }).catch(() => {
         return res.sendStatus(500);

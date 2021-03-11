@@ -1,35 +1,34 @@
 import React, { useCallback } from 'react';
-import {Typography, Slider, makeStyles} from '@material-ui/core';
+import { Typography, Slider, makeStyles } from '@material-ui/core';
 
-import { useDispatch } from "react-redux";
-import { changePrecision } from "../../slice/VariablesAleatoiresSlice";
-import { useSelector } from "react-redux";
-import { selectPrecision } from "../../slice/VariablesAleatoiresSlice"
+import { useDispatch, useSelector } from "react-redux";
+import { changePrecision, selectPrecision } from "../../slice/VariablesAleatoiresSlice";
 
 const SlideBar = ({ index }) => {
-    const useStyles = makeStyles((theme) => ({
+    const useStyles = makeStyles(() => ({
         root: {
             width: 120
         }
     }));
+
     const classes = useStyles();
-    
+
     const dispatch = useDispatch();
     const precisionSlice = useSelector(selectPrecision(index));
 
     const valueLabelFormat = (value) => {
-        if (value !== 0){
-          return `10^${value}`;
+        if (value !== 0) {
+            return `10^${value}`;
         } else {
             return 0
         }
     }
 
     const handleChange = useCallback((value) => {
-        dispatch(changePrecision({ index : index, precision : value}));
+        dispatch(changePrecision({ index: index, precision: value }));
     }, [dispatch, index]);
 
-    return(
+    return (
         <div className={classes.root}>
             <Slider
                 defaultValue={precisionSlice}
@@ -44,8 +43,7 @@ const SlideBar = ({ index }) => {
             />
             <Typography gutterBottom>Précision</Typography>
         </div>
-    )
-    
+    );
 }
 
 export default React.memo(SlideBar);

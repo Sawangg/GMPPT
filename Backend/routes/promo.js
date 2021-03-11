@@ -23,11 +23,11 @@ router.get('/', isAuthenticated, isProf, async (_req, res) => {
 
 router.get('/modele', isAuthenticated, (req, res) => {
     try {
-        if(req.user.isProf){
+        if (req.user.isProf) {
             db.promise().execute(`SELECT * FROM modele_promo m, promo p WHERE p.id_promo=m.id_promo`).then(([rows]) => {
                 return res.send(rows).status(200);
             });
-        }else {
+        } else {
             db.promise().execute(`SELECT MP.id_modele FROM modele_promo MP WHERE id_promo = ${req.user.id_promo}`).then(([rows]) => {
                 return res.send(rows).status(200);
             });
@@ -95,7 +95,7 @@ router.get('/:idpromo/:idmodele/attribution', isAuthenticated, isProf, async (re
         await db.promise().execute(insertArchi);
         await db.promise().execute(insertVariables);
         return res.sendStatus(200);
-    } catch(err) {
+    } catch {
         return res.sendStatus(500);
     }
 });

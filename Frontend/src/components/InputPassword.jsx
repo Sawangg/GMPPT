@@ -1,14 +1,8 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
+import { FormControl, IconButton, InputAdornment, InputLabel, makeStyles, OutlinedInput } from '@material-ui/core'
+
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
-import {
-    FormControl,
-    IconButton,
-    InputAdornment,
-    InputLabel,
-    makeStyles,
-    OutlinedInput
-} from '@material-ui/core'
 import clsx from "clsx";
 
 //label, nom du input 
@@ -16,11 +10,11 @@ import clsx from "clsx";
 //value : valeur du input
 //onChange quand changement
 //onKeyPress quand touche préssée
-export default function InputPwd({label, error, value, onChange, onKeyPress}){
+export default function InputPwd({ label, error, value, onChange, onKeyPress }) {
 
     const useStyles = makeStyles((theme) => ({
         divInputPassword: {
-            margin : "auto",
+            margin: "auto",
             width: "max-content"
         },
         margin: {
@@ -30,20 +24,19 @@ export default function InputPwd({label, error, value, onChange, onKeyPress}){
             width: 225
         }
     }));
-    const classes = useStyles();
 
-    const [showMdp, setShowMdp] = useState(false)
-    
-    const changeShowMdp = () => setShowMdp(!showMdp)
+    const classes = useStyles();
+    const [showMdp, setShowMdp] = useState(false);
+    const changeShowMdp = () => setShowMdp(!showMdp);
 
     return (
         <div className={classes.divInputPassword}>
             <FormControl size="small" variant="outlined" className={clsx(classes.margin, classes.textField)}>
                 <InputLabel error={error} htmlFor="outlined-adornment-password" required>{label}</InputLabel>
                 <OutlinedInput
-                   required
-                   label={label + "*"}
-                   error={error}
+                    required
+                    label={label + "*"}
+                    error={error}
                     id="outlined-adornment-password"
                     type={showMdp ? "text" : "password"}
                     value={value}
@@ -63,6 +56,5 @@ export default function InputPwd({label, error, value, onChange, onKeyPress}){
                 />
             </FormControl>
         </div>
-    )
-
+    );
 }

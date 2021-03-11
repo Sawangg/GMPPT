@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {Fab, makeStyles, Typography} from '@material-ui/core';
+import { Fab, makeStyles, Typography } from '@material-ui/core';
 import CircleLoader from "react-spinners/CircleLoader";
 import AddIcon from '@material-ui/icons/Add';
 
@@ -11,7 +11,7 @@ import EnregistrementVariableAleatoires from '../../components/variable/Enregist
 
 import { useDispatch, useSelector } from "react-redux";
 import { selectActualise, selectEnregistreVariable, addVariable, undoVariable, getAllVariables, selectTabLength } from "../../slice/VariablesAleatoiresSlice"
-import { selectIdModeleSelectionne } from "../../slice/ModeleSlice"
+import { selectIdModeleSelectionne } from "../../slice/ModeleSlice";
 
 export default function VariablesAleatoires() {
 
@@ -37,6 +37,7 @@ export default function VariablesAleatoires() {
             }
         }
     }));
+
     const classes = useStyles();
 
     //gerer pop up pour le undo lors de suppression
@@ -44,9 +45,7 @@ export default function VariablesAleatoires() {
 
     //gere la pop up de selection de modelee
     const [openModele, setOpenModele] = useState(false);
-
     const dispatch = useDispatch();
-
     const lengthTab = useSelector(selectTabLength);
     //savoir si les variables sont récupérées de la BD
     const isEnregistre = useSelector(selectEnregistreVariable);
@@ -61,16 +60,16 @@ export default function VariablesAleatoires() {
         }
     });
 
-    const undo = () =>{
+    const undo = () => {
         dispatch(undoVariable());
         setOpenPopUpUndo(false);
-     }
+    }
 
-    const displayVariable = () =>{
+    const displayVariable = () => {
         return (
             <div className={classes.root}>
                 <Typography variant="h1">Variables aléatoires</Typography>
-                <hr className={classes.hr}/>
+                <hr className={classes.hr} />
                 <Fab className={classes.fab}
                     disabled={lengthTab >= 75}
                     size="small"
@@ -83,25 +82,25 @@ export default function VariablesAleatoires() {
                 <div className={classes.divItemvariable}>
                     {/* EVITE DE FAIRE PASSER LE TABLEAU DE VARIABLE ET DE MODIFIER TOUTES LES VARIABLES A CHAQUE CHANGEMENT D'UNE */}
                     {Array(lengthTab).fill(0).map((_, index) => (
-                        <ItemVariablesAleatoire onRemove={() => setOpenPopUpUndo(true)} length={lengthTab} key={index} index={index}/>
+                        <ItemVariablesAleatoire onRemove={() => setOpenPopUpUndo(true)} length={lengthTab} key={index} index={index} />
                     ))}
-                <PopUp 
-                    message="Variable supprimée" 
-                    actionName="RETOUR" 
-                    action={() => undo()} 
-                    open={openPopUpUndo} 
-                    handleClose={() => setOpenPopUpUndo(false)}
-                    pos="right"
-                />
+                    <PopUp
+                        message="Variable supprimée"
+                        actionName="RETOUR"
+                        action={() => undo()}
+                        open={openPopUpUndo}
+                        handleClose={() => setOpenPopUpUndo(false)}
+                        pos="right"
+                    />
                 </div>
-                <EnregistrementVariableAleatoires/>
+                <EnregistrementVariableAleatoires />
             </div>
-        )
+        );
     }
 
     return (
-        idModele === null 
-        ? <SelectionModele tard={false} setClose={() => setOpenModele(false)} open={openModele}/> 
-        : isActualise ? displayVariable() : <CircleLoader size={50} color={"rgb(7, 91, 114)"} css={{margin : "auto", display : "flex", justifyContent : "center"}}/>
+        idModele === null
+            ? <SelectionModele tard={false} setClose={() => setOpenModele(false)} open={openModele} />
+            : isActualise ? displayVariable() : <CircleLoader size={50} color={"rgb(7, 91, 114)"} css={{ margin: "auto", display: "flex", justifyContent: "center" }} />
     );
 }
