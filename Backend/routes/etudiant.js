@@ -43,8 +43,7 @@ router.post('/:idpromo/new', isAuthenticated, isProf, async (req, res) => {
         await workbook.xlsx.writeFile(tempFilePath).then(() => {
             return res.status(200).download(tempFilePath);
         });
-    } catch (r) {
-        console.log(r);
+    } catch {
         return res.sendStatus(500);
     }
 });
