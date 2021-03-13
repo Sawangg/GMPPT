@@ -31,7 +31,7 @@ Vous trouverez ci-dessous les outils nécessaires au fonctionnement de notre pro
 
 ### Installation de la base de données <a id="installationBD"/>
 
-Une fois les outils présentées au-dessus installé sur votre machine, commençons par l'initialisation de la base de données. Pour se faire, télécharger le script dans `/docs/gmp.sql` sur ce dépôt.
+Une fois les outils présentées au-dessus installé sur votre machine, commençons par l'initialisation de la base de données. Pour se faire, télécharger le script dans `/docs/gmp.sql` sur ce dépôt. Une fois le script sur la machine hébergeant la base de données, vous n'avez qu'à utiliser la commande `mysql -u NOMUTILISATEUR -p NOMDEDATABASE < CHEMIN/DU/FICHIER/A/IMPORTER` puis à écrire le mot de passe du compte. La base de données de notre application est maintenant installée.
 
 ### Installation du backend <a id="installationBack"/>
 
