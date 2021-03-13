@@ -19,7 +19,7 @@ Notre application fonctionne actuellement sous `Linux Debian 10 x86-64`. Pour ce
 
 ## Installation générale <a id="installation"/>
 
-Vous trouverez ci-dessous les outils nécessaires au fonctionnement de notre projet. La configuration présentée a été testée et est stable. Nous ne vous conseillons pas de changer de serveur web car une configuration d'Apache2 a été réalisée pour le projet et est détaillée dans la suite de cette documentation. MariaDB peut être remplacé par MySQL facilement. Pour Node.JS, il est conseillé de rester dans la version 14 ou 15 car se sont les versions stables lors de l'écriture de cette documentation.
+Vous trouverez ci-dessous les outils nécessaires au fonctionnement de notre projet. La configuration présentée a été testée et est stable. Nous ne vous conseillons pas de changer de serveur web car une configuration d'Apache2 a été réalisée pour le projet et est détaillée dans la suite de cette documentation. MariaDB peut être remplacé par MySQL facilement. Pour Node.JS, il est conseillé de rester dans la version 14 ou 15 car ce sont les versions stables lors de l'écriture de cette documentation.
 
 |        |Commande(s)                      |Version    |
 |--------|---------------------------------|-----------|
@@ -31,7 +31,7 @@ Vous trouverez ci-dessous les outils nécessaires au fonctionnement de notre pro
 
 ### Installation de la base de données <a id="installationBD"/>
 
-Une fois les outils présentées au-dessus installé sur votre machine, commençons par l'initialisation de la base de données. Pour se faire, télécharger le script dans `/docs/gmp.sql` sur ce dépôt. Une fois le script sur la machine hébergeant la base de données, vous n'avez qu'à utiliser la commande `mysql -u NOMUTILISATEUR -p NOMDEDATABASE < CHEMIN/DU/FICHIER/A/IMPORTER` puis à écrire le mot de passe du compte. La base de données de notre application est maintenant installée.
+Une fois les outils présentés au-dessus installé sur votre machine, commençons par l'initialisation de la base de données. Pour se faire, télécharger le script dans `/docs/gmp.sql` sur ce dépôt. Une fois le script sur la machine hébergeant la base de données, vous n'avez qu'à utiliser la commande `mysql -u NOMUTILISATEUR -p NOMDEDATABASE < CHEMIN/DU/FICHIER/A/IMPORTER` puis à écrire le mot de passe du compte. La base de données de notre application est maintenant installée.
 
 ### Installation du backend <a id="installationBack"/>
 
@@ -80,7 +80,7 @@ La dernière partie pour que notre application soit utilisable est la partie cli
 
 ![apache_config](/docs/assets/apache_config.png?raw=true)
 
-Maintenant qu'Apache2 est opérationnelle, la dernière étape est d'importer et configurer notre application web. Pour se faire, téléchargé **uniquement** le dossier dans `Frontend/build` de ce dépôt. Vous n'avez qu'à déposez le contenu de ce dossier dans `/var/www/html`. Le dernier point avant que notre application ne soit utilisable est la configuration du frontend. Ouvrez le fichier `nano config.js` et entrez les informations nécessaires dans les guillemets :
+Maintenant qu'Apache2 est opérationnelle, la dernière étape est d'importer et configurer notre application web. Pour se faire, téléchargé **uniquement** le dossier dans `Frontend/build` de ce dépôt. Vous n'avez qu'à déposer le contenu de ce dossier dans `/var/www/html`. Le dernier point avant que notre application ne soit utilisable est la configuration du frontend. Ouvrez le fichier `nano config.js` et entrez les informations nécessaires dans les guillemets :
 ```js
 window.host = "164.1.1.1"; // L'adresse ip de l'api
 window.port = "3001"; // Le port de l'api (le même que PORT= dans le .env)
