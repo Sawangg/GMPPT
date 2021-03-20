@@ -27,11 +27,19 @@ router.post('/:idpromo/new', isAuthenticated, isProf, async (req, res) => {
     let insertEtu = 'INSERT INTO etudiant VALUES ';
     let insertAuth = 'INSERT INTO authentification VALUES ';
     let [{ AUTO_INCREMENT }] = (await db.promise().execute(`SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA ='GMP' AND TABLE_NAME = 'authentification';`))[0];
+    let response = [];
     feuille.eachRow((row) => {
-        row.getCell(4).value = encrypt(generatePwd(), row.getCell(3).value);
+        const pwd = generatePwd();
+        const crypted = encrypt(pwd, row.getCell(3).value)
+        response.push({
+            nom : row.getCell(1).value,
+            prenom :row.getCell(2).value,
+            username : row.getCell(3).value,
+            pwd
+        })
         // nom, prenom, username, password
         insertEtu += ` (${AUTO_INCREMENT}, '${row.getCell(1).value}', '${row.getCell(2).value}', ${idpromo}),`;
-        insertAuth += ` ('${row.getCell(3).value}', '${row.getCell(4).value}', false, NULL, NULL),`;
+        insertAuth += ` ('${row.getCell(3).value}', '${crypted}', false, NULL, NULL),`;
         ++AUTO_INCREMENT;
     });
     insertAuth = insertAuth.slice(0, -1);
@@ -39,10 +47,7 @@ router.post('/:idpromo/new', isAuthenticated, isProf, async (req, res) => {
     try {
         await db.promise().execute(insertAuth);
         await db.promise().execute(insertEtu);
-        let tempFilePath = tempfile('.xlsx');
-        await workbook.xlsx.writeFile(tempFilePath).then(() => {
-            return res.status(200).download(tempFilePath);
-        });
+        res.send(response).status(200)
     } catch {
         return res.sendStatus(500);
     }
