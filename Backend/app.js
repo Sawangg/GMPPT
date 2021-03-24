@@ -23,7 +23,7 @@ app.use(session({
     name: "connection.sid",
     secret: process.env.COOKIE_SECRET,
     cookie: {
-        maxAge: 86400000,
+        maxAge: 3600000,
         sameSite: 'strict',
         domain: process.env.DOMAIN,
         path: '/',
