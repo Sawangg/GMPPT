@@ -140,10 +140,10 @@ export default function RepondreQuestions() {
             <hr className={classes.hr} />
             <div className={classes.buttonFixed} >
                 {/*bouton de téléchargement du sujet en pdf */}
-                <Button variant="contained" color="primary" onClick={downloadPdf}>
+                {/* <Button variant="contained" color="primary" onClick={downloadPdf}>
                     <GetAppIcon />
                     Télécharger
-                </Button>
+                </Button> */}
             </div>
 
             {/* affichage du sujet */}
@@ -151,7 +151,6 @@ export default function RepondreQuestions() {
                 <h2 className={classes.center}>Sujet</h2>
                 <div id="sujet">{ReactHtmlParser(reponses.sujet)}</div>
             </div>
-
 
             <div className={classes.modeles}>
                 <div>

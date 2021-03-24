@@ -1,7 +1,3 @@
-const { createPool } = require("mysql2/promise");
-
-const db = require('./databases.js');
-
 function isAuthenticated(req, res, next) {
     return req.user ? next() : res.sendStatus(401);
 }
