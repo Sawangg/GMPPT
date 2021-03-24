@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import _ from "lodash";
 
 import { Button, Toolbar, Typography, Tooltip, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@material-ui/core';
 import CheckIcon from '@material-ui/icons/Check';
@@ -7,7 +8,6 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 
 import { useSelector } from 'react-redux';
 import { selectEtudiants } from '../../slice/PromoSlice';
-import { getModele3DAPI } from '../../utils/api';
 
 export default function StickyHeadTable() {
 
@@ -38,20 +38,25 @@ export default function StickyHeadTable() {
 			);
 		} else if (column.id === 'modele') {
 			if (row.id !== null) {
-				getModele3DAPI(row.id).then(reponse => {
-					console.log(reponse.data)
+				let indexEtu = _.findIndex(tabEtudiants, (o) => {return o.id === row.id});
+
+				if (indexEtu === -1){
+					return null
+				}
+
+				if (tabEtudiants[indexEtu].image1 && tabEtudiants[indexEtu].image2 ){
 					return (
 						<Button startIcon={<CheckIcon />} variant="outlined" color={"primary"}>
 							Ajouter les modèles 3D pour ce sujet
 						</Button>
 					);
-				}).catch(() => {
+				}else{
 					return (
 						<Button startIcon={<CloseIcon />} variant="outlined" color={"default"}>
 							Ajouter les modèles 3D pour ce sujet
 						</Button>
 					);
-				});
+				}
 			}
 		} else {
 			return (row[column.id]);
