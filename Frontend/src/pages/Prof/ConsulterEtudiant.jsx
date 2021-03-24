@@ -95,16 +95,23 @@ export default function Consulter() {
                 return o.num === question.num;
             });
 
-            let questionJuste = question.tabReponses.length === tabReponsesJustes[indexQ].tabReponses.length;
-            let i = 0;
-            //on regarde si toutes les réponses sont justes
-            while (questionJuste && i < question.tabReponses.length) {
-                questionJuste = question.tabReponses[i].justeProf;
-                i++;
+            if (indexQ !== -1){
+
+                let questionJuste = question.tabReponses.length === tabReponsesJustes[indexQ].tabReponses.length;
+                let i = 0;
+                //on regarde si toutes les réponses sont justes
+                while (questionJuste && i < question.tabReponses.length) {
+                    questionJuste = question.tabReponses[i].justeProf;
+                    i++;
+                }
+                if (questionJuste) {
+                    nb++;
+                }
+                
+            }else{
+                console.error("Problème pour le calcul du nombre de réponses justes 'Consulter Etudiant'")
             }
-            if (questionJuste) {
-                nb++;
-            }
+
         })
         return nb;
     }
