@@ -41,7 +41,7 @@ const Enregistrement = ({ isEnregistre, action, disabled }) => {
     }, [dispatch, action, isEnregistre, disabled, listePromo]);
 
     const suppAsso = (e) => {
-        desatributionSujetAPI(e.id_promo);
+        desatributionSujetAPI(e.id_promo).then().catch();
         let tempTab = [...listePromo];
         tempTab.splice(listePromo.indexOf(e), 1);
         setListePromo(tempTab);
@@ -68,7 +68,7 @@ const Enregistrement = ({ isEnregistre, action, disabled }) => {
             <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
                 <DialogTitle>Attention</DialogTitle>
                 <DialogContent>
-                    <DialogContentText>Après vérification, le sujet que vous voulez modifier est déja associé à une architecture, que voulez-vous faire ?</DialogContentText>
+                    <DialogContentText>Le sujet est associé à une architecture, que voulez-vous faire ?</DialogContentText>
                     {listePromo.map((e, index) => (
                         <div key={index} style={{ display: "flex" }}>
                             <p style={{ margin: "auto 0" }}>{e.nom_promo}</p>

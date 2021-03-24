@@ -10,6 +10,8 @@ import useConstructor from '../../components/use/useContructor';
 
 import { useSelector, useDispatch } from "react-redux";
 import { getAllPromo, selectPromo, selectEnregistrePromo, addPromo, removePromo, getEtudiantsPromo } from "../../slice/PromoSlice";
+import { desatributionSujetAPI } from "../../utils/api";
+import PopUp from '../../components/PopUp';
 
 export default function Promo() {
 
@@ -85,6 +87,7 @@ export default function Promo() {
     const [select, setSelect] = useState("");
     const [assoModele, setAssoModele] = useState(false);
     const [listEtu, setListEtu] = useState(false);
+    const [popUpAssoYes, setPopUpAssoYes] = useState(false);
     const isEnregistre = useSelector(selectEnregistrePromo);
     const tabPromo = useSelector(selectPromo);
 
@@ -104,7 +107,13 @@ export default function Promo() {
 
     const changePromo = (e) => {
         setSelect(e.target.value);
-        dispatch(getEtudiantsPromo(e.target.value.idPromo));
+        if (e.target.value !== undefined) dispatch(getEtudiantsPromo(e.target.value.idPromo));
+    }
+
+    const suppAsso = () => {
+        desatributionSujetAPI(select.idPromo).then((data) => {
+            setPopUpAssoYes(true);
+        }).catch();
     }
 
     return (
@@ -133,6 +142,7 @@ export default function Promo() {
                             ? <>
                                 <Button className={classes.button} disabled={select === ""} variant="contained" color="primary" onClick={() => setAssoModele(true)}>Associer à un modèle</Button>
                                 <Button className={classes.button} disabled={select === ""} variant="contained" color="primary" onClick={() => setListEtu(true)}>Ajouter une liste d'étudiants</Button>
+                                <Button className={classes.button} disabled={select === ""} variant="contained" color="primary" onClick={() => suppAsso()}>Supprimer l'association</Button>
                                 <AssociationModele selectPromo={select.idPromo} open={assoModele} setClose={() => setAssoModele(false)} />
                                 <AjoutListeEtu selectPromo={select.idPromo} open={listEtu} setClose={() => setListEtu(false)} />
                                 {select !== "" ? <Table /> : null}
@@ -145,6 +155,7 @@ export default function Promo() {
                     </FormControl>
                 </form>
             </div>
+            <PopUp severity="success" message="Suppression d'association réussie" open={popUpAssoYes} handleClose={() => setPopUpAssoYes(false)} />
         </div>
     );
 }

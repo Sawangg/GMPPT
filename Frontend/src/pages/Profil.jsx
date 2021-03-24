@@ -7,7 +7,7 @@ import DropFile from '../components/DropFile'
 
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { selectUserName, setUserImage } from "../slice/UserSlice";
+import { selectUserName, setUserImage, deleteUserImage } from "../slice/UserSlice";
 
 import { setPwdUserAPI } from '../utils/api.js';
 
@@ -89,6 +89,16 @@ export default function Profile() {
                         onClick={() => dispatch(setUserImage({ name: user.name, image: image }))}
                     >
                         Enregistrer l'image
+                    </Button>
+                    <Button
+                        className={classes.buttonEnvoyerImageProfil}
+                        variant="contained"
+                        color="primary"
+                        onClick={() => {
+                            dispatch(deleteUserImage()).then().catch();
+                        }}
+                    >
+                        Supprimer l'image actuelle
                     </Button>
                 </div>
                 <hr className={classes.hr} />

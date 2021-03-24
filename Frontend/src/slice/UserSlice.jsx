@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getInfoUserAPI, logoutAPI, setImageUserAPI, getImageUserAPI, loginAPI, } from "../utils/api.js";
+import { getInfoUserAPI, logoutAPI, setImageUserAPI, getImageUserAPI, loginAPI, deleteImageUserAPI } from "../utils/api.js";
 
 export const userDetails = createAsyncThunk("users/getInfoUser", async () => {
 	const response = await getInfoUserAPI();
@@ -20,6 +20,11 @@ export const setUserImage = createAsyncThunk("users/setUserImage", async (props)
 	const data = new FormData();
 	data.append("profilePic", props.image);
 	const response = await setImageUserAPI(props.name, data);
+	return response.data;
+});
+
+export const deleteUserImage = createAsyncThunk("users/deleteUserImage", async (props) => {
+	const response = await deleteImageUserAPI(props);
 	return response.data;
 });
 
@@ -62,6 +67,10 @@ export const userSlice = createSlice({
 		},
 		[userDetails.fulfilled]: (state, action) => {
 			connect(state, action);
+		},
+		[deleteUserImage.fulfilled]: (state, action) => {
+			state.image = undefined;
+			myStorage.setItem(state.name, "");
 		},
 		[loginUser.rejected]: (state) => {
 			state.error = true;
