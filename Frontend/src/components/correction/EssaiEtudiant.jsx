@@ -9,6 +9,8 @@ import ClearIcon from '@material-ui/icons/Clear';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 
+import { afficherUnites } from '../unite/UniteFunctions';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { changeReponseJuste, selectEssaisWithID, changeCommentaire, changeNote, setCorrigeTrue, selectUneQuestionJuste, setAvisApplication } from '../../slice/ConsulterSlice';
 
@@ -248,16 +250,22 @@ const Question = (props) => {
                                     <TableRow>
                                         <TableCell align="center">
                                             Valeur donnée
-                                    </TableCell>
+                                        </TableCell>
                                         <TableCell align="center">
-                                            Ecart avec la bonne valeur
-                                    </TableCell>
+                                            Unité
+                                        </TableCell>
+                                        <TableCell align="center">
+                                            Valeur juste la plus proche
+                                        </TableCell>
+                                        <TableCell align="center">
+                                            Unité juste
+                                        </TableCell>
                                         <TableCell align="center">
                                             Conseil de l'application
-                                    </TableCell>
+                                        </TableCell>
                                         <TableCell align="center">
                                             Votre avis
-                                    </TableCell>
+                                        </TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -267,9 +275,17 @@ const Question = (props) => {
                                             <TableCell align="center" padding='none'>
                                                 {reponse.value}
                                             </TableCell>
-                                            {/* Ecart avec la valeur juste */}
+                                            {/* Unité donnée par l'étudiant */}
                                             <TableCell align="center" padding='none'>
-                                                {reponse.ecart}
+                                                {afficherUnites(reponse.unite)}
+                                            </TableCell>
+                                            {/* valeur de la correction avec la valeur juste */}
+                                            <TableCell align="center" padding='none'>
+                                                {reponse.valueCorrection}
+                                            </TableCell>
+                                            {/* Unité donnée par l'application */}
+                                            <TableCell align="center" padding='none'>
+                                                {reponse.uniteCorrection}
                                             </TableCell>
                                             {/* l'avis de l'application pour savoir si la réponse est juste */}
                                             <TableCell align="center" padding='none'>
