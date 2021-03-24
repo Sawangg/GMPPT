@@ -49,7 +49,7 @@ export default function Accueil(props) {
                     <p>Date limite de rendu : 10/01/21</p>
                 </div>
             </div>
-            <Dialog open={open} onClose={() => setOpen(false)}>
+            <Dialog open={open} onClose={() => setOpen(true)}>
                 <DialogTitle>Sujet non attribué</DialogTitle>
                 <DialogContent>
                     <DialogContentText>Ton sujet n'a pas encore été attribué, contactes le professeur en cas de problème ou reviens plus tard</DialogContentText>

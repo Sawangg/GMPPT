@@ -1,9 +1,9 @@
 import React, { useCallback } from 'react';
 import ReactHtmlParser from 'react-html-parser';
-// import jsPDF from 'jspdf';
+import jsPDF from 'jspdf';
 import { Button, makeStyles, Typography } from '@material-ui/core';
 
-// import GetAppIcon from '@material-ui/icons/GetApp';
+import GetAppIcon from '@material-ui/icons/GetApp';
 
 import { useDispatch, useSelector } from "react-redux";
 import { selectReponses, getSujet, enregistrerReponses, selectSujetEnregistre, etudiantVariables, getModele3D, getEtudiantModele } from "../../slice/RepondreQuestionsSlice";
@@ -66,71 +66,58 @@ export default function RepondreQuestions() {
     });
 
     const handleEnvoyerReponses = useCallback(() => {
-        dispatch(enregistrerReponses(reponses.tabQuestions))
+        dispatch(enregistrerReponses(reponses.tabQuestions));
     }, [dispatch, reponses]);
 
-    //trandforme en pdf le sujet
-    // const downloadPdf = () => {
-    //     const MARGE_COTE = 15;
-    //     const MARGE_HAUT = 20;
-    //     const MARGE_BAS = 20;
-    //     const HAUTEUR_A4 = 297;
-    //     const LARGEUR_A4 = 210;
+    // Transforme le pdf en sujet
+    const downloadPdf = () => {
+        let sujetForPdf = `<div id="sujetPDF"> ${reponses.sujet}<br/>`;
 
-    //     //met le sujet dans la bonne font family
-    //     let sujetForPdf = '<p style="font-family: sans-serif; display : block; margin : auto;">' + reponses.sujet + '</p><br/><br/><br/><br/><hr>'
+        reponses.tabQuestions.forEach(elem => {
+            sujetForPdf += `${elem.enonce}<br/>`;
+        });
+        sujetForPdf += "</div>";
 
-    //     reponses.tabQuestions.forEach((elem, index) => {
-    //         sujetForPdf += `<p>Question ${index + 1} :</p><br/>${elem.enonce}<br/><br/>`;
-    //     });
+        const pdf = new jsPDF();
 
-    //     //document pdf en format a4
-    //     const doc = new jsPDF('p', 'mm', 'a4');
+        pdf.html(sujetForPdf, {
+            callback: (doc) => {
+                doc.setFontSize(10);
+                doc.setFont("helvetica", "normal");
+                doc.addPage();
 
-    //     const options = {
-    //         pagesplit: true,
-    //         'width': LARGEUR_A4 - 2 * MARGE_COTE,
-    //         'height': HAUTEUR_A4 - MARGE_HAUT - MARGE_BAS,
-    //     };
+                const number_of_pages = doc.internal.getNumberOfPages();
+                for (let i = 1; i <= number_of_pages; ++i) {
+                    doc.setPage(i);
 
-    //     //transmet le sujet au document pdf
-    //     doc.fromHTML(sujetForPdf, MARGE_COTE, MARGE_HAUT + 10, options);
+                    //header
+                    doc.text("N° étudiant : 1 - N° sujet : 14582", 15, 10);
+                    doc.text("Sujet de Pierre Dupont", 190, 10, null, null, "right");
 
-    //     doc.addPage();
-
-    //     //ajout image
-    //     const img = new Image();
-    //     img.src = reponses.image1;
-    //     //doc.addImage(img, 'JPEG', 10, 78, 50, 15); //PROBLEME, NE RECONNAIS PAS QUE C'EST UNE IMAGE
-
-    //     const number_of_pages = doc.internal.getNumberOfPages();
-    //     for (let i = 1; i <= number_of_pages; ++i) {
-    //         doc.setPage(i);
-
-    //         //header
-    //         doc.text(MARGE_COTE, MARGE_HAUT, "N° étudiant : 1 - N° sujet : 14582");
-    //         doc.text(LARGEUR_A4 - MARGE_COTE, MARGE_HAUT, "Sujet de Pierre Dupont", 'right');
-
-    //         //footer
-    //         doc.setLineWidth(0.5);
-    //         doc.line(MARGE_COTE, HAUTEUR_A4 - MARGE_BAS - 5, LARGEUR_A4 - MARGE_COTE, HAUTEUR_A4 - MARGE_BAS - 5);
-    //         doc.text(MARGE_COTE, HAUTEUR_A4 - MARGE_BAS, "Pierre Carillo");
-    //         doc.text(LARGEUR_A4 / 2, HAUTEUR_A4 - MARGE_BAS, "IUT du Limousin - GMP", "center");
-    //         doc.text(LARGEUR_A4 - MARGE_COTE, HAUTEUR_A4 - MARGE_BAS, "Page " + i + "/" + number_of_pages, "right");
-    //     }
-
-    //     doc.save("sujet.pdf");
-    // }
+                    //footer
+                    doc.setDrawColor(136, 139, 141);
+                    doc.setLineWidth(0.5);
+                    doc.line(10, 280, 200, 280);
+                    doc.text("Pierre Carillo", 20, 290);
+                    doc.text("IUT du Limousin - GMP", 105, 290, null, null, "center");
+                    doc.text(`Page ${i} / ${number_of_pages}`, 190, 290, null, null, "right");
+                }
+                doc.save('sujet.pdf');
+            },
+            x: 7,
+            y: 12,
+        });
+    }
 
     //affiche les différentes questions avec leurs réponses
     const displayQuestions = () => {
         //n'affiche rien si il n'y a pas de questions
         return (
-            reponses.tabQuestions.length === 0 
-            ? <div>Pas de questions pour l'instant</div>
-            : reponses.tabQuestions.map((i, index) => (
-                <Question key={i.indexQuestion} question={i} id={index} />
-            ))
+            reponses.tabQuestions.length === 0
+                ? <div>Pas de questions pour l'instant</div>
+                : reponses.tabQuestions.map((i, index) => (
+                    <Question key={i.indexQuestion} question={i} id={index} />
+                ))
         );
     }
 
@@ -140,10 +127,10 @@ export default function RepondreQuestions() {
             <hr className={classes.hr} />
             <div className={classes.buttonFixed} >
                 {/*bouton de téléchargement du sujet en pdf */}
-                {/* <Button variant="contained" color="primary" onClick={downloadPdf}>
+                <Button variant="contained" color="primary" onClick={downloadPdf}>
                     <GetAppIcon />
                     Télécharger
-                </Button> */}
+                </Button>
             </div>
 
             {/* affichage du sujet */}
