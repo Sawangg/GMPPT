@@ -52,7 +52,7 @@ export const promoSlice = createSlice({
                     id: etudiant.id_auth,
                     prenom: etudiant.prenom,
                     nom: etudiant.nom,
-                    sujet: etudiant.sujet,
+                    sujet: etudiant.id_architecture,
                 });
             });
         },

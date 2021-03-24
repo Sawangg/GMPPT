@@ -85,6 +85,12 @@ export default function RepondreQuestions() {
                 doc.setFontSize(10);
                 doc.setFont("helvetica", "normal");
                 doc.addPage();
+                const img = new Image();
+                img.src = reponses.image1;
+                doc.addImage(img, '', 50, 30, 100, 100);
+                const img2 = new Image();
+                img2.src = reponses.image2;
+                doc.addImage(img2, '', 50, 150, 100, 100);
 
                 const number_of_pages = doc.internal.getNumberOfPages();
                 for (let i = 1; i <= number_of_pages; ++i) {

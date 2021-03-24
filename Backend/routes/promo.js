@@ -1,7 +1,7 @@
 const { Router } = require("express");
 const db = require("../databases.js");
 const router = Router();
-const { isAuthenticated, isProf, isStudent } = require("../middleware.js");
+const { isAuthenticated, isProf } = require("../middleware.js");
 const { random } = require('../utils.js');
 
 router.post('/new', isAuthenticated, isProf, async (req, res) => {
@@ -35,12 +35,11 @@ router.get('/modele', isAuthenticated, (req, res) => {
     } catch {
         return res.sendStatus(500);
     }
-
 });
 
 router.get('/:idpromo', isAuthenticated, isProf, async (req, res) => {
     const { idpromo } = req.params;
-    db.promise().execute(`SELECT * FROM etudiant WHERE id_promo = ${idpromo}`).then(([rows]) => {
+    db.promise().execute(`SELECT * FROM etudiant E LEFT OUTER JOIN archi_etudiant AE ON E.id_auth = AE.id_auth WHERE E.id_promo = ${idpromo}`).then(([rows]) => {
         return res.send(rows).status(200);
     }).catch(() => {
         return res.sendStatus(500);
@@ -81,7 +80,7 @@ router.get('/:idpromo/:idmodele/attribution', isAuthenticated, isProf, async (re
         let insertVariables = 'INSERT INTO variable_etudiant VALUES';
         let insertArchi = 'INSERT INTO archi_etudiant VALUES';
         promo.forEach(etudiant => {
-            const id_architecture = Math.floor(random(architectures.length - 1, 1, 0));
+            const id_architecture = Math.floor(random(architectures.length - 1, 1, 0)); // Vérifier que le num existe pas
             insertArchi += ` (${etudiant.id_auth}, ${id_architecture}),`;
             variable_aleatoires.forEach(variable_aleatoire => {
                 variable_aleatoire.max = parseFloat(variable_aleatoire.max);
