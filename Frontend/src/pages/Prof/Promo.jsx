@@ -24,8 +24,9 @@ export default function Promo() {
         },
         divNomPromo: {
             display: "flex",
-            justifyContent: "center",
-            marginTop: "3%",
+            flexDirection: "column",
+            width: "20%",
+            margin: "3% auto 0 auto"
         },
         button: {
             display: "block",
@@ -138,7 +139,7 @@ export default function Promo() {
                             </>
                             : <div className={classes.divNomPromo}>
                                 <TextField autoFocus size="small" label="Nom de la promo" variant="outlined" required value={nouvellePromo} onChange={e => setNouvellePromo(e.target.value)} />
-                                <Button className={classes.button} disabled={nouvellePromo === ""} variant="outlined" onClick={() => ajouterPromo()}>Créer</Button>
+                                <Button className={classes.button} disabled={nouvellePromo === ""} variant="contained" color="primary" onClick={() => ajouterPromo()}>Créer</Button>
                             </div>
                         }
                     </FormControl>
