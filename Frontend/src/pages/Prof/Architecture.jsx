@@ -4,6 +4,7 @@ import { TextField, Button, makeStyles, Typography } from '@material-ui/core';
 import DropFile from '../../components/DropFile';
 
 import { addModele3DAPI, addArchiAPI, getVariablesArchiAPI } from '../../utils/api';
+import PopUp from '../../components/PopUp';
 
 export default function Architecture() {
 
@@ -55,6 +56,10 @@ export default function Architecture() {
     const [image1, setImage1] = useState("");
     const [image2, setImage2] = useState("");
     const [excel, setExcel] = useState("");
+    const [openPopUpYesArchi, setopenPopUpYesArchi] = useState(false);
+    const [openPopUpNoArchi, setopenPopUpNoArchi] = useState(false);
+    const [openPopUpYesImages, setopenPopUpYesImages] = useState(false);
+    const [openPopUpNoImages, setopenPopUpNoImages] = useState(false);
 
     const onChange = (e) => {
         if (!isNaN(e.target.value)) setSujet(e.target.value);
@@ -64,19 +69,29 @@ export default function Architecture() {
         const data = new FormData();
         data.append('image1', image1);
         data.append('image2', image2);
-
-        addModele3DAPI({ sujet: sujet, images: data });
+        addModele3DAPI({ sujet: sujet, images: data }).then(() => {
+            setopenPopUpYesImages(true);
+        }).catch(err => {
+            setopenPopUpNoImages(true)
+        });
     }
 
     const envoieArchi = () => {
         const data = new FormData();
         data.append('excel', excel);
-
-        addArchiAPI(data);
+        addArchiAPI(data).then(() => {
+            setopenPopUpYesArchi(true);
+        }).catch(() => {
+            setopenPopUpNoArchi(true);
+        })
     }
 
     const getVariables = () => {
-        getVariablesArchiAPI();
+        getVariablesArchiAPI().then(data => {
+            console.log(data)
+        }).catch(err => {
+            console.log(err)
+        });
     }
 
     return (
@@ -98,6 +113,10 @@ export default function Architecture() {
                     <Button className={classes.saveButton2} disabled={image1 === "" || image2 === "" || sujet === ""} variant="contained" color="primary" onClick={() => envoieModele3D()}>Enregistrer</Button>
                 </div>
             </div>
+            <PopUp severity="success" message="Architecture ajoutée" open={openPopUpYesArchi} handleClose={() => setopenPopUpYesArchi(false)} />
+            <PopUp severity="error" message="L'ajout de l'architecture a échoué" open={openPopUpNoArchi} handleClose={() => setopenPopUpNoArchi(false)} />
+            <PopUp severity="success" message="Images ajoutées" open={openPopUpYesImages} handleClose={() => setopenPopUpYesImages(false)} />
+            <PopUp severity="error" message="L'ajout des images a échoué" open={openPopUpNoImages} handleClose={() => setopenPopUpNoImages(false)} />
         </div>
     );
 }
