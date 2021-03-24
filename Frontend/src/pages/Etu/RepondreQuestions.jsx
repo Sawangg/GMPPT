@@ -91,7 +91,7 @@ export default function RepondreQuestions() {
                     doc.setPage(i);
 
                     //header
-                    doc.text("N° étudiant : 1 - N° sujet : 14582", 15, 10);
+                    doc.text("N° étudiant : 1 - N° sujet : 14559", 15, 10);
                     doc.text("Sujet de Pierre Dupont", 190, 10, null, null, "right");
 
                     //footer
@@ -105,7 +105,7 @@ export default function RepondreQuestions() {
                 doc.save('sujet.pdf');
             },
             x: 7,
-            y: 12,
+            y: 14,
         });
     }
 

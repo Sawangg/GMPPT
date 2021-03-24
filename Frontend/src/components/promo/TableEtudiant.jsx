@@ -19,12 +19,12 @@ export default function StickyHeadTable() {
 		{ id: 'nom', label: 'Nom', minWidth: 170 },
 		{ id: 'prenom', label: 'Prénom', minWidth: 170 },
 		{ id: 'mdp', label: 'Mot de passe', minWidth: 170, align: 'right' },
-		{ id: 'id', label: 'Sujet n°', minWidth: 170, align: 'right' },
+		{ id: 'sujet', label: 'Sujet n°', minWidth: 170, align: 'right' },
 		{ id: 'modele', label: "Modèle 3D", minWidth: 170, align: 'right' },
 	];
 
 	//gère le changement de page
-	const handleChangePage = (event, newPage) => {
+	const handleChangePage = (_event, newPage) => {
 		setPage(newPage);
 	};
 
@@ -43,9 +43,7 @@ export default function StickyHeadTable() {
 				</Button>
 			);
 		} else {
-			return (
-				row[column.id]
-			);
+			return ( row[column.id] );
 		}
 
 	}
