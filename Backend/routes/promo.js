@@ -39,7 +39,11 @@ router.get('/modele', isAuthenticated, (req, res) => {
 
 router.get('/:idpromo', isAuthenticated, isProf, async (req, res) => {
     const { idpromo } = req.params;
-    db.promise().execute(`SELECT * FROM etudiant E LEFT OUTER JOIN archi_etudiant AE ON E.id_auth = AE.id_auth WHERE E.id_promo = ${idpromo}`).then(([rows]) => {
+    db.promise().execute(`SELECT E.id_auth, E.nom, E.prenom, E.id_promo, AE.id_architecture, M.image1, M.image2 FROM etudiant E LEFT OUTER JOIN archi_etudiant AE ON E.id_auth = AE.id_auth LEFT OUTER JOIN modeles3D M ON AE.id_architecture = M.id_architecture WHERE E.id_promo=${idpromo}`).then(([rows]) => {
+        rows.map(r => {
+            r.image1 = r.image1 == null ? false : true;
+            r.image2 = r.image2 == null ? false : true;
+        });
         return res.send(rows).status(200);
     }).catch(() => {
         return res.sendStatus(500);
