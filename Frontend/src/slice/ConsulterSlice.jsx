@@ -33,7 +33,7 @@ export const consulterSlice = createSlice({
                 tabReponses : [{
                     justeApp : true, //reponse juste d'après l'application
                     justeProf : false, //reponse juste d'après le professeur
-                    ecart : "",
+                    valueCorrection : "",
                     value : "0",
                     unite : "",
                 }]
@@ -70,7 +70,7 @@ export const consulterSlice = createSlice({
                         num: 1, justif: "Scotland Forever󠁧󠁢", commentProf: "", note: "",
                         tabReponses: [{
                             justeApp: true, justeProf: false, value: 12,
-                            unite: "N^12", ecart: "0.3"
+                            unite: "N^12", valueCorrection: "0.3"
                         }]
                     }]
                 },
@@ -81,7 +81,7 @@ export const consulterSlice = createSlice({
                         num: 1, justif: "", commentProf: "", note: "",
                         tabReponses: [{
                             justeApp: false, justeProf: false, value: 11,
-                            unite: "N^11", ecart: "1.3"
+                            unite: "N^11", valueCorrection: "1.3"
                         }]
                     }]
                 }
@@ -125,6 +125,7 @@ export const consulterSlice = createSlice({
         },
         //Met l'avis de l'application sur l'essai
         setAvisApplication: (state) => {
+            console.log(state.tabReponsesJustes);
             //operation faite pour chaque essai présent
             state.tabEssais.forEach(essai => {
 
@@ -146,8 +147,9 @@ export const consulterSlice = createSlice({
 
                             //si il y en a une, on met qu'elle est juste
                             if (reponse !== undefined) {
-                                reponse.justeApp = true
-                                reponse.ecart = Math.abs(reponse.value - repCor.value)
+                                reponse.justeApp = true;
+                                reponse.valueCorrection = repCor.value;
+                                reponse.uniteCorrection = repCor.unite;
                             }
                         });
 
@@ -166,7 +168,7 @@ export const consulterSlice = createSlice({
                                 }
                             });
 
-                            rep.ecart = min;
+                            rep.valueCorrection = min;
                         });
                     }else{ //si la question Juste n'est pas bonne
                         console.error("Poblème dans le calcul des avis de l'application 'Consulter Slice'")
@@ -235,9 +237,10 @@ export const consulterSlice = createSlice({
                     question.tabReponses.push({
                         justeApp: false,
                         justeProf: false,
-                        ecart: "",
+                        valueCorrection: "",
                         value: reponseDB.value,
-                        unite: reponseDB.tabUnites,
+                        unite: reponseDB.tabUnite,
+                        uniteCorrection: []
                     });
                 });
             });
