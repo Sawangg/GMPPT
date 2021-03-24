@@ -8,7 +8,6 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 
 import { useSelector } from 'react-redux';
 import { selectEtudiants } from '../../slice/PromoSlice';
-import { getModele3DAPI } from '../../utils/api';
 
 export default function StickyHeadTable() {
 
@@ -40,7 +39,7 @@ export default function StickyHeadTable() {
 		} else if (column.id === 'modele') {
 			if (row.id !== null) {
 				let indexEtu = _.findIndex(tabEtudiants, (o) => {return o.id === row.id});
-				
+
 				if (indexEtu === -1){
 					return null
 				}
