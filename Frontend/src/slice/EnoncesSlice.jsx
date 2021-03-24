@@ -22,7 +22,7 @@ export const enoncesReducer = createSlice({
                 selectForm: "",
                 margeErreur: 5,
                 unite: [{
-                    abr: " ",
+                    abr: "",
                     puissance: 1
                 }],
             }],
@@ -39,7 +39,7 @@ export const enoncesReducer = createSlice({
                     selectForm: action.payload,
                     margeErreur: 5,
                     unite: [{
-                        abr: " ",
+                        abr: "",
                         puissance: 1
                     }],
                 }],
@@ -67,7 +67,7 @@ export const enoncesReducer = createSlice({
                 selectCat: 0,
                 selectForm: action.payload.formule1,
                 margeErreur: 5,
-                unite: [{ abr: " ", puissance: 1 }],
+                unite: [{ abr: "", puissance: 1 }],
             });
             state.enregistre = false;
         },
@@ -109,7 +109,7 @@ export const enoncesReducer = createSlice({
                     selectCat: "",
                     selectForm: "",
                     margeErreur: 5,
-                    unite: [{ abr: " ", puissance: 1 }],
+                    unite: [{ abr: "", puissance: 1 }],
                 }],
             }];
             state.actualise = true;
