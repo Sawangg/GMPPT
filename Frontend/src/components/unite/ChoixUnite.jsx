@@ -51,7 +51,7 @@ export default function ChoixUnite(props) {
 
     const [actualise, setActualise] = useState(false);
 
-    const [tabUnites, setUnites] = useState([{ abr: "", puissance: 1 }]);
+    const [tabUnites, setUnites] = useState([{ index: 0, puissance: 1 }]);
 
     const dispatch = useDispatch();
 
@@ -68,18 +68,28 @@ export default function ChoixUnite(props) {
 
     //gère l'ajout d'une partie d'unité dans l'unité de la réponse
     const handleAjouterUnite = () => {
-        let newTab = [...tabUnites, { abr: "", puissance: 1 }];
+        let newTab = [...tabUnites, { index: 0, puissance: 1 }];
         setUnites(newTab);
     }
 
     //remete l'unité à [{id : 0, puissance : 1}], soit sans unité
     const handleRemettreAZero = () => {
-        setUnites([{ abr: "", puissance: 1 }]);
+        setUnites([{ index: 0, puissance: 1 }]);
     }
 
     const actualiseOpen = () => {
-        if (props.open && !actualise) {
-            setUnites(_.cloneDeep(props.unite));
+        if (props.open && !actualise && props.unite.length !== 0) {
+
+            const newTab = [];
+            props.unite.forEach( (i) => {
+                newTab.push({
+                    index : _.findIndex(unitesReference, (o) => { return o.abrev === i.abr }),
+                    puissance : i.puissance,
+                })
+            })
+
+            setUnites(newTab);
+            //setUnites(_.cloneDeep(props.unite));
             setActualise(true);
         } else if (!props.open && actualise) {
             setActualise(false);
@@ -89,7 +99,7 @@ export default function ChoixUnite(props) {
     //gère le changement d'unité par action sur le select
     const handleChangeUnite = (index, event) => {
         let newTab = [...tabUnites];
-        newTab[index].abr = event.target.value;
+        newTab[index].index = event.target.value;
         setUnites(newTab);
     }
 
@@ -133,7 +143,16 @@ export default function ChoixUnite(props) {
     //gère la fermeture de la fenêtre avec application
     const handleAppliquer = () => {
         supprimerIterationsSansUnite();
-        props.setTabUnite(tabUnites);
+
+        const newTab = [];
+        tabUnites.forEach( (i) =>{
+            newTab.push({
+                abr : unitesReference[i.index].abrev,
+                puissance : i.puissance,
+            })
+        })
+
+        props.setTabUnite(newTab);
         props.handleClose();
     }
 
@@ -141,11 +160,11 @@ export default function ChoixUnite(props) {
     //si le tableau ne contient que des Sans unité, il n'en restera qu'un
     const supprimerIterationsSansUnite = () => {
         _.remove(tabUnites, function (o) {
-            return o.abr === "";
+            return o.index === 0;
         })
 
         if (tabUnites.length === 0) {
-            tabUnites.push({ abr: "", puissance: 1 });
+            tabUnites.push({ index: 0, puissance: 1 });
         }
     }
 
@@ -164,15 +183,15 @@ export default function ChoixUnite(props) {
                 </div>
 
                 {/* Select de l'unité */}
-                <TextField select value={unite.abr} onChange={e => handleChangeUnite(index, e)}>
-                    {unitesReference.map((i) =>
-                        <MenuItem key={i.abrev} value={i.abrev} >
-                            {i.nom}
+                <TextField select value={unite.index} onChange={e => handleChangeUnite(index, e)}>
+                    {unitesReference.map((elem, index) =>
+                        <MenuItem key={index} value={index} >
+                            {elem.nom}
                         </MenuItem>)}
                 </TextField>
 
                 {/* affiche la modif de puissance que si n'est pas Sans unité */}
-                {unite.abr !== "" ?
+                {unite.index !== 0 ?
                     <>
                         {/* modif puissance */}
                         <TextField value={unite.puissance} className={classes.puissance}

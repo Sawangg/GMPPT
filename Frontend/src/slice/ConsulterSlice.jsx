@@ -133,40 +133,44 @@ export const consulterSlice = createSlice({
                     //on regarde la question corrigée lié à la question de l'essai
                     const questionJuste = _.find(state.tabReponsesJustes, (o) => { return o.num === question.num })
 
-                    //on regarde pour chaque réponse de la question corrigée
-                    questionJuste.tabReponses.forEach(repCor => {
-
-                        //on essai de trouver une réponse juste dans l'essai pour cette réponse corrigée
-                        const reponse = _.find(question.tabReponses, (o) => {
-                            return !o.justeApp &&
-                                o.value >= repCor.value * (1 - repCor.margeErreur / 100) &&
-                                o.value <= repCor.value * (1 + repCor.margeErreur / 100)
-                        });
-
-                        //si il y en a une, on met qu'elle est juste
-                        if (reponse !== undefined) {
-                            reponse.justeApp = true
-                            reponse.ecart = Math.abs(reponse.value - repCor.value)
-                        }
-                    });
-
-                    //on s'interesse aux reponses fausses
-                    const repFausses = _.filter(question.tabReponses, (o) => { return !o.justeApp })
-
-                    //on regarde chacune des réponses fausses
-                    repFausses.forEach(rep => {
-                        let min = undefined
-
+                    if (questionJuste !== undefined){
+                        //on regarde pour chaque réponse de la question corrigée
                         questionJuste.tabReponses.forEach(repCor => {
-                            if (min === undefined) {
-                                min = Math.abs(rep.value - repCor.value)
-                            } else {
-                                min = Math.min(min, Math.abs(rep.value - repCor.value))
+
+                            //on essai de trouver une réponse juste dans l'essai pour cette réponse corrigée
+                            const reponse = _.find(question.tabReponses, (o) => {
+                                return !o.justeApp &&
+                                    o.value >= repCor.value * (1 - repCor.margeErreur / 100) &&
+                                    o.value <= repCor.value * (1 + repCor.margeErreur / 100)
+                            });
+
+                            //si il y en a une, on met qu'elle est juste
+                            if (reponse !== undefined) {
+                                reponse.justeApp = true
+                                reponse.ecart = Math.abs(reponse.value - repCor.value)
                             }
                         });
 
-                        rep.ecart = min;
-                    });
+                        //on s'interesse aux reponses fausses
+                        const repFausses = _.filter(question.tabReponses, (o) => { return !o.justeApp })
+
+                        //on regarde chacune des réponses fausses
+                        repFausses.forEach(rep => {
+                            let min = undefined
+
+                            questionJuste.tabReponses.forEach(repCor => {
+                                if (min === undefined) {
+                                    min = Math.abs(rep.value - repCor.value)
+                                } else {
+                                    min = Math.min(min, Math.abs(rep.value - repCor.value))
+                                }
+                            });
+
+                            rep.ecart = min;
+                        });
+                    }else{ //si la question Juste n'est pas bonne
+                        console.error("Poblème dans le calcul des avis de l'application 'Consulter Slice'")
+                    }
                 });
             });
         }
