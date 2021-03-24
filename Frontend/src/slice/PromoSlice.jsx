@@ -38,17 +38,6 @@ export const promoSlice = createSlice({
         // }],
     },
     reducers: {
-        //importe un jeu d'essai pour faire des tests sur liste d'étudiants
-        setEtudiantsForTests: (state) => {
-            state.tabEtudiants = [
-                { id: 0, prenom: 'Florian', nom: 'TORIBIO', avancement: 10, note: 4 },
-                { id: 1, prenom: 'Raphael', nom: 'GAUTHIER', avancement: 80, note: 17 },
-                { id: 2, prenom: 'Léana', nom: 'RENON', avancement: 50, note: 16 },
-                { id: 5, prenom: 'Léo', nom: 'MERCIER', avancement: 40, note: 11 },
-                { id: 9, prenom: 'Sylvain', nom: 'FREDIANI', avancement: 90, note: 16 },
-                { id: 15, prenom: 'Test', nom: 'TEST', avancement: 100, note: 20 },
-            ]
-        },
         //change l'id de la promo que le prof est en train de corriger
         setIdPromo: (state, action) => {
             state.idPromo = action.payload
@@ -63,8 +52,7 @@ export const promoSlice = createSlice({
                     id: etudiant.id_auth,
                     prenom: etudiant.prenom,
                     nom: etudiant.nom,
-                    avancement: 50,
-                    note: 16
+                    sujet: etudiant.sujet,
                 });
             });
         },
@@ -77,8 +65,7 @@ export const promoSlice = createSlice({
     }
 });
 
-
-export const { setEtudiantsForTests, setIdPromo } = promoSlice.actions;
+export const { setIdPromo } = promoSlice.actions;
 
 //retourne tous le tableau d'étudiants
 export const selectEtudiants = state => state.promo.tabEtudiants;
