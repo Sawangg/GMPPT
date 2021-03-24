@@ -32,9 +32,9 @@ router.post('/:idpromo/new', isAuthenticated, isProf, async (req, res) => {
         const pwd = generatePwd();
         const crypted = encrypt(pwd, row.getCell(3).value)
         response.push({
-            nom : row.getCell(1).value,
-            prenom :row.getCell(2).value,
-            username : row.getCell(3).value,
+            nom: row.getCell(1).value,
+            prenom: row.getCell(2).value,
+            username: row.getCell(3).value,
             pwd
         })
         // nom, prenom, username, password
@@ -76,7 +76,7 @@ router.get('/:id_auth/reponses', isAuthenticated, (req, res) => {
 });
 
 router.get('/:id_auth/architecture', isAuthenticated, (req, res) => {
-    db.promise().execute(`SELECT * FROM archi_etudiant AE JOIN architecture A ON AE.id_architecture = A.id_architecture  WHERE id_auth = ${req.params.id_auth}`).then(([rows]) => {
+    db.promise().execute(`SELECT * FROM archi_etudiant AE JOIN architecture A ON AE.id_architecture = A.id_architecture WHERE id_auth = ${req.params.id_auth}`).then(([rows]) => {
         if (!rows[0]) return res.sendStatus(404);
         let obj = { id_architecture: rows[0].id_architecture, variables: [] };
         delete rows[0].id_auth;

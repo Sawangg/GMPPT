@@ -7,6 +7,7 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 
 import { useSelector } from 'react-redux';
 import { selectEtudiants } from '../../slice/PromoSlice';
+import { getModele3DAPI } from '../../utils/api';
 
 export default function StickyHeadTable() {
 
@@ -19,17 +20,16 @@ export default function StickyHeadTable() {
 		{ id: 'nom', label: 'Nom', minWidth: 170 },
 		{ id: 'prenom', label: 'Prénom', minWidth: 170 },
 		{ id: 'mdp', label: 'Mot de passe', minWidth: 170, align: 'right' },
-		{ id: 'id', label: 'Sujet n°', minWidth: 170, align: 'right' },
+		{ id: 'sujet', label: 'Sujet n°', minWidth: 170, align: 'right' },
 		{ id: 'modele', label: "Modèle 3D", minWidth: 170, align: 'right' },
 	];
 
 	//gère le changement de page
-	const handleChangePage = (event, newPage) => {
+	const handleChangePage = (_event, newPage) => {
 		setPage(newPage);
 	};
 
 	const displayColumn = (column, row) => {
-
 		if (column.id === 'mdp') {
 			return (
 				<Button variant="outlined" color="primary">
@@ -37,21 +37,28 @@ export default function StickyHeadTable() {
 				</Button>
 			);
 		} else if (column.id === 'modele') {
-			return (
-				<Button startIcon={row.id % 2 === 0 ? <CheckIcon /> : <CloseIcon />} variant="outlined" color={row.id % 2 === 0 ? "primary" : "default"}>
-					Ajouter les modèles 3D pour ce sujet
-				</Button>
-			);
+			if (row.id !== null) {
+				getModele3DAPI(row.id).then(reponse => {
+					console.log(reponse.data)
+					return (
+						<Button startIcon={<CheckIcon />} variant="outlined" color={"primary"}>
+							Ajouter les modèles 3D pour ce sujet
+						</Button>
+					);
+				}).catch(() => {
+					return (
+						<Button startIcon={<CloseIcon />} variant="outlined" color={"default"}>
+							Ajouter les modèles 3D pour ce sujet
+						</Button>
+					);
+				});
+			}
 		} else {
-			return (
-				row[column.id]
-			);
+			return (row[column.id]);
 		}
-
 	}
 
 	const EnhancedTableToolbar = () => {
-
 		return (
 			<Toolbar>
 				<Typography style={{ width: "98%" }} variant="h6" id="tableTitle" component="div">Promotion</Typography>
