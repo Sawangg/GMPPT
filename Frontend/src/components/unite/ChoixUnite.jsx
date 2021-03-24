@@ -81,7 +81,7 @@ export default function ChoixUnite(props) {
         if (props.open && !actualise && props.unite.length !== 0) {
 
             const newTab = [];
-            props.unite.map((i)=>{
+            props.unite.forEach( (i) => {
                 newTab.push({
                     index : _.findIndex(unitesReference, (o) => { return o.abrev === i.abr }),
                     puissance : i.puissance,
@@ -145,7 +145,7 @@ export default function ChoixUnite(props) {
         supprimerIterationsSansUnite();
 
         const newTab = [];
-        tabUnites.map((i)=>{
+        tabUnites.forEach( (i) =>{
             newTab.push({
                 abr : unitesReference[i.index].abrev,
                 puissance : i.puissance,
