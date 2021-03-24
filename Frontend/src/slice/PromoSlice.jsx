@@ -53,6 +53,8 @@ export const promoSlice = createSlice({
                     prenom: etudiant.prenom,
                     nom: etudiant.nom,
                     sujet: etudiant.id_architecture,
+                    image1 : etudiant.image1,
+                    image2 : etudiant.image2
                 });
             });
         },
