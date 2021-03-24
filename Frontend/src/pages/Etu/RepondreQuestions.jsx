@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import ReactHtmlParser from 'react-html-parser';
 import jsPDF from 'jspdf';
 import { Button, makeStyles, Typography } from '@material-ui/core';
@@ -10,6 +10,7 @@ import { selectReponses, getSujet, enregistrerReponses, selectSujetEnregistre, e
 
 import useConstructor from '../../components/use/useContructor';
 import Question from '../../components/reponses/ItemQuestion';
+import PopUp from '../../components/PopUp';
 
 export default function RepondreQuestions() {
 
@@ -46,6 +47,7 @@ export default function RepondreQuestions() {
     }));
 
     const classes = useStyles();
+    const [popUp, setPopUp] = useState(false);
     const reponses = useSelector(selectReponses);
     const isEnregistre = useSelector(selectSujetEnregistre);
     const dispatch = useDispatch();
@@ -67,6 +69,7 @@ export default function RepondreQuestions() {
 
     const handleEnvoyerReponses = useCallback(() => {
         dispatch(enregistrerReponses(reponses.tabQuestions));
+        setPopUp(true);
     }, [dispatch, reponses]);
 
     // Transforme le pdf en sujet
@@ -159,6 +162,7 @@ export default function RepondreQuestions() {
                 className={classes.center}>
                 Envoyer les réponses
             </Button>
+            <PopUp severity="success" message="Suppression d'association réussie" open={popUp} handleClose={() => setPopUp(false)} />
         </div>
     );
 }

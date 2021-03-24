@@ -31,6 +31,10 @@ export function setPwdUserAPI(username, passwords) {
     return axios.post(`${protocol}//${host}:${port}/auth/${username}/changepwd`, { passwords }, credentials);
 }
 
+export function deleteImageUserAPI() {
+    return axios.get(`${protocol}//${host}:${port}/auth/profilepic/remove`, credentials);
+}
+
 // Formules
 
 export function getCategoriesFormulesAPI(idModele) {

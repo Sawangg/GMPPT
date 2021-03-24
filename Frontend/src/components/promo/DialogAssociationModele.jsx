@@ -12,13 +12,17 @@ export default function DialogAssociationModele({ open, setClose, selectPromo })
 
     const modele = useSelector(selectModele);
 
-    const [openPopUp, setOpenPopUp] = useState(false);
+    const [openPopUpYes, setOpenPopUpYes] = useState(false);
+    const [openPopUpNo, setOpenPopUpNo] = useState(false);
     const [selectionModele, setSelectionModele] = useState("");
 
     const envoieAttribution = () => {
-        attributionSujetAPI(selectPromo, selectionModele);
+        attributionSujetAPI(selectPromo, selectionModele).then(() => {
+            setOpenPopUpYes(true);
+        }).catch(() => {
+            setOpenPopUpNo(true);
+        });
         setSelectionModele("");
-        setOpenPopUp(true);
     };
 
     return (
@@ -44,7 +48,8 @@ export default function DialogAssociationModele({ open, setClose, selectPromo })
                     }} color="primary" autoFocus>Ok</Button>
                 </DialogActions>
             </Dialog>
-            <PopUp severity="success" message="Association réussie" open={openPopUp} handleClose={() => setOpenPopUp(false)} />
+            <PopUp severity="success" message="Association réussie" open={openPopUpYes} handleClose={() => setOpenPopUpYes(false)} />
+            <PopUp severity="error" message="Association échouée" open={openPopUpNo} handleClose={() => setOpenPopUpNo(false)} />
         </>
     );
 }
