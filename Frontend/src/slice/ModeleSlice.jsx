@@ -47,6 +47,11 @@ export const modeleSlice = createSlice({
 				});
 				state.actualise = true;
 				state.chargementSuppression = false;
+				//si n'existe plus dans le cache ou avec une valeur éronnée
+				if (!array.some(elem => Number(elem.id_modele) === Number(state.idModeleSelectionne))){
+					state.idModeleSelectionne = array[0].id_modele;
+					myStorage.setItem("modele", array[0].id_modele);
+				}
 			}
 		},
 		[removeModele.pending]: (state, action) => {

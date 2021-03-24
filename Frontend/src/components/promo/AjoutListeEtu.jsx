@@ -11,7 +11,8 @@ export default function AjoutListeEtu({ open, setClose, selectPromo }) {
 
     const [excel, setExcel] = useState("");
     const [csvData, setCsvData] = useState([]);
-    const [openPopUp, setOpenPopUp] = useState(false);
+    const [openPopUpYes, setOpenPopUpYes] = useState(false);
+    const [openPopUpNo, setOpenPopUpNo] = useState(false);
 
     const envoieExcel = () => {
         const data = new FormData();
@@ -23,8 +24,10 @@ export default function AjoutListeEtu({ open, setClose, selectPromo }) {
             })
             setCsvData(tab);
             setClose();
-        }).catch(err => console.log(err));
-        setOpenPopUp(true);
+            setOpenPopUpYes(true);
+        }).catch(err => {
+            setOpenPopUpNo(true);
+        });
     };
 
     return (
@@ -35,7 +38,8 @@ export default function AjoutListeEtu({ open, setClose, selectPromo }) {
             <DialogContent>
                 <DialogContentText>Charger la liste excel de vos étudiants </DialogContentText>
                 <DropFile typeFile='.xlsx' compressImage={false} changeFile={e => setExcel(e)} message="Charger la liste des étudiants de la promotion" />
-                <PopUp severity="success" message="Etudiants ajoutés à la promotion" open={openPopUp} handleClose={() => setOpenPopUp(false)} />
+                <PopUp severity="success" message="Etudiants ajoutés à la promotion" open={openPopUpYes} handleClose={() => setOpenPopUpYes(false)} />
+                <PopUp severity="error" message="L'ajout de la promotion a échoué" open={openPopUpNo} handleClose={() => setOpenPopUpNo(false)} />
             </DialogContent>
             <DialogActions>
                 <Button onClick={() => setClose()} color="primary">Abandonner</Button>
