@@ -84,6 +84,11 @@ Maintenant qu'Apache2 est opérationnelle, la dernière étape est d'importer et
 ```js
 window.host = "164.1.1.1"; // L'adresse ip de l'api
 window.port = "3001"; // Le port de l'api (le même que PORT= dans le .env)
+window.max_variable = 75; // Nombre maximale de variables aléatoires par modèle de sujet
+window.max_catformule = 30; // Nombre maximale de catégories de formules par modèle de sujet
+window.max_formule = 20; // Nombre maximale de formules par modèle de sujet
+window.max_question = 20; // Nombre maximale de questions par modèle de sujet
+window.max_reponse = 10; // Nombre maximale de réponses par question par modèle de sujet
 ```
 Vous pouvez maintenant aller sur l'adresse ip du serveur apache pour voir si l'application est en ligne. Si vous arrivez sur le portail de connexion et que vous pouvez vous connectez avec l'identifiants `root` et le mot de passe `toor@`, l'application GMPPT est opérationnelle 🎉 !
 
