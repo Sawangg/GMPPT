@@ -52,6 +52,8 @@ export default function VariablesAleatoires() {
     //savoir si la recupération les données sont conectées à la BD
     const isActualise = useSelector(selectActualise)
     const idModele = useSelector(selectIdModeleSelectionne);
+    const { max_variable } = window;
+
 
     useConstructor(() => {
         //si pas encore récupérées de la BD 
@@ -71,7 +73,7 @@ export default function VariablesAleatoires() {
                 <Typography variant="h1">Variables aléatoires</Typography>
                 <hr className={classes.hr} />
                 <Fab className={classes.fab}
-                    disabled={lengthTab >= 75}
+                    disabled={lengthTab >= max_variable}
                     size="small"
                     color="primary"
                     aria-label="add"

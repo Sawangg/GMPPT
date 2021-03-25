@@ -78,6 +78,4 @@ export const selectIdModeleSelectionne = (state) => state.modele.idModeleSelecti
 
 export const selectModeleActuel = (state) => state.modele.tabName[state.modele.idModeleSelectionne];
 
-export const selectTabLengthModele = (state) => state.modele.tabName.length;
-
 export default modeleSlice.reducer;

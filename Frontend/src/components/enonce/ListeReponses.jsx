@@ -47,6 +47,7 @@ const ListeReponses = ({ index }) => {
     const [expanded, setExpanded] = useState(true);
     const tabReponseLength = useSelector(selectReponseLength(index));
     const premierFormule = useSelector(selectPremiereFormule);
+    const { max_reponse } = window;
 
     const add = useCallback(() => {
         dispatch(addReponse({ id: index, formule1: premierFormule }));
@@ -62,7 +63,7 @@ const ListeReponses = ({ index }) => {
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>Réponses à la question {index + 1}</AccordionSummary>
                 <AccordionDetails className={classes.accordionDetails}>
                     <Button
-                        disabled={tabReponse.length >= 10}
+                        disabled={tabReponse.length >= max_reponse}
                         variant="contained"
                         color="primary"
                         onClick={() => add()}

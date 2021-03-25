@@ -71,7 +71,7 @@ const Enregistrement = ({ isEnregistre, action, disabled }) => {
                     <DialogContentText>Le sujet est associé à une architecture, que voulez-vous faire ?</DialogContentText>
                     {listePromo.map((e, index) => (
                         <div key={index} style={{ display: "flex" }}>
-                            <p style={{ margin: "auto 0" }}>{e.nom_promo}</p>
+                            <p style={{ margin: "auto 0" }}>Promotion : {e.nom_promo}</p>
                             <Button onClick={() => suppAsso(e)} size="small" variant="contained" style={{ marginLeft: 20 }}>Supprimer l'association</Button>
                         </div>
                     ))}

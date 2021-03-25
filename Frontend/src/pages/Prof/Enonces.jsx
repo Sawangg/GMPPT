@@ -67,6 +67,7 @@ export default function Enonces() {
     const tabQuestionLength = useSelector(selectTabQuestionLength);
     const enTete = useSelector(selectContenuEnonce);
     const changementFormule = useSelector(selectChangement);
+    const { max_question } = window;
 
     useConstructor(() => {
         if (!isEnregistreEnonce) {
@@ -116,7 +117,7 @@ export default function Enonces() {
                     </div>
                 ))}
                 <Button
-                    disabled={tabQuestionLength >= 20}
+                    disabled={tabQuestionLength >= max_question}
                     className={classes.buttonAddQuestion}
                     variant="contained"
                     color="primary"
