@@ -80,7 +80,14 @@ export const uniteSlice = createSlice({
 				return o.nom === "Sans Unité"
 			});
 
-			state.tabUnites.push(sansUnite[0]);
+			if (sansUnite.length !== 0){
+				state.tabUnites.push(sansUnite[0]);
+			}else{ //si sans unité n'est pas dans le base de donnée
+				state.tabUnites.push({
+					nom : "Sans Unité",
+					abrev : ""
+				})
+			}
 
 			action.payload.forEach(unite => {
 				state.tabUnites.push({
