@@ -168,7 +168,7 @@ export default function RepondreQuestions() {
                 className={classes.center}>
                 Envoyer les réponses
             </Button>
-            <PopUp severity="success" message="Suppression d'association réussie" open={popUp} handleClose={() => setPopUp(false)} />
+            <PopUp severity="success" message="Envoie des réponses réussie" open={popUp} handleClose={() => setPopUp(false)} />
         </div>
     );
 }

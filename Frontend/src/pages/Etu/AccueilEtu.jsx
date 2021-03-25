@@ -43,11 +43,6 @@ export default function Accueil(props) {
         <>
             <div>
                 <MenuProfil info={props.info} />
-                <div className={classes.divProgress}>
-                    <p>Progression dans le traitement du sujet</p>
-                    <LinearProgress variant="determinate" value={10} />
-                    <p>Date limite de rendu : 10/01/21</p>
-                </div>
             </div>
             <Dialog open={open} onClose={() => setOpen(true)}>
                 <DialogTitle>Sujet non attribué</DialogTitle>
