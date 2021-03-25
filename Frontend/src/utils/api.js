@@ -35,6 +35,10 @@ export function deleteImageUserAPI() {
     return axios.get(`${protocol}//${host}:${port}/auth/profilepic/remove`, credentials);
 }
 
+export function addNewProfAPI(username, password) {
+    return axios.post(`${protocol}//${host}:${port}/auth/addnewprof`, { username, password }, credentials)
+}
+
 // Formules
 
 export function getCategoriesFormulesAPI(idModele) {

@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
-import { Button, makeStyles, Typography } from '@material-ui/core';
+import { Button, makeStyles, TextField, Typography } from '@material-ui/core';
 
 import InputPassword from '../components/InputPassword';
 import PopUp from '../components/PopUp';
-import DropFile from '../components/DropFile'
+import DropFile from '../components/DropFile';
 
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectUserName, setUserImage, deleteUserImage } from "../slice/UserSlice";
 
-import { setPwdUserAPI } from '../utils/api.js';
+import { setPwdUserAPI, addNewProfAPI } from '../utils/api.js';
 
 export default function Profile() {
 
@@ -54,6 +53,16 @@ export default function Profile() {
         },
         buttonChangePwd: {
             margin: "2% auto",
+        },
+        rootNewProf: {
+            display: "flex",
+            width: "max-content",
+            flexDirection: "column",
+            margin: "2% auto 4%",
+            alignItems: "center",
+        },
+        marginNewProf: {
+            margin: "4px",
         }
     }));
 
@@ -62,15 +71,26 @@ export default function Profile() {
     const user = useSelector(selectUserName);
     const dispatch = useDispatch();
 
-    const [openPopUp, setOpenPopUp] = useState(false);
+    const [popUp, setPopUp] = useState({ message: "", severity: "", open: false });
     const [password, setPassword] = useState({ oldPassword: "", newPassword: "", error: false });
     const [image, setImage] = useState("");
+    const [prof, setProf] = useState({ username: "", password: "" });
 
     const changePasswordAPI = () => {
         setPwdUserAPI(user.name, { oldPassword: password.oldPassword, newPassword: password.newPassword }).then(() => {
-            setOpenPopUp(true);
+            setPopUp({ message: "Changement de mot de passe réussi", severity: "success", open: true });
         }).catch(() => {
             setPassword({ oldPassword: password.oldPassword, newPassword: password.newPassword, error: true });
+            setPopUp({ message: "Échec du changement de mot de passe", severity: "error", open: true });
+        });
+    }
+
+    const addNewProf = () => {
+        console.log(prof)
+        addNewProfAPI(prof.username, prof.password).then(() => {
+            setPopUp({ message: "Ajout d'un nouveau compte professeur réussi", severity: "success", open: true });
+        }).catch(() => {
+            setPopUp({ message: "Ajout d'un nouveau compte professeur échoué", severity: "error", open: true });
         });
     }
 
@@ -86,7 +106,13 @@ export default function Profile() {
                         variant="contained"
                         color="primary"
                         disabled={image === ""}
-                        onClick={() => dispatch(setUserImage({ name: user.name, image: image }))}
+                        onClick={() => {
+                            dispatch(setUserImage({ name: user.name, image: image })).then(() => {
+                                setPopUp({ message: "L'image a été ajouté avec succès", severity: "success", open: true });
+                            }).catch(() => {
+                                setPopUp({ message: "Échec de l'ajout de l'image", severity: "error", open: true });
+                            });
+                        }}
                     >
                         Enregistrer l'image
                     </Button>
@@ -95,7 +121,11 @@ export default function Profile() {
                         variant="contained"
                         color="primary"
                         onClick={() => {
-                            dispatch(deleteUserImage()).then().catch();
+                            dispatch(deleteUserImage()).then(() => {
+                                setPopUp({ message: "L'image a été suprimée avec succès", severity: "success", open: true });
+                            }).catch(() => {
+                                setPopUp({ message: "Échec de la suppression de l'image", severity: "error", open: true });
+                            });
                         }}
                     >
                         Supprimer l'image actuelle
@@ -109,9 +139,21 @@ export default function Profile() {
                     <InputPassword label={"Nouveau mot de passe"} error={password.error}
                         onChange={e => setPassword({ oldPassword: password.oldPassword, newPassword: e.target.value, error: false })}
                     />
-                    <Button className={classes.buttonChangePwd} variant="contained" color="primary" size="small" onClick={e => changePasswordAPI()}>Changer de mot de passe</Button>
+                    <Button className={classes.buttonChangePwd} variant="contained" color="primary" size="small" onClick={() => changePasswordAPI()}>Changer de mot de passe</Button>
                 </div>
-                <PopUp severity="success" message="Changement de mot de passe réussi" open={openPopUp} handleClose={e => setOpenPopUp(false)} />
+                {user.name === "root"
+                    ?
+                    <>
+                        <hr className={classes.hr} />
+                        <div className={classes.rootNewProf}>
+                            <Typography align="center" gutterBottom variant="h5" component="h5">Création d'un nouveau compte professeur</Typography>
+                            <TextField style={{ margin: "4px" }} label="Nom d'utilisateur" size="small" variant="outlined" onChange={e => setProf({ username: e.target.value, password: prof.password })} />
+                            <InputPassword className={classes.marginNewProf} label={"Mot de passe"} onChange={e => setProf({ username: prof.username, password: e.target.value })} />
+                            <Button className={classes.marginNewProf} variant="contained" color="primary" size="small" disabled={prof.username === "" || prof.password === ""} onClick={() => addNewProf()}>Ajouter le nouveau compte</Button>
+                        </div>
+                    </>
+                    : null}
+                <PopUp severity={popUp.severity} message={popUp.message} open={popUp.open} handleClose={() => setPopUp({ message: "", severity: "success", open: false })} />
             </div>
         </div>
     );
