@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { LinearProgress, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@material-ui/core';
+import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@material-ui/core';
 
 import MenuProfil from '../../components/MenuProfil';
-import { makeStyles } from "@material-ui/core";
 import useConstructor from '../../components/use/useContructor';
 
 import { useDispatch, useSelector } from "react-redux";
@@ -10,15 +9,6 @@ import { getSujet, selectSujetEnregistre, etudiantVariables, getModele3D, getEtu
 import { logoutUser } from "../../slice/UserSlice";
 
 export default function Accueil(props) {
-
-    const useStyles = makeStyles(() => ({
-        divProgress: {
-            width: "50%",
-            margin: "auto"
-        }
-    }));
-
-    const classes = useStyles();
 
     const dispatch = useDispatch();
     const isEnregistre = useSelector(selectSujetEnregistre);
@@ -41,9 +31,7 @@ export default function Accueil(props) {
 
     return (
         <>
-            <div>
-                <MenuProfil info={props.info} />
-            </div>
+            <MenuProfil info={props.info} />
             <Dialog open={open} onClose={() => setOpen(true)}>
                 <DialogTitle>Sujet non attribué</DialogTitle>
                 <DialogContent>
