@@ -101,6 +101,11 @@ const SelectionModele = ({ setClose, open, tard }) => {
         }
     }
 
+    const supprModele = () => {
+        dispatch(removeModele(select));
+        setOpenConfirm(false);
+    }
+
     const displayNouveauModele = () => {
         return (
             nouveauModele.etat
@@ -157,7 +162,7 @@ const SelectionModele = ({ setClose, open, tard }) => {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => setOpenConfirm(false)} color="primary">Annuler</Button>
-                    <Button onClick={() => dispatch(removeModele(select))} disabled={select === ""} color="primary" autoFocus>OK</Button>
+                    <Button onClick={() => supprModele()} disabled={select === ""} color="primary" autoFocus>OK</Button>
                 </DialogActions>
             </Dialog>
         </div>

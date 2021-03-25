@@ -11,59 +11,80 @@ import { getCategoriesFormules, selectEnregistreFormule, selectTabCategorieLengt
 import { getAllVariables, selectEnregistreVariable, selectTabLength } from "../../slice/VariablesAleatoiresSlice";
 import { getSujet, selectEnregistreEnonce, selectTabQuestionLength } from "../../slice/EnoncesSlice";
 import { selectEnregistreUnite, getAllUnite } from "../../slice/UniteSlice";
-import { Card, CardContent } from "@material-ui/core";
+import { Card, CardContent, makeStyles } from "@material-ui/core";
 
 export default function Accueil() {
-  const dispatch = useDispatch();
-  const [actualise, setActualise] = useState(false);
-  const modele = useSelector(selectModeleActuel);
-  const isEnregistreVariable = useSelector(selectEnregistreVariable);
-  const isEnregistreFormule = useSelector(selectEnregistreFormule);
-  const isEnregistreEnonce = useSelector(selectEnregistreEnonce);
-  const isEnregistreUnite = useSelector(selectEnregistreUnite);
-  const tabCatLength = useSelector(selectTabCategorieLength);
-  const tabVarLength = useSelector(selectTabLength);
-  const tabQuestionLength = useSelector(selectTabQuestionLength);
-  const tabModLenght = useSelector(selectTabLengthModele);
 
-  useConstructor(async () => {
-    dispatch(getModele());
-    if (!isEnregistreUnite) dispatch(getAllUnite());
-  });
+	const useStyles = makeStyles(() => ({
+		rootCard: {
+			margin: "auto",
+			width: "40%",
+		},
+		rootSkeleton: {
+			margin: "auto"
+		},
+		element: {
+			display: "flex",
+			width: "80%",
+			justifyContent: "space-between",
+			marginTop: "2%",
+		},
+        marginElement: {
+            marginTop: 10,
+        },
+    }));
 
-  useEffect(() => {
-      if (modele){
-        if (!isEnregistreFormule) dispatch(getCategoriesFormules(modele.index));
-        if (!isEnregistreVariable) dispatch(getAllVariables(modele.index));
-        if (!isEnregistreEnonce) dispatch(getSujet(modele.index));
-        setActualise(true);
-      }
-  }, [modele, dispatch, isEnregistreFormule, isEnregistreVariable, isEnregistreEnonce, isEnregistreUnite])
+	const classes = useStyles();
 
-  return (
-    <div>
-      <ParticulesFond />
-      
-            {actualise ? 
-            <Card style={{width : "30%", margin : "auto"}}>
-            <CardContent>
-            <p>Nombre de modèles créés : {tabModLenght}</p>
-            <p>Modèle selectionné : {modele ? modele.nom : ""}</p>
-            <div style={{display : "flex", width : "80%", justifyContent : "space-between", marginTop : "2%"}}>
-                <p style={{marginTop : 10}}>Nombre de variables créées pour le modèle actuel</p>
-                <CircularProgressLabel value={tabVarLength} valueMax={75}/>
-            </div>
-            <div style={{display : "flex", width : "80%", justifyContent : "space-between", marginTop : "2%"}}>
-                <p style={{marginTop : 10}}>Nombre de catégories de formules créées pour le modèle actuel</p>
-                <CircularProgressLabel value={tabCatLength} valueMax={20}/>
-            </div>
-            <div style={{display : "flex", width : "80%", justifyContent : "space-between", marginTop : "2%"}}>
-                <p style={{marginTop : 10}}>Nombre de questions créées pour le modèle actuel</p>
-                <CircularProgressLabel value={tabQuestionLength} valueMax={20}/>
-            </div>
-                </CardContent>
-            </Card>
-            : <Skeleton style={{margin : "auto"}} variant="rect" width={580} height={280}></Skeleton>}
-    </div>
-  );
+	const dispatch = useDispatch();
+	const [actualise, setActualise] = useState(false);
+	const modele = useSelector(selectModeleActuel);
+	const isEnregistreVariable = useSelector(selectEnregistreVariable);
+	const isEnregistreFormule = useSelector(selectEnregistreFormule);
+	const isEnregistreEnonce = useSelector(selectEnregistreEnonce);
+	const isEnregistreUnite = useSelector(selectEnregistreUnite);
+	const tabCatLength = useSelector(selectTabCategorieLength);
+	const tabVarLength = useSelector(selectTabLength);
+	const tabQuestionLength = useSelector(selectTabQuestionLength);
+	const tabModLenght = useSelector(selectTabLengthModele);
+	
+	useConstructor(async () => {
+		dispatch(getModele());
+		if (!isEnregistreUnite) dispatch(getAllUnite());
+	});
+
+	useEffect(() => {
+		if (modele) {
+			if (!isEnregistreFormule) dispatch(getCategoriesFormules(modele.index));
+			if (!isEnregistreVariable) dispatch(getAllVariables(modele.index));
+			if (!isEnregistreEnonce) dispatch(getSujet(modele.index));
+			setActualise(true);
+		}
+	}, [modele, dispatch, isEnregistreFormule, isEnregistreVariable, isEnregistreEnonce, isEnregistreUnite]);
+
+	return (
+		<>
+			<ParticulesFond />
+			{actualise ?
+				<Card className={classes.rootCard}>
+					<CardContent>
+						<p>Nombre de modèles créés : <strong>{tabModLenght}</strong></p>
+						<p>Modèle selectionné : <strong>{modele ? modele.nom : ""}</strong></p>
+						<div className={classes.element}>
+							<p className={classes.marginElement}>Nombre de variables créées pour le modèle actuel</p>
+							<CircularProgressLabel value={tabVarLength} valueMax={75} />
+						</div>
+						<div className={classes.element}>
+							<p className={classes.marginElement}>Nombre de catégories de formules créées pour le modèle actuel</p>
+							<CircularProgressLabel value={tabCatLength} valueMax={20} />
+						</div>
+						<div className={classes.element}>
+							<p className={classes.marginElement}>Nombre de questions créées pour le modèle actuel</p>
+							<CircularProgressLabel value={tabQuestionLength} valueMax={20} />
+						</div>
+					</CardContent>
+				</Card>
+				: <Skeleton className={classes.rootSkeleton} variant="rect" width={580} height={280}></Skeleton>}
+		</>
+	);
 }
