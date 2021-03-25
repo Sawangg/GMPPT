@@ -2,7 +2,7 @@ const { Router } = require("express");
 const passport = require("passport");
 const router = Router();
 const db = require("../databases.js");
-const { isAuthenticated } = require("../middleware.js");
+const { isAuthenticated, isProf } = require("../middleware.js");
 const { comparePwd, encrypt } = require("../utils.js");
 
 router.get("/", isAuthenticated, (req, res) => {
@@ -16,6 +16,16 @@ router.post('/login', passport.authenticate('local'), (req, res) => {
 router.get('/logout', isAuthenticated, (req, res) => {
     req.logout();
     db.promise().execute(`DELETE FROM sessions WHERE session_id = '${req.sessionID}'`).then(() => {
+        return res.sendStatus(200);
+    }).catch(() => {
+        return res.sendStatus(500);
+    });
+});
+
+router.post('/addnewprof', isAuthenticated, isProf, (req, res) => {
+    if (req.user.username !== "root") return res.sendStatus(405);
+    const { username, password } = req.body;
+    db.promise().execute(`INSERT INTO authentification VALUES('${username}', '${encrypt(password, username)}', 1, NULL, NULL)`).then(() => {
         return res.sendStatus(200);
     }).catch(() => {
         return res.sendStatus(500);
@@ -61,7 +71,7 @@ router.post('/:username/profilepic/new', isAuthenticated, (req, res) => {
 
 router.get("/profilepic/remove", isAuthenticated, (req, res) => {
     const { id_auth } = req.user;
-    db.promise().execute(`UPDATE authentification SET profilepic=NULL WHERE id_auth = ${id_auth}`).then(() => {
+    db.promise().execute(`UPDATE authentification SET profilepic = NULL WHERE id_auth = ${id_auth}`).then(() => {
         return res.sendStatus(200);
     }).catch(() => {
         return res.sendStatus(500);
