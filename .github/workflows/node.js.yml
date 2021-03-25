@@ -29,8 +29,8 @@ jobs:
         cd Backend
         npm ci
 
-    - name: npm install & build (Frontend)
+    - name: npm ci & build (Frontend)
       run: |
         cd Frontend
-        npm install
+        npm ci
         npm run build
