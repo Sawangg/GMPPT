@@ -3,10 +3,9 @@ import React, { useEffect, useState } from "react";
 import ParticulesFond from "../../components/ParticulesFond";
 import useConstructor from "../../components/use/useContructor";
 import CircularProgressLabel from "../../components/CircularProgressLabel";
-import Skeleton from '@material-ui/lab/Skeleton';
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectModeleActuel, getModele, selectTabLengthModele } from "../../slice/ModeleSlice";
+import { selectModeleActuel, getModele } from "../../slice/ModeleSlice";
 import { getCategoriesFormules, selectEnregistreFormule, selectTabCategorieLength } from "../../slice/FormulesSlice";
 import { getAllVariables, selectEnregistreVariable, selectTabLength } from "../../slice/VariablesAleatoiresSlice";
 import { getSujet, selectEnregistreEnonce, selectTabQuestionLength } from "../../slice/EnoncesSlice";
@@ -46,8 +45,8 @@ export default function Accueil() {
 	const tabCatLength = useSelector(selectTabCategorieLength);
 	const tabVarLength = useSelector(selectTabLength);
 	const tabQuestionLength = useSelector(selectTabQuestionLength);
-	const tabModLenght = useSelector(selectTabLengthModele);
-	
+    const { max_variable, max_catformule, max_question } = window;
+
 	useConstructor(async () => {
 		dispatch(getModele());
 		if (!isEnregistreUnite) dispatch(getAllUnite());
@@ -68,23 +67,22 @@ export default function Accueil() {
 			{actualise ?
 				<Card className={classes.rootCard}>
 					<CardContent>
-						<p>Nombre de modèles créés : <strong>{tabModLenght}</strong></p>
 						<p>Modèle selectionné : <strong>{modele ? modele.nom : ""}</strong></p>
 						<div className={classes.element}>
 							<p className={classes.marginElement}>Nombre de variables créées pour le modèle actuel</p>
-							<CircularProgressLabel value={tabVarLength} valueMax={75} />
+							<CircularProgressLabel value={tabVarLength} valueMax={max_variable} />
 						</div>
 						<div className={classes.element}>
 							<p className={classes.marginElement}>Nombre de catégories de formules créées pour le modèle actuel</p>
-							<CircularProgressLabel value={tabCatLength} valueMax={20} />
+							<CircularProgressLabel value={tabCatLength} valueMax={max_catformule} />
 						</div>
 						<div className={classes.element}>
 							<p className={classes.marginElement}>Nombre de questions créées pour le modèle actuel</p>
-							<CircularProgressLabel value={tabQuestionLength} valueMax={20} />
+							<CircularProgressLabel value={tabQuestionLength} valueMax={max_question} />
 						</div>
 					</CardContent>
 				</Card>
-				: <Skeleton className={classes.rootSkeleton} variant="rect" width={580} height={280}></Skeleton>}
+				: null}
 		</>
 	);
 }

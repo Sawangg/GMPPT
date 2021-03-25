@@ -22,6 +22,7 @@ const TodoListFormule = ({ indexCategorie }) => {
 
     const dispatch = useDispatch();
     const tabFormuleLength = useSelector(selectTabFormuleLength(indexCategorie));
+    const { max_formule } = window;
 
     const undo = () => {
         dispatch(undoFormule())
@@ -39,7 +40,7 @@ const TodoListFormule = ({ indexCategorie }) => {
             ))}
             <Button
                 className={classes.buttonAjouterFormule}
-                disabled={tabFormuleLength >= 20}
+                disabled={tabFormuleLength >= max_formule}
                 variant="contained"
                 color="primary"
                 onClick={() => ajout()}

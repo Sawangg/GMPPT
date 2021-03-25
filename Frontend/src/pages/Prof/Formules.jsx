@@ -35,6 +35,7 @@ export default function TodoListAccordeon() {
     const actualise = useSelector(selectActualiseFormule);
     const isEnregistre = useSelector(selectEnregistreFormule);
     const idModele = useSelector(selectIdModeleSelectionne);
+    const { max_catformule } = window;
 
     useConstructor(() => {
         if (!isEnregistre) {
@@ -50,7 +51,7 @@ export default function TodoListAccordeon() {
                 <Typography variant="h1">FORMULES</Typography>
                 <hr className={classes.hr} />
                 <Fab className={classes.fab}
-                    disabled={tabCatLength >= 30}
+                    disabled={tabCatLength >= max_catformule}
                     size="small"
                     color="primary"
                     aria-label="add"
