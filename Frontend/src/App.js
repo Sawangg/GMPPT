@@ -26,8 +26,6 @@ import store from './utils/store';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
 
-import 'suneditor/dist/css/suneditor.min.css';
-
 export default function App() {
 
     const theme = createMuiTheme({
